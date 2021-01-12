@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"chua-n.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用$ python命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的$ python命令指向。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux 下从源码安装 Python——小白踩坑记">
+<meta property="og:url" content="https://chua-n.github.io/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/index.html">
+<meta property="og:site_name" content="这里是川！">
+<meta property="og:description" content="实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用$ python命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的$ python命令指向。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chua-n.gitee.io/blog-images/linux源码安装python/python源码包.png">
+<meta property="og:image" content="https://chua-n.gitee.io/blog-images/linux源码安装python/python命令行.png">
+<meta property="article:published_time" content="2020-06-29T07:55:00.000Z">
+<meta property="article:modified_time" content="2021-01-12T07:35:23.788Z">
+<meta property="article:author" content="荒流">
+<meta property="article:tag" content="NaniNani">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chua-n.gitee.io/blog-images/linux源码安装python/python源码包.png">
+
+<link rel="canonical" href="https://chua-n.github.io/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>linux 下从源码安装 Python——小白踩坑记 | 这里是川！</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?fc952a6217eaa13075902a9a5558f924";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="这里是川！" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">这里是川！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://chua-n.gitee.io/blog-images/avatar.png">
+      <meta itemprop="name" content="荒流">
+      <meta itemprop="description" content="合抱之木，生于毫末。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这里是川！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux 下从源码安装 Python——小白踩坑记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-29 15:55:00" itemprop="dateCreated datePublished" datetime="2020-06-29T15:55:00+08:00">2020-06-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-12 15:35:23" itemprop="dateModified" datetime="2021-01-12T15:35:23+08:00">2021-01-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：如果想要安装某个非系统自带的 Python 版本，切忌冲动删除系统自带的 Python 2.7 和 Python 3.5，某些系统应用可能依赖于这些 Python 环境的调用，防止系统出错！</p>
+</blockquote>
+<h2 id="1-官网下载-python-源码"><a href="#1-官网下载-python-源码" class="headerlink" title="1. 官网下载 python 源码"></a>1. 官网下载 python 源码</h2><p>在官网<a target="_blank" rel="noopener" href="https://www.python.org/downloads/source/">这里</a>下载你想要的 linux 环境下的 python 源码，如我下载的是下图第一个 Gzipped source tarball，其实二选一就好。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python源码包.png" alt="python源码.png"></p>
+<p>我下载完成后是一个叫 Python-3.8.3.tgz 的文件，在下载目录里使用<code>tar -xvf Python-3.8.3.tgz</code> 命令解压文件包，目录里多出一个 Python-3.8.3 的文件夹，cd 命令进入该文件夹。</p>
+<p>上述操作总结起来如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz</span><br><span class="line">tar -xvf Python-3.8.3.tgz</span><br><span class="line"><span class="built_in">cd</span> Python-3.8.3</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装依赖"><a href="#2-安装依赖" class="headerlink" title="2. 安装依赖"></a>2. 安装依赖</h2><p>Python 源码编译、安装过程中需要用到一些工具，你的系统里可能有、可能没有这些工具，保险起见，使下以下命令先把这些依赖安装好吧。</p>
+<blockquote>
+<p>这一步其实可以放在最开始执行。</p>
+</blockquote>
+<ol>
+<li>Ubuntu/Debian 系列： <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl</span><br></pre></td></tr></table></figure></li>
+<li>Fedora/CentOS/RHEL 等可参考： <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel xz xz-devel libffi-devel</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h2 id="3-编译并安装-python"><a href="#3-编译并安装-python" class="headerlink" title="3. 编译并安装 python"></a>3. 编译并安装 python</h2><p>注意根据第 1 节最后的 cd 命令，我们现在是在 python 的源码文件夹里进行操作。</p>
+<h3 id="3-1-指定-python-的安装目录"><a href="#3-1-指定-python-的安装目录" class="headerlink" title="3.1. 指定 python 的安装目录"></a>3.1. 指定 python 的安装目录</h3><p>作为 CS 小白，我还是要区别一下 python 的“源码目录”和“安装目录”两个概念的，毕竟是第一次在 linux 下从源码安装软件。</p>
+<p>要知道，当前我们所在的目录<code>Python-3.8.3</code>是由最开始下载的源码压缩包解压出来的，因此这个目录里是 python 这个软件开源的源码，故称之为<strong>源码目录</strong>；而<strong>安装目录</strong>是说我们这个 python 软件要安装在系统的哪个地方，你启动 python 的时候实际是从这里启动的。</p>
+<p>类比下 windows 的话就是：源码目录是你下载的那个安装程序<code>xxx.exe</code>所在的目录，还记得一些大型软件（如 office 2016）安装的时候通常是一个文件夹里有一个<code>setup.exe</code>的程序吗（当然，很多软件你下载下来的安装包其实就一个单独的.exe 可执行文件就没了），windows 下就是直接点击这个<code>xxx.exe</code>进行安装的，这就是所谓的<strong>源码目录</strong>；那么显而易见，<strong>安装目录</strong>就是你在运行<code>xxx.exe</code>进行安装的时候选择的安装地址，譬如说经常是<code>C:\Program Files\</code>等等。真正的软件组件肯定是在安装目录里，软件需要从这里启动，而你平常习惯的在 windows 桌面/开始菜单里点击的图标就是从安装目录里延伸出的快捷方式。</p>
+<p>回归主题，我选择的 python 安装目录是<code>/opt/python3.8</code>，因此通过如下命令先建立这个文件夹：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /opt/python3.8</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-执行-configure"><a href="#3-2-执行-configure" class="headerlink" title="3.2. 执行./configure"></a>3.2. 执行./configure</h3><p>python 源码目录里有一个 configure 可执行文件，这个命令的作用是生成一个 MakeFile 文件，此 Makefile 文件用来被之后的 make 命令所使用进行源码编译（Linux 需要按照 Makefile 所指定的顺序来编译 (build) 程序组件）。</p>
+<p>configure 通常有一些参数选项，最常见的是—prefix，用来指定安装目录。此外，要注意的是，python3.4 以后自带了 pip，为了在之后能够成功使用这个 pip 进行 python 库的安装，最好加上—with-ssl 参数。—with-ssl 这个参数不加的话 python 的安装过程不受影响，只是当你想要用 pip 安装 python 库的时候会报错，发现它无法连接到 pypi，跟 pip 连不上网没啥区别。</p>
+<p>总之，使用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --with-ssl --prefix=/opt/python3.8</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-make-编译"><a href="#3-3-make-编译" class="headerlink" title="3.3. make 编译"></a>3.3. make 编译</h3><p><code>make</code>命令实际就是编译源代码，其根据 Makefile 文件执行编译指令并生成可执行文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-使用-make-install-进行安装"><a href="#3-4-使用-make-install-进行安装" class="headerlink" title="3.4. 使用 make install 进行安装"></a>3.4. 使用 make install 进行安装</h3><p>当 make 的源代码编译无误，使用<code>make install</code>就是进行软件的安装，似乎也要根据 Makefile 文件以及根据 make 生成的可执行文件进行执行，原理尚不明确，现在确定的是其现实意义是把软件安装到<code>configure</code>命令指定的目录，对我而言就是<code>/opt/python3.8</code>。</p>
+<p><code>make install</code>因为是软件安装，因此通常需要 sudo 权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h2 id="4-配置环境"><a href="#4-配置环境" class="headerlink" title="4. 配置环境"></a>4. 配置环境</h2><p>至此 python 的安装过程其实已经完成，在安装目录里使用<code>./bin/python3</code>即可打开安装好的 python 可执行文件并进入 python 命令行了：</p>
+<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python命令行.png" alt="启动python.png"></p>
+<p>但是每次要从安装目录里启动 python 很不方便，我们想要达到的是在 shell 中随时随地唤醒这个 python，这便需要进行相关的环境配置。</p>
+<h3 id="4-1-删除原有的软链接"><a href="#4-1-删除原有的软链接" class="headerlink" title="4.1. 删除原有的软链接"></a>4.1. 删除原有的软链接</h3><p>开头的时候提到，我的系统中默认的 python 命令打开的是系统自带的 python2.7，现在要更改这个命令让它打开的是新安装的 python3.8，这需要我们先理解命令行(shell)中的命令是怎么执行的：</p>
+<ul>
+<li>在 shell 中，执行的所有命令如 cd、ls、ps、python 等，分为“内建命令”和“外部命令”。<strong>内建命令</strong>是 shell 自带的命令，好比编程语言不需要使用函数库而自带的那些函数，如<code>print()</code>函数；<strong>外部命令</strong>是为了丰富 shell 的功能而自己安装的一些命令，好比你编程时使用的第三方库，当然，有些外部命令是你安装 linux 系统时就已经自带的命令，好比编程语言的标准库，虽然是“自带的”但依然是“外部命令”。</li>
+<li>python 毫无疑问是外部命令，那么外部命令是怎么执行呢？这就要提到平常经常见到的<code>PATH</code>概念了。当 shell 中输入一个命令时，shell 首先检验它是不是内建命令，当内建命令中找不到这条命令时，shell 就搜索你的<code>PATH</code>，这个东西就是一个存储了你的外部命令所在路径的集合，shell 在这些路径中寻找你输入的命令对应的那个可执行文件，找得到就在 shell 中执行，找不到就报错。</li>
+<li>于是，shell 中 python 命令的执行过程为：在<code>PATH</code>存储的那么路径里（包含很多路径，其中一个是<code>/usr/bin/</code>）寻找一个名为<code>python</code>的可执行文件，一般情况下，有这么一个文件：<code>/usr/bin/python</code>，找到它以后执行，就打开了 python。</li>
+</ul>
+<p>现在我们使用<code>ls -l /usr/bin/python</code>查看这个文件的详细信息，发现它是一个执行 python2.7 的软链接（相当于 windows 里的快捷方式），把它删掉，这样在 shell 中直接输入 python 就再也打不开任何 python 环境了，它成了一个无效命令。</p>
+<p>总结一下，这步操作的命令过程为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -l /usr/bin/python</span><br><span class="line">sudo rm /usr/bin/python</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-建立新的软链接"><a href="#4-2-建立新的软链接" class="headerlink" title="4.2. 建立新的软链接"></a>4.2. 建立新的软链接</h3><p>使用软链接创建命令<code>ln -s</code>把新安装的 python 链接到上步删除的旧的软链接所在目录即可。即：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /opt/python3.8/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
+<p>此时在任意工作目录的 shell 中任意输入 python，即可打开新安装的 python 3.8 了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chuan@workstation:~$ python</span><br><span class="line">Python 3.8.3 (default, Jun 21 2020, 16:34:59)</span><br><span class="line">[GCC 5.4.0 20160609] on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-配置-pip-命令"><a href="#4-3-配置-pip-命令" class="headerlink" title="4.3. 配置 pip 命令"></a>4.3. 配置 pip 命令</h3><p>你的系统可能也自带了 pip 或 pip2、pip3 等命令，由于自带的 pip 关联的肯定是原有的 python 环境，此时盲目使用 pip install 一些库的话，这些库其实被安装到了系统自带的 python 环境里了，在你新安装的 python3.8 里根本无法导入这些库，这就尴尬了。</p>
+<p>这个 pip 其实和之前被删除的 python 软链接一样，是一个在相同目录下的 pip 软链接，和更改 python 命令一样，删除掉原来的 pip 被建立一个新的 pip 软链接即可。为了让 pip 关联的是新下载的 python3.8，新的 pip 应该来自 python3.8 自带的那个 pip，其路径为<code>./opt/python3.8/bin/pip3</code>。话不多说，代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm /usr/bin/pip</span><br><span class="line">ln -s /opt/python3.8/bin/pip3 /usr/bin/pip</span><br></pre></td></tr></table></figure>
+<h2 id="5-前方告捷，嘿嘿"><a href="#5-前方告捷，嘿嘿" class="headerlink" title="5. 前方告捷，嘿嘿"></a>5. 前方告捷，嘿嘿</h2><h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>新安装的 pip 在安装第三方库时还是有一个小小的报错，提示什么文件夹权限不明确/不足以及：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Could not install packages due to an EnvironmentError: [Errno 13] Permission denied</span><br></pre></td></tr></table></figure>
+<p>根据百度，出现这个报错之后，在 pip install 之后加个—user 可解决，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --user numpy</span><br></pre></td></tr></table></figure>
+<p>第一次加过—user 之后便不再有报错，但不明所以的是这样之后 pip 安装的第三方库的目录被定在了<code>~/.local/</code>，原来似乎不存在这个文件夹。不过这并没有造成后续什么问题，暂且不管了，挖个坑后续再研究。</p>
+<p>另外，不知道能不能选择直接把一个已安装的 pip 绑定到指定的 python 环境，而不用这么折腾，未完待续吧……</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" rel="prev" title="决策树之特征选择">
+      <i class="fa fa-chevron-left"></i> 决策树之特征选择
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/" rel="next" title="linux 命令行下适配 nvidia 驱动">
+      linux 命令行下适配 nvidia 驱动 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BD-python-%E6%BA%90%E7%A0%81"><span class="nav-text">1. 官网下载 python 源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="nav-text">2. 安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BC%96%E8%AF%91%E5%B9%B6%E5%AE%89%E8%A3%85-python"><span class="nav-text">3. 编译并安装 python</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%8C%87%E5%AE%9A-python-%E7%9A%84%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95"><span class="nav-text">3.1. 指定 python 的安装目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%89%A7%E8%A1%8C-configure"><span class="nav-text">3.2. 执行.&#x2F;configure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-make-%E7%BC%96%E8%AF%91"><span class="nav-text">3.3. make 编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E4%BD%BF%E7%94%A8-make-install-%E8%BF%9B%E8%A1%8C%E5%AE%89%E8%A3%85"><span class="nav-text">3.4. 使用 make install 进行安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="nav-text">4. 配置环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%88%A0%E9%99%A4%E5%8E%9F%E6%9C%89%E7%9A%84%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="nav-text">4.1. 删除原有的软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%BB%BA%E7%AB%8B%E6%96%B0%E7%9A%84%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="nav-text">4.2. 建立新的软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E9%85%8D%E7%BD%AE-pip-%E5%91%BD%E4%BB%A4"><span class="nav-text">4.3. 配置 pip 命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%89%8D%E6%96%B9%E5%91%8A%E6%8D%B7%EF%BC%8C%E5%98%BF%E5%98%BF"><span class="nav-text">5. 前方告捷，嘿嘿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E9%99%84%E8%AE%B0"><span class="nav-text">6. 附记</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="荒流"
+      src="https://chua-n.gitee.io/blog-images/avatar.png">
+  <p class="site-author-name" itemprop="name">荒流</p>
+  <div class="site-description" itemprop="description">合抱之木，生于毫末。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chua-n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chua-n" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chua_n@qq.com" title="E-Mail → mailto:chua_n@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">荒流</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">34k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="24,24,24" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
