@@ -47,28 +47,6 @@
       </categories>
   </entry>
   <entry>
-    <title>jupyter notebook中使用mayavi三维绘图库</title>
-    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
-    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
-<a id="more"></a>
-<blockquote>
-<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
-</blockquote>
-<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
-<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
-<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
-<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>jupyter</category>
-        <category>mayavi</category>
-      </categories>
-  </entry>
-  <entry>
     <title>linux 下从源码安装 Python——小白踩坑记</title>
     <url>/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/</url>
     <content><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
@@ -135,6 +113,44 @@
       <categories>
         <category>linux</category>
         <category>python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
+    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda/</url>
+    <content><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
+<a id="more"></a>
+<blockquote>
+<p>其实可直接看第 4 步的总结……</p>
+</blockquote>
+<h2 id="1-走官网教程"><a href="#1-走官网教程" class="headerlink" title="1. 走官网教程"></a>1. 走官网教程</h2><p>首先想的当然是走官网的 cuda 安装教程啦，尝试了<a href="https://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux&amp;target_arch=x86_64&amp;target_distro=Ubuntu&amp;target_version=1604&amp;target_type=runfilelocal">官网页面</a>里的<code>runfile(local)</code>、<code>deb(local)</code>安装方式选项均失败，失败过程的详细说明如下：</p>
+<h3 id="1-1-使用deb-local-方法（不推荐）"><a href="#1-1-使用deb-local-方法（不推荐）" class="headerlink" title="1.1. 使用deb(local)方法（不推荐）"></a>1.1. 使用<code>deb(local)</code>方法（不推荐）</h3><p>官网给的安装方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-ubuntu1604.pin</span><br><span class="line">$ sudo mv cuda-ubuntu1604.pin /etc/apt/preferences.d/cuda-repository-pin-600</span><br><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo dpkg -i cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get -y install cuda</span><br></pre></td></tr></table></figure>
+<p>虽然服务器上已经有安装的 cuda 9.0，但此方法不需要先卸载老版本（大概是因为用的 apt-get 安装会自动覆盖吧），一路执行下来都没有报错，畅快地安装完成。然而，后又经过各种尝试后发现，在执行到最后一句<code>sudo apt-get -y install cuda</code>时，安装好的版本总是当前 NVIDIA 最新的 cuda 版本——截止到 2020.06.21 是 cuda 11.0，而我要安装的是 cuda 10.2（因为当前 PyTorch 只支持到 cuda 10.2）！</p>
+<p>事实上，如果你要安装最新的 cuda 版本的话，这个方法非常好，安装流程到这里就可以结束了。</p>
+<p>至于为什么总是安装的最新的 cuda 版本，而不是你以为的你指定的版本，大抵是因为最后那一句命令本质上还是用 apt 从软件源里下载 cuda，而软件源里的是最新版本所以你安装的也只能是最新版本吧。</p>
+<h3 id="1-2-使用runfile-local-方法（推荐）"><a href="#1-2-使用runfile-local-方法（推荐）" class="headerlink" title="1.2. 使用runfile(local)方法（推荐）"></a>1.2. 使用<code>runfile(local)</code>方法（推荐）</h3><p>对于<code>runfile(local)</code>，官网给的安装方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</span><br><span class="line">$ sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
+<p>这个看上去靠谱多了，毕竟是下载到本地你指定的安装包然后直接在本地安装，但是在执行<code>sudo sh cuda_10.2.89_440.33.01_linux.run</code>发现依然报错，按其提示，用 cat 或 vim 查看相应的日志记录如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[INFO]: Driver not installed.</span><br><span class="line">[INFO]: Checking compiler version...</span><br><span class="line">[INFO]: gcc location: &#x2F;usr&#x2F;bin&#x2F;gcc</span><br><span class="line"></span><br><span class="line">[INFO]: gcc version: gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)</span><br><span class="line"></span><br><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Components to install:</span><br><span class="line">[INFO]: Driver</span><br><span class="line">[INFO]: 440.33.01</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-440.33.01.run --ui&#x3D;none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed.</span><br><span class="line">[ERROR]: Install of 440.33.01 failed, quitting</span><br></pre></td></tr></table></figure>
+<p>注意最后的<code>[ERROR]: Install of driver component failed.</code>，意思是驱动安装失败，我简直莫名奇妙。</p>
+<p>找了找查看驱动相关的命令，使用<code>sudo dpkg --list | grep nvidia-*</code>命令查看了驱动版本号，发现竟然装了两个驱动版本！啥意思呢？就是原来我服务器上装的那个驱动，加上在上一步尝试<code>deb(local)</code>方法安装 cuda 时自动装的一个驱动，两个同时存在了。</p>
+<blockquote>
+<p>为啥 cuda 覆盖了而 nvidia 驱动没覆盖，难道是我记错了 w(ﾟ Д ﾟ)w ？不过这其实并不重要，反正无论一个/两个都要卸载。</p>
+</blockquote>
+<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>。</p>
+<h2 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h2><p>配置好 nvidia 驱动后，可以安装 cuda 了，先删除原有的 cuda，再对 1.2 节里下载的文件运行安装就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt autoremove cuda</span><br><span class="line"><span class="comment"># 若上一步删不干净，接着使用：</span></span><br><span class="line">sudo apt --purge remove <span class="string">&quot;*cublas*&quot;</span> <span class="string">&quot;cuda*&quot;</span></span><br><span class="line"><span class="comment"># 在 1.2 节之前下载的文件目录下运行：</span></span><br><span class="line">sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
+<p>按照安装过程中的提示一步步走下来即可，会让你选择安装的组件等等，像 nvidia samples 后面那几个组件我就没有装。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>简而言之，总的流程其实是：</p>
+<ol>
+<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>；</li>
+<li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
+<li>按照第 3 节进行安装。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>linux</category>
       </categories>
   </entry>
   <entry>
@@ -254,6 +270,28 @@
       </categories>
   </entry>
   <entry>
+    <title>jupyter notebook中使用mayavi三维绘图库</title>
+    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
+    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
+</blockquote>
+<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
+<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
+<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
+<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>jupyter</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
     <title>决策树之特征选择</title>
     <url>/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/</url>
     <content><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
@@ -294,44 +332,6 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
 ]]></content>
       <categories>
         <category>ML</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
-    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda/</url>
-    <content><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
-<a id="more"></a>
-<blockquote>
-<p>其实可直接看第 4 步的总结……</p>
-</blockquote>
-<h2 id="1-走官网教程"><a href="#1-走官网教程" class="headerlink" title="1. 走官网教程"></a>1. 走官网教程</h2><p>首先想的当然是走官网的 cuda 安装教程啦，尝试了<a href="https://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux&amp;target_arch=x86_64&amp;target_distro=Ubuntu&amp;target_version=1604&amp;target_type=runfilelocal">官网页面</a>里的<code>runfile(local)</code>、<code>deb(local)</code>安装方式选项均失败，失败过程的详细说明如下：</p>
-<h3 id="1-1-使用deb-local-方法（不推荐）"><a href="#1-1-使用deb-local-方法（不推荐）" class="headerlink" title="1.1. 使用deb(local)方法（不推荐）"></a>1.1. 使用<code>deb(local)</code>方法（不推荐）</h3><p>官网给的安装方式为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-ubuntu1604.pin</span><br><span class="line">$ sudo mv cuda-ubuntu1604.pin /etc/apt/preferences.d/cuda-repository-pin-600</span><br><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo dpkg -i cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get -y install cuda</span><br></pre></td></tr></table></figure>
-<p>虽然服务器上已经有安装的 cuda 9.0，但此方法不需要先卸载老版本（大概是因为用的 apt-get 安装会自动覆盖吧），一路执行下来都没有报错，畅快地安装完成。然而，后又经过各种尝试后发现，在执行到最后一句<code>sudo apt-get -y install cuda</code>时，安装好的版本总是当前 NVIDIA 最新的 cuda 版本——截止到 2020.06.21 是 cuda 11.0，而我要安装的是 cuda 10.2（因为当前 PyTorch 只支持到 cuda 10.2）！</p>
-<p>事实上，如果你要安装最新的 cuda 版本的话，这个方法非常好，安装流程到这里就可以结束了。</p>
-<p>至于为什么总是安装的最新的 cuda 版本，而不是你以为的你指定的版本，大抵是因为最后那一句命令本质上还是用 apt 从软件源里下载 cuda，而软件源里的是最新版本所以你安装的也只能是最新版本吧。</p>
-<h3 id="1-2-使用runfile-local-方法（推荐）"><a href="#1-2-使用runfile-local-方法（推荐）" class="headerlink" title="1.2. 使用runfile(local)方法（推荐）"></a>1.2. 使用<code>runfile(local)</code>方法（推荐）</h3><p>对于<code>runfile(local)</code>，官网给的安装方式为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</span><br><span class="line">$ sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
-<p>这个看上去靠谱多了，毕竟是下载到本地你指定的安装包然后直接在本地安装，但是在执行<code>sudo sh cuda_10.2.89_440.33.01_linux.run</code>发现依然报错，按其提示，用 cat 或 vim 查看相应的日志记录如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[INFO]: Driver not installed.</span><br><span class="line">[INFO]: Checking compiler version...</span><br><span class="line">[INFO]: gcc location: &#x2F;usr&#x2F;bin&#x2F;gcc</span><br><span class="line"></span><br><span class="line">[INFO]: gcc version: gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)</span><br><span class="line"></span><br><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Components to install:</span><br><span class="line">[INFO]: Driver</span><br><span class="line">[INFO]: 440.33.01</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-440.33.01.run --ui&#x3D;none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed.</span><br><span class="line">[ERROR]: Install of 440.33.01 failed, quitting</span><br></pre></td></tr></table></figure>
-<p>注意最后的<code>[ERROR]: Install of driver component failed.</code>，意思是驱动安装失败，我简直莫名奇妙。</p>
-<p>找了找查看驱动相关的命令，使用<code>sudo dpkg --list | grep nvidia-*</code>命令查看了驱动版本号，发现竟然装了两个驱动版本！啥意思呢？就是原来我服务器上装的那个驱动，加上在上一步尝试<code>deb(local)</code>方法安装 cuda 时自动装的一个驱动，两个同时存在了。</p>
-<blockquote>
-<p>为啥 cuda 覆盖了而 nvidia 驱动没覆盖，难道是我记错了 w(ﾟ Д ﾟ)w ？不过这其实并不重要，反正无论一个/两个都要卸载。</p>
-</blockquote>
-<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>。</p>
-<h2 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h2><p>配置好 nvidia 驱动后，可以安装 cuda 了，先删除原有的 cuda，再对 1.2 节里下载的文件运行安装就可以了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt autoremove cuda</span><br><span class="line"><span class="comment"># 若上一步删不干净，接着使用：</span></span><br><span class="line">sudo apt --purge remove <span class="string">&quot;*cublas*&quot;</span> <span class="string">&quot;cuda*&quot;</span></span><br><span class="line"><span class="comment"># 在 1.2 节之前下载的文件目录下运行：</span></span><br><span class="line">sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
-<p>按照安装过程中的提示一步步走下来即可，会让你选择安装的组件等等，像 nvidia samples 后面那几个组件我就没有装。</p>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>简而言之，总的流程其实是：</p>
-<ol>
-<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>；</li>
-<li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
-<li>按照第 3 节进行安装。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>linux</category>
       </categories>
   </entry>
   <entry>
