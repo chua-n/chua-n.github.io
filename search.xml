@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>使用SSH把个人电脑配置成 linux 服务器</title>
+    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
+<a id="more"></a>
+<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
+<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+<p>找到以下这两行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
+<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
+<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
+<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
+<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
+<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
+<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>jupyter notebook中使用mayavi三维绘图库</title>
     <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
     <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
@@ -20,6 +43,98 @@
         <category>python</category>
         <category>jupyter</category>
         <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>WSL下安装MySQL</title>
+    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
+    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
+<a id="more"></a>
+<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
+<li><code>apt-get install mysql-server mysql-client</code></li>
+<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
+</ol>
+<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
+<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
+<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
+<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
+<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>WSL</category>
+        <category>mysql</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>linux 下从源码安装 Python——小白踩坑记</title>
+    <url>/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/</url>
+    <content><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：如果想要安装某个非系统自带的 Python 版本，切忌冲动删除系统自带的 Python 2.7 和 Python 3.5，某些系统应用可能依赖于这些 Python 环境的调用，防止系统出错！</p>
+</blockquote>
+<h2 id="1-官网下载-python-源码"><a href="#1-官网下载-python-源码" class="headerlink" title="1. 官网下载 python 源码"></a>1. 官网下载 python 源码</h2><p>在官网<a href="https://www.python.org/downloads/source/">这里</a>下载你想要的 linux 环境下的 python 源码，如我下载的是下图第一个 Gzipped source tarball，其实二选一就好。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python源码包.png" alt="python源码.png"></p>
+<p>我下载完成后是一个叫 Python-3.8.3.tgz 的文件，在下载目录里使用<code>tar -xvf Python-3.8.3.tgz</code> 命令解压文件包，目录里多出一个 Python-3.8.3 的文件夹，cd 命令进入该文件夹。</p>
+<p>上述操作总结起来如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz</span><br><span class="line">tar -xvf Python-3.8.3.tgz</span><br><span class="line"><span class="built_in">cd</span> Python-3.8.3</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装依赖"><a href="#2-安装依赖" class="headerlink" title="2. 安装依赖"></a>2. 安装依赖</h2><p>Python 源码编译、安装过程中需要用到一些工具，你的系统里可能有、可能没有这些工具，保险起见，使下以下命令先把这些依赖安装好吧。</p>
+<blockquote>
+<p>这一步其实可以放在最开始执行。</p>
+</blockquote>
+<ol>
+<li>Ubuntu/Debian 系列： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl</span><br></pre></td></tr></table></figure></li>
+<li>Fedora/CentOS/RHEL 等可参考： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel xz xz-devel libffi-devel</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h2 id="3-编译并安装-python"><a href="#3-编译并安装-python" class="headerlink" title="3. 编译并安装 python"></a>3. 编译并安装 python</h2><p>注意根据第 1 节最后的 cd 命令，我们现在是在 python 的源码文件夹里进行操作。</p>
+<h3 id="3-1-指定-python-的安装目录"><a href="#3-1-指定-python-的安装目录" class="headerlink" title="3.1. 指定 python 的安装目录"></a>3.1. 指定 python 的安装目录</h3><p>作为 CS 小白，我还是要区别一下 python 的“源码目录”和“安装目录”两个概念的，毕竟是第一次在 linux 下从源码安装软件。</p>
+<p>要知道，当前我们所在的目录<code>Python-3.8.3</code>是由最开始下载的源码压缩包解压出来的，因此这个目录里是 python 这个软件开源的源码，故称之为<strong>源码目录</strong>；而<strong>安装目录</strong>是说我们这个 python 软件要安装在系统的哪个地方，你启动 python 的时候实际是从这里启动的。</p>
+<p>类比下 windows 的话就是：源码目录是你下载的那个安装程序<code>xxx.exe</code>所在的目录，还记得一些大型软件（如 office 2016）安装的时候通常是一个文件夹里有一个<code>setup.exe</code>的程序吗（当然，很多软件你下载下来的安装包其实就一个单独的.exe 可执行文件就没了），windows 下就是直接点击这个<code>xxx.exe</code>进行安装的，这就是所谓的<strong>源码目录</strong>；那么显而易见，<strong>安装目录</strong>就是你在运行<code>xxx.exe</code>进行安装的时候选择的安装地址，譬如说经常是<code>C:\Program Files\</code>等等。真正的软件组件肯定是在安装目录里，软件需要从这里启动，而你平常习惯的在 windows 桌面/开始菜单里点击的图标就是从安装目录里延伸出的快捷方式。</p>
+<p>回归主题，我选择的 python 安装目录是<code>/opt/python3.8</code>，因此通过如下命令先建立这个文件夹：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /opt/python3.8</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-执行-configure"><a href="#3-2-执行-configure" class="headerlink" title="3.2. 执行./configure"></a>3.2. 执行./configure</h3><p>python 源码目录里有一个 configure 可执行文件，这个命令的作用是生成一个 MakeFile 文件，此 Makefile 文件用来被之后的 make 命令所使用进行源码编译（Linux 需要按照 Makefile 所指定的顺序来编译 (build) 程序组件）。</p>
+<p>configure 通常有一些参数选项，最常见的是—prefix，用来指定安装目录。此外，要注意的是，python3.4 以后自带了 pip，为了在之后能够成功使用这个 pip 进行 python 库的安装，最好加上—with-ssl 参数。—with-ssl 这个参数不加的话 python 的安装过程不受影响，只是当你想要用 pip 安装 python 库的时候会报错，发现它无法连接到 pypi，跟 pip 连不上网没啥区别。</p>
+<p>总之，使用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --with-ssl --prefix=/opt/python3.8</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-make-编译"><a href="#3-3-make-编译" class="headerlink" title="3.3. make 编译"></a>3.3. make 编译</h3><p><code>make</code>命令实际就是编译源代码，其根据 Makefile 文件执行编译指令并生成可执行文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-使用-make-install-进行安装"><a href="#3-4-使用-make-install-进行安装" class="headerlink" title="3.4. 使用 make install 进行安装"></a>3.4. 使用 make install 进行安装</h3><p>当 make 的源代码编译无误，使用<code>make install</code>就是进行软件的安装，似乎也要根据 Makefile 文件以及根据 make 生成的可执行文件进行执行，原理尚不明确，现在确定的是其现实意义是把软件安装到<code>configure</code>命令指定的目录，对我而言就是<code>/opt/python3.8</code>。</p>
+<p><code>make install</code>因为是软件安装，因此通常需要 sudo 权限。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h2 id="4-配置环境"><a href="#4-配置环境" class="headerlink" title="4. 配置环境"></a>4. 配置环境</h2><p>至此 python 的安装过程其实已经完成，在安装目录里使用<code>./bin/python3</code>即可打开安装好的 python 可执行文件并进入 python 命令行了：</p>
+<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python命令行.png" alt="启动python.png"></p>
+<p>但是每次要从安装目录里启动 python 很不方便，我们想要达到的是在 shell 中随时随地唤醒这个 python，这便需要进行相关的环境配置。</p>
+<h3 id="4-1-删除原有的软链接"><a href="#4-1-删除原有的软链接" class="headerlink" title="4.1. 删除原有的软链接"></a>4.1. 删除原有的软链接</h3><p>开头的时候提到，我的系统中默认的 python 命令打开的是系统自带的 python2.7，现在要更改这个命令让它打开的是新安装的 python3.8，这需要我们先理解命令行(shell)中的命令是怎么执行的：</p>
+<ul>
+<li>在 shell 中，执行的所有命令如 cd、ls、ps、python 等，分为“内建命令”和“外部命令”。<strong>内建命令</strong>是 shell 自带的命令，好比编程语言不需要使用函数库而自带的那些函数，如<code>print()</code>函数；<strong>外部命令</strong>是为了丰富 shell 的功能而自己安装的一些命令，好比你编程时使用的第三方库，当然，有些外部命令是你安装 linux 系统时就已经自带的命令，好比编程语言的标准库，虽然是“自带的”但依然是“外部命令”。</li>
+<li>python 毫无疑问是外部命令，那么外部命令是怎么执行呢？这就要提到平常经常见到的<code>PATH</code>概念了。当 shell 中输入一个命令时，shell 首先检验它是不是内建命令，当内建命令中找不到这条命令时，shell 就搜索你的<code>PATH</code>，这个东西就是一个存储了你的外部命令所在路径的集合，shell 在这些路径中寻找你输入的命令对应的那个可执行文件，找得到就在 shell 中执行，找不到就报错。</li>
+<li>于是，shell 中 python 命令的执行过程为：在<code>PATH</code>存储的那么路径里（包含很多路径，其中一个是<code>/usr/bin/</code>）寻找一个名为<code>python</code>的可执行文件，一般情况下，有这么一个文件：<code>/usr/bin/python</code>，找到它以后执行，就打开了 python。</li>
+</ul>
+<p>现在我们使用<code>ls -l /usr/bin/python</code>查看这个文件的详细信息，发现它是一个执行 python2.7 的软链接（相当于 windows 里的快捷方式），把它删掉，这样在 shell 中直接输入 python 就再也打不开任何 python 环境了，它成了一个无效命令。</p>
+<p>总结一下，这步操作的命令过程为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l /usr/bin/python</span><br><span class="line">sudo rm /usr/bin/python</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-建立新的软链接"><a href="#4-2-建立新的软链接" class="headerlink" title="4.2. 建立新的软链接"></a>4.2. 建立新的软链接</h3><p>使用软链接创建命令<code>ln -s</code>把新安装的 python 链接到上步删除的旧的软链接所在目录即可。即：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s /opt/python3.8/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
+<p>此时在任意工作目录的 shell 中任意输入 python，即可打开新安装的 python 3.8 了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chuan@workstation:~$ python</span><br><span class="line">Python 3.8.3 (default, Jun 21 2020, 16:34:59)</span><br><span class="line">[GCC 5.4.0 20160609] on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-配置-pip-命令"><a href="#4-3-配置-pip-命令" class="headerlink" title="4.3. 配置 pip 命令"></a>4.3. 配置 pip 命令</h3><p>你的系统可能也自带了 pip 或 pip2、pip3 等命令，由于自带的 pip 关联的肯定是原有的 python 环境，此时盲目使用 pip install 一些库的话，这些库其实被安装到了系统自带的 python 环境里了，在你新安装的 python3.8 里根本无法导入这些库，这就尴尬了。</p>
+<p>这个 pip 其实和之前被删除的 python 软链接一样，是一个在相同目录下的 pip 软链接，和更改 python 命令一样，删除掉原来的 pip 被建立一个新的 pip 软链接即可。为了让 pip 关联的是新下载的 python3.8，新的 pip 应该来自 python3.8 自带的那个 pip，其路径为<code>./opt/python3.8/bin/pip3</code>。话不多说，代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/bin/pip</span><br><span class="line">ln -s /opt/python3.8/bin/pip3 /usr/bin/pip</span><br></pre></td></tr></table></figure>
+<h2 id="5-前方告捷，嘿嘿"><a href="#5-前方告捷，嘿嘿" class="headerlink" title="5. 前方告捷，嘿嘿"></a>5. 前方告捷，嘿嘿</h2><h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>新安装的 pip 在安装第三方库时还是有一个小小的报错，提示什么文件夹权限不明确/不足以及：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Could not install packages due to an EnvironmentError: [Errno 13] Permission denied</span><br></pre></td></tr></table></figure>
+<p>根据百度，出现这个报错之后，在 pip install 之后加个—user 可解决，如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install --user numpy</span><br></pre></td></tr></table></figure>
+<p>第一次加过—user 之后便不再有报错，但不明所以的是这样之后 pip 安装的第三方库的目录被定在了<code>~/.local/</code>，原来似乎不存在这个文件夹。不过这并没有造成后续什么问题，暂且不管了，挖个坑后续再研究。</p>
+<p>另外，不知道能不能选择直接把一个已安装的 pip 绑定到指定的 python 环境，而不用这么折腾，未完待续吧……</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>python</category>
       </categories>
   </entry>
   <entry>
@@ -45,65 +160,19 @@
 <blockquote>
 <p>为啥 cuda 覆盖了而 nvidia 驱动没覆盖，难道是我记错了 w(ﾟ Д ﾟ)w ？不过这其实并不重要，反正无论一个/两个都要卸载。</p>
 </blockquote>
-<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.cnblogs.com/chua-n/p/13208398.html">这里</a>。</p>
+<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.chua-n.com/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/">这里</a>。</p>
 <h2 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h2><p>配置好 nvidia 驱动后，可以安装 cuda 了，先删除原有的 cuda，再对 1.2 节里下载的文件运行安装就可以了。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt autoremove cuda</span><br><span class="line"><span class="comment"># 若上一步删不干净，接着使用：</span></span><br><span class="line">sudo apt --purge remove <span class="string">&quot;*cublas*&quot;</span> <span class="string">&quot;cuda*&quot;</span></span><br><span class="line"><span class="comment"># 在 1.2 节之前下载的文件目录下运行：</span></span><br><span class="line">sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
 <p>按照安装过程中的提示一步步走下来即可，会让你选择安装的组件等等，像 nvidia samples 后面那几个组件我就没有装。</p>
 <h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>简而言之，总的流程其实是：</p>
 <ol>
-<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.cnblogs.com/chua-n/p/13208398.html">这里</a>；</li>
+<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.chua-n.com/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/">这里</a>；</li>
 <li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
 <li>按照第 3 节进行安装。</li>
 </ol>
 ]]></content>
       <categories>
         <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用SSH把个人电脑配置成 linux 服务器</title>
-    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
-<a id="more"></a>
-<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
-<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
-<p>找到以下这两行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
-<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
-<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
-<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
-<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
-<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>WSL下安装MySQL</title>
-    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
-    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
-<a id="more"></a>
-<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
-<li><code>apt-get install mysql-server mysql-client</code></li>
-<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
-</ol>
-<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
-<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
-<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
-<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
-<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-        <category>WSL</category>
-        <category>mysql</category>
       </categories>
   </entry>
   <entry>
@@ -260,78 +329,9 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
 <h2 id="6-远程连接"><a href="#6-远程连接" class="headerlink" title="6. 远程连接"></a>6. 远程连接</h2><p>在你的本地浏览器中，输入地址名<code>http://hostIpAddress:8888</code>（其中 hostIpAddress 以你主机的 IP 地址进行替换），输入登陆密码即可连接。</p>
 ]]></content>
       <categories>
-        <category>python</category>
         <category>linux</category>
+        <category>python</category>
         <category>jupyter</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 下从源码安装 Python——小白踩坑记</title>
-    <url>/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/</url>
-    <content><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
-<a id="more"></a>
-<blockquote>
-<p>注：如果想要安装某个非系统自带的 Python 版本，切忌冲动删除系统自带的 Python 2.7 和 Python 3.5，某些系统应用可能依赖于这些 Python 环境的调用，防止系统出错！</p>
-</blockquote>
-<h2 id="1-官网下载-python-源码"><a href="#1-官网下载-python-源码" class="headerlink" title="1. 官网下载 python 源码"></a>1. 官网下载 python 源码</h2><p>在官网<a href="https://www.python.org/downloads/source/">这里</a>下载你想要的 linux 环境下的 python 源码，如我下载的是下图第一个 Gzipped source tarball，其实二选一就好。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python源码包.png" alt="python源码.png"></p>
-<p>我下载完成后是一个叫 Python-3.8.3.tgz 的文件，在下载目录里使用<code>tar -xvf Python-3.8.3.tgz</code> 命令解压文件包，目录里多出一个 Python-3.8.3 的文件夹，cd 命令进入该文件夹。</p>
-<p>上述操作总结起来如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz</span><br><span class="line">tar -xvf Python-3.8.3.tgz</span><br><span class="line"><span class="built_in">cd</span> Python-3.8.3</span><br></pre></td></tr></table></figure>
-<h2 id="2-安装依赖"><a href="#2-安装依赖" class="headerlink" title="2. 安装依赖"></a>2. 安装依赖</h2><p>Python 源码编译、安装过程中需要用到一些工具，你的系统里可能有、可能没有这些工具，保险起见，使下以下命令先把这些依赖安装好吧。</p>
-<blockquote>
-<p>这一步其实可以放在最开始执行。</p>
-</blockquote>
-<ol>
-<li>Ubuntu/Debian 系列： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl</span><br></pre></td></tr></table></figure></li>
-<li>Fedora/CentOS/RHEL 等可参考： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel xz xz-devel libffi-devel</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<hr>
-<h2 id="3-编译并安装-python"><a href="#3-编译并安装-python" class="headerlink" title="3. 编译并安装 python"></a>3. 编译并安装 python</h2><p>注意根据第 1 节最后的 cd 命令，我们现在是在 python 的源码文件夹里进行操作。</p>
-<h3 id="3-1-指定-python-的安装目录"><a href="#3-1-指定-python-的安装目录" class="headerlink" title="3.1. 指定 python 的安装目录"></a>3.1. 指定 python 的安装目录</h3><p>作为 CS 小白，我还是要区别一下 python 的“源码目录”和“安装目录”两个概念的，毕竟是第一次在 linux 下从源码安装软件。</p>
-<p>要知道，当前我们所在的目录<code>Python-3.8.3</code>是由最开始下载的源码压缩包解压出来的，因此这个目录里是 python 这个软件开源的源码，故称之为<strong>源码目录</strong>；而<strong>安装目录</strong>是说我们这个 python 软件要安装在系统的哪个地方，你启动 python 的时候实际是从这里启动的。</p>
-<p>类比下 windows 的话就是：源码目录是你下载的那个安装程序<code>xxx.exe</code>所在的目录，还记得一些大型软件（如 office 2016）安装的时候通常是一个文件夹里有一个<code>setup.exe</code>的程序吗（当然，很多软件你下载下来的安装包其实就一个单独的.exe 可执行文件就没了），windows 下就是直接点击这个<code>xxx.exe</code>进行安装的，这就是所谓的<strong>源码目录</strong>；那么显而易见，<strong>安装目录</strong>就是你在运行<code>xxx.exe</code>进行安装的时候选择的安装地址，譬如说经常是<code>C:\Program Files\</code>等等。真正的软件组件肯定是在安装目录里，软件需要从这里启动，而你平常习惯的在 windows 桌面/开始菜单里点击的图标就是从安装目录里延伸出的快捷方式。</p>
-<p>回归主题，我选择的 python 安装目录是<code>/opt/python3.8</code>，因此通过如下命令先建立这个文件夹：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /opt/python3.8</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-执行-configure"><a href="#3-2-执行-configure" class="headerlink" title="3.2. 执行./configure"></a>3.2. 执行./configure</h3><p>python 源码目录里有一个 configure 可执行文件，这个命令的作用是生成一个 MakeFile 文件，此 Makefile 文件用来被之后的 make 命令所使用进行源码编译（Linux 需要按照 Makefile 所指定的顺序来编译 (build) 程序组件）。</p>
-<p>configure 通常有一些参数选项，最常见的是—prefix，用来指定安装目录。此外，要注意的是，python3.4 以后自带了 pip，为了在之后能够成功使用这个 pip 进行 python 库的安装，最好加上—with-ssl 参数。—with-ssl 这个参数不加的话 python 的安装过程不受影响，只是当你想要用 pip 安装 python 库的时候会报错，发现它无法连接到 pypi，跟 pip 连不上网没啥区别。</p>
-<p>总之，使用如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --with-ssl --prefix=/opt/python3.8</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-make-编译"><a href="#3-3-make-编译" class="headerlink" title="3.3. make 编译"></a>3.3. make 编译</h3><p><code>make</code>命令实际就是编译源代码，其根据 Makefile 文件执行编译指令并生成可执行文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
-<h3 id="3-4-使用-make-install-进行安装"><a href="#3-4-使用-make-install-进行安装" class="headerlink" title="3.4. 使用 make install 进行安装"></a>3.4. 使用 make install 进行安装</h3><p>当 make 的源代码编译无误，使用<code>make install</code>就是进行软件的安装，似乎也要根据 Makefile 文件以及根据 make 生成的可执行文件进行执行，原理尚不明确，现在确定的是其现实意义是把软件安装到<code>configure</code>命令指定的目录，对我而言就是<code>/opt/python3.8</code>。</p>
-<p><code>make install</code>因为是软件安装，因此通常需要 sudo 权限。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h2 id="4-配置环境"><a href="#4-配置环境" class="headerlink" title="4. 配置环境"></a>4. 配置环境</h2><p>至此 python 的安装过程其实已经完成，在安装目录里使用<code>./bin/python3</code>即可打开安装好的 python 可执行文件并进入 python 命令行了：</p>
-<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python命令行.png" alt="启动python.png"></p>
-<p>但是每次要从安装目录里启动 python 很不方便，我们想要达到的是在 shell 中随时随地唤醒这个 python，这便需要进行相关的环境配置。</p>
-<h3 id="4-1-删除原有的软链接"><a href="#4-1-删除原有的软链接" class="headerlink" title="4.1. 删除原有的软链接"></a>4.1. 删除原有的软链接</h3><p>开头的时候提到，我的系统中默认的 python 命令打开的是系统自带的 python2.7，现在要更改这个命令让它打开的是新安装的 python3.8，这需要我们先理解命令行(shell)中的命令是怎么执行的：</p>
-<ul>
-<li>在 shell 中，执行的所有命令如 cd、ls、ps、python 等，分为“内建命令”和“外部命令”。<strong>内建命令</strong>是 shell 自带的命令，好比编程语言不需要使用函数库而自带的那些函数，如<code>print()</code>函数；<strong>外部命令</strong>是为了丰富 shell 的功能而自己安装的一些命令，好比你编程时使用的第三方库，当然，有些外部命令是你安装 linux 系统时就已经自带的命令，好比编程语言的标准库，虽然是“自带的”但依然是“外部命令”。</li>
-<li>python 毫无疑问是外部命令，那么外部命令是怎么执行呢？这就要提到平常经常见到的<code>PATH</code>概念了。当 shell 中输入一个命令时，shell 首先检验它是不是内建命令，当内建命令中找不到这条命令时，shell 就搜索你的<code>PATH</code>，这个东西就是一个存储了你的外部命令所在路径的集合，shell 在这些路径中寻找你输入的命令对应的那个可执行文件，找得到就在 shell 中执行，找不到就报错。</li>
-<li>于是，shell 中 python 命令的执行过程为：在<code>PATH</code>存储的那么路径里（包含很多路径，其中一个是<code>/usr/bin/</code>）寻找一个名为<code>python</code>的可执行文件，一般情况下，有这么一个文件：<code>/usr/bin/python</code>，找到它以后执行，就打开了 python。</li>
-</ul>
-<p>现在我们使用<code>ls -l /usr/bin/python</code>查看这个文件的详细信息，发现它是一个执行 python2.7 的软链接（相当于 windows 里的快捷方式），把它删掉，这样在 shell 中直接输入 python 就再也打不开任何 python 环境了，它成了一个无效命令。</p>
-<p>总结一下，这步操作的命令过程为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l /usr/bin/python</span><br><span class="line">sudo rm /usr/bin/python</span><br></pre></td></tr></table></figure>
-<h3 id="4-2-建立新的软链接"><a href="#4-2-建立新的软链接" class="headerlink" title="4.2. 建立新的软链接"></a>4.2. 建立新的软链接</h3><p>使用软链接创建命令<code>ln -s</code>把新安装的 python 链接到上步删除的旧的软链接所在目录即可。即：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s /opt/python3.8/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
-<p>此时在任意工作目录的 shell 中任意输入 python，即可打开新安装的 python 3.8 了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chuan@workstation:~$ python</span><br><span class="line">Python 3.8.3 (default, Jun 21 2020, 16:34:59)</span><br><span class="line">[GCC 5.4.0 20160609] on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="4-3-配置-pip-命令"><a href="#4-3-配置-pip-命令" class="headerlink" title="4.3. 配置 pip 命令"></a>4.3. 配置 pip 命令</h3><p>你的系统可能也自带了 pip 或 pip2、pip3 等命令，由于自带的 pip 关联的肯定是原有的 python 环境，此时盲目使用 pip install 一些库的话，这些库其实被安装到了系统自带的 python 环境里了，在你新安装的 python3.8 里根本无法导入这些库，这就尴尬了。</p>
-<p>这个 pip 其实和之前被删除的 python 软链接一样，是一个在相同目录下的 pip 软链接，和更改 python 命令一样，删除掉原来的 pip 被建立一个新的 pip 软链接即可。为了让 pip 关联的是新下载的 python3.8，新的 pip 应该来自 python3.8 自带的那个 pip，其路径为<code>./opt/python3.8/bin/pip3</code>。话不多说，代码如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/bin/pip</span><br><span class="line">ln -s /opt/python3.8/bin/pip3 /usr/bin/pip</span><br></pre></td></tr></table></figure>
-<h2 id="5-前方告捷，嘿嘿"><a href="#5-前方告捷，嘿嘿" class="headerlink" title="5. 前方告捷，嘿嘿"></a>5. 前方告捷，嘿嘿</h2><h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>新安装的 pip 在安装第三方库时还是有一个小小的报错，提示什么文件夹权限不明确/不足以及：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Could not install packages due to an EnvironmentError: [Errno 13] Permission denied</span><br></pre></td></tr></table></figure>
-<p>根据百度，出现这个报错之后，在 pip install 之后加个—user 可解决，如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install --user numpy</span><br></pre></td></tr></table></figure>
-<p>第一次加过—user 之后便不再有报错，但不明所以的是这样之后 pip 安装的第三方库的目录被定在了<code>~/.local/</code>，原来似乎不存在这个文件夹。不过这并没有造成后续什么问题，暂且不管了，挖个坑后续再研究。</p>
-<p>另外，不知道能不能选择直接把一个已安装的 pip 绑定到指定的 python 环境，而不用这么折腾，未完待续吧……</p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>linux</category>
       </categories>
   </entry>
   <entry>
