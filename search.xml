@@ -1,29 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>WSL下安装MySQL</title>
-    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
-    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
-<a id="more"></a>
-<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
-<li><code>apt-get install mysql-server mysql-client</code></li>
-<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
-</ol>
-<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
-<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
-<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
-<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
-<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-        <category>WSL</category>
-        <category>mysql</category>
-      </categories>
-  </entry>
-  <entry>
     <title>使用SSH把个人电脑配置成 linux 服务器</title>
     <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
     <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
@@ -44,225 +21,6 @@
 ]]></content>
       <categories>
         <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
-    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda/</url>
-    <content><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
-<a id="more"></a>
-<blockquote>
-<p>其实可直接看第 4 步的总结……</p>
-</blockquote>
-<h2 id="1-走官网教程"><a href="#1-走官网教程" class="headerlink" title="1. 走官网教程"></a>1. 走官网教程</h2><p>首先想的当然是走官网的 cuda 安装教程啦，尝试了<a href="https://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux&amp;target_arch=x86_64&amp;target_distro=Ubuntu&amp;target_version=1604&amp;target_type=runfilelocal">官网页面</a>里的<code>runfile(local)</code>、<code>deb(local)</code>安装方式选项均失败，失败过程的详细说明如下：</p>
-<h3 id="1-1-使用deb-local-方法（不推荐）"><a href="#1-1-使用deb-local-方法（不推荐）" class="headerlink" title="1.1. 使用deb(local)方法（不推荐）"></a>1.1. 使用<code>deb(local)</code>方法（不推荐）</h3><p>官网给的安装方式为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-ubuntu1604.pin</span><br><span class="line">$ sudo mv cuda-ubuntu1604.pin /etc/apt/preferences.d/cuda-repository-pin-600</span><br><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo dpkg -i cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get -y install cuda</span><br></pre></td></tr></table></figure>
-<p>虽然服务器上已经有安装的 cuda 9.0，但此方法不需要先卸载老版本（大概是因为用的 apt-get 安装会自动覆盖吧），一路执行下来都没有报错，畅快地安装完成。然而，后又经过各种尝试后发现，在执行到最后一句<code>sudo apt-get -y install cuda</code>时，安装好的版本总是当前 NVIDIA 最新的 cuda 版本——截止到 2020.06.21 是 cuda 11.0，而我要安装的是 cuda 10.2（因为当前 PyTorch 只支持到 cuda 10.2）！</p>
-<p>事实上，如果你要安装最新的 cuda 版本的话，这个方法非常好，安装流程到这里就可以结束了。</p>
-<p>至于为什么总是安装的最新的 cuda 版本，而不是你以为的你指定的版本，大抵是因为最后那一句命令本质上还是用 apt 从软件源里下载 cuda，而软件源里的是最新版本所以你安装的也只能是最新版本吧。</p>
-<h3 id="1-2-使用runfile-local-方法（推荐）"><a href="#1-2-使用runfile-local-方法（推荐）" class="headerlink" title="1.2. 使用runfile(local)方法（推荐）"></a>1.2. 使用<code>runfile(local)</code>方法（推荐）</h3><p>对于<code>runfile(local)</code>，官网给的安装方式为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</span><br><span class="line">$ sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
-<p>这个看上去靠谱多了，毕竟是下载到本地你指定的安装包然后直接在本地安装，但是在执行<code>sudo sh cuda_10.2.89_440.33.01_linux.run</code>发现依然报错，按其提示，用 cat 或 vim 查看相应的日志记录如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[INFO]: Driver not installed.</span><br><span class="line">[INFO]: Checking compiler version...</span><br><span class="line">[INFO]: gcc location: &#x2F;usr&#x2F;bin&#x2F;gcc</span><br><span class="line"></span><br><span class="line">[INFO]: gcc version: gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)</span><br><span class="line"></span><br><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Components to install:</span><br><span class="line">[INFO]: Driver</span><br><span class="line">[INFO]: 440.33.01</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-440.33.01.run --ui&#x3D;none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed.</span><br><span class="line">[ERROR]: Install of 440.33.01 failed, quitting</span><br></pre></td></tr></table></figure>
-<p>注意最后的<code>[ERROR]: Install of driver component failed.</code>，意思是驱动安装失败，我简直莫名奇妙。</p>
-<p>找了找查看驱动相关的命令，使用<code>sudo dpkg --list | grep nvidia-*</code>命令查看了驱动版本号，发现竟然装了两个驱动版本！啥意思呢？就是原来我服务器上装的那个驱动，加上在上一步尝试<code>deb(local)</code>方法安装 cuda 时自动装的一个驱动，两个同时存在了。</p>
-<blockquote>
-<p>为啥 cuda 覆盖了而 nvidia 驱动没覆盖，难道是我记错了 w(ﾟ Д ﾟ)w ？不过这其实并不重要，反正无论一个/两个都要卸载。</p>
-</blockquote>
-<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>。</p>
-<h2 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h2><p>配置好 nvidia 驱动后，可以安装 cuda 了，先删除原有的 cuda，再对 1.2 节里下载的文件运行安装就可以了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt autoremove cuda</span><br><span class="line"><span class="comment"># 若上一步删不干净，接着使用：</span></span><br><span class="line">sudo apt --purge remove <span class="string">&quot;*cublas*&quot;</span> <span class="string">&quot;cuda*&quot;</span></span><br><span class="line"><span class="comment"># 在 1.2 节之前下载的文件目录下运行：</span></span><br><span class="line">sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
-<p>按照安装过程中的提示一步步走下来即可，会让你选择安装的组件等等，像 nvidia samples 后面那几个组件我就没有装。</p>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>简而言之，总的流程其实是：</p>
-<ol>
-<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>；</li>
-<li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
-<li>按照第 3 节进行安装。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>逆变换采样</title>
-    <url>/2020/05/17/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7/</url>
-    <content><![CDATA[<p>一般的编程语言都具有（伪）随机数生成功能，如 python 的<code>random.random()</code>函数，然而它们通常只对应均匀分布。那如果想生成符合任意概率分布的随机数，该如何在代码上实现呢？这就可以用到“逆变换采样”了。</p>
-<a id="more"></a>
-<h2 id="1-引理"><a href="#1-引理" class="headerlink" title="1. 引理"></a>1. 引理</h2><p>假设$X$为一个连续随机变量，其累积分布函数为$CDF(x)=P(X \le x)$，若随机变量$Y=CDF(X)$，则$Y$服从区间$[0, 1]$上的均匀分布。</p>
-<blockquote>
-<p><strong>证明</strong>：已知：$CDF(x) \in [0, 1]$，且$CDF(x)$为单调递增函数。</p>
-<script type="math/tex; mode=display">
-\forall \; y < 0, \qquad P(Y \le y)=P(CDF(X) \le y)=0</script><script type="math/tex; mode=display">
-\begin{aligned}
-\forall \; 0 \le y \le 1,\qquad P(Y \le y) &= P(CDF(X)\le y) \\
-&= P(X\le CDF^{-1}(y)) \\
-&= P(X\le x) \\
-&= CDF(x) \\
-&= y
-\end{aligned}</script><script type="math/tex; mode=display">
-\forall \; y > 1, \qquad P(Y\le y) = P(CDF(X) \le y) = 1</script><p>综上，$Y$服从区间$[0,1]$上的均匀分布。</p>
-</blockquote>
-<h2 id="2-推论：逆变换采样"><a href="#2-推论：逆变换采样" class="headerlink" title="2. 推论：逆变换采样"></a>2. 推论：逆变换采样</h2><p>假设$X$为一个连续随机变量，其累积分布函数为$CDF(x)=P(X \le x)$，则随机变量$Y=CDF(X)$服从区间$[0, 1]$上的均匀分布。<strong>逆变换采样</strong>即是将该过程反过来进行：</p>
-<ol>
-<li>首先对于随机变量$Y$，我们从$[0,1]$中随机均匀抽取一个数$y$；</li>
-<li>由于$X=CDF^{-1}(Y)$，可求得随机数$x=CDF^{-1}(y)$，故$x$即可看作是从分布$CDF(X)$中生成的随机样本。</li>
-</ol>
-<h2 id="3-联想"><a href="#3-联想" class="headerlink" title="3. 联想"></a>3. 联想</h2><p>突然想到一个疑问，似乎概率论课堂中有讲过但是一时又无法想出解答，暂记如下：</p>
-<p><strong>问题</strong>：设有连续随机变量$X$与$Y$，已知$X$的概率密度为$p_1(x)$，且$X$与$Y$有如下关系：</p>
-<script type="math/tex; mode=display">y=f(x)</script><p>那么$Y$的概率密度$p_2(y)$可如何表示？</p>
-]]></content>
-      <categories>
-        <category>数学</category>
-        <category>概率</category>
-      </categories>
-      <tags>
-        <tag>coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>决策树之特征选择</title>
-    <url>/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/</url>
-    <content><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
-<a id="more"></a>
-<blockquote>
-<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
-</blockquote>
-<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
-<p>样本集合$D$的信息熵定义为</p>
-<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
-Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
-<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
-</blockquote>
-<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
-s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
-\end{aligned}
-\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
-<blockquote>
-<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
-</blockquote>
-<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
-\begin{aligned}
-\text{数据集$D$的纯度：} \\
-Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
-&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
-\end{aligned}</script><blockquote>
-<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
-</blockquote>
-<p>属性$a$的基尼指数：</p>
-<script type="math/tex; mode=display">
-Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
-\tag{3}</script><blockquote>
-<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
-<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
-]]></content>
-      <categories>
-        <category>ML</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用 python 绘制不同尺寸的球——利用Mayavi库</title>
-    <url>/2020/12/22/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83/</url>
-    <content><![CDATA[<p>“万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。</p>
-<a id="more"></a>
-<h2 id="1-思路"><a href="#1-思路" class="headerlink" title="1. 思路"></a>1. 思路</h2><p>mayavi 的 mlab 类似 matplotlib 的 pyplot, 其中<code>points3d</code>函数用来绘制一些三维空间的离散点，在实际情况中，一个点必然需要一种“表示方式”，在<code>points3d</code>函数中，提供了<code>&quot;sphere&quot;, &quot;point&quot;, &quot;cylinder&quot;, &quot;cone&quot;, &quot;cube&quot;, &quot;2darrow&quot;, &quot;2dcircle&quot;</code>等很多模式，即用“球、点、圆柱、圆锥、方块、二维箭头、二维圆”等来表示一个点，当选择<code>&quot;point&quot;</code>时，往往可能由于点的可视感太低而显示出来的结果“啥都没有”，所以此函数默认的图例模式为<code>&quot;sphere&quot;</code>。由此引发感想，若可控制每个球的大小，那么不就可以用这些球来表示出自己想画的一些球了嘛。</p>
-<p>于是通过研究<code>mlab.points3d()</code>函数发现，可以传入若干球的球心坐标对应的<code>x,y,z</code>，以及相应的半径<code>r</code>，然后设置好<code>scale_factor</code>、<code>resolution</code>、<code>mode</code>参数即可。这三个参数和<code>r</code>参数的说明如下：</p>
-<ol>
-<li><code>scale_factor</code>：缩放因子，mayavi 的<a href="http://docs.enthought.com/mayavi/mayavi/auto/mlab_helper_functions.html#mayavi.mlab.points3d">官方文档</a>说得很含糊，其到底怎么发挥作用的完全没有说清楚，这里经过多次试验总结为：将其设置为<code>scale_factor=1</code>的话，即会按传入的“大小参数”<code>r</code>进行一比一缩放，这个参数可视为不存在。</li>
-<li><code>resolution</code>：每一个点（球）的解析度/分辨率，为整数，默认值为 8，默认值为 8 时可明显看出用球表示点时球有“棱角”，这里将其设置为 30。<br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/1.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/2.png" alt=""><blockquote>
-<p>观察这里的坐标，显然，<code>resolution</code>参数还会一定程度上影响计算的精度吧，毕竟表面是计算后渲染出来的！咳，这点以后再说吧，目前只是需要绘制图形效果。</p>
-</blockquote>
-</li>
-<li><code>mode</code>：其实可以不设置，默认情况即是用 sphere 作为点的的图例，这里拿出来只是作为强调，应该设置为<code>mode=&quot;sphere&quot;</code>。</li>
-<li><code>r</code>：按照官方文档，严格来说这不是<code>r</code>参数，其形参名为<code>s</code>，但不管叫什么，它就是表示<code>points3d</code>函数绘制出来的点的大小的一个参数。这里经过多次试验，发现它的数值表示的“大小含义”，对于<code>mode=&quot;sphere&quot;</code>来说就是球的直径，对于<code>mode=&quot;cube&quot;</code>来说就是立方体的边长，对于<code>mode=&quot;cone&quot;</code>来说就是圆锥的高，对于<code>mode=&quot;cylinder&quot;</code>来说就是圆柱的高。概括而言，在内部实现中，这种对应关系是否有统一理论指导其代码实现尚不得而知。</li>
-</ol>
-<h2 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h2><p>这样绘制你的球：<code>mlab.points3d(x, y, z, r*2, scale_factor=1, resolution=30)</code></p>
-<h2 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h2><p>设置一个位于原点的单位球，然后在其上、下、左、右、前、后再各放置 1 个球，检验他们的相切情况。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">points = np.array([[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [-<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, -<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0.5</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, -<span class="number">2</span>, <span class="number">0.5</span>]])</span><br><span class="line"></span><br><span class="line">x, y, z, r = points[:, <span class="number">0</span>], points[:, <span class="number">1</span>], points[:, <span class="number">2</span>], points[:, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">mlab.points3d(x, y, z, r*<span class="number">2</span>, scale_factor=<span class="number">1</span>, resolution=<span class="number">30</span>, mode=<span class="string">&quot;sphere&quot;</span>)</span><br><span class="line">mlab.outline()</span><br><span class="line">mlab.axes()</span><br><span class="line">mlab.show()</span><br></pre></td></tr></table></figure>
-<p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/3.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/4.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/5.png" alt=""></p>
-<h2 id="4-附录"><a href="#4-附录" class="headerlink" title="4. 附录"></a>4. 附录</h2><h3 id="4-1-我本来想要画的球堆积颗粒模型："><a href="#4-1-我本来想要画的球堆积颗粒模型：" class="headerlink" title="4.1. 我本来想要画的球堆积颗粒模型："></a>4.1. 我本来想要画的球堆积颗粒模型：</h3><p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/6.png" alt=""></p>
-<h3 id="4-2-原本我采用的绘球函数："><a href="#4-2-原本我采用的绘球函数：" class="headerlink" title="4.2. 原本我采用的绘球函数："></a>4.2. 原本我采用的绘球函数：</h3><p>若要在一张图上绘制很多球的话，这种方式只能使用 for 循环一个球一个球地进行绘制，效率比较低，硬件成本也比较高。也是为此一直在研究<code>points3d</code>函数的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Plotter</span>:</span></span><br><span class="line">    random.seed(<span class="number">3.14</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">randomColor</span>(<span class="params">cls</span>):</span></span><br><span class="line">        color = (random.random(), random.random(), random.random())</span><br><span class="line">        <span class="keyword">return</span> color</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sphere</span>(<span class="params">cls, center, radius, nPoints=<span class="number">100</span>, opacity=<span class="number">1.0</span>, color=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Draw a sphere according to given center and radius.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        -----------</span></span><br><span class="line"><span class="string">        center(tuple): (x, y, z) coordinate</span></span><br><span class="line"><span class="string">        radius(float): radius of the sphere</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        u = np.linspace(<span class="number">0</span>, <span class="number">2</span> * np.pi, nPoints)</span><br><span class="line">        v = np.linspace(<span class="number">0</span>, np.pi, nPoints)</span><br><span class="line">        x = radius * np.outer(np.cos(u), np.sin(v)) + center[<span class="number">0</span>]</span><br><span class="line">        y = radius * np.outer(np.sin(u), np.sin(v)) + center[<span class="number">1</span>]</span><br><span class="line">        z = radius * np.outer(np.ones(np.size(u)), np.cos(v)) + center[<span class="number">2</span>]</span><br><span class="line">        <span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">        color = cls.randomColor() <span class="keyword">if</span> color <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> color</span><br><span class="line">        scene = mlab.mesh(x, y, z, color=color, opacity=opacity)</span><br><span class="line">        <span class="keyword">return</span> scene</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>python</category>
-        <category>mayavi</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>配置jupyter notebook远程连接服务</title>
-    <url>/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/</url>
-    <content><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
-<a id="more"></a>
-<h2 id="1-安装-jupyter-notebook"><a href="#1-安装-jupyter-notebook" class="headerlink" title="1. 安装 jupyter notebook"></a>1. 安装 jupyter notebook</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
-<h2 id="2-生成相关配置文件"><a href="#2-生成相关配置文件" class="headerlink" title="2. 生成相关配置文件"></a>2. 生成相关配置文件</h2><p>在命令行中运行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
-<h2 id="3-设置连接-jupyter-notebook-服务时的密码"><a href="#3-设置连接-jupyter-notebook-服务时的密码" class="headerlink" title="3. 设置连接 jupyter notebook 服务时的密码"></a>3. 设置连接 jupyter notebook 服务时的密码</h2><p>在命令行中进入 IPython 进行如下操作：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> notebook.auth <span class="keyword">import</span> passwd</span><br><span class="line">In [<span class="number">2</span>]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>复制上面 Out[2]: 出来的密文，即引号中的内容，后续会用到。</p>
-<h2 id="4-在上面生成的配置文件中进行配置"><a href="#4-在上面生成的配置文件中进行配置" class="headerlink" title="4. 在上面生成的配置文件中进行配置"></a>4. 在上面生成的配置文件中进行配置</h2><p>这里我们通过在 vim 编辑器中进行设置：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<p>在上面文件的最后面插入以下设置，其含义见注释即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">&#x27;0.0.0.0&#x27;</span>  <span class="comment"># 所有IP都可以访问</span></span><br><span class="line">c.NotebookApp.port = 8888  <span class="comment"># 默认的端口是8888</span></span><br><span class="line"><span class="comment"># 禁止自动在服务器上打开jupyter</span></span><br><span class="line"><span class="comment"># 若不设置此选项，则在命令行中输入`jupyter notebook`时会自动打开你的浏览器连接刚刚开启的jupyter服务</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line"><span class="comment"># 将之前复制的密文复制到这里</span></span><br><span class="line"><span class="comment"># 测试了一下，如不设置此选项，在浏览器中连接时会出现异常，虽然也提示你输入密码，但是就是无法连接成功</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br><span class="line"><span class="comment"># 设置启动Jupyter后其工作的根目录</span></span><br><span class="line"><span class="comment"># 该文件夹需要你自己去创建，我设置的为我在我的家目录中创建的jupyter文件夹</span></span><br><span class="line"><span class="comment"># 若不设置此项，打开jupyter时的工作目录为你在命令行输入jupyter notebook命令时对应的目录</span></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">&quot;/path_of/root_directory/where/jupyter/works/&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="5-启动-jupyter-notebook"><a href="#5-启动-jupyter-notebook" class="headerlink" title="5. 启动 jupyter notebook"></a>5. 启动 jupyter notebook</h2><p>在终端中输入<code>jupyter notebook</code>即可，此时可在本地或者远程连接此 jupyter notebook 服务。</p>
-<h2 id="6-远程连接"><a href="#6-远程连接" class="headerlink" title="6. 远程连接"></a>6. 远程连接</h2><p>在你的本地浏览器中，输入地址名<code>http://hostIpAddress:8888</code>（其中 hostIpAddress 以你主机的 IP 地址进行替换），输入登陆密码即可连接。</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-        <category>python</category>
-        <category>jupyter</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 命令行下适配 nvidia 驱动</title>
-    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
-<a id="more"></a>
-<h2 id="1-下载相应驱动"><a href="#1-下载相应驱动" class="headerlink" title="1. 下载相应驱动"></a>1. 下载相应驱动</h2><p>在官网<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn">这里</a>选择适应你 GPU 的驱动版本，在下载界面可用右键得到下载链接，然后在 linux 命令行下使用 wget 进行下载，如我下载的是 1080 Ti 的驱动版本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.nvidia.cn/content/DriverDownload-March2009/confirmation.php?url=/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run&amp;lang=cn&amp;<span class="built_in">type</span>=TITAN</span><br></pre></td></tr></table></figure>
-<p>下载完成后是一个名为<code>NVIDIA-Linux-x86_64-440.82.run</code>的文件。此时若使用<code>sudo sh NVIDIA-Linux-x86_64-440.82.run</code>进行安装，会产生如下报错：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">You appear to be running an X server; please exit X before installing.</span><br></pre></td></tr></table></figure>
-<p>这主要是由于通常而言你的电脑上已经有 nvidia 驱动并且在运行了，此时无法进行新驱动的安装，因为会影响依赖你现有驱动的应用的正常运行。比方说你的桌面程序就需要依靠现有的显卡驱动进行显示。</p>
-<p>回到这个报错，百度了解到是有一个叫做 X 的进程服务在依赖着 nvidia 驱动的运行，这个 X 进程似乎就是支撑你的图形桌面的服务。使用<code>ps aux | grep X</code>命令可查看到这个正在运行的服务：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1459  0.0  0.0  15984   928 pts/40   S+   19:12   0:00 grep X</span><br><span class="line">root      1643  0.0  0.1 426836 187692 tty7    Ssl+ 10:43   0:15 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch</span><br><span class="line">root      3604  0.0  0.0 387052 71108 tty8     Ssl+ 10:44   0:22 /usr/lib/xorg/Xorg -core :1 -seat seat0 -auth /var/run/lightdm/root/:1 -nolisten tcp vt8 -novtswitch</span><br><span class="line">git       3909  0.0  0.0  43732  4264 ?        Ss   10:44   0:03 dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-E2NLgH7XO1</span><br></pre></td></tr></table></figure>
-<h2 id="2-关闭-X-服务"><a href="#2-关闭-X-服务" class="headerlink" title="2. 关闭 X 服务"></a>2. 关闭 X 服务</h2><p>为了能够安装新的 nvidia 驱动，我们需要关闭这个 X 服务，我的 Ubuntu 是基于 lightdm 类型的桌面系统，采用如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /etc/init.d/lightdm stop</span><br><span class="line">sudo /etc/init.d/lightdm status</span><br></pre></td></tr></table></figure>
-<p>对于其他的 linux 版本，如果桌面系统是基于 gdm 类型，应该把命令中的 lightdm 改为 gdm 即可；非这两种桌面系统类型的，百度一下你的 linux 版本关闭 X 服务的相关命令吧。</p>
-<p>关闭了 X 服务后图形桌面可能会关闭，因为我是通过 ssh 连接的服务器进行的操作，所以也没有看到具体的变化，不确定具体会发生什么情况，不过别慌就是了。</p>
-<p>关闭 X 后，可再次用 ps 命令查看相关进程以确认，我这里显示如下，确实没有运行的 X 服务了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1656  0.0  0.0  15984  1084 pts/40   S+   19:15   0:00 grep X</span><br></pre></td></tr></table></figure>
-<h2 id="3-卸载旧的驱动"><a href="#3-卸载旧的驱动" class="headerlink" title="3. 卸载旧的驱动"></a>3. 卸载旧的驱动</h2><p>终于可以卸载旧驱动了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get --purge remove nvidia-*</span><br><span class="line"><span class="comment"># 也有的说用下面的命令进行卸载，我个人均有尝试，无碍</span></span><br><span class="line">sudo apt-get --purge remove <span class="string">&quot;*nvidia*&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-安装新驱动"><a href="#4-安装新驱动" class="headerlink" title="4. 安装新驱动"></a>4. 安装新驱动</h2><p>在第 1 步下载的驱动文件目录里运行安装包即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-440.82.run</span><br></pre></td></tr></table></figure>
-<p>值得一提的是，中间可能会有一些小的 warning 提示（好像还有一个 error？），但流程走下来最终还是提示 successfully complete，这就中了！使用<code>nvidia-smi</code>已经可以看到你的新驱动版本号（Driver Version）产生了变化：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nvidia-smi</span></span><br><span class="line">Sun Jun 21 19:16:54 2020</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 440.82       Driver Version: 440.82       CUDA Version: 10.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  GeForce GTX 108...  Off  | 00000000:02:00.0 Off |                  N/A |</span><br><span class="line">| 27%   35C    P5    24W / 250W |      0MiB / 11170MiB |      2%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">|  GPU       PID   Type   Process name                             Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>jupyter notebook中使用mayavi三维绘图库</title>
-    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
-    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
-<a id="more"></a>
-<blockquote>
-<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
-</blockquote>
-<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
-<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
-<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
-<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>mayavi</category>
-        <category>jupyter</category>
       </categories>
   </entry>
   <entry>
@@ -332,6 +90,486 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
       <categories>
         <category>linux</category>
         <category>python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
+    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda/</url>
+    <content><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
+<a id="more"></a>
+<blockquote>
+<p>其实可直接看第 4 步的总结……</p>
+</blockquote>
+<h2 id="1-走官网教程"><a href="#1-走官网教程" class="headerlink" title="1. 走官网教程"></a>1. 走官网教程</h2><p>首先想的当然是走官网的 cuda 安装教程啦，尝试了<a href="https://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux&amp;target_arch=x86_64&amp;target_distro=Ubuntu&amp;target_version=1604&amp;target_type=runfilelocal">官网页面</a>里的<code>runfile(local)</code>、<code>deb(local)</code>安装方式选项均失败，失败过程的详细说明如下：</p>
+<h3 id="1-1-使用deb-local-方法（不推荐）"><a href="#1-1-使用deb-local-方法（不推荐）" class="headerlink" title="1.1. 使用deb(local)方法（不推荐）"></a>1.1. 使用<code>deb(local)</code>方法（不推荐）</h3><p>官网给的安装方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-ubuntu1604.pin</span><br><span class="line">$ sudo mv cuda-ubuntu1604.pin /etc/apt/preferences.d/cuda-repository-pin-600</span><br><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo dpkg -i cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get -y install cuda</span><br></pre></td></tr></table></figure>
+<p>虽然服务器上已经有安装的 cuda 9.0，但此方法不需要先卸载老版本（大概是因为用的 apt-get 安装会自动覆盖吧），一路执行下来都没有报错，畅快地安装完成。然而，后又经过各种尝试后发现，在执行到最后一句<code>sudo apt-get -y install cuda</code>时，安装好的版本总是当前 NVIDIA 最新的 cuda 版本——截止到 2020.06.21 是 cuda 11.0，而我要安装的是 cuda 10.2（因为当前 PyTorch 只支持到 cuda 10.2）！</p>
+<p>事实上，如果你要安装最新的 cuda 版本的话，这个方法非常好，安装流程到这里就可以结束了。</p>
+<p>至于为什么总是安装的最新的 cuda 版本，而不是你以为的你指定的版本，大抵是因为最后那一句命令本质上还是用 apt 从软件源里下载 cuda，而软件源里的是最新版本所以你安装的也只能是最新版本吧。</p>
+<h3 id="1-2-使用runfile-local-方法（推荐）"><a href="#1-2-使用runfile-local-方法（推荐）" class="headerlink" title="1.2. 使用runfile(local)方法（推荐）"></a>1.2. 使用<code>runfile(local)</code>方法（推荐）</h3><p>对于<code>runfile(local)</code>，官网给的安装方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</span><br><span class="line">$ sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
+<p>这个看上去靠谱多了，毕竟是下载到本地你指定的安装包然后直接在本地安装，但是在执行<code>sudo sh cuda_10.2.89_440.33.01_linux.run</code>发现依然报错，按其提示，用 cat 或 vim 查看相应的日志记录如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[INFO]: Driver not installed.</span><br><span class="line">[INFO]: Checking compiler version...</span><br><span class="line">[INFO]: gcc location: &#x2F;usr&#x2F;bin&#x2F;gcc</span><br><span class="line"></span><br><span class="line">[INFO]: gcc version: gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)</span><br><span class="line"></span><br><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Components to install:</span><br><span class="line">[INFO]: Driver</span><br><span class="line">[INFO]: 440.33.01</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-440.33.01.run --ui&#x3D;none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed.</span><br><span class="line">[ERROR]: Install of 440.33.01 failed, quitting</span><br></pre></td></tr></table></figure>
+<p>注意最后的<code>[ERROR]: Install of driver component failed.</code>，意思是驱动安装失败，我简直莫名奇妙。</p>
+<p>找了找查看驱动相关的命令，使用<code>sudo dpkg --list | grep nvidia-*</code>命令查看了驱动版本号，发现竟然装了两个驱动版本！啥意思呢？就是原来我服务器上装的那个驱动，加上在上一步尝试<code>deb(local)</code>方法安装 cuda 时自动装的一个驱动，两个同时存在了。</p>
+<blockquote>
+<p>为啥 cuda 覆盖了而 nvidia 驱动没覆盖，难道是我记错了 w(ﾟ Д ﾟ)w ？不过这其实并不重要，反正无论一个/两个都要卸载。</p>
+</blockquote>
+<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>。</p>
+<h2 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h2><p>配置好 nvidia 驱动后，可以安装 cuda 了，先删除原有的 cuda，再对 1.2 节里下载的文件运行安装就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt autoremove cuda</span><br><span class="line"><span class="comment"># 若上一步删不干净，接着使用：</span></span><br><span class="line">sudo apt --purge remove <span class="string">&quot;*cublas*&quot;</span> <span class="string">&quot;cuda*&quot;</span></span><br><span class="line"><span class="comment"># 在 1.2 节之前下载的文件目录下运行：</span></span><br><span class="line">sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
+<p>按照安装过程中的提示一步步走下来即可，会让你选择安装的组件等等，像 nvidia samples 后面那几个组件我就没有装。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>简而言之，总的流程其实是：</p>
+<ol>
+<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>；</li>
+<li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
+<li>按照第 3 节进行安装。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>linux 命令行下适配 nvidia 驱动</title>
+    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
+<a id="more"></a>
+<h2 id="1-下载相应驱动"><a href="#1-下载相应驱动" class="headerlink" title="1. 下载相应驱动"></a>1. 下载相应驱动</h2><p>在官网<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn">这里</a>选择适应你 GPU 的驱动版本，在下载界面可用右键得到下载链接，然后在 linux 命令行下使用 wget 进行下载，如我下载的是 1080 Ti 的驱动版本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.nvidia.cn/content/DriverDownload-March2009/confirmation.php?url=/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run&amp;lang=cn&amp;<span class="built_in">type</span>=TITAN</span><br></pre></td></tr></table></figure>
+<p>下载完成后是一个名为<code>NVIDIA-Linux-x86_64-440.82.run</code>的文件。此时若使用<code>sudo sh NVIDIA-Linux-x86_64-440.82.run</code>进行安装，会产生如下报错：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">You appear to be running an X server; please exit X before installing.</span><br></pre></td></tr></table></figure>
+<p>这主要是由于通常而言你的电脑上已经有 nvidia 驱动并且在运行了，此时无法进行新驱动的安装，因为会影响依赖你现有驱动的应用的正常运行。比方说你的桌面程序就需要依靠现有的显卡驱动进行显示。</p>
+<p>回到这个报错，百度了解到是有一个叫做 X 的进程服务在依赖着 nvidia 驱动的运行，这个 X 进程似乎就是支撑你的图形桌面的服务。使用<code>ps aux | grep X</code>命令可查看到这个正在运行的服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1459  0.0  0.0  15984   928 pts/40   S+   19:12   0:00 grep X</span><br><span class="line">root      1643  0.0  0.1 426836 187692 tty7    Ssl+ 10:43   0:15 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch</span><br><span class="line">root      3604  0.0  0.0 387052 71108 tty8     Ssl+ 10:44   0:22 /usr/lib/xorg/Xorg -core :1 -seat seat0 -auth /var/run/lightdm/root/:1 -nolisten tcp vt8 -novtswitch</span><br><span class="line">git       3909  0.0  0.0  43732  4264 ?        Ss   10:44   0:03 dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-E2NLgH7XO1</span><br></pre></td></tr></table></figure>
+<h2 id="2-关闭-X-服务"><a href="#2-关闭-X-服务" class="headerlink" title="2. 关闭 X 服务"></a>2. 关闭 X 服务</h2><p>为了能够安装新的 nvidia 驱动，我们需要关闭这个 X 服务，我的 Ubuntu 是基于 lightdm 类型的桌面系统，采用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /etc/init.d/lightdm stop</span><br><span class="line">sudo /etc/init.d/lightdm status</span><br></pre></td></tr></table></figure>
+<p>对于其他的 linux 版本，如果桌面系统是基于 gdm 类型，应该把命令中的 lightdm 改为 gdm 即可；非这两种桌面系统类型的，百度一下你的 linux 版本关闭 X 服务的相关命令吧。</p>
+<p>关闭了 X 服务后图形桌面可能会关闭，因为我是通过 ssh 连接的服务器进行的操作，所以也没有看到具体的变化，不确定具体会发生什么情况，不过别慌就是了。</p>
+<p>关闭 X 后，可再次用 ps 命令查看相关进程以确认，我这里显示如下，确实没有运行的 X 服务了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1656  0.0  0.0  15984  1084 pts/40   S+   19:15   0:00 grep X</span><br></pre></td></tr></table></figure>
+<h2 id="3-卸载旧的驱动"><a href="#3-卸载旧的驱动" class="headerlink" title="3. 卸载旧的驱动"></a>3. 卸载旧的驱动</h2><p>终于可以卸载旧驱动了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get --purge remove nvidia-*</span><br><span class="line"><span class="comment"># 也有的说用下面的命令进行卸载，我个人均有尝试，无碍</span></span><br><span class="line">sudo apt-get --purge remove <span class="string">&quot;*nvidia*&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-安装新驱动"><a href="#4-安装新驱动" class="headerlink" title="4. 安装新驱动"></a>4. 安装新驱动</h2><p>在第 1 步下载的驱动文件目录里运行安装包即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-440.82.run</span><br></pre></td></tr></table></figure>
+<p>值得一提的是，中间可能会有一些小的 warning 提示（好像还有一个 error？），但流程走下来最终还是提示 successfully complete，这就中了！使用<code>nvidia-smi</code>已经可以看到你的新驱动版本号（Driver Version）产生了变化：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nvidia-smi</span></span><br><span class="line">Sun Jun 21 19:16:54 2020</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 440.82       Driver Version: 440.82       CUDA Version: 10.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  GeForce GTX 108...  Off  | 00000000:02:00.0 Off |                  N/A |</span><br><span class="line">| 27%   35C    P5    24W / 250W |      0MiB / 11170MiB |      2%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">|  GPU       PID   Type   Process name                             Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用 python 绘制不同尺寸的球——利用Mayavi库</title>
+    <url>/2020/12/22/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83/</url>
+    <content><![CDATA[<p>“万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。</p>
+<a id="more"></a>
+<h2 id="1-思路"><a href="#1-思路" class="headerlink" title="1. 思路"></a>1. 思路</h2><p>mayavi 的 mlab 类似 matplotlib 的 pyplot, 其中<code>points3d</code>函数用来绘制一些三维空间的离散点，在实际情况中，一个点必然需要一种“表示方式”，在<code>points3d</code>函数中，提供了<code>&quot;sphere&quot;, &quot;point&quot;, &quot;cylinder&quot;, &quot;cone&quot;, &quot;cube&quot;, &quot;2darrow&quot;, &quot;2dcircle&quot;</code>等很多模式，即用“球、点、圆柱、圆锥、方块、二维箭头、二维圆”等来表示一个点，当选择<code>&quot;point&quot;</code>时，往往可能由于点的可视感太低而显示出来的结果“啥都没有”，所以此函数默认的图例模式为<code>&quot;sphere&quot;</code>。由此引发感想，若可控制每个球的大小，那么不就可以用这些球来表示出自己想画的一些球了嘛。</p>
+<p>于是通过研究<code>mlab.points3d()</code>函数发现，可以传入若干球的球心坐标对应的<code>x,y,z</code>，以及相应的半径<code>r</code>，然后设置好<code>scale_factor</code>、<code>resolution</code>、<code>mode</code>参数即可。这三个参数和<code>r</code>参数的说明如下：</p>
+<ol>
+<li><code>scale_factor</code>：缩放因子，mayavi 的<a href="http://docs.enthought.com/mayavi/mayavi/auto/mlab_helper_functions.html#mayavi.mlab.points3d">官方文档</a>说得很含糊，其到底怎么发挥作用的完全没有说清楚，这里经过多次试验总结为：将其设置为<code>scale_factor=1</code>的话，即会按传入的“大小参数”<code>r</code>进行一比一缩放，这个参数可视为不存在。</li>
+<li><code>resolution</code>：每一个点（球）的解析度/分辨率，为整数，默认值为 8，默认值为 8 时可明显看出用球表示点时球有“棱角”，这里将其设置为 30。<br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/1.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/2.png" alt=""><blockquote>
+<p>观察这里的坐标，显然，<code>resolution</code>参数还会一定程度上影响计算的精度吧，毕竟表面是计算后渲染出来的！咳，这点以后再说吧，目前只是需要绘制图形效果。</p>
+</blockquote>
+</li>
+<li><code>mode</code>：其实可以不设置，默认情况即是用 sphere 作为点的的图例，这里拿出来只是作为强调，应该设置为<code>mode=&quot;sphere&quot;</code>。</li>
+<li><code>r</code>：按照官方文档，严格来说这不是<code>r</code>参数，其形参名为<code>s</code>，但不管叫什么，它就是表示<code>points3d</code>函数绘制出来的点的大小的一个参数。这里经过多次试验，发现它的数值表示的“大小含义”，对于<code>mode=&quot;sphere&quot;</code>来说就是球的直径，对于<code>mode=&quot;cube&quot;</code>来说就是立方体的边长，对于<code>mode=&quot;cone&quot;</code>来说就是圆锥的高，对于<code>mode=&quot;cylinder&quot;</code>来说就是圆柱的高。概括而言，在内部实现中，这种对应关系是否有统一理论指导其代码实现尚不得而知。</li>
+</ol>
+<h2 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h2><p>这样绘制你的球：<code>mlab.points3d(x, y, z, r*2, scale_factor=1, resolution=30)</code></p>
+<h2 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h2><p>设置一个位于原点的单位球，然后在其上、下、左、右、前、后再各放置 1 个球，检验他们的相切情况。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">points = np.array([[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [-<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, -<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0.5</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, -<span class="number">2</span>, <span class="number">0.5</span>]])</span><br><span class="line"></span><br><span class="line">x, y, z, r = points[:, <span class="number">0</span>], points[:, <span class="number">1</span>], points[:, <span class="number">2</span>], points[:, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">mlab.points3d(x, y, z, r*<span class="number">2</span>, scale_factor=<span class="number">1</span>, resolution=<span class="number">30</span>, mode=<span class="string">&quot;sphere&quot;</span>)</span><br><span class="line">mlab.outline()</span><br><span class="line">mlab.axes()</span><br><span class="line">mlab.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/3.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/4.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/5.png" alt=""></p>
+<h2 id="4-附录"><a href="#4-附录" class="headerlink" title="4. 附录"></a>4. 附录</h2><h3 id="4-1-我本来想要画的球堆积颗粒模型："><a href="#4-1-我本来想要画的球堆积颗粒模型：" class="headerlink" title="4.1. 我本来想要画的球堆积颗粒模型："></a>4.1. 我本来想要画的球堆积颗粒模型：</h3><p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/6.png" alt=""></p>
+<h3 id="4-2-原本我采用的绘球函数："><a href="#4-2-原本我采用的绘球函数：" class="headerlink" title="4.2. 原本我采用的绘球函数："></a>4.2. 原本我采用的绘球函数：</h3><p>若要在一张图上绘制很多球的话，这种方式只能使用 for 循环一个球一个球地进行绘制，效率比较低，硬件成本也比较高。也是为此一直在研究<code>points3d</code>函数的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Plotter</span>:</span></span><br><span class="line">    random.seed(<span class="number">3.14</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">randomColor</span>(<span class="params">cls</span>):</span></span><br><span class="line">        color = (random.random(), random.random(), random.random())</span><br><span class="line">        <span class="keyword">return</span> color</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sphere</span>(<span class="params">cls, center, radius, nPoints=<span class="number">100</span>, opacity=<span class="number">1.0</span>, color=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Draw a sphere according to given center and radius.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        -----------</span></span><br><span class="line"><span class="string">        center(tuple): (x, y, z) coordinate</span></span><br><span class="line"><span class="string">        radius(float): radius of the sphere</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        u = np.linspace(<span class="number">0</span>, <span class="number">2</span> * np.pi, nPoints)</span><br><span class="line">        v = np.linspace(<span class="number">0</span>, np.pi, nPoints)</span><br><span class="line">        x = radius * np.outer(np.cos(u), np.sin(v)) + center[<span class="number">0</span>]</span><br><span class="line">        y = radius * np.outer(np.sin(u), np.sin(v)) + center[<span class="number">1</span>]</span><br><span class="line">        z = radius * np.outer(np.ones(np.size(u)), np.cos(v)) + center[<span class="number">2</span>]</span><br><span class="line">        <span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">        color = cls.randomColor() <span class="keyword">if</span> color <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> color</span><br><span class="line">        scene = mlab.mesh(x, y, z, color=color, opacity=opacity)</span><br><span class="line">        <span class="keyword">return</span> scene</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>python</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>一些linux命令</title>
+    <url>/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<p>当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。</p>
+<a id="more"></a>
+<h2 id="1-tmux"><a href="#1-tmux" class="headerlink" title="1. tmux"></a>1. tmux</h2><h3 id="1-1-tmux-简介"><a href="#1-1-tmux-简介" class="headerlink" title="1.1. tmux 简介"></a>1.1. tmux 简介</h3><p>tmux(terminal multiplexer) 是一个终端复用器，它可以在一个窗口屏幕上创建、访问、控制多个终端。</p>
+<ul>
+<li>tmux 使得“终端会话”可以从屏幕上分离出来，继续在后台运行，待后续重新连接；</li>
+<li>tmux 还允许每个会话有多个连接窗口，因此可以多个用户实时共享会话。</li>
+</ul>
+<h3 id="1-2-session、window、pane"><a href="#1-2-session、window、pane" class="headerlink" title="1.2. session、window、pane:"></a>1.2. session、window、pane:</h3><p>tmux 中有三个重要的概念需要辨析：session、window、pane，其手册中如是说：</p>
+<blockquote>
+<p>A session is a single collection of pseudo terminals under the management of tmux. Each session has one or more windows linked to it. A window occupies the entire screen and may be split into rectangular panes, each of which is a separate pseudo terminal (the pty(4) manual page documents the technical details of pseudo terminals). Any number of tmux instances may connect to the same session, and any number of windows may be present in the same session. Once all sessions are killed, tmux exits.</p>
+<p>Each session is persistent and will survive accidental disconnection (such as ssh(1) connection timeout) or intentional detaching (with the ‘C-b d’ key strokes).</p>
+</blockquote>
+<p>即，一个会话(session)是一系列伪终端的集合，一个会话可以有多个窗口(window)，所谓的窗口就是日常所说的占据一块屏幕区域的窗口，每一个窗口又可以进行“分屏”，切割为若干窗格(pane)，或称之为子屏幕，对于每一个子屏幕，它也是一个独立的伪终端。</p>
+<h3 id="1-2-tmux-命令"><a href="#1-2-tmux-命令" class="headerlink" title="1.2. tmux 命令"></a>1.2. tmux 命令</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">tmux</td>
+<td style="text-align:center">开启一个 tmux 会话（以数字编号为名）</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux new -s &lt;session-name&gt;</td>
+<td style="text-align:center">开启一个名为 session-name 的会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux ls</td>
+<td style="text-align:center">查看所有存在的 tmux 会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux detach</td>
+<td style="text-align:center">脱离当前 tmux 会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux attach -t &lt;session-name&gt;</td>
+<td style="text-align:center">连接名为 session-name 的会话，这里的 session-name 当然也可以为数字编号形式的名字</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux switch -t &lt;session-name&gt;</td>
+<td style="text-align:center">切换会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux rename-session -t &lt;oldname&gt; &lt;newname&gt;</td>
+<td style="text-align:center">重命名会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux kill-session -t &lt;session-name&gt;</td>
+<td style="text-align:center">销毁会话</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="1-3-tmux-快捷键"><a href="#1-3-tmux-快捷键" class="headerlink" title="1.3. tmux 快捷键"></a>1.3. tmux 快捷键</h3><p>在 tmux 会话内，可使用一些快捷键替代 tmux 命令，不过要想使用快捷键，必须每次先按下前缀键<code>Ctrl + b</code>唤醒快捷键功能。</p>
+<blockquote>
+<p>注意：若想脱离而不销毁会话，一定要按<code>Ctrl + b + d</code>，别按成了<code>Ctrl + d</code>，这个属于 linux 终端的快捷键，会直接退出并销毁会话。</p>
+</blockquote>
+<ul>
+<li>系统操作：</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">?</td>
+<td style="text-align:center">列出所有快捷键</td>
+</tr>
+<tr>
+<td style="text-align:center">:</td>
+<td style="text-align:center">进入命令行模式</td>
+</tr>
+<tr>
+<td style="text-align:center">[</td>
+<td style="text-align:center">进入复制模式，此时的操作与 vim 相同</td>
+</tr>
+<tr>
+<td style="text-align:center">d</td>
+<td style="text-align:center">脱离当前会话</td>
+</tr>
+<tr>
+<td style="text-align:center">D</td>
+<td style="text-align:center">选择要脱离的会话</td>
+</tr>
+<tr>
+<td style="text-align:center">r</td>
+<td style="text-align:center">强制重绘未脱离的会话</td>
+</tr>
+<tr>
+<td style="text-align:center">~</td>
+<td style="text-align:center">列出提示信息缓存，其中包含了之前 tmux 返回的各种提示信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Ctrl+z</code></td>
+<td style="text-align:center">挂起当前会话</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>窗口操作</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">c</td>
+<td style="text-align:center">创建新窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">&amp;</td>
+<td style="text-align:center">关闭当前窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">数字键</td>
+<td style="text-align:center">切换至指定窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">p</td>
+<td style="text-align:center">切换至上一窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">n</td>
+<td style="text-align:center">切换至下一窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">l</td>
+<td style="text-align:center">在前后两个窗口间互相切换</td>
+</tr>
+<tr>
+<td style="text-align:center">w</td>
+<td style="text-align:center">通过窗口列表切换窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">,</td>
+<td style="text-align:center">重命名当前窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">.</td>
+<td style="text-align:center">修改当前窗口编号，相当于窗口重新排序</td>
+</tr>
+<tr>
+<td style="text-align:center">f</td>
+<td style="text-align:center">在所有窗口中查找指定文本</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>窗格操作</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">“</td>
+<td style="text-align:center">当当前窗格上下平分为两块</td>
+</tr>
+<tr>
+<td style="text-align:center">%</td>
+<td style="text-align:center">将当前窗格左右平分为两块</td>
+</tr>
+<tr>
+<td style="text-align:center">x</td>
+<td style="text-align:center">关闭当前窗格</td>
+</tr>
+<tr>
+<td style="text-align:center">!</td>
+<td style="text-align:center">将当前面板置于新窗口</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Ctrl+方向键</code></td>
+<td style="text-align:center">以 1 个单元格为单位，移动窗格边缘</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Alt+方向键</code></td>
+<td style="text-align:center">以 5 个单元格为单位，移动窗格边缘</td>
+</tr>
+<tr>
+<td style="text-align:center">q</td>
+<td style="text-align:center">显示窗格编号</td>
+</tr>
+<tr>
+<td style="text-align:center">o</td>
+<td style="text-align:center">在当前窗格中选择下一窗格</td>
+</tr>
+<tr>
+<td style="text-align:center">方向键</td>
+<td style="text-align:center">移动光标以选择面板</td>
+</tr>
+<tr>
+<td style="text-align:center">{</td>
+<td style="text-align:center">向前置换当前面板</td>
+</tr>
+<tr>
+<td style="text-align:center">}</td>
+<td style="text-align:center">向后置换当前面板</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Ctrl+o</code></td>
+<td style="text-align:center">顺时针旋转当前窗口的面板</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Alt+o</code></td>
+<td style="text-align:center">逆时针旋转当前窗口的面板</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>决策树之特征选择</title>
+    <url>/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/</url>
+    <content><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
+<a id="more"></a>
+<blockquote>
+<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
+</blockquote>
+<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
+<p>样本集合$D$的信息熵定义为</p>
+<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
+Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
+<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
+</blockquote>
+<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
+s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
+\end{aligned}
+\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
+<blockquote>
+<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+</blockquote>
+<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
+\begin{aligned}
+\text{数据集$D$的纯度：} \\
+Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
+&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
+\end{aligned}</script><blockquote>
+<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
+</blockquote>
+<p>属性$a$的基尼指数：</p>
+<script type="math/tex; mode=display">
+Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
+\tag{3}</script><blockquote>
+<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
+<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
+]]></content>
+      <categories>
+        <category>ML</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>逆变换采样</title>
+    <url>/2020/05/17/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7/</url>
+    <content><![CDATA[<p>一般的编程语言都具有（伪）随机数生成功能，如 python 的<code>random.random()</code>函数，然而它们通常只对应均匀分布。那如果想生成符合任意概率分布的随机数，该如何在代码上实现呢？这就可以用到“逆变换采样”了。</p>
+<a id="more"></a>
+<h2 id="1-引理"><a href="#1-引理" class="headerlink" title="1. 引理"></a>1. 引理</h2><p>假设$X$为一个连续随机变量，其累积分布函数为$CDF(x)=P(X \le x)$，若随机变量$Y=CDF(X)$，则$Y$服从区间$[0, 1]$上的均匀分布。</p>
+<blockquote>
+<p><strong>证明</strong>：已知：$CDF(x) \in [0, 1]$，且$CDF(x)$为单调递增函数。</p>
+<script type="math/tex; mode=display">
+\forall \; y < 0, \qquad P(Y \le y)=P(CDF(X) \le y)=0</script><script type="math/tex; mode=display">
+\begin{aligned}
+\forall \; 0 \le y \le 1,\qquad P(Y \le y) &= P(CDF(X)\le y) \\
+&= P(X\le CDF^{-1}(y)) \\
+&= P(X\le x) \\
+&= CDF(x) \\
+&= y
+\end{aligned}</script><script type="math/tex; mode=display">
+\forall \; y > 1, \qquad P(Y\le y) = P(CDF(X) \le y) = 1</script><p>综上，$Y$服从区间$[0,1]$上的均匀分布。</p>
+</blockquote>
+<h2 id="2-推论：逆变换采样"><a href="#2-推论：逆变换采样" class="headerlink" title="2. 推论：逆变换采样"></a>2. 推论：逆变换采样</h2><p>假设$X$为一个连续随机变量，其累积分布函数为$CDF(x)=P(X \le x)$，则随机变量$Y=CDF(X)$服从区间$[0, 1]$上的均匀分布。<strong>逆变换采样</strong>即是将该过程反过来进行：</p>
+<ol>
+<li>首先对于随机变量$Y$，我们从$[0,1]$中随机均匀抽取一个数$y$；</li>
+<li>由于$X=CDF^{-1}(Y)$，可求得随机数$x=CDF^{-1}(y)$，故$x$即可看作是从分布$CDF(X)$中生成的随机样本。</li>
+</ol>
+<h2 id="3-联想"><a href="#3-联想" class="headerlink" title="3. 联想"></a>3. 联想</h2><p>突然想到一个疑问，似乎概率论课堂中有讲过但是一时又无法想出解答，暂记如下：</p>
+<p><strong>问题</strong>：设有连续随机变量$X$与$Y$，已知$X$的概率密度为$p_1(x)$，且$X$与$Y$有如下关系：</p>
+<script type="math/tex; mode=display">y=f(x)</script><p>那么$Y$的概率密度$p_2(y)$可如何表示？</p>
+]]></content>
+      <categories>
+        <category>数学</category>
+        <category>概率</category>
+      </categories>
+      <tags>
+        <tag>coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WSL下安装MySQL</title>
+    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
+    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
+<a id="more"></a>
+<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
+<li><code>apt-get install mysql-server mysql-client</code></li>
+<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
+</ol>
+<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
+<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
+<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
+<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
+<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>WSL</category>
+        <category>mysql</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>jupyter notebook中使用mayavi三维绘图库</title>
+    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
+    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
+</blockquote>
+<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
+<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
+<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
+<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>jupyter</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>配置jupyter notebook远程连接服务</title>
+    <url>/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
+<a id="more"></a>
+<h2 id="1-安装-jupyter-notebook"><a href="#1-安装-jupyter-notebook" class="headerlink" title="1. 安装 jupyter notebook"></a>1. 安装 jupyter notebook</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
+<h2 id="2-生成相关配置文件"><a href="#2-生成相关配置文件" class="headerlink" title="2. 生成相关配置文件"></a>2. 生成相关配置文件</h2><p>在命令行中运行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
+<h2 id="3-设置连接-jupyter-notebook-服务时的密码"><a href="#3-设置连接-jupyter-notebook-服务时的密码" class="headerlink" title="3. 设置连接 jupyter notebook 服务时的密码"></a>3. 设置连接 jupyter notebook 服务时的密码</h2><p>在命令行中进入 IPython 进行如下操作：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> notebook.auth <span class="keyword">import</span> passwd</span><br><span class="line">In [<span class="number">2</span>]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>复制上面 Out[2]: 出来的密文，即引号中的内容，后续会用到。</p>
+<h2 id="4-在上面生成的配置文件中进行配置"><a href="#4-在上面生成的配置文件中进行配置" class="headerlink" title="4. 在上面生成的配置文件中进行配置"></a>4. 在上面生成的配置文件中进行配置</h2><p>这里我们通过在 vim 编辑器中进行设置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<p>在上面文件的最后面插入以下设置，其含义见注释即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">&#x27;0.0.0.0&#x27;</span>  <span class="comment"># 所有IP都可以访问</span></span><br><span class="line">c.NotebookApp.port = 8888  <span class="comment"># 默认的端口是8888</span></span><br><span class="line"><span class="comment"># 禁止自动在服务器上打开jupyter</span></span><br><span class="line"><span class="comment"># 若不设置此选项，则在命令行中输入`jupyter notebook`时会自动打开你的浏览器连接刚刚开启的jupyter服务</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line"><span class="comment"># 将之前复制的密文复制到这里</span></span><br><span class="line"><span class="comment"># 测试了一下，如不设置此选项，在浏览器中连接时会出现异常，虽然也提示你输入密码，但是就是无法连接成功</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br><span class="line"><span class="comment"># 设置启动Jupyter后其工作的根目录</span></span><br><span class="line"><span class="comment"># 该文件夹需要你自己去创建，我设置的为我在我的家目录中创建的jupyter文件夹</span></span><br><span class="line"><span class="comment"># 若不设置此项，打开jupyter时的工作目录为你在命令行输入jupyter notebook命令时对应的目录</span></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">&quot;/path_of/root_directory/where/jupyter/works/&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-启动-jupyter-notebook"><a href="#5-启动-jupyter-notebook" class="headerlink" title="5. 启动 jupyter notebook"></a>5. 启动 jupyter notebook</h2><p>在终端中输入<code>jupyter notebook</code>即可，此时可在本地或者远程连接此 jupyter notebook 服务。</p>
+<h2 id="6-远程连接"><a href="#6-远程连接" class="headerlink" title="6. 远程连接"></a>6. 远程连接</h2><p>在你的本地浏览器中，输入地址名<code>http://hostIpAddress:8888</code>（其中 hostIpAddress 以你主机的 IP 地址进行替换），输入登陆密码即可连接。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>python</category>
+        <category>jupyter</category>
       </categories>
   </entry>
   <entry>

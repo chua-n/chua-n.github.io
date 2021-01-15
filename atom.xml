@@ -6,7 +6,7 @@
   <link href="https://chua-n.github.io/atom.xml" rel="self"/>
   
   <link href="https://chua-n.github.io/"/>
-  <updated>2021-01-13T02:16:18.377Z</updated>
+  <updated>2021-01-15T06:11:42.971Z</updated>
   <id>https://chua-n.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一些linux命令</title>
+    <link href="https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/"/>
+    <id>https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/</id>
+    <published>2021-01-15T01:38:25.000Z</published>
+    <updated>2021-01-15T06:11:42.971Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="linux" scheme="https://chua-n.github.io/categories/linux/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Hexo-Next + GitHub + Gitee 搭建个人博客</title>
@@ -69,9 +86,9 @@
     
     <category term="python" scheme="https://chua-n.github.io/categories/python/"/>
     
-    <category term="mayavi" scheme="https://chua-n.github.io/categories/python/mayavi/"/>
-    
     <category term="jupyter" scheme="https://chua-n.github.io/categories/python/jupyter/"/>
+    
+    <category term="mayavi" scheme="https://chua-n.github.io/categories/python/mayavi/"/>
     
     
   </entry>

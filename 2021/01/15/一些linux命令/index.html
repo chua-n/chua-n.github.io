@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"chua-n.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="疏理一下决策树的特征选择的方法，即决策树的节点划分。">
+  <meta name="description" content="当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="决策树之特征选择">
-<meta property="og:url" content="https://chua-n.github.io/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/index.html">
+<meta property="og:title" content="一些linux命令">
+<meta property="og:url" content="https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="这里是川！">
-<meta property="og:description" content="疏理一下决策树的特征选择的方法，即决策树的节点划分。">
+<meta property="og:description" content="当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-29T07:51:00.000Z">
-<meta property="article:modified_time" content="2021-01-12T07:41:31.938Z">
+<meta property="article:published_time" content="2021-01-15T01:38:25.000Z">
+<meta property="article:modified_time" content="2021-01-15T06:11:42.971Z">
 <meta property="article:author" content="荒流">
 <meta property="article:tag" content="NaniNani">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://chua-n.github.io/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/">
+<link rel="canonical" href="https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>决策树之特征选择 | 这里是川！</title>
+  <title>一些linux命令 | 这里是川！</title>
   
 
 
@@ -206,7 +206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/">
+    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://chua-n.gitee.io/blog-images/avatar.png">
@@ -219,7 +219,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          决策树之特征选择
+          一些linux命令
         </h1>
 
         <div class="post-meta">
@@ -228,23 +228,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-06-29 15:51:00" itemprop="dateCreated datePublished" datetime="2020-06-29T15:51:00+08:00">2020-06-29</time>
+              <time title="创建时间：2021-01-15 09:38:25 / 修改时间：14:11:42" itemprop="dateCreated datePublished" datetime="2021-01-15T09:38:25+08:00">2021-01-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 15:41:31" itemprop="dateModified" datetime="2021-01-12T15:41:31+08:00">2021-01-12</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
                 </span>
             </span>
 
@@ -261,14 +255,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -280,41 +274,236 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
+        <p>当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。</p>
 <a id="more"></a>
+<h2 id="1-tmux"><a href="#1-tmux" class="headerlink" title="1. tmux"></a>1. tmux</h2><h3 id="1-1-tmux-简介"><a href="#1-1-tmux-简介" class="headerlink" title="1.1. tmux 简介"></a>1.1. tmux 简介</h3><p>tmux(terminal multiplexer) 是一个终端复用器，它可以在一个窗口屏幕上创建、访问、控制多个终端。</p>
+<ul>
+<li>tmux 使得“终端会话”可以从屏幕上分离出来，继续在后台运行，待后续重新连接；</li>
+<li>tmux 还允许每个会话有多个连接窗口，因此可以多个用户实时共享会话。</li>
+</ul>
+<h3 id="1-2-session、window、pane"><a href="#1-2-session、window、pane" class="headerlink" title="1.2. session、window、pane:"></a>1.2. session、window、pane:</h3><p>tmux 中有三个重要的概念需要辨析：session、window、pane，其手册中如是说：</p>
 <blockquote>
-<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
+<p>A session is a single collection of pseudo terminals under the management of tmux. Each session has one or more windows linked to it. A window occupies the entire screen and may be split into rectangular panes, each of which is a separate pseudo terminal (the pty(4) manual page documents the technical details of pseudo terminals). Any number of tmux instances may connect to the same session, and any number of windows may be present in the same session. Once all sessions are killed, tmux exits.</p>
+<p>Each session is persistent and will survive accidental disconnection (such as ssh(1) connection timeout) or intentional detaching (with the ‘C-b d’ key strokes).</p>
 </blockquote>
-<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
-<p>样本集合$D$的信息熵定义为</p>
-<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
-Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
-<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
-</blockquote>
-<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
-s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
-\end{aligned}
-\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
+<p>即，一个会话(session)是一系列伪终端的集合，一个会话可以有多个窗口(window)，所谓的窗口就是日常所说的占据一块屏幕区域的窗口，每一个窗口又可以进行“分屏”，切割为若干窗格(pane)，或称之为子屏幕，对于每一个子屏幕，它也是一个独立的伪终端。</p>
+<h3 id="1-2-tmux-命令"><a href="#1-2-tmux-命令" class="headerlink" title="1.2. tmux 命令"></a>1.2. tmux 命令</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">tmux</td>
+<td style="text-align:center">开启一个 tmux 会话（以数字编号为名）</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux new -s &lt;session-name&gt;</td>
+<td style="text-align:center">开启一个名为 session-name 的会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux ls</td>
+<td style="text-align:center">查看所有存在的 tmux 会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux detach</td>
+<td style="text-align:center">脱离当前 tmux 会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux attach -t &lt;session-name&gt;</td>
+<td style="text-align:center">连接名为 session-name 的会话，这里的 session-name 当然也可以为数字编号形式的名字</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux switch -t &lt;session-name&gt;</td>
+<td style="text-align:center">切换会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux rename-session -t &lt;oldname&gt; &lt;newname&gt;</td>
+<td style="text-align:center">重命名会话</td>
+</tr>
+<tr>
+<td style="text-align:center">tmux kill-session -t &lt;session-name&gt;</td>
+<td style="text-align:center">销毁会话</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="1-3-tmux-快捷键"><a href="#1-3-tmux-快捷键" class="headerlink" title="1.3. tmux 快捷键"></a>1.3. tmux 快捷键</h3><p>在 tmux 会话内，可使用一些快捷键替代 tmux 命令，不过要想使用快捷键，必须每次先按下前缀键<code>Ctrl + b</code>唤醒快捷键功能。</p>
 <blockquote>
-<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+<p>注意：若想脱离而不销毁会话，一定要按<code>Ctrl + b + d</code>，别按成了<code>Ctrl + d</code>，这个属于 linux 终端的快捷键，会直接退出并销毁会话。</p>
 </blockquote>
-<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
-\begin{aligned}
-\text{数据集$D$的纯度：} \\
-Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
-&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
-\end{aligned}</script><blockquote>
-<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
-</blockquote>
-<p>属性$a$的基尼指数：</p>
-<script type="math/tex; mode=display">
-Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
-\tag{3}</script><blockquote>
-<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
-<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
+<ul>
+<li>系统操作：</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">?</td>
+<td style="text-align:center">列出所有快捷键</td>
+</tr>
+<tr>
+<td style="text-align:center">:</td>
+<td style="text-align:center">进入命令行模式</td>
+</tr>
+<tr>
+<td style="text-align:center">[</td>
+<td style="text-align:center">进入复制模式，此时的操作与 vim 相同</td>
+</tr>
+<tr>
+<td style="text-align:center">d</td>
+<td style="text-align:center">脱离当前会话</td>
+</tr>
+<tr>
+<td style="text-align:center">D</td>
+<td style="text-align:center">选择要脱离的会话</td>
+</tr>
+<tr>
+<td style="text-align:center">r</td>
+<td style="text-align:center">强制重绘未脱离的会话</td>
+</tr>
+<tr>
+<td style="text-align:center">~</td>
+<td style="text-align:center">列出提示信息缓存，其中包含了之前 tmux 返回的各种提示信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Ctrl+z</code></td>
+<td style="text-align:center">挂起当前会话</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>窗口操作</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">c</td>
+<td style="text-align:center">创建新窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">&amp;</td>
+<td style="text-align:center">关闭当前窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">数字键</td>
+<td style="text-align:center">切换至指定窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">p</td>
+<td style="text-align:center">切换至上一窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">n</td>
+<td style="text-align:center">切换至下一窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">l</td>
+<td style="text-align:center">在前后两个窗口间互相切换</td>
+</tr>
+<tr>
+<td style="text-align:center">w</td>
+<td style="text-align:center">通过窗口列表切换窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">,</td>
+<td style="text-align:center">重命名当前窗口</td>
+</tr>
+<tr>
+<td style="text-align:center">.</td>
+<td style="text-align:center">修改当前窗口编号，相当于窗口重新排序</td>
+</tr>
+<tr>
+<td style="text-align:center">f</td>
+<td style="text-align:center">在所有窗口中查找指定文本</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>窗格操作</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">快捷键</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">“</td>
+<td style="text-align:center">当当前窗格上下平分为两块</td>
+</tr>
+<tr>
+<td style="text-align:center">%</td>
+<td style="text-align:center">将当前窗格左右平分为两块</td>
+</tr>
+<tr>
+<td style="text-align:center">x</td>
+<td style="text-align:center">关闭当前窗格</td>
+</tr>
+<tr>
+<td style="text-align:center">!</td>
+<td style="text-align:center">将当前面板置于新窗口</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Ctrl+方向键</code></td>
+<td style="text-align:center">以 1 个单元格为单位，移动窗格边缘</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Alt+方向键</code></td>
+<td style="text-align:center">以 5 个单元格为单位，移动窗格边缘</td>
+</tr>
+<tr>
+<td style="text-align:center">q</td>
+<td style="text-align:center">显示窗格编号</td>
+</tr>
+<tr>
+<td style="text-align:center">o</td>
+<td style="text-align:center">在当前窗格中选择下一窗格</td>
+</tr>
+<tr>
+<td style="text-align:center">方向键</td>
+<td style="text-align:center">移动光标以选择面板</td>
+</tr>
+<tr>
+<td style="text-align:center">{</td>
+<td style="text-align:center">向前置换当前面板</td>
+</tr>
+<tr>
+<td style="text-align:center">}</td>
+<td style="text-align:center">向后置换当前面板</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Ctrl+o</code></td>
+<td style="text-align:center">顺时针旋转当前窗口的面板</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Alt+o</code></td>
+<td style="text-align:center">逆时针旋转当前窗口的面板</td>
+</tr>
+</tbody>
+</table>
+</div>
 
     </div>
 
@@ -330,13 +519,10 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="使用SSH把个人电脑配置成 linux 服务器">
-      <i class="fa fa-chevron-left"></i> 使用SSH把个人电脑配置成 linux 服务器
+    <a href="/2021/01/07/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="prev" title="Hexo-Next + GitHub + Gitee 搭建个人博客">
+      <i class="fa fa-chevron-left"></i> Hexo-Next + GitHub + Gitee 搭建个人博客
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/" rel="next" title="linux 下从源码安装 Python——小白踩坑记">
-      linux 下从源码安装 Python——小白踩坑记 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -395,7 +581,7 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%AC%A6%E5%8F%B7%E5%A3%B0%E6%98%8E"><span class="nav-text">1. 符号声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A"><span class="nav-text">2. 信息增益</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%A2%9E%E7%9B%8A%E7%8E%87"><span class="nav-text">3. 增益率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%9F%BA%E5%B0%BC%E6%8C%87%E6%95%B0"><span class="nav-text">4. 基尼指数</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-tmux"><span class="nav-text">1. tmux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-tmux-%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. tmux 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-session%E3%80%81window%E3%80%81pane"><span class="nav-text">1.2. session、window、pane:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-tmux-%E5%91%BD%E4%BB%A4"><span class="nav-text">1.2. tmux 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-tmux-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">1.3. tmux 快捷键</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -582,59 +768,6 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
