@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"chua-n.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用">
+  <meta name="description" content="tmux命令、更改 apt 源">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一些linux命令">
-<meta property="og:url" content="https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:title" content="常用linux命令杂记">
+<meta property="og:url" content="https://chua-n.github.io/2021/01/15/%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4%E6%9D%82%E8%AE%B0/index.html">
 <meta property="og:site_name" content="这里是川！">
-<meta property="og:description" content="当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用">
+<meta property="og:description" content="tmux命令、更改 apt 源">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-15T01:38:25.000Z">
-<meta property="article:modified_time" content="2021-01-15T06:11:42.971Z">
+<meta property="article:modified_time" content="2021-03-01T07:07:14.741Z">
 <meta property="article:author" content="荒流">
 <meta property="article:tag" content="NaniNani">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/">
+<link rel="canonical" href="https://chua-n.github.io/2021/01/15/%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4%E6%9D%82%E8%AE%B0/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>一些linux命令 | 这里是川！</title>
+  <title>常用linux命令杂记 | 这里是川！</title>
   
 
 
@@ -131,22 +131,22 @@
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>鄙人</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">1</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">2</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">12</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">16</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -206,7 +206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2021/01/15/%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4%E6%9D%82%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://chua-n.gitee.io/blog-images/avatar.png">
@@ -219,7 +219,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          一些linux命令
+          常用linux命令杂记
         </h1>
 
         <div class="post-meta">
@@ -228,10 +228,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-01-15 09:38:25 / 修改时间：14:11:42" itemprop="dateCreated datePublished" datetime="2021-01-15T09:38:25+08:00">2021-01-15</time>
+              <time title="创建时间：2021-01-15 09:38:25" itemprop="dateCreated datePublished" datetime="2021-01-15T09:38:25+08:00">2021-01-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-01 15:07:14" itemprop="dateModified" datetime="2021-03-01T15:07:14+08:00">2021-03-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -255,14 +261,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>3.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -274,9 +280,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。</p>
+        <p><code>tmux</code>命令、更改 apt 源</p>
 <a id="more"></a>
-<h2 id="1-tmux"><a href="#1-tmux" class="headerlink" title="1. tmux"></a>1. tmux</h2><h3 id="1-1-tmux-简介"><a href="#1-1-tmux-简介" class="headerlink" title="1.1. tmux 简介"></a>1.1. tmux 简介</h3><p>tmux(terminal multiplexer) 是一个终端复用器，它可以在一个窗口屏幕上创建、访问、控制多个终端。</p>
+<h2 id="1-tmux"><a href="#1-tmux" class="headerlink" title="1. tmux"></a>1. tmux</h2><p>当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。</p>
+<h3 id="1-1-tmux-简介"><a href="#1-1-tmux-简介" class="headerlink" title="1.1. tmux 简介"></a>1.1. tmux 简介</h3><p>tmux(terminal multiplexer) 是一个终端复用器，它可以在一个窗口屏幕上创建、访问、控制多个终端。</p>
 <ul>
 <li>tmux 使得“终端会话”可以从屏幕上分离出来，继续在后台运行，待后续重新连接；</li>
 <li>tmux 还允许每个会话有多个连接窗口，因此可以多个用户实时共享会话。</li>
@@ -504,7 +511,55 @@
 </tbody>
 </table>
 </div>
-
+<h2 id="2-更改-Ubuntu-的-apt-源为阿里源"><a href="#2-更改-Ubuntu-的-apt-源为阿里源" class="headerlink" title="2. 更改 Ubuntu 的 apt 源为阿里源"></a>2. 更改 Ubuntu 的 apt 源为阿里源</h2><p>Ubuntu 下的包管理工具 apt 默认的软件源为国外服务器，在国内使用时经常会速度非常慢，因此可将其更换为清华源、阿里源等，只需要更改配置文件/etc/apt/sources.list 即可。</p>
+<h3 id="2-1-备份原配置文件"><a href="#2-1-备份原配置文件" class="headerlink" title="2.1. 备份原配置文件"></a>2.1. 备份原配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt/</span><br><span class="line">sudo cp sources.list sources.list.backup</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-改写-source-list-配置文件"><a href="#2-2-改写-source-list-配置文件" class="headerlink" title="2.2. 改写 source.list 配置文件"></a>2.2. 改写 source.list 配置文件</h3><p>将/etc/apt/sources.list 文件的原内容全部加<code>#</code>号注释或直接删除，然后添加以下内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+<p>现在已经改写了配置文件，再执行以下命令即可完成 apt 的软件源的更新：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>附：由于更新了软件源，因此一些软件被系统检测到的最新版本号可能发生变化，故而不妨再使用<code>sudo apt upgrade</code>更新一下这些软件。</p>
+</blockquote>
+<h3 id="2-3-sources-list-配置内容说明"><a href="#2-3-sources-list-配置内容说明" class="headerlink" title="2.3. sources.list 配置内容说明"></a>2.3. sources.list 配置内容说明</h3><p>sources.list 文件的每个配置条目都是有格式的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://site.example.com/debian distribution component1 component2 component3</span><br><span class="line">deb-src http://site.example.com/debian distribution component1 component2 component3</span><br></pre></td></tr></table></figure>
+<p>其中每一行最后面的<em>componentN</em>参数表示对软件包的分类，ubuntu 下就是 main、restricted、universe、multiverse；<em>distribution</em>参数代表系统版本代号，可使用<code>lsb_release -c</code>命令查看，比如：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">版本</th>
+<th style="text-align:center">代号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Ubuntu 15.04</td>
+<td style="text-align:center">vivid</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 16.04</td>
+<td style="text-align:center">xenial</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 17.04</td>
+<td style="text-align:center">zesty</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 18.04</td>
+<td style="text-align:center">bionic</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 19.04</td>
+<td style="text-align:center">disco</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 20.04</td>
+<td style="text-align:center">focal</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="3-to-be-continued"><a href="#3-to-be-continued" class="headerlink" title="3. to be continued"></a>3. to be continued</h2>
     </div>
 
     
@@ -522,7 +577,10 @@
     <a href="/2021/01/07/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="prev" title="Hexo-Next + GitHub + Gitee 搭建个人博客">
       <i class="fa fa-chevron-left"></i> Hexo-Next + GitHub + Gitee 搭建个人博客
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/01/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E4%BD%BF%E7%94%A8mayavi%E6%B8%B2%E6%9F%93%E4%B8%89%E7%BB%B4%E5%9B%BE%E2%80%94%E2%80%94%E5%80%9F%E5%8A%A9jupyter-notebook/" rel="next" title="在远程服务器中使用mayavi渲染三维图——借助jupyter notebook">
+      在远程服务器中使用mayavi渲染三维图——借助jupyter notebook <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -581,7 +639,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-tmux"><span class="nav-text">1. tmux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-tmux-%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. tmux 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-session%E3%80%81window%E3%80%81pane"><span class="nav-text">1.2. session、window、pane:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-tmux-%E5%91%BD%E4%BB%A4"><span class="nav-text">1.2. tmux 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-tmux-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">1.3. tmux 快捷键</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-tmux"><span class="nav-text">1. tmux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-tmux-%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1. tmux 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-session%E3%80%81window%E3%80%81pane"><span class="nav-text">1.2. session、window、pane:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-tmux-%E5%91%BD%E4%BB%A4"><span class="nav-text">1.2. tmux 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-tmux-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">1.3. tmux 快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9B%B4%E6%94%B9-Ubuntu-%E7%9A%84-apt-%E6%BA%90%E4%B8%BA%E9%98%BF%E9%87%8C%E6%BA%90"><span class="nav-text">2. 更改 Ubuntu 的 apt 源为阿里源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%A4%87%E4%BB%BD%E5%8E%9F%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">2.1. 备份原配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%94%B9%E5%86%99-source-list-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">2.2. 改写 source.list 配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-sources-list-%E9%85%8D%E7%BD%AE%E5%86%85%E5%AE%B9%E8%AF%B4%E6%98%8E"><span class="nav-text">2.3. sources.list 配置内容说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-to-be-continued"><span class="nav-text">3. to be continued</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -597,20 +655,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -657,12 +715,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">36k</span>
+    <span title="站点总字数">57k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">32 分钟</span>
+    <span title="站点阅读时长">52 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div><script color="24,24,24" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>

@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"chua-n.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一般的编程语言都具有（伪）随机数生成功能，如 python 的random.random()函数，然而它们通常只对应均匀分布。那如果想生成符合任意概率分布的随机数，该如何在代码上实现呢？这就可以用到“逆变换采样”了。">
+  <meta name="description" content="有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="逆变换采样">
-<meta property="og:url" content="https://chua-n.github.io/2020/05/17/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7/index.html">
+<meta property="og:title" content="mayavi离屏渲染">
+<meta property="og:url" content="https://chua-n.github.io/2020/12/07/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/index.html">
 <meta property="og:site_name" content="这里是川！">
-<meta property="og:description" content="一般的编程语言都具有（伪）随机数生成功能，如 python 的random.random()函数，然而它们通常只对应均匀分布。那如果想生成符合任意概率分布的随机数，该如何在代码上实现呢？这就可以用到“逆变换采样”了。">
+<meta property="og:description" content="有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-05-17T11:01:55.000Z">
-<meta property="article:modified_time" content="2021-01-12T07:04:35.398Z">
+<meta property="article:published_time" content="2020-12-07T07:33:00.000Z">
+<meta property="article:modified_time" content="2021-03-01T07:07:14.707Z">
 <meta property="article:author" content="荒流">
-<meta property="article:tag" content="coding">
+<meta property="article:tag" content="NaniNani">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://chua-n.github.io/2020/05/17/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7/">
+<link rel="canonical" href="https://chua-n.github.io/2020/12/07/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>逆变换采样 | 这里是川！</title>
+  <title>mayavi离屏渲染 | 这里是川！</title>
   
 
 
@@ -206,7 +206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2020/05/17/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7/">
+    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2020/12/07/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://chua-n.gitee.io/blog-images/avatar.png">
@@ -219,7 +219,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          逆变换采样
+          mayavi离屏渲染
         </h1>
 
         <div class="post-meta">
@@ -229,14 +229,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-05-17 19:01:55" itemprop="dateCreated datePublished" datetime="2020-05-17T19:01:55+08:00">2020-05-17</time>
+              <time title="创建时间：2020-12-07 15:33:00" itemprop="dateCreated datePublished" datetime="2020-12-07T15:33:00+08:00">2020-12-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 15:04:35" itemprop="dateModified" datetime="2021-01-12T15:04:35+08:00">2021-01-12</time>
+                <time title="修改时间：2021-03-01 15:07:14" itemprop="dateModified" datetime="2021-03-01T15:07:14+08:00">2021-03-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -244,11 +244,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%A6/%E6%A6%82%E7%8E%87/" itemprop="url" rel="index"><span itemprop="name">概率</span></a>
+                  <a href="/categories/python/mayavi/" itemprop="url" rel="index"><span itemprop="name">mayavi</span></a>
                 </span>
             </span>
 
@@ -265,14 +265,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>794</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -284,30 +284,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>一般的编程语言都具有（伪）随机数生成功能，如 python 的<code>random.random()</code>函数，然而它们通常只对应均匀分布。那如果想生成符合任意概率分布的随机数，该如何在代码上实现呢？这就可以用到“逆变换采样”了。</p>
+        <p>有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。</p>
 <a id="more"></a>
-<h2 id="1-引理"><a href="#1-引理" class="headerlink" title="1. 引理"></a>1. 引理</h2><p>假设$X$为一个连续随机变量，其累积分布函数为$CDF(x)=P(X \le x)$，若随机变量$Y=CDF(X)$，则$Y$服从区间$[0, 1]$上的均匀分布。</p>
-<blockquote>
-<p><strong>证明</strong>：已知：$CDF(x) \in [0, 1]$，且$CDF(x)$为单调递增函数。</p>
-<script type="math/tex; mode=display">
-\forall \; y < 0, \qquad P(Y \le y)=P(CDF(X) \le y)=0</script><script type="math/tex; mode=display">
-\begin{aligned}
-\forall \; 0 \le y \le 1,\qquad P(Y \le y) &= P(CDF(X)\le y) \\
-&= P(X\le CDF^{-1}(y)) \\
-&= P(X\le x) \\
-&= CDF(x) \\
-&= y
-\end{aligned}</script><script type="math/tex; mode=display">
-\forall \; y > 1, \qquad P(Y\le y) = P(CDF(X) \le y) = 1</script><p>综上，$Y$服从区间$[0,1]$上的均匀分布。</p>
-</blockquote>
-<h2 id="2-推论：逆变换采样"><a href="#2-推论：逆变换采样" class="headerlink" title="2. 推论：逆变换采样"></a>2. 推论：逆变换采样</h2><p>假设$X$为一个连续随机变量，其累积分布函数为$CDF(x)=P(X \le x)$，则随机变量$Y=CDF(X)$服从区间$[0, 1]$上的均匀分布。<strong>逆变换采样</strong>即是将该过程反过来进行：</p>
+<h2 id="1-mlab-options-offscreen-之坑"><a href="#1-mlab-options-offscreen-之坑" class="headerlink" title="1. mlab.options.offscreen 之坑"></a>1. <code>mlab.options.offscreen</code> 之坑</h2><p>mayavi 虽然提供有一个直接的选项<code>mlab.options.offscreen</code>可以打开/关闭离屏渲染，但在实测中非常难用，linux 下在 python 脚本中设置<code>mlab.options.offscreen = True</code>根本不奏效。</p>
+<p>笔者参照 <a target="_blank" rel="noopener" href="http://docs.enthought.com/mayavi/mayavi/tips.html?highlight=offscreen">mayavi 官方文档</a>进行了大量尝试，最后在这里总结出比较好用的方案。</p>
+<h2 id="2-关闭渲染弹窗"><a href="#2-关闭渲染弹窗" class="headerlink" title="2. 关闭渲染弹窗"></a>2. 关闭渲染弹窗</h2><p>解决方案是：建立一个虚拟的“显示器（X 服务）”，在虚拟的服务上进行图形渲染。具体地，可以有两种选择：</p>
 <ol>
-<li>首先对于随机变量$Y$，我们从$[0,1]$中随机均匀抽取一个数$y$；</li>
-<li>由于$X=CDF^{-1}(Y)$，可求得随机数$x=CDF^{-1}(y)$，故$x$即可看作是从分布$CDF(X)$中生成的随机样本。</li>
+<li>结合 linux 的 xvfb-run 命令运行编写好的 python 脚本： <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># xvfb-run ... x24&quot;会开启一个相应分辨率的虚拟屏幕</span></span><br><span class="line"><span class="comment"># 后面再结合一个具体的命令便可在开启的虚拟屏幕上运行该命令</span></span><br><span class="line"><span class="comment"># 这里执行的便是让python运行一个mayavi绘图脚本的命令</span></span><br><span class="line">xvfb-run --server-args=<span class="string">&quot;-screen 0 1024x768x24&quot;</span> python my_mayavi.py</span><br></pre></td></tr></table></figure></li>
+<li>通过 python 脚本内部进行类似上述设置，此时需引入第三方库 PyVirtualDisplay： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"><span class="comment"># 开启一个分辨率为1280*1024的虚拟屏幕</span></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line"><span class="comment"># 启动该屏幕</span></span><br><span class="line">display.start()</span><br></pre></td></tr></table></figure>
+此后必然无法再在脚本运行的过程中看到渲染的图形弹窗，需要使用<code>mlab.savefig()</code>命令把后台渲染出的图像保存下来再在其他地方进行查看。</li>
 </ol>
-<h2 id="3-联想"><a href="#3-联想" class="headerlink" title="3. 联想"></a>3. 联想</h2><p>突然想到一个疑问，似乎概率论课堂中有讲过但是一时又无法想出解答，暂记如下：</p>
-<p><strong>问题</strong>：设有连续随机变量$X$与$Y$，已知$X$的概率密度为$p_1(x)$，且$X$与$Y$有如下关系：</p>
-<script type="math/tex; mode=display">y=f(x)</script><p>那么$Y$的概率密度$p_2(y)$可如何表示？</p>
+<h2 id="3-推荐方案"><a href="#3-推荐方案" class="headerlink" title="3. 推荐方案"></a>3. 推荐方案</h2><p>这里推荐解决方案中的第 2 种，因为其更通用也更优雅和方便。不过，仅仅进行上述设置会导致<code>mlab.savefig()</code>命令存储下来的图片就是一个黑屏（你生成的虚拟 X 服务对应的黑屏），正确操作应该同时把 mlab.options.offscreen 设置为 True，才能正确地保存你的图形。所以，干脆直接在脚本中加入以下命令吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>为了方案的“移值性”更强，建议直接将上述命令保存成一个 python 模块，以后每次希望离屏渲染时从这个模块中导入 mlab，不希望离屏渲染时则仍旧从 mayavi 中导入 mlab。如，笔者将其打包为<code>mayaviOffScreen.py</code>文件，并添加了一些注释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Render the mayavi scene off screen.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">When you don&#x27;t need display the mayavi scene while running python scripts,</span></span><br><span class="line"><span class="string">importing `mlab` from this module is recommended, i.e.,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">from mayaviOffScreen imoprt mlab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notes:</span></span><br><span class="line"><span class="string">-------</span></span><br><span class="line"><span class="string">    1. If you are using mayavi from remote host by SSH, etc, you must</span></span><br><span class="line"><span class="string">        import `mlab` from this module. Or something wrong happens!</span></span><br><span class="line"><span class="string">    2. Under the circumstance above, if you need import some other modules meanwhile</span></span><br><span class="line"><span class="string">        and those modules import `mlab` as well in themselves, make sure the sentence</span></span><br><span class="line"><span class="string">        `from mayaviOffScreen import mlab` appears before `import otherModule`!</span></span><br><span class="line"><span class="string">        So that `mayaviOffScreen.mlab` covers `otherModule.mlab`.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br><span class="line">print(<span class="string">&quot;Set mlab.options.offscreen=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(mlab.options.offscreen))</span><br></pre></td></tr></table></figure>
+<p>以后每次需要离屏渲染时，把这个文件复制到项目文件夹，然后使用<code>from mayaviOffScreen import mlab</code>命令代替正常情况下的<code>from mayavi import mlab</code>即可。</p>
+<h2 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4. 注意事项"></a>4. 注意事项</h2><ol>
+<li>在具体执行 mayavi 绘图脚本时，可能你导入的其他模块（<code>import othermodule</code>）中事实上存在<code>from mayavi import mlab</code>语句，如果在你的执行脚本中<code>import othermodule</code>语句先于<code>from mayaviOffScreen import mlab</code>出现，那么依然会导致离屏渲染失败。因此，最好令这条离屏渲染语句<code>from mayaviOffScreen import mlab</code>作为你的执行模块的第一条语句。</li>
+<li>通过虚拟 X 服务渲染图形后，可不要再调用<code>mlab.show()</code>命令了，因为这意味着你进入和图形交互的状态，而这个“图形框”是虚拟的，你看不到摸不着，也就无法像正常那样通过关闭图形框来让<code>mlab.show()</code>命令停止了，于是你这个相应的脚本进入无限等待的阻塞状态，只有关闭相关进程才能将其终止。</li>
+</ol>
 
     </div>
 
@@ -316,20 +311,19 @@
     
 
       <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/tags/coding/" rel="tag"><i class="fa fa-tag"></i> coding</a>
-          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="next" title="使用SSH把个人电脑配置成 linux 服务器">
-      使用SSH把个人电脑配置成 linux 服务器 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/" rel="prev" title="WSL下安装MySQL">
+      <i class="fa fa-chevron-left"></i> WSL下安装MySQL
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/" rel="next" title="配置jupyter notebook远程连接服务">
+      配置jupyter notebook远程连接服务 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -389,7 +383,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%BC%95%E7%90%86"><span class="nav-text">1. 引理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8E%A8%E8%AE%BA%EF%BC%9A%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7"><span class="nav-text">2. 推论：逆变换采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%81%94%E6%83%B3"><span class="nav-text">3. 联想</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-mlab-options-offscreen-%E4%B9%8B%E5%9D%91"><span class="nav-text">1. mlab.options.offscreen 之坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%85%B3%E9%97%AD%E6%B8%B2%E6%9F%93%E5%BC%B9%E7%AA%97"><span class="nav-text">2. 关闭渲染弹窗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%8E%A8%E8%8D%90%E6%96%B9%E6%A1%88"><span class="nav-text">3. 推荐方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">4. 注意事项</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -576,59 +570,6 @@
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 

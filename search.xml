@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>使用SSH把个人电脑配置成 linux 服务器</title>
-    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
+    <title>WSL下安装MySQL</title>
+    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
+    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
 <a id="more"></a>
-<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
-<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
-<p>找到以下这两行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
-<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
-<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
-<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
-<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
-<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
-]]></content>
+<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
+<li><code>apt-get install mysql-server mysql-client</code></li>
+<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
+</ol>
+<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
+<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
+<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
+<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
+<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>linux</category>
+        <category>WSL</category>
+        <category>mysql</category>
       </categories>
   </entry>
   <entry>
@@ -93,6 +93,28 @@
       </categories>
   </entry>
   <entry>
+    <title>jupyter notebook中使用mayavi三维绘图库</title>
+    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
+    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
+</blockquote>
+<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
+<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
+<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
+<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>mayavi</category>
+        <category>jupyter</category>
+      </categories>
+  </entry>
+  <entry>
     <title>linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
     <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda/</url>
     <content><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
@@ -159,6 +181,57 @@
       </categories>
   </entry>
   <entry>
+    <title>使用SSH把个人电脑配置成 linux 服务器</title>
+    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
+<a id="more"></a>
+<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
+<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+<p>找到以下这两行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
+<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
+<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
+<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
+<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
+<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
+<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>mayavi离屏渲染</title>
+    <url>/2020/12/07/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/</url>
+    <content><![CDATA[<p>有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。</p>
+<a id="more"></a>
+<h2 id="1-mlab-options-offscreen-之坑"><a href="#1-mlab-options-offscreen-之坑" class="headerlink" title="1. mlab.options.offscreen 之坑"></a>1. <code>mlab.options.offscreen</code> 之坑</h2><p>mayavi 虽然提供有一个直接的选项<code>mlab.options.offscreen</code>可以打开/关闭离屏渲染，但在实测中非常难用，linux 下在 python 脚本中设置<code>mlab.options.offscreen = True</code>根本不奏效。</p>
+<p>笔者参照 <a href="http://docs.enthought.com/mayavi/mayavi/tips.html?highlight=offscreen">mayavi 官方文档</a>进行了大量尝试，最后在这里总结出比较好用的方案。</p>
+<h2 id="2-关闭渲染弹窗"><a href="#2-关闭渲染弹窗" class="headerlink" title="2. 关闭渲染弹窗"></a>2. 关闭渲染弹窗</h2><p>解决方案是：建立一个虚拟的“显示器（X 服务）”，在虚拟的服务上进行图形渲染。具体地，可以有两种选择：</p>
+<ol>
+<li>结合 linux 的 xvfb-run 命令运行编写好的 python 脚本： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># xvfb-run ... x24&quot;会开启一个相应分辨率的虚拟屏幕</span></span><br><span class="line"><span class="comment"># 后面再结合一个具体的命令便可在开启的虚拟屏幕上运行该命令</span></span><br><span class="line"><span class="comment"># 这里执行的便是让python运行一个mayavi绘图脚本的命令</span></span><br><span class="line">xvfb-run --server-args=<span class="string">&quot;-screen 0 1024x768x24&quot;</span> python my_mayavi.py</span><br></pre></td></tr></table></figure></li>
+<li>通过 python 脚本内部进行类似上述设置，此时需引入第三方库 PyVirtualDisplay： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"><span class="comment"># 开启一个分辨率为1280*1024的虚拟屏幕</span></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line"><span class="comment"># 启动该屏幕</span></span><br><span class="line">display.start()</span><br></pre></td></tr></table></figure>
+此后必然无法再在脚本运行的过程中看到渲染的图形弹窗，需要使用<code>mlab.savefig()</code>命令把后台渲染出的图像保存下来再在其他地方进行查看。</li>
+</ol>
+<h2 id="3-推荐方案"><a href="#3-推荐方案" class="headerlink" title="3. 推荐方案"></a>3. 推荐方案</h2><p>这里推荐解决方案中的第 2 种，因为其更通用也更优雅和方便。不过，仅仅进行上述设置会导致<code>mlab.savefig()</code>命令存储下来的图片就是一个黑屏（你生成的虚拟 X 服务对应的黑屏），正确操作应该同时把 mlab.options.offscreen 设置为 True，才能正确地保存你的图形。所以，干脆直接在脚本中加入以下命令吧：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>为了方案的“移值性”更强，建议直接将上述命令保存成一个 python 模块，以后每次希望离屏渲染时从这个模块中导入 mlab，不希望离屏渲染时则仍旧从 mayavi 中导入 mlab。如，笔者将其打包为<code>mayaviOffScreen.py</code>文件，并添加了一些注释：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Render the mayavi scene off screen.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">When you don&#x27;t need display the mayavi scene while running python scripts,</span></span><br><span class="line"><span class="string">importing `mlab` from this module is recommended, i.e.,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">from mayaviOffScreen imoprt mlab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notes:</span></span><br><span class="line"><span class="string">-------</span></span><br><span class="line"><span class="string">    1. If you are using mayavi from remote host by SSH, etc, you must</span></span><br><span class="line"><span class="string">        import `mlab` from this module. Or something wrong happens!</span></span><br><span class="line"><span class="string">    2. Under the circumstance above, if you need import some other modules meanwhile</span></span><br><span class="line"><span class="string">        and those modules import `mlab` as well in themselves, make sure the sentence</span></span><br><span class="line"><span class="string">        `from mayaviOffScreen import mlab` appears before `import otherModule`!</span></span><br><span class="line"><span class="string">        So that `mayaviOffScreen.mlab` covers `otherModule.mlab`.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br><span class="line">print(<span class="string">&quot;Set mlab.options.offscreen=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(mlab.options.offscreen))</span><br></pre></td></tr></table></figure>
+<p>以后每次需要离屏渲染时，把这个文件复制到项目文件夹，然后使用<code>from mayaviOffScreen import mlab</code>命令代替正常情况下的<code>from mayavi import mlab</code>即可。</p>
+<h2 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4. 注意事项"></a>4. 注意事项</h2><ol>
+<li>在具体执行 mayavi 绘图脚本时，可能你导入的其他模块（<code>import othermodule</code>）中事实上存在<code>from mayavi import mlab</code>语句，如果在你的执行脚本中<code>import othermodule</code>语句先于<code>from mayaviOffScreen import mlab</code>出现，那么依然会导致离屏渲染失败。因此，最好令这条离屏渲染语句<code>from mayaviOffScreen import mlab</code>作为你的执行模块的第一条语句。</li>
+<li>通过虚拟 X 服务渲染图形后，可不要再调用<code>mlab.show()</code>命令了，因为这意味着你进入和图形交互的状态，而这个“图形框”是虚拟的，你看不到摸不着，也就无法像正常那样通过关闭图形框来让<code>mlab.show()</code>命令停止了，于是你这个相应的脚本进入无限等待的阻塞状态，只有关闭相关进程才能将其终止。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
     <title>使用 python 绘制不同尺寸的球——利用Mayavi库</title>
     <url>/2020/12/22/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83/</url>
     <content><![CDATA[<p>“万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。</p>
@@ -187,11 +260,146 @@
       </categories>
   </entry>
   <entry>
-    <title>一些linux命令</title>
-    <url>/2021/01/15/%E4%B8%80%E4%BA%9Blinux%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<p>当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。</p>
+    <title>代理模式</title>
+    <url>/2021/02/07/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<p>最近学到 Spring 的 AOP，发现以前没搞懂的“JDK 动态代理”终于过来找茬了，所以还是细细地疏理一下吧。</p>
 <a id="more"></a>
-<h2 id="1-tmux"><a href="#1-tmux" class="headerlink" title="1. tmux"></a>1. tmux</h2><h3 id="1-1-tmux-简介"><a href="#1-1-tmux-简介" class="headerlink" title="1.1. tmux 简介"></a>1.1. tmux 简介</h3><p>tmux(terminal multiplexer) 是一个终端复用器，它可以在一个窗口屏幕上创建、访问、控制多个终端。</p>
+<h2 id="1-代理模式"><a href="#1-代理模式" class="headerlink" title="1. 代理模式"></a>1. 代理模式</h2><p>碰见一个新概念，第一要做的还是要“顾名思义”：模式二字自不必说，所谓“代理”，即当某个目标对象不能被直接使用时，给这个目标对象提供一个“代办人”（代天行道），以便代替目标对象发挥其本来的功能。当然，在这个过程中“代理对象”通常会对“目标对象”进行一些改造升级，而不是单纯的复制。</p>
+<p>另一方面，从行为表现上来说，代理其实也可想像为“接口”和“实现类”的关系：接口就是目标对象，相应的实现类就是接口的代理。在 Java 中不能创建接口的实例，而只能创建实现这个接口的类的实例，所以“接口”这个概念虽然不是为代理模式而生的，但它天然就是代理的模式。类似的，其实也可想像为类继承中“基类”和“子类”的关系。</p>
+<p>对于 Java 来说，代理模式在代码实现上可以分为<strong>静态代理</strong>和<strong>动态代理</strong>。</p>
+<h2 id="2-静态代理"><a href="#2-静态代理" class="headerlink" title="2. 静态代理"></a>2. 静态代理</h2><p>静态代理其实没啥好说的，实际就是通常写代码的方式，将代理对象直接在代码中显示构造出来：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 目标对象/目标类/被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要编写实现类，即“代理类”</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Turtle</span> <span class="keyword">implements</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;I am an animal, named turtle.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// proxyAnimal是Turtle类的实例，但在Java中可自动向上转型为Animal接口</span></span><br><span class="line">        <span class="comment">// 故而可以说proxyAnimal为Animal的代理</span></span><br><span class="line">        Animal proxyAnimal = <span class="keyword">new</span> Turtle(); <span class="comment">// 显示构造出代理对象proxyAnimal</span></span><br><span class="line">        <span class="comment">// 调用代理对象的info方法</span></span><br><span class="line">        proxyAnimal.info();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-动态代理"><a href="#3-动态代理" class="headerlink" title="3. 动态代理"></a>3. 动态代理</h2><h3 id="3-1-JDK-代理"><a href="#3-1-JDK-代理" class="headerlink" title="3.1. JDK 代理"></a>3.1. JDK 代理</h3><p>Java 标准库提供了一种动态代理的机制：可以在运行期动态创建某个<strong>接口</strong>的实例，也即为这个接口创建代理对象。</p>
+<p>具体地，java.lang.reflect 包下提供了一个<code>Proxy</code>类和一个<code>InvocationHandler</code>接口，Java 利用它们生成 JDK <strong>动态代理类</strong>或<strong>动态代理对象</strong>，如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 目标对象/目标类/被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DynamicProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 需要先定义一个InvocationHandler类型的handler，其处理（改造）目标对象的每个方法</span></span><br><span class="line">        InvocationHandler handler = <span class="keyword">new</span> InvocationHandler() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;I am an animal, named turtle.&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 直接生成动态代理对象</span></span><br><span class="line">        Animal proxyAnimal = (Animal) Proxy.newProxyInstance(</span><br><span class="line">                Animal.class.getClassLoader(), <span class="comment">// 接口实现类（即代理对象所属类）的类加载器</span></span><br><span class="line">                <span class="keyword">new</span> Class[]&#123;Animal.class&#125;, <span class="comment">// 代理类要实现的接口（们）</span></span><br><span class="line">                handler); <span class="comment">// 改造目标对象方法的InvocationHandler实例</span></span><br><span class="line">        <span class="comment">// 调用代理对象的info方法</span></span><br><span class="line">        proxyAnimal.info();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结而言，创建 JDK 动态代理对象的过程如下：</p>
+<ul>
+<li><p>定义一个<code>InvocationHandler</code>实例，它负责实现接口（即被代理的目标）的方法调用；</p>
+<blockquote>
+<p><code>InvocationHandler</code>本身也是一个接口，需要定义它的实现类，其中需要重写<code>invoke()</code>方法。调用代理对象的所有方法时都会被替换成调用该<code>invoke()</code>方法，其函数签名为：<code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable</code></p>
+</blockquote>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">proxy</td>
+<td style="text-align:center">代表动态代理对象</td>
+</tr>
+<tr>
+<td style="text-align:center">method</td>
+<td style="text-align:center">代表正在执行的方法</td>
+</tr>
+<tr>
+<td style="text-align:center">args</td>
+<td style="text-align:center">代表调用目标方法时传入的实参</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>通过<code>Proxy.newProxyInstance()</code>创建 interface 实例；</p>
+<blockquote>
+<p>其函数签名为<code>static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler handler)</code>，它需要 3 个参数：</p>
+</blockquote>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">loader</td>
+<td style="text-align:center">定义这个代理类的类加载器（通常就是接口类的 ClassLoader）</td>
+</tr>
+<tr>
+<td style="text-align:center">interfaces</td>
+<td style="text-align:center">代理类将要实现的接口数组（至少需要传入一个接口进去）</td>
+</tr>
+<tr>
+<td style="text-align:center">h</td>
+<td style="text-align:center">用来处理接口方法调用的 InvocationHandler 实例</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>将<code>Proxy.newProxyInstance()</code>返回的 Object 强制转型为接口。</li>
+</ul>
+<p>除直接创建动态代理对象外，Java 还可先创建动态代理类，而后通过动态代理类再创建动态代理对象，此时调用的是<code>Proxy.getProxyClass()</code>方法，其完整函数签名为<code>static Class&lt;?&gt; getProxyClass(ClassLoader loader, Class&lt;?&gt;... interfaces)</code>，形参含义同上。不过，即使采用这种方式生成动态代理类之后，如果程序需要通过该代理类来创建对象，依然需要传入一个<code>InvocationHandler</code>对象。</p>
+<h3 id="3-2-cglib-代理"><a href="#3-2-cglib-代理" class="headerlink" title="3.2. cglib 代理"></a>3.2. cglib 代理</h3><p>cglib 代理不依赖于接口，而是基于基类/子类。暂略……</p>
+<h2 id="4-动态代理的优势应用"><a href="#4-动态代理的优势应用" class="headerlink" title="4. 动态代理的优势应用"></a>4. 动态代理的优势应用</h2><p>仅看上面定义式的描述，实在很难看出动态代理的优势，而实际上动态代理在解耦方面具有重要应用。例如：</p>
+<h3 id="4-1-解耦合"><a href="#4-1-解耦合" class="headerlink" title="4.1. 解耦合"></a>4.1. 解耦合</h3><p>对于如下图 18.4 的软件系统，工程中出现大量重复代码段是相当糟糕的情况，大部分<strong>稍</strong>有经验的开发者都会将其中深色代码段定义成一个方法，然后让另外三段代码段直接调用该方法即可，如下图 18.5。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/代理模式/1.png" alt="图 18.4"><br><img src="https://chua-n.gitee.io/blog-images/代理模式/2.png" alt="图 18.5"></p>
+<p>然而，采用这种方式来实现代码复用依然产生一个重要问题：代码段 1、代码段 2、代码段 3 和深色代码段分离开了，但代码段 1、代码段 2、代码段 3 又和一个特定方法耦合了！最理想的效果是：代码段 1、2、3 既可以执行深色代码部分，又无须在程序中以硬编码方式直接调用深色代码的方法，这时就可以通过动态代理来达到这种解耦效果。如下面的代码，一些重要的理念也包含在注释中：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 由于JDK动态代理只能为接口创建动态代理，所以先提供一个Dog接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Dog</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">info</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 由于接口不可能提供实现，如果直接使用Proxy为Dog接口创建动态代理对象，</span></span><br><span class="line"><span class="comment">// 那动态代理对象的所有方法的执行效果又将完全一样，故而实际情况通常是：</span></span><br><span class="line"><span class="comment">// 该Dog接口总会提供一个/多个实现类，比如这里的GunDog类</span></span><br><span class="line"><span class="comment">// 此类中定义两个方法来代表上述所谓的代码段1、代码段2，目标是希望这两段代码能够跟某个公共代码松耦合</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GunDog</span> <span class="keyword">implements</span> <span class="title">Dog</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我是一只猎狗&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我奔跑迅速&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义通用方法，即代码段1、2的公共代码段</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DogUtil</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 第一个拦截器方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;--------模拟通用方法1---------&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二个拦截器方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;--------模拟通用方法2---------&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 程序的关键</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 需要被代理的目标对象</span></span><br><span class="line">    <span class="keyword">private</span> Object target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTarget</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 执行动态代理对象的所有方法时，都会被替换成执行如下的invoke()方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        DogUtil du = <span class="keyword">new</span> DogUtil();</span><br><span class="line">        du.method1();</span><br><span class="line">        <span class="comment">// 通过反射以target作为主调来执行method方法</span></span><br><span class="line">        Object result = method.invoke(target, args); <span class="comment">// 关键</span></span><br><span class="line">        du.method2();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 提供一个代理工厂类，专门为指定的target生成动态代理实例</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyProxyFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getProxy</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        MyInvocationHandler handler = <span class="keyword">new</span> MyInvocationHandler();</span><br><span class="line">        handler.setTarget(target);</span><br><span class="line">        <span class="comment">// 创建并返回一个target的动态代码对象，它与target实现了相同的接口</span></span><br><span class="line">        <span class="comment">// 故而动态代理对象可以当作target对象使用，即实现了对target对象的代理</span></span><br><span class="line">        <span class="keyword">return</span> Proxy.newProxyInstance(</span><br><span class="line">                target.getClass().getClassLoader(),</span><br><span class="line">                target.getClass().getInterfaces(),</span><br><span class="line">                handler</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DynamicProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 创建一个原始的GunDog对象，作为target</span></span><br><span class="line">        Dog target = <span class="keyword">new</span> GunDog();</span><br><span class="line">        <span class="comment">// 以指定的target来创建动态代理对象</span></span><br><span class="line">        Dog dog = (Dog) MyProxyFactory.getProxy(target);</span><br><span class="line">        <span class="comment">// info()和run()两个代码段既实现了对method1()、method2()通用方法的插入</span></span><br><span class="line">        <span class="comment">// 同时在这两个代码段的定义代码——GunDog类的两个方法——中，又没有以硬编码方式调用method1()、method2()方法</span></span><br><span class="line">        dog.info();</span><br><span class="line">        dog.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-已有方法的动态增强"><a href="#4-2-已有方法的动态增强" class="headerlink" title="4.2. 已有方法的动态增强"></a>4.2. 已有方法的动态增强</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TargetInterface</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Target</span> <span class="keyword">implements</span> <span class="title">TargetInterface</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;save running...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增强代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Advice</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;前置增强......&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;后置增强......&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Target target = <span class="keyword">new</span> Target(); <span class="comment">//目标对象</span></span><br><span class="line">        Advice advice = <span class="keyword">new</span> Advice(); <span class="comment">// 增强对象</span></span><br><span class="line">        TargetInterface proxy = (TargetInterface) Proxy.newProxyInstance(</span><br><span class="line">                target.getClass().getClassLoader(), <span class="comment">// 目标对象的类加载器</span></span><br><span class="line">                target.getClass().getInterfaces(), <span class="comment">// 目标对象相同的接口字节码对象数组</span></span><br><span class="line">                <span class="keyword">new</span> InvocationHandler() &#123;</span><br><span class="line">                    <span class="comment">// 调用代理对象的任何方法，实质执行的都是invoke方法</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                        advice.before();</span><br><span class="line">                        method.invoke(target, args);</span><br><span class="line">                        advice.afterReturning();</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">        );</span><br><span class="line">        proxy.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>决策树之特征选择</title>
+    <url>/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/</url>
+    <content><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
+<a id="more"></a>
+<blockquote>
+<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
+</blockquote>
+<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
+<p>样本集合$D$的信息熵定义为</p>
+<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
+Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
+<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
+</blockquote>
+<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
+s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
+\end{aligned}
+\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
+<blockquote>
+<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+</blockquote>
+<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
+\begin{aligned}
+\text{数据集$D$的纯度：} \\
+Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
+&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
+\end{aligned}</script><blockquote>
+<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
+</blockquote>
+<p>属性$a$的基尼指数：</p>
+<script type="math/tex; mode=display">
+Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
+\tag{3}</script><blockquote>
+<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
+<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
+]]></content>
+      <categories>
+        <category>ML</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>常用linux命令杂记</title>
+    <url>/2021/01/15/%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4%E6%9D%82%E8%AE%B0/</url>
+    <content><![CDATA[<p><code>tmux</code>命令、更改 apt 源</p>
+<a id="more"></a>
+<h2 id="1-tmux"><a href="#1-tmux" class="headerlink" title="1. tmux"></a>1. tmux</h2><p>当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。</p>
+<h3 id="1-1-tmux-简介"><a href="#1-1-tmux-简介" class="headerlink" title="1.1. tmux 简介"></a>1.1. tmux 简介</h3><p>tmux(terminal multiplexer) 是一个终端复用器，它可以在一个窗口屏幕上创建、访问、控制多个终端。</p>
 <ul>
 <li>tmux 使得“终端会话”可以从屏幕上分离出来，继续在后台运行，待后续重新连接；</li>
 <li>tmux 还允许每个会话有多个连接窗口，因此可以多个用户实时共享会话。</li>
@@ -419,52 +627,91 @@
 </tbody>
 </table>
 </div>
-]]></content>
+<h2 id="2-更改-Ubuntu-的-apt-源为阿里源"><a href="#2-更改-Ubuntu-的-apt-源为阿里源" class="headerlink" title="2. 更改 Ubuntu 的 apt 源为阿里源"></a>2. 更改 Ubuntu 的 apt 源为阿里源</h2><p>Ubuntu 下的包管理工具 apt 默认的软件源为国外服务器，在国内使用时经常会速度非常慢，因此可将其更换为清华源、阿里源等，只需要更改配置文件/etc/apt/sources.list 即可。</p>
+<h3 id="2-1-备份原配置文件"><a href="#2-1-备份原配置文件" class="headerlink" title="2.1. 备份原配置文件"></a>2.1. 备份原配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt/</span><br><span class="line">sudo cp sources.list sources.list.backup</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-改写-source-list-配置文件"><a href="#2-2-改写-source-list-配置文件" class="headerlink" title="2.2. 改写 source.list 配置文件"></a>2.2. 改写 source.list 配置文件</h3><p>将/etc/apt/sources.list 文件的原内容全部加<code>#</code>号注释或直接删除，然后添加以下内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+<p>现在已经改写了配置文件，再执行以下命令即可完成 apt 的软件源的更新：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>附：由于更新了软件源，因此一些软件被系统检测到的最新版本号可能发生变化，故而不妨再使用<code>sudo apt upgrade</code>更新一下这些软件。</p>
+</blockquote>
+<h3 id="2-3-sources-list-配置内容说明"><a href="#2-3-sources-list-配置内容说明" class="headerlink" title="2.3. sources.list 配置内容说明"></a>2.3. sources.list 配置内容说明</h3><p>sources.list 文件的每个配置条目都是有格式的：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deb http://site.example.com/debian distribution component1 component2 component3</span><br><span class="line">deb-src http://site.example.com/debian distribution component1 component2 component3</span><br></pre></td></tr></table></figure>
+<p>其中每一行最后面的<em>componentN</em>参数表示对软件包的分类，ubuntu 下就是 main、restricted、universe、multiverse；<em>distribution</em>参数代表系统版本代号，可使用<code>lsb_release -c</code>命令查看，比如：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">版本</th>
+<th style="text-align:center">代号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Ubuntu 15.04</td>
+<td style="text-align:center">vivid</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 16.04</td>
+<td style="text-align:center">xenial</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 17.04</td>
+<td style="text-align:center">zesty</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 18.04</td>
+<td style="text-align:center">bionic</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 19.04</td>
+<td style="text-align:center">disco</td>
+</tr>
+<tr>
+<td style="text-align:center">Ubuntu 20.04</td>
+<td style="text-align:center">focal</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="3-to-be-continued"><a href="#3-to-be-continued" class="headerlink" title="3. to be continued"></a>3. to be continued</h2>]]></content>
       <categories>
         <category>linux</category>
       </categories>
   </entry>
   <entry>
-    <title>决策树之特征选择</title>
-    <url>/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/</url>
-    <content><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
+    <title>在远程服务器中使用mayavi渲染三维图——借助jupyter notebook</title>
+    <url>/2021/02/01/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E4%BD%BF%E7%94%A8mayavi%E6%B8%B2%E6%9F%93%E4%B8%89%E7%BB%B4%E5%9B%BE%E2%80%94%E2%80%94%E5%80%9F%E5%8A%A9jupyter-notebook/</url>
+    <content><![CDATA[<p>mayavi 库基于 opengl 绘制三维图，似乎凡是通过 opengl 调用 GPU 进行图像渲染的相关功能在远程连接中都无法使用，SSH 与 linux 的连接如是，win10 的远程桌面连接亦如是，曾经在 2020 年寒假使用服务器工作时深受其害，至 2021 年寒假竟然碰巧发现一些窍门可以正常使用 mayavi 了。</p>
+<blockquote>
+<p>注：本文说的“远程正常使用 mayavi”指其能正常渲染展示 3D 图（使用鼠标可以拖动至各个视角查看），如果只是希望能够保存 mayavi 绘制出的图片为 png 文件，不需要前台的 3D 展示，参考另一篇<a href="https://www.chua-n.com/2020/12/07/mayavi离屏渲染/">博文</a>。</p>
+</blockquote>
 <a id="more"></a>
+<h2 id="1-一般情况下的报错"><a href="#1-一般情况下的报错" class="headerlink" title="1. 一般情况下的报错"></a>1. 一般情况下的报错</h2><p>若不进行任何操作，在 ssh 连接下的服务器命令行中，进入 python 其至都无法导入 mayavi 的 mlab，更别提绘图了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chuan@zwgroup-1080ti:~/soil$ python</span><br><span class="line">Python 3.7.9 (default, Aug 31 2020, 12:42:55)</span><br><span class="line">[GCC 7.3.0] :: Anaconda, Inc. on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; from mayavi import mlab</span><br><span class="line">qt.qpa.xcb: could not connect to display</span><br><span class="line">qt.qpa.plugin: Could not load the Qt platform plugin <span class="string">&quot;xcb&quot;</span> <span class="keyword">in</span> <span class="string">&quot;&quot;</span> even though it was found.</span><br><span class="line">This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.</span><br><span class="line"></span><br><span class="line">Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl, xcb.</span><br><span class="line"></span><br><span class="line">已放弃 (核心已转储)</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
+<p>注 1：mayavi 的 mlab，会在几乎每一次调用时都创建一个“python 图形化进程”，包括在 import 引入 mlab 的语句中，远程无法调用 openGL 绘图，故而报错。</p>
+<p>注 2：另一种类似的情况是，也许你在本地服务器上运行 python 脚本，但你服务器没有显示器，此时情况同上。mayavi 无法连接 X 服务（和 OpenGL 的关系尚不清楚？），尽管你想不<code>mlab.show()</code>出来你的图形，希望使用<code>mlab.savefig()</code>命令将绘制出的图形保存成.png 格式后，传回个人电脑上再进行查看，但是会出现同样的报错。</p>
 </blockquote>
-<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
-<p>样本集合$D$的信息熵定义为</p>
-<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
-Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
-<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
-</blockquote>
-<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
-s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
-\end{aligned}
-\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
-<blockquote>
-<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
-</blockquote>
-<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
-\begin{aligned}
-\text{数据集$D$的纯度：} \\
-Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
-&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
-\end{aligned}</script><blockquote>
-<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
-</blockquote>
-<p>属性$a$的基尼指数：</p>
-<script type="math/tex; mode=display">
-Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
-\tag{3}</script><blockquote>
-<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
-<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
+<p>也在 mayavi 官方文档<a href="http://docs.enthought.com/mayavi/mayavi/tips.html?highlight=offscreen">这里</a>尝试了很多解决方案，但无甚效果。</p>
+<p>即使使用 jupyter notebook 导入 mlab，也会把其服务搞挂掉：</p>
+<p><img src="https://chua-n.gitee.io/blog-images/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter挂掉.png" alt="jupyter挂掉"></p>
+<h2 id="2-解决方案-1"><a href="#2-解决方案-1" class="headerlink" title="2. 解决方案 1"></a>2. 解决方案 1</h2><p>巧合的是，离校前我在服务器的主机上就地操作时，开启了一个 tmux 终端服务(见<a href="https://www.chua-n.com/2021/01/15/常用linux命令杂记/">常用 linux 命令杂记</a>)，在这个 tmux 终端中我意外开启了 jupyter-notebook 服务，jupyter 竟然能正常渲染出 mayavi 的三维图了！</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chuan@zwgroup-1080ti:~/soil$ jupyter-notebook</span><br><span class="line">[I 20:09:54.166 NotebookApp] 启动notebooks 在本地路径: /home/chuan/soil</span><br><span class="line">[I 20:09:54.166 NotebookApp] Jupyter Notebook 6.1.5 is running at:</span><br><span class="line">[I 20:09:54.166 NotebookApp] http://[ipAddress]:8888/</span><br></pre></td></tr></table></figure>
+<p><img src="https://chua-n.gitee.io/blog-images/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter成功使用mayavi.png" alt="jupyter成功使用mayavi"></p>
+<p>但这个 tmux 终端是我在服务器主机上本地开启的，现在我在远程连接中再开一个新的 tmux 终端并开启 jupyter-notebook 服务时，导入 mlab 依然会挂掉 jupyter 服务。因而推测：<strong>在远程连接中调用一些系统命令时，跟在本地调用相同命令时被系统授予的权限是不同的</strong>，尽管我可以在远程连接中新开一个 tmux，但这个 tmux 没有权限连接 X 服务（无法渲染基于 opengl 的 3D 图像），而本地开启的 tmux 则拥有相关权限。</p>
+<p>因此，若希望在远程中仍然可以正常使用 mayavi，在离开服务前先在服务器中开启一个 tmux 终端服务吧，不妨将它命名为“mayavi”，然后等需要的时候在其中开启 jupyter 服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -n mayavi  <span class="comment"># 需在服务器本机上输入这条命令</span></span><br><span class="line">jupyter-notebook  <span class="comment"># 无所谓何时开启Jupyter服务</span></span><br></pre></td></tr></table></figure>
+<p>那么如果我无法去到服务器所在地，无法开启所需的 tmux 终端呢？那就试试<a href="#jump">方案 2</a> 吧。</p>
+<h2 id="3-解决方案-2"><a href="#3-解决方案-2" class="headerlink" title="3. 解决方案 2"></a><span id="jump">3. 解决方案 2</span></h2><p>此方案实际是 mayavi 离屏渲染方法的一体两面，参见<a href="https://www.chua-n.com/2020/12/07/mayavi离屏渲染/">此篇博文</a>创建一个 <code>mayaviOffScreen.mlab</code> 代替你需要的 <code>mayavi.mlab</code> 吧：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Render the mayavi scene off screen.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">When you don&#x27;t need display the mayavi scene while running python scripts,</span></span><br><span class="line"><span class="string">importing `mlab` from this module is recommended, i.e.,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">from mayaviOffScreen imoprt mlab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notes:</span></span><br><span class="line"><span class="string">-------</span></span><br><span class="line"><span class="string">    1. If you are using mayavi from remote host by SSH, etc, you must</span></span><br><span class="line"><span class="string">        import `mlab` from this module. Or something wrong happens!</span></span><br><span class="line"><span class="string">    2. Under the circumstance above, if you need import some other modules meanwhile</span></span><br><span class="line"><span class="string">        and those modules import `mlab` as well in themselves, make sure the sentence</span></span><br><span class="line"><span class="string">        `from mayaviOffScreen import mlab` appears before `import otherModule`!</span></span><br><span class="line"><span class="string">        So that `mayaviOffScreen.mlab` covers `otherModule.mlab`.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br><span class="line">print(<span class="string">&quot;Set mlab.options.offscreen=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(mlab.options.offscreen))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>因为即使把 mayavi 的离屏渲染功能打开，jupyter 仍然会捕捉到 mayavi 的图像，于是，只要把方案 1 中的第一句<code>from mayavi import mlab</code>替换为<code>from mayaviOffScreen import mlab</code>便可以像方案 1 一样在 jupyter 中正常渲染 mayavi 图形。</p>
 ]]></content>
       <categories>
-        <category>ML</category>
+        <category>python</category>
+        <category>mayavi</category>
+        <category>jupyter</category>
       </categories>
   </entry>
   <entry>
@@ -504,51 +751,6 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
       </tags>
   </entry>
   <entry>
-    <title>WSL下安装MySQL</title>
-    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
-    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
-<a id="more"></a>
-<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
-<li><code>apt-get install mysql-server mysql-client</code></li>
-<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
-</ol>
-<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
-<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
-<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
-<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
-<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-        <category>WSL</category>
-        <category>mysql</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>jupyter notebook中使用mayavi三维绘图库</title>
-    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
-    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
-<a id="more"></a>
-<blockquote>
-<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
-</blockquote>
-<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
-<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
-<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
-<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>jupyter</category>
-        <category>mayavi</category>
-      </categories>
-  </entry>
-  <entry>
     <title>配置jupyter notebook远程连接服务</title>
     <url>/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/</url>
     <content><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
@@ -571,6 +773,128 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
         <category>python</category>
         <category>jupyter</category>
       </categories>
+  </entry>
+  <entry>
+    <title>读书笔记：《历史学是什么》</title>
+    <url>/2021/02/03/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%9A%E3%80%8A%E5%8E%86%E5%8F%B2%E5%AD%A6%E6%98%AF%E4%BB%80%E4%B9%88%E3%80%8B/</url>
+    <content><![CDATA[<p>葛剑雄，周筱赟著：《历史学是什么》，北京大学出版社，2015 年 9 月第 1 版。</p>
+<a id="more"></a>
+<blockquote>
+<p>作者语：大部分的青少年，包括中小学生、非历史学及相关专业的大学生，他们学历史只是增加知识、满足兴趣、陶冶情操，既没有必要，也不应该让他们把时间花在非常琐碎的历史细节和有重大争议问题的讨论上，只要告诉他们一些基本史实或学术界公认的观点就可以了。</p>
+<p>作者语：一位历史老师，不可能，也没有必要把历史研究的全部内容传授给学生，尤其是目前尚有很大争议的问题，对缺乏分析判断能力的中小学生而言，反而容易引起思想混乱。</p>
+</blockquote>
+<p>作者对历史的划分：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">时间系列</th>
+<th style="text-align:center">空间系列</th>
+<th style="text-align:center">内容系列</th>
+<th style="text-align:center">人物系列</th>
+<th style="text-align:center">另类历史</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">通史、断代史、阶段史…</td>
+<td style="text-align:center">世界史、国别史、地区史…</td>
+<td style="text-align:center">综合史（总史）、专门史、资料汇编、年表、历史地图…</td>
+<td style="text-align:center">个人、血缘群体、地域群体、专门群体…</td>
+<td style="text-align:center">文学、艺术、宗教、神话、音乐、戏剧、影响、民间故事..</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>现在中国历史上第一部通史是司马迁的《史记》。</p>
+</blockquote>
+<h2 id="一、一些地域特色"><a href="#一、一些地域特色" class="headerlink" title="一、一些地域特色"></a>一、一些地域特色</h2><ol>
+<li>杭州方言在整片吴方言区内，是一个非常典型的方言孤岛，仅分布于杭州市城区，范围极小，甚至一到城郊方言就大不相同。杭州方言在语音、词汇和语法等方面都有浓厚的北方官话色彩。<blockquote>
+<p>如，杭州方言具有大量的“<strong>儿尾词</strong>”，这不同于北方的“<strong>儿话音</strong>”：儿话音附在前字字音末尾，与前字合成一个音，起卷舌作用，并非一个独立的音节，而杭州方言恰恰相反。之所以如此，是北宋末年宋室南渡，大批北方移民涌入临安（今杭州），受本地方言影响下的产物；另外民国成立后，原清政府驻军 <em>旗下营</em> 解散，大批旗人子弟也给杭州方言融入了北方官话的因素。</p>
+</blockquote>
+</li>
+<li><strong>蒙古褶</strong>与<strong>蒙古青</strong>：蒙古人种由于最初生活在草原和半干旱地区，在眼睑上形成具有保护眼睛的眦褶的比例很高，人类学上称作蒙古褶，俗称双眼皮；大部分蒙古人种的初生婴儿臀部由于皮下色素沉积，出现青紫色斑，被认定是蒙古人种所特有的遗传特征，称为蒙古青。</li>
+<li>现在的省区划分，基本上是继承明清的制度，在建省之初，必定是由于这片区域具有一些共同点。</li>
+<li>以前一直把今天的江苏南部、浙江北部、上海市辖区合称为“<strong>吴越</strong>”。</li>
+</ol>
+<h2 id="二、关于年号纪年"><a href="#二、关于年号纪年" class="headerlink" title="二、关于年号纪年"></a>二、关于<strong>年号</strong>纪年</h2><ol>
+<li>中国最早的纪年方式是干支纪年，即 10 个天干和 12 个地支排列组合，每 60 年为一个循环。以后增加了以帝王在位的年数纪年，从<strong>元年</strong>（一般为即位的次年）开始，逐年累计到去位。</li>
+<li>最早的年号始于汉武帝元鼎元年（前 116），据说当时在汾水旁获得一只宝鼎，被认为是一种吉兆，因而设置<strong>年号</strong>，从此成为惯例。现在史书上所见汉代以前的年号，都是后来追加的。</li>
+<li>如上所说，新皇帝继位后，一般都从第二年开始使用新的年号，但也有当年就改的，这种情况下一年便会出现两个年号，如果这两位皇帝在这一年还改过年号，那一年就会出现更多的年号了。</li>
+<li>在明代以前，同一皇帝在位时往往不止一个年号，常会以顺应天象、应贺吉兆等理由而<strong>改元</strong>，有的皇帝改元异常频繁，如唐高宗李治在位的 34 年用过 14 个年号，武则天在位的 21 年间用了 17 个年号。而明清两朝，一位皇帝只用一个年号，所以一般就用年号来称为皇帝，如乾隆皇帝，反而不用他的庙号“高宗”、尊号“法天隆运至诚先觉体元立极敷文奋武钦明孝慈神至纯皇帝”（简称纯皇帝）和姓名爱新觉罗村•弘历。</li>
+<li>皇帝、皇后（太后、太皇太后）的<strong>尊号</strong>、<strong>徽号</strong>、<strong>庙号</strong>、<strong>谥号</strong>虽然同属一人，但不同时间有不同的称呼，不能乱用或混用。皇帝生前可以有尊号和徽号，尊号还可以由简而繁、不断增加，但只有死后才会有谥号和庙号。<blockquote>
+<p>帝、后有了尊号后，臣子会不断地给他们加颂扬褒美的词作为徽号，唐宋以后渐成惯例，到嘉庆时，大概觉得再加下去没完没了，就规定了制度，列朝皇帝已加到 24 字、皇帝已加到 16 字的便不再追加，所以其他皇帝都是 22 字或 20 字。由于这类尊号、徽号几乎用遍了颂词，每个皇帝大同小异，已是毫无意义的文字游戏，所以除了用在正式文书中外没有什么用处，就是当时人一般也都用简称，如慈禧太后尊号全称是“慈禧端佑康颐昭豫庄诚寿恭钦献崇熙皇太后”，一般仅称“慈禧太后”或“慈禧皇太后”，在她死前 16 字已经用满，颂词已用尽，所以死后就将尊号当作谥号。</p>
+</blockquote>
+</li>
+<li>年号出现后，干支依然十分流行，所以往往年号与干支混合使用。特别是明清两代，有的年号持续时间很长，两者混用会更符合当时人们的习惯，如万历十五年（1587）可称万历丁亥，光绪二十六年（1900）可称光绪庚子。除了康熙在位长达 61 年，出现过两个壬寅（元年、六十一年）外，其他的号都不超过 60 年，所以不存在混淆的问题。</li>
+<li>年号一般均为二字，但也有少数的多字年号。其中三字年号为王莽的“始建国”、梁武帝的“中大通”和“中大同”；四字年号略多一些，主要集中在唐宋两代，武则天一人就占了三个，“天册万岁”“万岁登封”“万岁通天”，宋太宗有“太平兴国”，宋真宗有“大中祥符”、宋徽宗有“建中靖国”等等。</li>
+<li>年号用字和意义的选择都要符合吉利、赞颂、祈求、美好的要求，所以一些字和词被频繁使用，有的年号被用了不止一次。<blockquote>
+<p>最多的是“太平”，八次；其次是“建武”，七次；再次是“中兴”“永平”“永兴”“永和”“建平”“建兴”，六次；“太安”“太和”“甘露”“永安”“永康”“建元”“建始”也都有五次。</p>
+</blockquote>
+</li>
+<li>中国的农历并非单纯按照月亮的运行计算，而是一种阴阳混合历，即既按月相的盈亏决定每个朔望月的长度，又按太阳的视运行周期决定每个回归年的长度，并按年对月进行加闰调整。农历的正月初一最早可开始于公历的 1 月下旬，也可晚至公历的 2 月下旬。</li>
+</ol>
+<h2 id="三、血亲关系、地域"><a href="#三、血亲关系、地域" class="headerlink" title="三、血亲关系、地域"></a>三、血亲关系、地域</h2><ol>
+<li><strong>拟制血亲关系</strong>：有一些特殊的家族群体并不是以真正的血缘关系维系的，而是通过人为的方法和程序模仿真正的血亲关系而制造出来的拟制血亲关系。在唐五代时期，这种拟制血亲关系相当普遍，成为一时的风尚。</li>
+<li>唐五代割据军阀收养义子，数量据人。安禄山就有义子 8000 人，田承嗣有 3000 人，王建有 120 人，以此作为巩固势力、笼络人心的一种手段。</li>
+<li>后唐明宗<strong>李嗣</strong>本是无姓的沙陀族部民，小名邈佶烈，因骁勇善战为唐末军阀 <em>李克用</em> 赏识而收为义子，赐姓名<strong>李嗣源</strong>，即帝位后又更名为<strong>李亶</strong>。</li>
+<li>欧阳修在《新五代史-义儿传序》中感叹道：“世道衰，人伦坏，而亲疏之理反其常，干戈起于骨肉，异类合为父子。”</li>
+<li><strong>郡望</strong>：该姓家族中最显赫一支的发祥地。古人传记或自述中的籍贯大多是祖籍，或者郡望，而未必是他真正的出生地。</li>
+<li>秦汉以来在首都任职的官员和各地的行政长官多数不是本地人，有的离开原籍已不止一代，但除了某些特殊情况，他们一般不会改变自己原来的籍贯。东汉时出现了好几位籍贯是西北边郡的知名学者，但实际上除了个别人以外，他们都是在首都洛阳等地方居住或接受教育。明清时也有不少生长在京师的人物，籍贯却还是南方的祖籍，南方对他们的影响只是血统和家庭的传统，但北京对他们的影响却起决定性作用。</li>
+<li>自魏晋<strong>门阀制度</strong>盛行以后，高门世族成为士人立命进身的基础，各姓人士无不标榜本族的郡望，王氏必称太原，谢氏必称陈郡，杨氏必称弘农，赵氏必称天水，等等。因此，已在京师任职数代的大族，必然还要以郡望所在为籍贯。<blockquote>
+<p>像唐代的韩愈自称“昌黎韩愈”，其实他是河南河阳人（今河南孟州市），昌黎只是其郡望而已。而且，在这种制度影响下，一些人进身无门，不得不冒用他族的郡望，甚至伪造世系。这些人的籍贯就更与他们的出生地无关了。</p>
+</blockquote>
+</li>
+<li>除了同一出生地之外，在同一地方活动，或者在同一地方结成某一个利益集团，这些群体可能也都是地域性的。例如，刘邦即帝位后建都洛阳，一方面固然是由于秦朝故都咸阳已完全被毁，另一方面也是由于洛阳比较靠近这批人的故乡，所以只有像张良这样具有长远战略眼光、又为刘邦所信用的谋士才能说服他迁都关中。唐代也有类似情况。</li>
+<li>明清以来，朝野都喜欢用籍贯来称呼某个政治人物，如分宜相严嵩（江西分宜人）、李合肥（李鸿章）、张南皮（张之洞）、翁常熟（翁同龢)、袁项城（袁世凯），甚至连姓都不用，如项城即指袁世凯。</li>
+</ol>
+<h2 id="四、“中国与世界”"><a href="#四、“中国与世界”" class="headerlink" title="四、“中国与世界”"></a>四、“中国与世界”</h2><ol>
+<li>有一些人借着弘扬中国文化的名义，把《周易》及阴阳学说抬高到了无以复加的地位，似乎成了集科学的大成，成了中国以至世界一切科学的源泉。尽管莱布尼茨从中国的八卦得到启发而发明二进制的故事已经不止一次被指出并非事实，而只国人一厢情愿的误解，事实不过是莱布尼茨发明二进制之后，从在中国传教的法国籍传教士处获得了宋代邵雍的六十四卦图，发现可以用他的二进制数学来解释，但不少人至今还在津津乐道，以此来证明《周易》的伟大。</li>
+<li>作为中国四大发明之一的造纸术在阿拉伯世界的传播，靠的是怛(dá)罗斯战役的唐军俘虏。而意外地亲身游历了中亚、西亚并留下纪录的，竟也是俘虏之一的杜环。在大批西域“商胡”、阿拉伯“蕃客”来中原经商致富、定居繁衍的同时，唐朝人在境外的发展几乎是一片空白。</li>
+<li>北方游牧民族是中原政权唯一存在的威胁，如匈奴、鲜卑、突厥、契丹、女真等，长城就是为了阻止这些民族的南下而修建并被后代不断增筑的。尽管他们曾经不止一次征服过中原，但由于这些民族整体上，特别在经济上、文化上落后于中原汉族，连这些民族本身也被消融于汉族的汪洋大海之中。</li>
+<li>在西方历史上历经 1800 多年流散生涯，以强大的凝聚力固守本民族宗教文化传统而著称的犹太民族，其中的一支于北宋中叶进入开封定居，长期过着和平生活，得到汉族的平等对待，也逐渐放弃本民族的语言，开始学习儒家经典，参加科举考试，娶汉族女子为妻，最终失去保持本民族特征的心态，融合到了汉族之中。在 19 世纪初，开封犹太人中就已经没有专门的神职人员，无人能够阅读希伯来文经典了。这是见于记载的犹太民族被外族同化的唯一例子。</li>
+<li>像林则徐这样的伟大人物，也相信洋人的腿关节不能弯曲，因此一度认为清朝军队只要以长竹竿为武器将他们拨翻在地，他们就会束手就擒了。</li>
+</ol>
+<h2 id="五、杂记"><a href="#五、杂记" class="headerlink" title="五、杂记"></a>五、杂记</h2><ol>
+<li>秦朝至清朝鸦片战争前的这 2000 余年，中国的疆域在不断变化，但总的趋势是越来越扩大、稳定和巩固，最终形成了清朝统一后的极盛疆域，也为今天中国的领土奠定了基础。</li>
+<li>明初朱元章虽然定都江宁（今南京），但也知道首都偏南、离北方军事要地太远的缺点，一直想迁都北方，先后考察过西安和开封。当西安因过于残破、交通不便被否决后，朱元璋将希望寄托在开封，却发现汴渠已无法恢复，原有河道太浅，无法解决大批粮食的运输，只得作罢。而明成祖之所以能迁都北京，南北大运河的存在是决定因素之一。<blockquote>
+<p>但运河的自然地理条件也决定了它同样存在着的先天不足：由南到北要越过海拔 40 米左右的山东，而这一带恰恰是水量不足的地方，天气稍旱，就会出现运河与当地农业生产争水的现象，而为了确保运河的畅通，明清统治者都采取弃农保运的方针，往往连山泉的水都得引入运河，向北京运粮食的船队不过，周围的水源就绝不能动用。运河还得穿过黄河，而黄河又经常闹水灾，决口改道也多次发生。治黄和保运往往有矛盾，在这种情况下，为了保证运河的畅通，统治者宁可暂停黄河堵口和恢复故道的工作，或者听任水患延续。</p>
+</blockquote>
+</li>
+<li>刘向的《列女传》中尽管也有不少后世所谓的“贞节烈女”，但“列”字在他那里的本意只是“诸”“众”之意，犹如《列仙传》《列国志》，是各类有影响的或值得记载的妇女的传记，只要才行高秀者均可收入。而到了后世，“列”字完成成了“烈”的通假字，专指“节烈”之意，贞节与否居了入选的唯一标准，《列女传》演变成了《“烈”女传》。尤其明清以后不计其数的续修《列女传》以及正史、方志中的《列女传》，千篇一律，无不如此。我们在阅读这类史料时必须注意，正因为贞节烈女太少，统治者才会大力提倡，这和鲁迅在《我们现在怎样做父亲》一文中说的：“历来都竭力表彰‘五世同堂’，便足见实际上同居的为难；拼命的劝孝，也足见事实上孝子的缺少。”都是一样的道理。</li>
+<li>晚明以来，一方面是充斥于正史、方志中无数贞节烈女的事迹，另一方面，却涌现了大量以情欲为主题的市井小说，专以叙床第之事为能事，这正反映了晚明男女关系渐趋松弛，人性觉醒，世风为之一巨变。这与西方历史上的“文艺复兴”时代颇有类似之处，后者常为中国的历史著作倍加赞誉，而前者却被贬为“亡国之相”，不如何以厚此薄彼如此？</li>
+<li>唐安史之乱爆发后，太监李辅国因拥立肃宗继位有功，被任命为兵部尚书，从此宦官掌军几乎成为惯例。由于十余万神策军（中央禁军）和大部分藩镇的兵权都掌握在太监手中，反而是皇帝一旦得罪了太监，即或囚或废，甚至连皇帝的性命也会难保。唐中后期几乎所有皇帝均为宦官拥立，顺宗、宪宗、敬宗、文宗都是由于试图打击太监势力而被杀。</li>
+<li>元朝是蒙古族入主中原而建立的，实行民族歧视政策，将各民族分为四等：蒙古、色目、汉人、南人，从法律上明确规定前两类人在政治、经济上的优越地位。蒙古尚武轻文，建国后长期废止科举考试，汉族文人（特别是北方原金朝统治区的）丧失了进身之阶，地位一落千丈，几乎处于社会最底层，故有“九儒十丐”之说。他们看不到前途和希望，带着对社会的满腔怨恨投入杂剧创作当中，目前存世的元人杂剧，几乎全是汉人创作的。</li>
+<li>《金瓶梅》一书最为前人诟病的是其中夹杂的大量性描写，被贬为“天下第一淫书”，其实这样的描写在当时却是一种风尚，文人士子并不以谈性为耻，鲁迅便说：“自方士进用以来，方药盛，妖心兴，而小说亦多神魔之谈，且每叙床第之事也。然《金瓶梅》作者能文，故虽间杂猥词，而其佳处自在。”</li>
+<li>按照中国的历史传统，即使连皇帝本人，也是无权阅读当朝的<strong>起居注</strong>的。据说古代史官应该将皇帝的言行和活动随时记录下来，投入一个密封的容器，等皇帝死了，才能由专人打开，取了记录作为修史的根据。史官的记载不是给皇帝看的，而是留给后人修史用的。<blockquote>
+<p>像宋太宗这样的人物，在历史上算得上开明的君主，他对历史毕竟还多少怀有一定的畏惧，不时检点自己的言行，尊重史官的独立性。面历史上另一些暴君、权臣，则完全依靠政治强权来迫使历史符合自己的意愿。</p>
+<p>前秦国主<strong>苻坚</strong>，其生母苟太后与将军李威有私，苻坚为掩盖这段宫廷丑闻，不顾制度调阅了起居注和有关簿记，其中果然有苟太后与李威隐秘关系的记录，他恼羞成怒，将这些原始材料全部焚毁。而执笔史官均已去世，事情才就此作罢。</p>
+<p>东晋孙盛所作《晋阳秋》一书中，如实记载了桓温北伐为前燕大败之事，桓温阅后大为恼怒，强令孙盛修改，孙盛誓死不从，后来是他儿子私自修改才了事。幸亏孙盛事先已将《晋阳秋》誊抄了两部寄到前燕，后人才知道这段历史的真相。</p>
+</blockquote>
+</li>
+<li>本来按照周朝的制度，各诸侯国每年都必须到国都朝觐周天子并进贡各地方物，但到了春秋末年，王室衰微，周天子根本不被各诸侯放在眼里，反而要去参加诸侯的会盟。</li>
+<li>道教中常见某人服仙丹白日羽化升天之事，实际上均是汞、砷、铅等重金属急性中毒而导致的迅速死亡。但英国著名科学史家李约瑟博士在其巨著《中国科学技术史》中就对道士炼丹活动给予了高度评价，认为中国的炼丹术通过阿拉伯人传到西方世界，发展为炼金术，成为近代化学的起源。在欧洲历史上产生了翻天覆地变化的火药，也是中国道士在炼丹过程中偶然发明的。</li>
+<li>海瑞死时仅留下白银 20 两，尚不够殓葬的费用，可见官员们靠正常收是无法维持生活的。有的朝代还委任一些只有空衔不支俸禄的地方官，听任他们去“自负盈亏”，这样就造成了无官不贪的局面。平心而论，海瑞的廉洁自律，确实值得敬仰，但用如此崇高的道德规范来要求每一个官员，根本是不可能做到的。海瑞是宋明理学的坚定信仰者和实践者，在这点上，他确实是表里如一的，但其行事往往极端偏激而毫不近人情：明姚叔祥曾记载，海瑞年仅 5 岁的女儿，仅仅因为从男性家僮手中接了一块饼吃，便被海瑞认为犯了“男女授受不亲”不大防，强逼其自行饿死。</li>
+<li>在中国的七大古都中，安阳建都在杭州之前，年代比杭州久；开封也先于杭州，地位更加重要，但国内外知道杭州的人无疑要比知道开封、安阳的多得多。像杭州的“宋城”主题公园，全是新建的仿古建筑，游客也源源不绝。而杭州城南凤凰山麓真正的南宋皇城遗址却堙没于草木之间，到那里去发思古之幽情的恐怕没有几个。</li>
+<li>要了解魏晋风度就离不开《世说新语》的记载。</li>
+<li>毛泽东晚年很多做法，他都要在历史中找根据，而与中国实际越来越脱离。1958 年，中共八届六中全会通过《关于人民公社若干问题的决议》，毛泽东将《三国志-张鲁传》亲自作注，印发与会者。他对张鲁的五斗米道实行的“置义舍”（免费住宿）、“置义米肉”（吃饭不要钱）等措施极为欣赏，在批语中认为“现在的人民公社运动，是有我国的历史来源的”，以此作为“大跃进”和“人民公社化”运动的历史依据，终于酿成历史的惨剧。毛泽东研究专家，曾任毛泽东秘书的李锐对此有过切中肯綮(qìng)的评价：“毛泽东对中国传统文化最有兴趣，涉猎最广的是史书。他一生酷好读史，到老不衰。除常看卷帙浩繁的《资治通鉴》外，即使是专治史学的专家也未必人人通读过的《二十四史》，也基本读遍了。至于稗官野史，他更是兴趣极浓，熟悉之至。”（《毛泽东晚年错误思想形成的原因》，见《直言：李锐六十年的忧与思》，今日中国出版社 1998 年）但“他既有十分高远的想象，又有丰富的历史素养，独独缺少对人类（原文按，主要是西方资本主义）经济发展普遍规律的了解，其中有为马克思所总结过的，也有马克思以后 100 多年尤其是二次大战后新发展的，他都不熟悉，或者茫然无知；同时又违背革命年代自己的经验，急于求成，不是脚踏中国实际，用科学的实事求是的态度探索落后国家社会主义建设规律，终于造成了晚年的悲剧。”（《“大跃进”失败的教训何在》，同上）</li>
+<li>中国的三门峡水库由于无法解决的泥沙问题，建成不久即壅塞报废。</li>
+<li>大凡在社会大变革时期，一方面许多人通过不正当的手段攫取了大量的社会财富和政治利益，另一方面，旧体制下的既得利益者出于利益丧失，对社会现状产生不满。</li>
+<li>经济增长多半是由政府投资带动的，政府的大量投资可能造成财政赤字，往往就要依靠增发货币弥补，于是造成物价上涨。一般而言，高的经济增长率就会导致高的通货膨胀率。所以越是经济落后的地区，物价就越是出奇地低。</li>
+<li>玄武门之变后，唐高祖随即颁布诏令，以世民为太子，建成、元吉的十个儿子均以谋反罪名处死，两个月后，又宣布退位为太上皇，李世民登基。</li>
+<li>隋仁寿四年（604），隋文帝次子杨广发动宫廷政变，杀死其父杨坚和其兄杨勇自立，留在史书上的隋炀帝形象，是一个荒淫无耻、灭绝人伦的暴君，而导演了一场类似宫廷政变的李世民，却是大唐帝国的缔造者，是历史上少有的明君。之所以会有如此巨大的差别，就在于杨广上台后横征暴敛、诛杀功臣、穷兵黩武，不久即身死国灭，被后世视为亡国之君的典型，而李世民则能吸取历史的教训，任命包括原建成亲信魏征在内的一大批名臣，开创盛唐的“贞观之治”，自然可以从容地修改国史。</li>
+<li>唐太宗晚年因其诸子争夺储位而极其苦恼，甚至当着大臣的面“抽佩刀欲自刺”，就是他自己种下的恶果。</li>
+<li>整个唐朝都拥有今天越南的一部分，而当时青藏高原上的吐蕃却是唐朝的对手。</li>
+<li>王莽深受儒家“夷夏之辨”的影响，对边疆少数民族政治采取了一系列错误政策。他胁迫羌人“献”出青海湖一带的土地设立西海郡，以便与国内已有的北海郡（国）、南海郡、东海郡合起来凑全“四海”。为了使这块荒地像一个郡，必须强制移民，于是增加了五十条法令，以便增加成千上万的罪犯，满足移民的需要。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>历史</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+      </tags>
   </entry>
   <entry>
     <title>Hexo-Next + GitHub + Gitee 搭建个人博客</title>
