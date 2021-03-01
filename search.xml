@@ -24,6 +24,29 @@
       </categories>
   </entry>
   <entry>
+    <title>使用SSH把个人电脑配置成 linux 服务器</title>
+    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
+<a id="more"></a>
+<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
+<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+<p>找到以下这两行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
+<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
+<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
+<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
+<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
+<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
+<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>linux 下从源码安装 Python——小白踩坑记</title>
     <url>/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/</url>
     <content><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
@@ -110,8 +133,8 @@
 ]]></content>
       <categories>
         <category>python</category>
-        <category>mayavi</category>
         <category>jupyter</category>
+        <category>mayavi</category>
       </categories>
   </entry>
   <entry>
@@ -147,57 +170,6 @@
 <li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
 <li>按照第 3 节进行安装。</li>
 </ol>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 命令行下适配 nvidia 驱动</title>
-    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
-<a id="more"></a>
-<h2 id="1-下载相应驱动"><a href="#1-下载相应驱动" class="headerlink" title="1. 下载相应驱动"></a>1. 下载相应驱动</h2><p>在官网<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn">这里</a>选择适应你 GPU 的驱动版本，在下载界面可用右键得到下载链接，然后在 linux 命令行下使用 wget 进行下载，如我下载的是 1080 Ti 的驱动版本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.nvidia.cn/content/DriverDownload-March2009/confirmation.php?url=/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run&amp;lang=cn&amp;<span class="built_in">type</span>=TITAN</span><br></pre></td></tr></table></figure>
-<p>下载完成后是一个名为<code>NVIDIA-Linux-x86_64-440.82.run</code>的文件。此时若使用<code>sudo sh NVIDIA-Linux-x86_64-440.82.run</code>进行安装，会产生如下报错：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">You appear to be running an X server; please exit X before installing.</span><br></pre></td></tr></table></figure>
-<p>这主要是由于通常而言你的电脑上已经有 nvidia 驱动并且在运行了，此时无法进行新驱动的安装，因为会影响依赖你现有驱动的应用的正常运行。比方说你的桌面程序就需要依靠现有的显卡驱动进行显示。</p>
-<p>回到这个报错，百度了解到是有一个叫做 X 的进程服务在依赖着 nvidia 驱动的运行，这个 X 进程似乎就是支撑你的图形桌面的服务。使用<code>ps aux | grep X</code>命令可查看到这个正在运行的服务：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1459  0.0  0.0  15984   928 pts/40   S+   19:12   0:00 grep X</span><br><span class="line">root      1643  0.0  0.1 426836 187692 tty7    Ssl+ 10:43   0:15 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch</span><br><span class="line">root      3604  0.0  0.0 387052 71108 tty8     Ssl+ 10:44   0:22 /usr/lib/xorg/Xorg -core :1 -seat seat0 -auth /var/run/lightdm/root/:1 -nolisten tcp vt8 -novtswitch</span><br><span class="line">git       3909  0.0  0.0  43732  4264 ?        Ss   10:44   0:03 dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-E2NLgH7XO1</span><br></pre></td></tr></table></figure>
-<h2 id="2-关闭-X-服务"><a href="#2-关闭-X-服务" class="headerlink" title="2. 关闭 X 服务"></a>2. 关闭 X 服务</h2><p>为了能够安装新的 nvidia 驱动，我们需要关闭这个 X 服务，我的 Ubuntu 是基于 lightdm 类型的桌面系统，采用如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /etc/init.d/lightdm stop</span><br><span class="line">sudo /etc/init.d/lightdm status</span><br></pre></td></tr></table></figure>
-<p>对于其他的 linux 版本，如果桌面系统是基于 gdm 类型，应该把命令中的 lightdm 改为 gdm 即可；非这两种桌面系统类型的，百度一下你的 linux 版本关闭 X 服务的相关命令吧。</p>
-<p>关闭了 X 服务后图形桌面可能会关闭，因为我是通过 ssh 连接的服务器进行的操作，所以也没有看到具体的变化，不确定具体会发生什么情况，不过别慌就是了。</p>
-<p>关闭 X 后，可再次用 ps 命令查看相关进程以确认，我这里显示如下，确实没有运行的 X 服务了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1656  0.0  0.0  15984  1084 pts/40   S+   19:15   0:00 grep X</span><br></pre></td></tr></table></figure>
-<h2 id="3-卸载旧的驱动"><a href="#3-卸载旧的驱动" class="headerlink" title="3. 卸载旧的驱动"></a>3. 卸载旧的驱动</h2><p>终于可以卸载旧驱动了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get --purge remove nvidia-*</span><br><span class="line"><span class="comment"># 也有的说用下面的命令进行卸载，我个人均有尝试，无碍</span></span><br><span class="line">sudo apt-get --purge remove <span class="string">&quot;*nvidia*&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-安装新驱动"><a href="#4-安装新驱动" class="headerlink" title="4. 安装新驱动"></a>4. 安装新驱动</h2><p>在第 1 步下载的驱动文件目录里运行安装包即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-440.82.run</span><br></pre></td></tr></table></figure>
-<p>值得一提的是，中间可能会有一些小的 warning 提示（好像还有一个 error？），但流程走下来最终还是提示 successfully complete，这就中了！使用<code>nvidia-smi</code>已经可以看到你的新驱动版本号（Driver Version）产生了变化：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nvidia-smi</span></span><br><span class="line">Sun Jun 21 19:16:54 2020</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 440.82       Driver Version: 440.82       CUDA Version: 10.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  GeForce GTX 108...  Off  | 00000000:02:00.0 Off |                  N/A |</span><br><span class="line">| 27%   35C    P5    24W / 250W |      0MiB / 11170MiB |      2%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">|  GPU       PID   Type   Process name                             Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用SSH把个人电脑配置成 linux 服务器</title>
-    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
-<a id="more"></a>
-<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
-<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
-<p>找到以下这两行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
-<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
-<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
-<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
-<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
-<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
 ]]></content>
       <categories>
         <category>linux</category>
@@ -681,37 +653,31 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
       </categories>
   </entry>
   <entry>
-    <title>在远程服务器中使用mayavi渲染三维图——借助jupyter notebook</title>
-    <url>/2021/02/01/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E4%BD%BF%E7%94%A8mayavi%E6%B8%B2%E6%9F%93%E4%B8%89%E7%BB%B4%E5%9B%BE%E2%80%94%E2%80%94%E5%80%9F%E5%8A%A9jupyter-notebook/</url>
-    <content><![CDATA[<p>mayavi 库基于 opengl 绘制三维图，似乎凡是通过 opengl 调用 GPU 进行图像渲染的相关功能在远程连接中都无法使用，SSH 与 linux 的连接如是，win10 的远程桌面连接亦如是，曾经在 2020 年寒假使用服务器工作时深受其害，至 2021 年寒假竟然碰巧发现一些窍门可以正常使用 mayavi 了。</p>
-<blockquote>
-<p>注：本文说的“远程正常使用 mayavi”指其能正常渲染展示 3D 图（使用鼠标可以拖动至各个视角查看），如果只是希望能够保存 mayavi 绘制出的图片为 png 文件，不需要前台的 3D 展示，参考另一篇<a href="https://www.chua-n.com/2020/12/07/mayavi离屏渲染/">博文</a>。</p>
-</blockquote>
+    <title>linux 命令行下适配 nvidia 驱动</title>
+    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
 <a id="more"></a>
-<h2 id="1-一般情况下的报错"><a href="#1-一般情况下的报错" class="headerlink" title="1. 一般情况下的报错"></a>1. 一般情况下的报错</h2><p>若不进行任何操作，在 ssh 连接下的服务器命令行中，进入 python 其至都无法导入 mayavi 的 mlab，更别提绘图了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chuan@zwgroup-1080ti:~/soil$ python</span><br><span class="line">Python 3.7.9 (default, Aug 31 2020, 12:42:55)</span><br><span class="line">[GCC 7.3.0] :: Anaconda, Inc. on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; from mayavi import mlab</span><br><span class="line">qt.qpa.xcb: could not connect to display</span><br><span class="line">qt.qpa.plugin: Could not load the Qt platform plugin <span class="string">&quot;xcb&quot;</span> <span class="keyword">in</span> <span class="string">&quot;&quot;</span> even though it was found.</span><br><span class="line">This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.</span><br><span class="line"></span><br><span class="line">Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl, xcb.</span><br><span class="line"></span><br><span class="line">已放弃 (核心已转储)</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注 1：mayavi 的 mlab，会在几乎每一次调用时都创建一个“python 图形化进程”，包括在 import 引入 mlab 的语句中，远程无法调用 openGL 绘图，故而报错。</p>
-<p>注 2：另一种类似的情况是，也许你在本地服务器上运行 python 脚本，但你服务器没有显示器，此时情况同上。mayavi 无法连接 X 服务（和 OpenGL 的关系尚不清楚？），尽管你想不<code>mlab.show()</code>出来你的图形，希望使用<code>mlab.savefig()</code>命令将绘制出的图形保存成.png 格式后，传回个人电脑上再进行查看，但是会出现同样的报错。</p>
-</blockquote>
-<p>也在 mayavi 官方文档<a href="http://docs.enthought.com/mayavi/mayavi/tips.html?highlight=offscreen">这里</a>尝试了很多解决方案，但无甚效果。</p>
-<p>即使使用 jupyter notebook 导入 mlab，也会把其服务搞挂掉：</p>
-<p><img src="https://chua-n.gitee.io/blog-images/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter挂掉.png" alt="jupyter挂掉"></p>
-<h2 id="2-解决方案-1"><a href="#2-解决方案-1" class="headerlink" title="2. 解决方案 1"></a>2. 解决方案 1</h2><p>巧合的是，离校前我在服务器的主机上就地操作时，开启了一个 tmux 终端服务(见<a href="https://www.chua-n.com/2021/01/15/常用linux命令杂记/">常用 linux 命令杂记</a>)，在这个 tmux 终端中我意外开启了 jupyter-notebook 服务，jupyter 竟然能正常渲染出 mayavi 的三维图了！</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chuan@zwgroup-1080ti:~/soil$ jupyter-notebook</span><br><span class="line">[I 20:09:54.166 NotebookApp] 启动notebooks 在本地路径: /home/chuan/soil</span><br><span class="line">[I 20:09:54.166 NotebookApp] Jupyter Notebook 6.1.5 is running at:</span><br><span class="line">[I 20:09:54.166 NotebookApp] http://[ipAddress]:8888/</span><br></pre></td></tr></table></figure>
-<p><img src="https://chua-n.gitee.io/blog-images/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter成功使用mayavi.png" alt="jupyter成功使用mayavi"></p>
-<p>但这个 tmux 终端是我在服务器主机上本地开启的，现在我在远程连接中再开一个新的 tmux 终端并开启 jupyter-notebook 服务时，导入 mlab 依然会挂掉 jupyter 服务。因而推测：<strong>在远程连接中调用一些系统命令时，跟在本地调用相同命令时被系统授予的权限是不同的</strong>，尽管我可以在远程连接中新开一个 tmux，但这个 tmux 没有权限连接 X 服务（无法渲染基于 opengl 的 3D 图像），而本地开启的 tmux 则拥有相关权限。</p>
-<p>因此，若希望在远程中仍然可以正常使用 mayavi，在离开服务前先在服务器中开启一个 tmux 终端服务吧，不妨将它命名为“mayavi”，然后等需要的时候在其中开启 jupyter 服务：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -n mayavi  <span class="comment"># 需在服务器本机上输入这条命令</span></span><br><span class="line">jupyter-notebook  <span class="comment"># 无所谓何时开启Jupyter服务</span></span><br></pre></td></tr></table></figure>
-<p>那么如果我无法去到服务器所在地，无法开启所需的 tmux 终端呢？那就试试<a href="#jump">方案 2</a> 吧。</p>
-<h2 id="3-解决方案-2"><a href="#3-解决方案-2" class="headerlink" title="3. 解决方案 2"></a><span id="jump">3. 解决方案 2</span></h2><p>此方案实际是 mayavi 离屏渲染方法的一体两面，参见<a href="https://www.chua-n.com/2020/12/07/mayavi离屏渲染/">此篇博文</a>创建一个 <code>mayaviOffScreen.mlab</code> 代替你需要的 <code>mayavi.mlab</code> 吧：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Render the mayavi scene off screen.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">When you don&#x27;t need display the mayavi scene while running python scripts,</span></span><br><span class="line"><span class="string">importing `mlab` from this module is recommended, i.e.,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">from mayaviOffScreen imoprt mlab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notes:</span></span><br><span class="line"><span class="string">-------</span></span><br><span class="line"><span class="string">    1. If you are using mayavi from remote host by SSH, etc, you must</span></span><br><span class="line"><span class="string">        import `mlab` from this module. Or something wrong happens!</span></span><br><span class="line"><span class="string">    2. Under the circumstance above, if you need import some other modules meanwhile</span></span><br><span class="line"><span class="string">        and those modules import `mlab` as well in themselves, make sure the sentence</span></span><br><span class="line"><span class="string">        `from mayaviOffScreen import mlab` appears before `import otherModule`!</span></span><br><span class="line"><span class="string">        So that `mayaviOffScreen.mlab` covers `otherModule.mlab`.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br><span class="line">print(<span class="string">&quot;Set mlab.options.offscreen=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(mlab.options.offscreen))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>因为即使把 mayavi 的离屏渲染功能打开，jupyter 仍然会捕捉到 mayavi 的图像，于是，只要把方案 1 中的第一句<code>from mayavi import mlab</code>替换为<code>from mayaviOffScreen import mlab</code>便可以像方案 1 一样在 jupyter 中正常渲染 mayavi 图形。</p>
-]]></content>
+<h2 id="1-下载相应驱动"><a href="#1-下载相应驱动" class="headerlink" title="1. 下载相应驱动"></a>1. 下载相应驱动</h2><p>在官网<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn">这里</a>选择适应你 GPU 的驱动版本，在下载界面可用右键得到下载链接，然后在 linux 命令行下使用 wget 进行下载，如我下载的是 1080 Ti 的驱动版本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.nvidia.cn/content/DriverDownload-March2009/confirmation.php?url=/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run&amp;lang=cn&amp;<span class="built_in">type</span>=TITAN</span><br></pre></td></tr></table></figure>
+<p>下载完成后是一个名为<code>NVIDIA-Linux-x86_64-440.82.run</code>的文件。此时若使用<code>sudo sh NVIDIA-Linux-x86_64-440.82.run</code>进行安装，会产生如下报错：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">You appear to be running an X server; please exit X before installing.</span><br></pre></td></tr></table></figure>
+<p>这主要是由于通常而言你的电脑上已经有 nvidia 驱动并且在运行了，此时无法进行新驱动的安装，因为会影响依赖你现有驱动的应用的正常运行。比方说你的桌面程序就需要依靠现有的显卡驱动进行显示。</p>
+<p>回到这个报错，百度了解到是有一个叫做 X 的进程服务在依赖着 nvidia 驱动的运行，这个 X 进程似乎就是支撑你的图形桌面的服务。使用<code>ps aux | grep X</code>命令可查看到这个正在运行的服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1459  0.0  0.0  15984   928 pts/40   S+   19:12   0:00 grep X</span><br><span class="line">root      1643  0.0  0.1 426836 187692 tty7    Ssl+ 10:43   0:15 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch</span><br><span class="line">root      3604  0.0  0.0 387052 71108 tty8     Ssl+ 10:44   0:22 /usr/lib/xorg/Xorg -core :1 -seat seat0 -auth /var/run/lightdm/root/:1 -nolisten tcp vt8 -novtswitch</span><br><span class="line">git       3909  0.0  0.0  43732  4264 ?        Ss   10:44   0:03 dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-E2NLgH7XO1</span><br></pre></td></tr></table></figure>
+<h2 id="2-关闭-X-服务"><a href="#2-关闭-X-服务" class="headerlink" title="2. 关闭 X 服务"></a>2. 关闭 X 服务</h2><p>为了能够安装新的 nvidia 驱动，我们需要关闭这个 X 服务，我的 Ubuntu 是基于 lightdm 类型的桌面系统，采用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /etc/init.d/lightdm stop</span><br><span class="line">sudo /etc/init.d/lightdm status</span><br></pre></td></tr></table></figure>
+<p>对于其他的 linux 版本，如果桌面系统是基于 gdm 类型，应该把命令中的 lightdm 改为 gdm 即可；非这两种桌面系统类型的，百度一下你的 linux 版本关闭 X 服务的相关命令吧。</p>
+<p>关闭了 X 服务后图形桌面可能会关闭，因为我是通过 ssh 连接的服务器进行的操作，所以也没有看到具体的变化，不确定具体会发生什么情况，不过别慌就是了。</p>
+<p>关闭 X 后，可再次用 ps 命令查看相关进程以确认，我这里显示如下，确实没有运行的 X 服务了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1656  0.0  0.0  15984  1084 pts/40   S+   19:15   0:00 grep X</span><br></pre></td></tr></table></figure>
+<h2 id="3-卸载旧的驱动"><a href="#3-卸载旧的驱动" class="headerlink" title="3. 卸载旧的驱动"></a>3. 卸载旧的驱动</h2><p>终于可以卸载旧驱动了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get --purge remove nvidia-*</span><br><span class="line"><span class="comment"># 也有的说用下面的命令进行卸载，我个人均有尝试，无碍</span></span><br><span class="line">sudo apt-get --purge remove <span class="string">&quot;*nvidia*&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-安装新驱动"><a href="#4-安装新驱动" class="headerlink" title="4. 安装新驱动"></a>4. 安装新驱动</h2><p>在第 1 步下载的驱动文件目录里运行安装包即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-440.82.run</span><br></pre></td></tr></table></figure>
+<p>值得一提的是，中间可能会有一些小的 warning 提示（好像还有一个 error？），但流程走下来最终还是提示 successfully complete，这就中了！使用<code>nvidia-smi</code>已经可以看到你的新驱动版本号（Driver Version）产生了变化：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nvidia-smi</span></span><br><span class="line">Sun Jun 21 19:16:54 2020</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 440.82       Driver Version: 440.82       CUDA Version: 10.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  GeForce GTX 108...  Off  | 00000000:02:00.0 Off |                  N/A |</span><br><span class="line">| 27%   35C    P5    24W / 250W |      0MiB / 11170MiB |      2%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">|  GPU       PID   Type   Process name                             Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>python</category>
-        <category>mayavi</category>
-        <category>jupyter</category>
+        <category>linux</category>
       </categories>
   </entry>
   <entry>
@@ -751,6 +717,40 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
       </tags>
   </entry>
   <entry>
+    <title>在远程服务器中使用mayavi渲染三维图——借助jupyter notebook</title>
+    <url>/2021/02/01/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E4%BD%BF%E7%94%A8mayavi%E6%B8%B2%E6%9F%93%E4%B8%89%E7%BB%B4%E5%9B%BE%E2%80%94%E2%80%94%E5%80%9F%E5%8A%A9jupyter-notebook/</url>
+    <content><![CDATA[<p>mayavi 库基于 opengl 绘制三维图，似乎凡是通过 opengl 调用 GPU 进行图像渲染的相关功能在远程连接中都无法使用，SSH 与 linux 的连接如是，win10 的远程桌面连接亦如是，曾经在 2020 年寒假使用服务器工作时深受其害，至 2021 年寒假竟然碰巧发现一些窍门可以正常使用 mayavi 了。</p>
+<blockquote>
+<p>注：本文说的“远程正常使用 mayavi”指其能正常渲染展示 3D 图（使用鼠标可以拖动至各个视角查看），如果只是希望能够保存 mayavi 绘制出的图片为 png 文件，不需要前台的 3D 展示，参考另一篇<a href="https://www.chua-n.com/2020/12/07/mayavi离屏渲染/">博文</a>。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-一般情况下的报错"><a href="#1-一般情况下的报错" class="headerlink" title="1. 一般情况下的报错"></a>1. 一般情况下的报错</h2><p>若不进行任何操作，在 ssh 连接下的服务器命令行中，进入 python 其至都无法导入 mayavi 的 mlab，更别提绘图了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chuan@zwgroup-1080ti:~/soil$ python</span><br><span class="line">Python 3.7.9 (default, Aug 31 2020, 12:42:55)</span><br><span class="line">[GCC 7.3.0] :: Anaconda, Inc. on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; from mayavi import mlab</span><br><span class="line">qt.qpa.xcb: could not connect to display</span><br><span class="line">qt.qpa.plugin: Could not load the Qt platform plugin <span class="string">&quot;xcb&quot;</span> <span class="keyword">in</span> <span class="string">&quot;&quot;</span> even though it was found.</span><br><span class="line">This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.</span><br><span class="line"></span><br><span class="line">Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl, xcb.</span><br><span class="line"></span><br><span class="line">已放弃 (核心已转储)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注 1：mayavi 的 mlab，会在几乎每一次调用时都创建一个“python 图形化进程”，包括在 import 引入 mlab 的语句中，远程无法调用 openGL 绘图，故而报错。</p>
+<p>注 2：另一种类似的情况是，也许你在本地服务器上运行 python 脚本，但你服务器没有显示器，此时情况同上。mayavi 无法连接 X 服务（和 OpenGL 的关系尚不清楚？），尽管你想不<code>mlab.show()</code>出来你的图形，希望使用<code>mlab.savefig()</code>命令将绘制出的图形保存成.png 格式后，传回个人电脑上再进行查看，但是会出现同样的报错。</p>
+</blockquote>
+<p>也在 mayavi 官方文档<a href="http://docs.enthought.com/mayavi/mayavi/tips.html?highlight=offscreen">这里</a>尝试了很多解决方案，但无甚效果。</p>
+<p>即使使用 jupyter notebook 导入 mlab，也会把其服务搞挂掉：</p>
+<p><img src="https://chua-n.gitee.io/blog-images/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter挂掉.png" alt="jupyter挂掉"></p>
+<h2 id="2-解决方案-1"><a href="#2-解决方案-1" class="headerlink" title="2. 解决方案 1"></a>2. 解决方案 1</h2><p>巧合的是，离校前我在服务器的主机上就地操作时，开启了一个 tmux 终端服务(见<a href="https://www.chua-n.com/2021/01/15/常用linux命令杂记/">常用 linux 命令杂记</a>)，在这个 tmux 终端中我意外开启了 jupyter-notebook 服务，jupyter 竟然能正常渲染出 mayavi 的三维图了！</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chuan@zwgroup-1080ti:~/soil$ jupyter-notebook</span><br><span class="line">[I 20:09:54.166 NotebookApp] 启动notebooks 在本地路径: /home/chuan/soil</span><br><span class="line">[I 20:09:54.166 NotebookApp] Jupyter Notebook 6.1.5 is running at:</span><br><span class="line">[I 20:09:54.166 NotebookApp] http://[ipAddress]:8888/</span><br></pre></td></tr></table></figure>
+<p><img src="https://chua-n.gitee.io/blog-images/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter成功使用mayavi.png" alt="jupyter成功使用mayavi"></p>
+<p>但这个 tmux 终端是我在服务器主机上本地开启的，现在我在远程连接中再开一个新的 tmux 终端并开启 jupyter-notebook 服务时，导入 mlab 依然会挂掉 jupyter 服务。因而推测：<strong>在远程连接中调用一些系统命令时，跟在本地调用相同命令时被系统授予的权限是不同的</strong>，尽管我可以在远程连接中新开一个 tmux，但这个 tmux 没有权限连接 X 服务（无法渲染基于 opengl 的 3D 图像），而本地开启的 tmux 则拥有相关权限。</p>
+<p>因此，若希望在远程中仍然可以正常使用 mayavi，在离开服务前先在服务器中开启一个 tmux 终端服务吧，不妨将它命名为“mayavi”，然后等需要的时候在其中开启 jupyter 服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -n mayavi  <span class="comment"># 需在服务器本机上输入这条命令</span></span><br><span class="line">jupyter-notebook  <span class="comment"># 无所谓何时开启Jupyter服务</span></span><br></pre></td></tr></table></figure>
+<p>那么如果我无法去到服务器所在地，无法开启所需的 tmux 终端呢？那就试试<a href="#jump">方案 2</a> 吧。</p>
+<h2 id="3-解决方案-2"><a href="#3-解决方案-2" class="headerlink" title="3. 解决方案 2"></a><span id="jump">3. 解决方案 2</span></h2><p>此方案实际是 mayavi 离屏渲染方法的一体两面，参见<a href="https://www.chua-n.com/2020/12/07/mayavi离屏渲染/">此篇博文</a>创建一个 <code>mayaviOffScreen.mlab</code> 代替你需要的 <code>mayavi.mlab</code> 吧：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Render the mayavi scene off screen.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">When you don&#x27;t need display the mayavi scene while running python scripts,</span></span><br><span class="line"><span class="string">importing `mlab` from this module is recommended, i.e.,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">from mayaviOffScreen imoprt mlab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notes:</span></span><br><span class="line"><span class="string">-------</span></span><br><span class="line"><span class="string">    1. If you are using mayavi from remote host by SSH, etc, you must</span></span><br><span class="line"><span class="string">        import `mlab` from this module. Or something wrong happens!</span></span><br><span class="line"><span class="string">    2. Under the circumstance above, if you need import some other modules meanwhile</span></span><br><span class="line"><span class="string">        and those modules import `mlab` as well in themselves, make sure the sentence</span></span><br><span class="line"><span class="string">        `from mayaviOffScreen import mlab` appears before `import otherModule`!</span></span><br><span class="line"><span class="string">        So that `mayaviOffScreen.mlab` covers `otherModule.mlab`.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br><span class="line">print(<span class="string">&quot;Set mlab.options.offscreen=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(mlab.options.offscreen))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>因为即使把 mayavi 的离屏渲染功能打开，jupyter 仍然会捕捉到 mayavi 的图像，于是，只要把方案 1 中的第一句<code>from mayavi import mlab</code>替换为<code>from mayaviOffScreen import mlab</code>便可以像方案 1 一样在 jupyter 中正常渲染 mayavi 图形。</p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>jupyter</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
     <title>配置jupyter notebook远程连接服务</title>
     <url>/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/</url>
     <content><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
@@ -773,128 +773,6 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
         <category>python</category>
         <category>jupyter</category>
       </categories>
-  </entry>
-  <entry>
-    <title>读书笔记：《历史学是什么》</title>
-    <url>/2021/02/03/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%9A%E3%80%8A%E5%8E%86%E5%8F%B2%E5%AD%A6%E6%98%AF%E4%BB%80%E4%B9%88%E3%80%8B/</url>
-    <content><![CDATA[<p>葛剑雄，周筱赟著：《历史学是什么》，北京大学出版社，2015 年 9 月第 1 版。</p>
-<a id="more"></a>
-<blockquote>
-<p>作者语：大部分的青少年，包括中小学生、非历史学及相关专业的大学生，他们学历史只是增加知识、满足兴趣、陶冶情操，既没有必要，也不应该让他们把时间花在非常琐碎的历史细节和有重大争议问题的讨论上，只要告诉他们一些基本史实或学术界公认的观点就可以了。</p>
-<p>作者语：一位历史老师，不可能，也没有必要把历史研究的全部内容传授给学生，尤其是目前尚有很大争议的问题，对缺乏分析判断能力的中小学生而言，反而容易引起思想混乱。</p>
-</blockquote>
-<p>作者对历史的划分：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">时间系列</th>
-<th style="text-align:center">空间系列</th>
-<th style="text-align:center">内容系列</th>
-<th style="text-align:center">人物系列</th>
-<th style="text-align:center">另类历史</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">通史、断代史、阶段史…</td>
-<td style="text-align:center">世界史、国别史、地区史…</td>
-<td style="text-align:center">综合史（总史）、专门史、资料汇编、年表、历史地图…</td>
-<td style="text-align:center">个人、血缘群体、地域群体、专门群体…</td>
-<td style="text-align:center">文学、艺术、宗教、神话、音乐、戏剧、影响、民间故事..</td>
-</tr>
-</tbody>
-</table>
-</div>
-<blockquote>
-<p>现在中国历史上第一部通史是司马迁的《史记》。</p>
-</blockquote>
-<h2 id="一、一些地域特色"><a href="#一、一些地域特色" class="headerlink" title="一、一些地域特色"></a>一、一些地域特色</h2><ol>
-<li>杭州方言在整片吴方言区内，是一个非常典型的方言孤岛，仅分布于杭州市城区，范围极小，甚至一到城郊方言就大不相同。杭州方言在语音、词汇和语法等方面都有浓厚的北方官话色彩。<blockquote>
-<p>如，杭州方言具有大量的“<strong>儿尾词</strong>”，这不同于北方的“<strong>儿话音</strong>”：儿话音附在前字字音末尾，与前字合成一个音，起卷舌作用，并非一个独立的音节，而杭州方言恰恰相反。之所以如此，是北宋末年宋室南渡，大批北方移民涌入临安（今杭州），受本地方言影响下的产物；另外民国成立后，原清政府驻军 <em>旗下营</em> 解散，大批旗人子弟也给杭州方言融入了北方官话的因素。</p>
-</blockquote>
-</li>
-<li><strong>蒙古褶</strong>与<strong>蒙古青</strong>：蒙古人种由于最初生活在草原和半干旱地区，在眼睑上形成具有保护眼睛的眦褶的比例很高，人类学上称作蒙古褶，俗称双眼皮；大部分蒙古人种的初生婴儿臀部由于皮下色素沉积，出现青紫色斑，被认定是蒙古人种所特有的遗传特征，称为蒙古青。</li>
-<li>现在的省区划分，基本上是继承明清的制度，在建省之初，必定是由于这片区域具有一些共同点。</li>
-<li>以前一直把今天的江苏南部、浙江北部、上海市辖区合称为“<strong>吴越</strong>”。</li>
-</ol>
-<h2 id="二、关于年号纪年"><a href="#二、关于年号纪年" class="headerlink" title="二、关于年号纪年"></a>二、关于<strong>年号</strong>纪年</h2><ol>
-<li>中国最早的纪年方式是干支纪年，即 10 个天干和 12 个地支排列组合，每 60 年为一个循环。以后增加了以帝王在位的年数纪年，从<strong>元年</strong>（一般为即位的次年）开始，逐年累计到去位。</li>
-<li>最早的年号始于汉武帝元鼎元年（前 116），据说当时在汾水旁获得一只宝鼎，被认为是一种吉兆，因而设置<strong>年号</strong>，从此成为惯例。现在史书上所见汉代以前的年号，都是后来追加的。</li>
-<li>如上所说，新皇帝继位后，一般都从第二年开始使用新的年号，但也有当年就改的，这种情况下一年便会出现两个年号，如果这两位皇帝在这一年还改过年号，那一年就会出现更多的年号了。</li>
-<li>在明代以前，同一皇帝在位时往往不止一个年号，常会以顺应天象、应贺吉兆等理由而<strong>改元</strong>，有的皇帝改元异常频繁，如唐高宗李治在位的 34 年用过 14 个年号，武则天在位的 21 年间用了 17 个年号。而明清两朝，一位皇帝只用一个年号，所以一般就用年号来称为皇帝，如乾隆皇帝，反而不用他的庙号“高宗”、尊号“法天隆运至诚先觉体元立极敷文奋武钦明孝慈神至纯皇帝”（简称纯皇帝）和姓名爱新觉罗村•弘历。</li>
-<li>皇帝、皇后（太后、太皇太后）的<strong>尊号</strong>、<strong>徽号</strong>、<strong>庙号</strong>、<strong>谥号</strong>虽然同属一人，但不同时间有不同的称呼，不能乱用或混用。皇帝生前可以有尊号和徽号，尊号还可以由简而繁、不断增加，但只有死后才会有谥号和庙号。<blockquote>
-<p>帝、后有了尊号后，臣子会不断地给他们加颂扬褒美的词作为徽号，唐宋以后渐成惯例，到嘉庆时，大概觉得再加下去没完没了，就规定了制度，列朝皇帝已加到 24 字、皇帝已加到 16 字的便不再追加，所以其他皇帝都是 22 字或 20 字。由于这类尊号、徽号几乎用遍了颂词，每个皇帝大同小异，已是毫无意义的文字游戏，所以除了用在正式文书中外没有什么用处，就是当时人一般也都用简称，如慈禧太后尊号全称是“慈禧端佑康颐昭豫庄诚寿恭钦献崇熙皇太后”，一般仅称“慈禧太后”或“慈禧皇太后”，在她死前 16 字已经用满，颂词已用尽，所以死后就将尊号当作谥号。</p>
-</blockquote>
-</li>
-<li>年号出现后，干支依然十分流行，所以往往年号与干支混合使用。特别是明清两代，有的年号持续时间很长，两者混用会更符合当时人们的习惯，如万历十五年（1587）可称万历丁亥，光绪二十六年（1900）可称光绪庚子。除了康熙在位长达 61 年，出现过两个壬寅（元年、六十一年）外，其他的号都不超过 60 年，所以不存在混淆的问题。</li>
-<li>年号一般均为二字，但也有少数的多字年号。其中三字年号为王莽的“始建国”、梁武帝的“中大通”和“中大同”；四字年号略多一些，主要集中在唐宋两代，武则天一人就占了三个，“天册万岁”“万岁登封”“万岁通天”，宋太宗有“太平兴国”，宋真宗有“大中祥符”、宋徽宗有“建中靖国”等等。</li>
-<li>年号用字和意义的选择都要符合吉利、赞颂、祈求、美好的要求，所以一些字和词被频繁使用，有的年号被用了不止一次。<blockquote>
-<p>最多的是“太平”，八次；其次是“建武”，七次；再次是“中兴”“永平”“永兴”“永和”“建平”“建兴”，六次；“太安”“太和”“甘露”“永安”“永康”“建元”“建始”也都有五次。</p>
-</blockquote>
-</li>
-<li>中国的农历并非单纯按照月亮的运行计算，而是一种阴阳混合历，即既按月相的盈亏决定每个朔望月的长度，又按太阳的视运行周期决定每个回归年的长度，并按年对月进行加闰调整。农历的正月初一最早可开始于公历的 1 月下旬，也可晚至公历的 2 月下旬。</li>
-</ol>
-<h2 id="三、血亲关系、地域"><a href="#三、血亲关系、地域" class="headerlink" title="三、血亲关系、地域"></a>三、血亲关系、地域</h2><ol>
-<li><strong>拟制血亲关系</strong>：有一些特殊的家族群体并不是以真正的血缘关系维系的，而是通过人为的方法和程序模仿真正的血亲关系而制造出来的拟制血亲关系。在唐五代时期，这种拟制血亲关系相当普遍，成为一时的风尚。</li>
-<li>唐五代割据军阀收养义子，数量据人。安禄山就有义子 8000 人，田承嗣有 3000 人，王建有 120 人，以此作为巩固势力、笼络人心的一种手段。</li>
-<li>后唐明宗<strong>李嗣</strong>本是无姓的沙陀族部民，小名邈佶烈，因骁勇善战为唐末军阀 <em>李克用</em> 赏识而收为义子，赐姓名<strong>李嗣源</strong>，即帝位后又更名为<strong>李亶</strong>。</li>
-<li>欧阳修在《新五代史-义儿传序》中感叹道：“世道衰，人伦坏，而亲疏之理反其常，干戈起于骨肉，异类合为父子。”</li>
-<li><strong>郡望</strong>：该姓家族中最显赫一支的发祥地。古人传记或自述中的籍贯大多是祖籍，或者郡望，而未必是他真正的出生地。</li>
-<li>秦汉以来在首都任职的官员和各地的行政长官多数不是本地人，有的离开原籍已不止一代，但除了某些特殊情况，他们一般不会改变自己原来的籍贯。东汉时出现了好几位籍贯是西北边郡的知名学者，但实际上除了个别人以外，他们都是在首都洛阳等地方居住或接受教育。明清时也有不少生长在京师的人物，籍贯却还是南方的祖籍，南方对他们的影响只是血统和家庭的传统，但北京对他们的影响却起决定性作用。</li>
-<li>自魏晋<strong>门阀制度</strong>盛行以后，高门世族成为士人立命进身的基础，各姓人士无不标榜本族的郡望，王氏必称太原，谢氏必称陈郡，杨氏必称弘农，赵氏必称天水，等等。因此，已在京师任职数代的大族，必然还要以郡望所在为籍贯。<blockquote>
-<p>像唐代的韩愈自称“昌黎韩愈”，其实他是河南河阳人（今河南孟州市），昌黎只是其郡望而已。而且，在这种制度影响下，一些人进身无门，不得不冒用他族的郡望，甚至伪造世系。这些人的籍贯就更与他们的出生地无关了。</p>
-</blockquote>
-</li>
-<li>除了同一出生地之外，在同一地方活动，或者在同一地方结成某一个利益集团，这些群体可能也都是地域性的。例如，刘邦即帝位后建都洛阳，一方面固然是由于秦朝故都咸阳已完全被毁，另一方面也是由于洛阳比较靠近这批人的故乡，所以只有像张良这样具有长远战略眼光、又为刘邦所信用的谋士才能说服他迁都关中。唐代也有类似情况。</li>
-<li>明清以来，朝野都喜欢用籍贯来称呼某个政治人物，如分宜相严嵩（江西分宜人）、李合肥（李鸿章）、张南皮（张之洞）、翁常熟（翁同龢)、袁项城（袁世凯），甚至连姓都不用，如项城即指袁世凯。</li>
-</ol>
-<h2 id="四、“中国与世界”"><a href="#四、“中国与世界”" class="headerlink" title="四、“中国与世界”"></a>四、“中国与世界”</h2><ol>
-<li>有一些人借着弘扬中国文化的名义，把《周易》及阴阳学说抬高到了无以复加的地位，似乎成了集科学的大成，成了中国以至世界一切科学的源泉。尽管莱布尼茨从中国的八卦得到启发而发明二进制的故事已经不止一次被指出并非事实，而只国人一厢情愿的误解，事实不过是莱布尼茨发明二进制之后，从在中国传教的法国籍传教士处获得了宋代邵雍的六十四卦图，发现可以用他的二进制数学来解释，但不少人至今还在津津乐道，以此来证明《周易》的伟大。</li>
-<li>作为中国四大发明之一的造纸术在阿拉伯世界的传播，靠的是怛(dá)罗斯战役的唐军俘虏。而意外地亲身游历了中亚、西亚并留下纪录的，竟也是俘虏之一的杜环。在大批西域“商胡”、阿拉伯“蕃客”来中原经商致富、定居繁衍的同时，唐朝人在境外的发展几乎是一片空白。</li>
-<li>北方游牧民族是中原政权唯一存在的威胁，如匈奴、鲜卑、突厥、契丹、女真等，长城就是为了阻止这些民族的南下而修建并被后代不断增筑的。尽管他们曾经不止一次征服过中原，但由于这些民族整体上，特别在经济上、文化上落后于中原汉族，连这些民族本身也被消融于汉族的汪洋大海之中。</li>
-<li>在西方历史上历经 1800 多年流散生涯，以强大的凝聚力固守本民族宗教文化传统而著称的犹太民族，其中的一支于北宋中叶进入开封定居，长期过着和平生活，得到汉族的平等对待，也逐渐放弃本民族的语言，开始学习儒家经典，参加科举考试，娶汉族女子为妻，最终失去保持本民族特征的心态，融合到了汉族之中。在 19 世纪初，开封犹太人中就已经没有专门的神职人员，无人能够阅读希伯来文经典了。这是见于记载的犹太民族被外族同化的唯一例子。</li>
-<li>像林则徐这样的伟大人物，也相信洋人的腿关节不能弯曲，因此一度认为清朝军队只要以长竹竿为武器将他们拨翻在地，他们就会束手就擒了。</li>
-</ol>
-<h2 id="五、杂记"><a href="#五、杂记" class="headerlink" title="五、杂记"></a>五、杂记</h2><ol>
-<li>秦朝至清朝鸦片战争前的这 2000 余年，中国的疆域在不断变化，但总的趋势是越来越扩大、稳定和巩固，最终形成了清朝统一后的极盛疆域，也为今天中国的领土奠定了基础。</li>
-<li>明初朱元章虽然定都江宁（今南京），但也知道首都偏南、离北方军事要地太远的缺点，一直想迁都北方，先后考察过西安和开封。当西安因过于残破、交通不便被否决后，朱元璋将希望寄托在开封，却发现汴渠已无法恢复，原有河道太浅，无法解决大批粮食的运输，只得作罢。而明成祖之所以能迁都北京，南北大运河的存在是决定因素之一。<blockquote>
-<p>但运河的自然地理条件也决定了它同样存在着的先天不足：由南到北要越过海拔 40 米左右的山东，而这一带恰恰是水量不足的地方，天气稍旱，就会出现运河与当地农业生产争水的现象，而为了确保运河的畅通，明清统治者都采取弃农保运的方针，往往连山泉的水都得引入运河，向北京运粮食的船队不过，周围的水源就绝不能动用。运河还得穿过黄河，而黄河又经常闹水灾，决口改道也多次发生。治黄和保运往往有矛盾，在这种情况下，为了保证运河的畅通，统治者宁可暂停黄河堵口和恢复故道的工作，或者听任水患延续。</p>
-</blockquote>
-</li>
-<li>刘向的《列女传》中尽管也有不少后世所谓的“贞节烈女”，但“列”字在他那里的本意只是“诸”“众”之意，犹如《列仙传》《列国志》，是各类有影响的或值得记载的妇女的传记，只要才行高秀者均可收入。而到了后世，“列”字完成成了“烈”的通假字，专指“节烈”之意，贞节与否居了入选的唯一标准，《列女传》演变成了《“烈”女传》。尤其明清以后不计其数的续修《列女传》以及正史、方志中的《列女传》，千篇一律，无不如此。我们在阅读这类史料时必须注意，正因为贞节烈女太少，统治者才会大力提倡，这和鲁迅在《我们现在怎样做父亲》一文中说的：“历来都竭力表彰‘五世同堂’，便足见实际上同居的为难；拼命的劝孝，也足见事实上孝子的缺少。”都是一样的道理。</li>
-<li>晚明以来，一方面是充斥于正史、方志中无数贞节烈女的事迹，另一方面，却涌现了大量以情欲为主题的市井小说，专以叙床第之事为能事，这正反映了晚明男女关系渐趋松弛，人性觉醒，世风为之一巨变。这与西方历史上的“文艺复兴”时代颇有类似之处，后者常为中国的历史著作倍加赞誉，而前者却被贬为“亡国之相”，不如何以厚此薄彼如此？</li>
-<li>唐安史之乱爆发后，太监李辅国因拥立肃宗继位有功，被任命为兵部尚书，从此宦官掌军几乎成为惯例。由于十余万神策军（中央禁军）和大部分藩镇的兵权都掌握在太监手中，反而是皇帝一旦得罪了太监，即或囚或废，甚至连皇帝的性命也会难保。唐中后期几乎所有皇帝均为宦官拥立，顺宗、宪宗、敬宗、文宗都是由于试图打击太监势力而被杀。</li>
-<li>元朝是蒙古族入主中原而建立的，实行民族歧视政策，将各民族分为四等：蒙古、色目、汉人、南人，从法律上明确规定前两类人在政治、经济上的优越地位。蒙古尚武轻文，建国后长期废止科举考试，汉族文人（特别是北方原金朝统治区的）丧失了进身之阶，地位一落千丈，几乎处于社会最底层，故有“九儒十丐”之说。他们看不到前途和希望，带着对社会的满腔怨恨投入杂剧创作当中，目前存世的元人杂剧，几乎全是汉人创作的。</li>
-<li>《金瓶梅》一书最为前人诟病的是其中夹杂的大量性描写，被贬为“天下第一淫书”，其实这样的描写在当时却是一种风尚，文人士子并不以谈性为耻，鲁迅便说：“自方士进用以来，方药盛，妖心兴，而小说亦多神魔之谈，且每叙床第之事也。然《金瓶梅》作者能文，故虽间杂猥词，而其佳处自在。”</li>
-<li>按照中国的历史传统，即使连皇帝本人，也是无权阅读当朝的<strong>起居注</strong>的。据说古代史官应该将皇帝的言行和活动随时记录下来，投入一个密封的容器，等皇帝死了，才能由专人打开，取了记录作为修史的根据。史官的记载不是给皇帝看的，而是留给后人修史用的。<blockquote>
-<p>像宋太宗这样的人物，在历史上算得上开明的君主，他对历史毕竟还多少怀有一定的畏惧，不时检点自己的言行，尊重史官的独立性。面历史上另一些暴君、权臣，则完全依靠政治强权来迫使历史符合自己的意愿。</p>
-<p>前秦国主<strong>苻坚</strong>，其生母苟太后与将军李威有私，苻坚为掩盖这段宫廷丑闻，不顾制度调阅了起居注和有关簿记，其中果然有苟太后与李威隐秘关系的记录，他恼羞成怒，将这些原始材料全部焚毁。而执笔史官均已去世，事情才就此作罢。</p>
-<p>东晋孙盛所作《晋阳秋》一书中，如实记载了桓温北伐为前燕大败之事，桓温阅后大为恼怒，强令孙盛修改，孙盛誓死不从，后来是他儿子私自修改才了事。幸亏孙盛事先已将《晋阳秋》誊抄了两部寄到前燕，后人才知道这段历史的真相。</p>
-</blockquote>
-</li>
-<li>本来按照周朝的制度，各诸侯国每年都必须到国都朝觐周天子并进贡各地方物，但到了春秋末年，王室衰微，周天子根本不被各诸侯放在眼里，反而要去参加诸侯的会盟。</li>
-<li>道教中常见某人服仙丹白日羽化升天之事，实际上均是汞、砷、铅等重金属急性中毒而导致的迅速死亡。但英国著名科学史家李约瑟博士在其巨著《中国科学技术史》中就对道士炼丹活动给予了高度评价，认为中国的炼丹术通过阿拉伯人传到西方世界，发展为炼金术，成为近代化学的起源。在欧洲历史上产生了翻天覆地变化的火药，也是中国道士在炼丹过程中偶然发明的。</li>
-<li>海瑞死时仅留下白银 20 两，尚不够殓葬的费用，可见官员们靠正常收是无法维持生活的。有的朝代还委任一些只有空衔不支俸禄的地方官，听任他们去“自负盈亏”，这样就造成了无官不贪的局面。平心而论，海瑞的廉洁自律，确实值得敬仰，但用如此崇高的道德规范来要求每一个官员，根本是不可能做到的。海瑞是宋明理学的坚定信仰者和实践者，在这点上，他确实是表里如一的，但其行事往往极端偏激而毫不近人情：明姚叔祥曾记载，海瑞年仅 5 岁的女儿，仅仅因为从男性家僮手中接了一块饼吃，便被海瑞认为犯了“男女授受不亲”不大防，强逼其自行饿死。</li>
-<li>在中国的七大古都中，安阳建都在杭州之前，年代比杭州久；开封也先于杭州，地位更加重要，但国内外知道杭州的人无疑要比知道开封、安阳的多得多。像杭州的“宋城”主题公园，全是新建的仿古建筑，游客也源源不绝。而杭州城南凤凰山麓真正的南宋皇城遗址却堙没于草木之间，到那里去发思古之幽情的恐怕没有几个。</li>
-<li>要了解魏晋风度就离不开《世说新语》的记载。</li>
-<li>毛泽东晚年很多做法，他都要在历史中找根据，而与中国实际越来越脱离。1958 年，中共八届六中全会通过《关于人民公社若干问题的决议》，毛泽东将《三国志-张鲁传》亲自作注，印发与会者。他对张鲁的五斗米道实行的“置义舍”（免费住宿）、“置义米肉”（吃饭不要钱）等措施极为欣赏，在批语中认为“现在的人民公社运动，是有我国的历史来源的”，以此作为“大跃进”和“人民公社化”运动的历史依据，终于酿成历史的惨剧。毛泽东研究专家，曾任毛泽东秘书的李锐对此有过切中肯綮(qìng)的评价：“毛泽东对中国传统文化最有兴趣，涉猎最广的是史书。他一生酷好读史，到老不衰。除常看卷帙浩繁的《资治通鉴》外，即使是专治史学的专家也未必人人通读过的《二十四史》，也基本读遍了。至于稗官野史，他更是兴趣极浓，熟悉之至。”（《毛泽东晚年错误思想形成的原因》，见《直言：李锐六十年的忧与思》，今日中国出版社 1998 年）但“他既有十分高远的想象，又有丰富的历史素养，独独缺少对人类（原文按，主要是西方资本主义）经济发展普遍规律的了解，其中有为马克思所总结过的，也有马克思以后 100 多年尤其是二次大战后新发展的，他都不熟悉，或者茫然无知；同时又违背革命年代自己的经验，急于求成，不是脚踏中国实际，用科学的实事求是的态度探索落后国家社会主义建设规律，终于造成了晚年的悲剧。”（《“大跃进”失败的教训何在》，同上）</li>
-<li>中国的三门峡水库由于无法解决的泥沙问题，建成不久即壅塞报废。</li>
-<li>大凡在社会大变革时期，一方面许多人通过不正当的手段攫取了大量的社会财富和政治利益，另一方面，旧体制下的既得利益者出于利益丧失，对社会现状产生不满。</li>
-<li>经济增长多半是由政府投资带动的，政府的大量投资可能造成财政赤字，往往就要依靠增发货币弥补，于是造成物价上涨。一般而言，高的经济增长率就会导致高的通货膨胀率。所以越是经济落后的地区，物价就越是出奇地低。</li>
-<li>玄武门之变后，唐高祖随即颁布诏令，以世民为太子，建成、元吉的十个儿子均以谋反罪名处死，两个月后，又宣布退位为太上皇，李世民登基。</li>
-<li>隋仁寿四年（604），隋文帝次子杨广发动宫廷政变，杀死其父杨坚和其兄杨勇自立，留在史书上的隋炀帝形象，是一个荒淫无耻、灭绝人伦的暴君，而导演了一场类似宫廷政变的李世民，却是大唐帝国的缔造者，是历史上少有的明君。之所以会有如此巨大的差别，就在于杨广上台后横征暴敛、诛杀功臣、穷兵黩武，不久即身死国灭，被后世视为亡国之君的典型，而李世民则能吸取历史的教训，任命包括原建成亲信魏征在内的一大批名臣，开创盛唐的“贞观之治”，自然可以从容地修改国史。</li>
-<li>唐太宗晚年因其诸子争夺储位而极其苦恼，甚至当着大臣的面“抽佩刀欲自刺”，就是他自己种下的恶果。</li>
-<li>整个唐朝都拥有今天越南的一部分，而当时青藏高原上的吐蕃却是唐朝的对手。</li>
-<li>王莽深受儒家“夷夏之辨”的影响，对边疆少数民族政治采取了一系列错误政策。他胁迫羌人“献”出青海湖一带的土地设立西海郡，以便与国内已有的北海郡（国）、南海郡、东海郡合起来凑全“四海”。为了使这块荒地像一个郡，必须强制移民，于是增加了五十条法令，以便增加成千上万的罪犯，满足移民的需要。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>历史</category>
-      </categories>
-      <tags>
-        <tag>生活</tag>
-      </tags>
   </entry>
   <entry>
     <title>Hexo-Next + GitHub + Gitee 搭建个人博客</title>
@@ -1077,5 +955,127 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
       <categories>
         <category>Hexo</category>
       </categories>
+  </entry>
+  <entry>
+    <title>读书笔记：《历史学是什么》</title>
+    <url>/2021/02/03/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%9A%E3%80%8A%E5%8E%86%E5%8F%B2%E5%AD%A6%E6%98%AF%E4%BB%80%E4%B9%88%E3%80%8B/</url>
+    <content><![CDATA[<p>葛剑雄，周筱赟著：《历史学是什么》，北京大学出版社，2015 年 9 月第 1 版。</p>
+<a id="more"></a>
+<blockquote>
+<p>作者语：大部分的青少年，包括中小学生、非历史学及相关专业的大学生，他们学历史只是增加知识、满足兴趣、陶冶情操，既没有必要，也不应该让他们把时间花在非常琐碎的历史细节和有重大争议问题的讨论上，只要告诉他们一些基本史实或学术界公认的观点就可以了。</p>
+<p>作者语：一位历史老师，不可能，也没有必要把历史研究的全部内容传授给学生，尤其是目前尚有很大争议的问题，对缺乏分析判断能力的中小学生而言，反而容易引起思想混乱。</p>
+</blockquote>
+<p>作者对历史的划分：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">时间系列</th>
+<th style="text-align:center">空间系列</th>
+<th style="text-align:center">内容系列</th>
+<th style="text-align:center">人物系列</th>
+<th style="text-align:center">另类历史</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">通史、断代史、阶段史…</td>
+<td style="text-align:center">世界史、国别史、地区史…</td>
+<td style="text-align:center">综合史（总史）、专门史、资料汇编、年表、历史地图…</td>
+<td style="text-align:center">个人、血缘群体、地域群体、专门群体…</td>
+<td style="text-align:center">文学、艺术、宗教、神话、音乐、戏剧、影响、民间故事..</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>现在中国历史上第一部通史是司马迁的《史记》。</p>
+</blockquote>
+<h2 id="一、一些地域特色"><a href="#一、一些地域特色" class="headerlink" title="一、一些地域特色"></a>一、一些地域特色</h2><ol>
+<li>杭州方言在整片吴方言区内，是一个非常典型的方言孤岛，仅分布于杭州市城区，范围极小，甚至一到城郊方言就大不相同。杭州方言在语音、词汇和语法等方面都有浓厚的北方官话色彩。<blockquote>
+<p>如，杭州方言具有大量的“<strong>儿尾词</strong>”，这不同于北方的“<strong>儿话音</strong>”：儿话音附在前字字音末尾，与前字合成一个音，起卷舌作用，并非一个独立的音节，而杭州方言恰恰相反。之所以如此，是北宋末年宋室南渡，大批北方移民涌入临安（今杭州），受本地方言影响下的产物；另外民国成立后，原清政府驻军 <em>旗下营</em> 解散，大批旗人子弟也给杭州方言融入了北方官话的因素。</p>
+</blockquote>
+</li>
+<li><strong>蒙古褶</strong>与<strong>蒙古青</strong>：蒙古人种由于最初生活在草原和半干旱地区，在眼睑上形成具有保护眼睛的眦褶的比例很高，人类学上称作蒙古褶，俗称双眼皮；大部分蒙古人种的初生婴儿臀部由于皮下色素沉积，出现青紫色斑，被认定是蒙古人种所特有的遗传特征，称为蒙古青。</li>
+<li>现在的省区划分，基本上是继承明清的制度，在建省之初，必定是由于这片区域具有一些共同点。</li>
+<li>以前一直把今天的江苏南部、浙江北部、上海市辖区合称为“<strong>吴越</strong>”。</li>
+</ol>
+<h2 id="二、关于年号纪年"><a href="#二、关于年号纪年" class="headerlink" title="二、关于年号纪年"></a>二、关于<strong>年号</strong>纪年</h2><ol>
+<li>中国最早的纪年方式是干支纪年，即 10 个天干和 12 个地支排列组合，每 60 年为一个循环。以后增加了以帝王在位的年数纪年，从<strong>元年</strong>（一般为即位的次年）开始，逐年累计到去位。</li>
+<li>最早的年号始于汉武帝元鼎元年（前 116），据说当时在汾水旁获得一只宝鼎，被认为是一种吉兆，因而设置<strong>年号</strong>，从此成为惯例。现在史书上所见汉代以前的年号，都是后来追加的。</li>
+<li>如上所说，新皇帝继位后，一般都从第二年开始使用新的年号，但也有当年就改的，这种情况下一年便会出现两个年号，如果这两位皇帝在这一年还改过年号，那一年就会出现更多的年号了。</li>
+<li>在明代以前，同一皇帝在位时往往不止一个年号，常会以顺应天象、应贺吉兆等理由而<strong>改元</strong>，有的皇帝改元异常频繁，如唐高宗李治在位的 34 年用过 14 个年号，武则天在位的 21 年间用了 17 个年号。而明清两朝，一位皇帝只用一个年号，所以一般就用年号来称为皇帝，如乾隆皇帝，反而不用他的庙号“高宗”、尊号“法天隆运至诚先觉体元立极敷文奋武钦明孝慈神至纯皇帝”（简称纯皇帝）和姓名爱新觉罗村•弘历。</li>
+<li>皇帝、皇后（太后、太皇太后）的<strong>尊号</strong>、<strong>徽号</strong>、<strong>庙号</strong>、<strong>谥号</strong>虽然同属一人，但不同时间有不同的称呼，不能乱用或混用。皇帝生前可以有尊号和徽号，尊号还可以由简而繁、不断增加，但只有死后才会有谥号和庙号。<blockquote>
+<p>帝、后有了尊号后，臣子会不断地给他们加颂扬褒美的词作为徽号，唐宋以后渐成惯例，到嘉庆时，大概觉得再加下去没完没了，就规定了制度，列朝皇帝已加到 24 字、皇帝已加到 16 字的便不再追加，所以其他皇帝都是 22 字或 20 字。由于这类尊号、徽号几乎用遍了颂词，每个皇帝大同小异，已是毫无意义的文字游戏，所以除了用在正式文书中外没有什么用处，就是当时人一般也都用简称，如慈禧太后尊号全称是“慈禧端佑康颐昭豫庄诚寿恭钦献崇熙皇太后”，一般仅称“慈禧太后”或“慈禧皇太后”，在她死前 16 字已经用满，颂词已用尽，所以死后就将尊号当作谥号。</p>
+</blockquote>
+</li>
+<li>年号出现后，干支依然十分流行，所以往往年号与干支混合使用。特别是明清两代，有的年号持续时间很长，两者混用会更符合当时人们的习惯，如万历十五年（1587）可称万历丁亥，光绪二十六年（1900）可称光绪庚子。除了康熙在位长达 61 年，出现过两个壬寅（元年、六十一年）外，其他的号都不超过 60 年，所以不存在混淆的问题。</li>
+<li>年号一般均为二字，但也有少数的多字年号。其中三字年号为王莽的“始建国”、梁武帝的“中大通”和“中大同”；四字年号略多一些，主要集中在唐宋两代，武则天一人就占了三个，“天册万岁”“万岁登封”“万岁通天”，宋太宗有“太平兴国”，宋真宗有“大中祥符”、宋徽宗有“建中靖国”等等。</li>
+<li>年号用字和意义的选择都要符合吉利、赞颂、祈求、美好的要求，所以一些字和词被频繁使用，有的年号被用了不止一次。<blockquote>
+<p>最多的是“太平”，八次；其次是“建武”，七次；再次是“中兴”“永平”“永兴”“永和”“建平”“建兴”，六次；“太安”“太和”“甘露”“永安”“永康”“建元”“建始”也都有五次。</p>
+</blockquote>
+</li>
+<li>中国的农历并非单纯按照月亮的运行计算，而是一种阴阳混合历，即既按月相的盈亏决定每个朔望月的长度，又按太阳的视运行周期决定每个回归年的长度，并按年对月进行加闰调整。农历的正月初一最早可开始于公历的 1 月下旬，也可晚至公历的 2 月下旬。</li>
+</ol>
+<h2 id="三、血亲关系、地域"><a href="#三、血亲关系、地域" class="headerlink" title="三、血亲关系、地域"></a>三、血亲关系、地域</h2><ol>
+<li><strong>拟制血亲关系</strong>：有一些特殊的家族群体并不是以真正的血缘关系维系的，而是通过人为的方法和程序模仿真正的血亲关系而制造出来的拟制血亲关系。在唐五代时期，这种拟制血亲关系相当普遍，成为一时的风尚。</li>
+<li>唐五代割据军阀收养义子，数量据人。安禄山就有义子 8000 人，田承嗣有 3000 人，王建有 120 人，以此作为巩固势力、笼络人心的一种手段。</li>
+<li>后唐明宗<strong>李嗣</strong>本是无姓的沙陀族部民，小名邈佶烈，因骁勇善战为唐末军阀 <em>李克用</em> 赏识而收为义子，赐姓名<strong>李嗣源</strong>，即帝位后又更名为<strong>李亶</strong>。</li>
+<li>欧阳修在《新五代史-义儿传序》中感叹道：“世道衰，人伦坏，而亲疏之理反其常，干戈起于骨肉，异类合为父子。”</li>
+<li><strong>郡望</strong>：该姓家族中最显赫一支的发祥地。古人传记或自述中的籍贯大多是祖籍，或者郡望，而未必是他真正的出生地。</li>
+<li>秦汉以来在首都任职的官员和各地的行政长官多数不是本地人，有的离开原籍已不止一代，但除了某些特殊情况，他们一般不会改变自己原来的籍贯。东汉时出现了好几位籍贯是西北边郡的知名学者，但实际上除了个别人以外，他们都是在首都洛阳等地方居住或接受教育。明清时也有不少生长在京师的人物，籍贯却还是南方的祖籍，南方对他们的影响只是血统和家庭的传统，但北京对他们的影响却起决定性作用。</li>
+<li>自魏晋<strong>门阀制度</strong>盛行以后，高门世族成为士人立命进身的基础，各姓人士无不标榜本族的郡望，王氏必称太原，谢氏必称陈郡，杨氏必称弘农，赵氏必称天水，等等。因此，已在京师任职数代的大族，必然还要以郡望所在为籍贯。<blockquote>
+<p>像唐代的韩愈自称“昌黎韩愈”，其实他是河南河阳人（今河南孟州市），昌黎只是其郡望而已。而且，在这种制度影响下，一些人进身无门，不得不冒用他族的郡望，甚至伪造世系。这些人的籍贯就更与他们的出生地无关了。</p>
+</blockquote>
+</li>
+<li>除了同一出生地之外，在同一地方活动，或者在同一地方结成某一个利益集团，这些群体可能也都是地域性的。例如，刘邦即帝位后建都洛阳，一方面固然是由于秦朝故都咸阳已完全被毁，另一方面也是由于洛阳比较靠近这批人的故乡，所以只有像张良这样具有长远战略眼光、又为刘邦所信用的谋士才能说服他迁都关中。唐代也有类似情况。</li>
+<li>明清以来，朝野都喜欢用籍贯来称呼某个政治人物，如分宜相严嵩（江西分宜人）、李合肥（李鸿章）、张南皮（张之洞）、翁常熟（翁同龢)、袁项城（袁世凯），甚至连姓都不用，如项城即指袁世凯。</li>
+</ol>
+<h2 id="四、“中国与世界”"><a href="#四、“中国与世界”" class="headerlink" title="四、“中国与世界”"></a>四、“中国与世界”</h2><ol>
+<li>有一些人借着弘扬中国文化的名义，把《周易》及阴阳学说抬高到了无以复加的地位，似乎成了集科学的大成，成了中国以至世界一切科学的源泉。尽管莱布尼茨从中国的八卦得到启发而发明二进制的故事已经不止一次被指出并非事实，而只国人一厢情愿的误解，事实不过是莱布尼茨发明二进制之后，从在中国传教的法国籍传教士处获得了宋代邵雍的六十四卦图，发现可以用他的二进制数学来解释，但不少人至今还在津津乐道，以此来证明《周易》的伟大。</li>
+<li>作为中国四大发明之一的造纸术在阿拉伯世界的传播，靠的是怛(dá)罗斯战役的唐军俘虏。而意外地亲身游历了中亚、西亚并留下纪录的，竟也是俘虏之一的杜环。在大批西域“商胡”、阿拉伯“蕃客”来中原经商致富、定居繁衍的同时，唐朝人在境外的发展几乎是一片空白。</li>
+<li>北方游牧民族是中原政权唯一存在的威胁，如匈奴、鲜卑、突厥、契丹、女真等，长城就是为了阻止这些民族的南下而修建并被后代不断增筑的。尽管他们曾经不止一次征服过中原，但由于这些民族整体上，特别在经济上、文化上落后于中原汉族，连这些民族本身也被消融于汉族的汪洋大海之中。</li>
+<li>在西方历史上历经 1800 多年流散生涯，以强大的凝聚力固守本民族宗教文化传统而著称的犹太民族，其中的一支于北宋中叶进入开封定居，长期过着和平生活，得到汉族的平等对待，也逐渐放弃本民族的语言，开始学习儒家经典，参加科举考试，娶汉族女子为妻，最终失去保持本民族特征的心态，融合到了汉族之中。在 19 世纪初，开封犹太人中就已经没有专门的神职人员，无人能够阅读希伯来文经典了。这是见于记载的犹太民族被外族同化的唯一例子。</li>
+<li>像林则徐这样的伟大人物，也相信洋人的腿关节不能弯曲，因此一度认为清朝军队只要以长竹竿为武器将他们拨翻在地，他们就会束手就擒了。</li>
+</ol>
+<h2 id="五、杂记"><a href="#五、杂记" class="headerlink" title="五、杂记"></a>五、杂记</h2><ol>
+<li>秦朝至清朝鸦片战争前的这 2000 余年，中国的疆域在不断变化，但总的趋势是越来越扩大、稳定和巩固，最终形成了清朝统一后的极盛疆域，也为今天中国的领土奠定了基础。</li>
+<li>明初朱元章虽然定都江宁（今南京），但也知道首都偏南、离北方军事要地太远的缺点，一直想迁都北方，先后考察过西安和开封。当西安因过于残破、交通不便被否决后，朱元璋将希望寄托在开封，却发现汴渠已无法恢复，原有河道太浅，无法解决大批粮食的运输，只得作罢。而明成祖之所以能迁都北京，南北大运河的存在是决定因素之一。<blockquote>
+<p>但运河的自然地理条件也决定了它同样存在着的先天不足：由南到北要越过海拔 40 米左右的山东，而这一带恰恰是水量不足的地方，天气稍旱，就会出现运河与当地农业生产争水的现象，而为了确保运河的畅通，明清统治者都采取弃农保运的方针，往往连山泉的水都得引入运河，向北京运粮食的船队不过，周围的水源就绝不能动用。运河还得穿过黄河，而黄河又经常闹水灾，决口改道也多次发生。治黄和保运往往有矛盾，在这种情况下，为了保证运河的畅通，统治者宁可暂停黄河堵口和恢复故道的工作，或者听任水患延续。</p>
+</blockquote>
+</li>
+<li>刘向的《列女传》中尽管也有不少后世所谓的“贞节烈女”，但“列”字在他那里的本意只是“诸”“众”之意，犹如《列仙传》《列国志》，是各类有影响的或值得记载的妇女的传记，只要才行高秀者均可收入。而到了后世，“列”字完成成了“烈”的通假字，专指“节烈”之意，贞节与否居了入选的唯一标准，《列女传》演变成了《“烈”女传》。尤其明清以后不计其数的续修《列女传》以及正史、方志中的《列女传》，千篇一律，无不如此。我们在阅读这类史料时必须注意，正因为贞节烈女太少，统治者才会大力提倡，这和鲁迅在《我们现在怎样做父亲》一文中说的：“历来都竭力表彰‘五世同堂’，便足见实际上同居的为难；拼命的劝孝，也足见事实上孝子的缺少。”都是一样的道理。</li>
+<li>晚明以来，一方面是充斥于正史、方志中无数贞节烈女的事迹，另一方面，却涌现了大量以情欲为主题的市井小说，专以叙床第之事为能事，这正反映了晚明男女关系渐趋松弛，人性觉醒，世风为之一巨变。这与西方历史上的“文艺复兴”时代颇有类似之处，后者常为中国的历史著作倍加赞誉，而前者却被贬为“亡国之相”，不如何以厚此薄彼如此？</li>
+<li>唐安史之乱爆发后，太监李辅国因拥立肃宗继位有功，被任命为兵部尚书，从此宦官掌军几乎成为惯例。由于十余万神策军（中央禁军）和大部分藩镇的兵权都掌握在太监手中，反而是皇帝一旦得罪了太监，即或囚或废，甚至连皇帝的性命也会难保。唐中后期几乎所有皇帝均为宦官拥立，顺宗、宪宗、敬宗、文宗都是由于试图打击太监势力而被杀。</li>
+<li>元朝是蒙古族入主中原而建立的，实行民族歧视政策，将各民族分为四等：蒙古、色目、汉人、南人，从法律上明确规定前两类人在政治、经济上的优越地位。蒙古尚武轻文，建国后长期废止科举考试，汉族文人（特别是北方原金朝统治区的）丧失了进身之阶，地位一落千丈，几乎处于社会最底层，故有“九儒十丐”之说。他们看不到前途和希望，带着对社会的满腔怨恨投入杂剧创作当中，目前存世的元人杂剧，几乎全是汉人创作的。</li>
+<li>《金瓶梅》一书最为前人诟病的是其中夹杂的大量性描写，被贬为“天下第一淫书”，其实这样的描写在当时却是一种风尚，文人士子并不以谈性为耻，鲁迅便说：“自方士进用以来，方药盛，妖心兴，而小说亦多神魔之谈，且每叙床第之事也。然《金瓶梅》作者能文，故虽间杂猥词，而其佳处自在。”</li>
+<li>按照中国的历史传统，即使连皇帝本人，也是无权阅读当朝的<strong>起居注</strong>的。据说古代史官应该将皇帝的言行和活动随时记录下来，投入一个密封的容器，等皇帝死了，才能由专人打开，取了记录作为修史的根据。史官的记载不是给皇帝看的，而是留给后人修史用的。<blockquote>
+<p>像宋太宗这样的人物，在历史上算得上开明的君主，他对历史毕竟还多少怀有一定的畏惧，不时检点自己的言行，尊重史官的独立性。面历史上另一些暴君、权臣，则完全依靠政治强权来迫使历史符合自己的意愿。</p>
+<p>前秦国主<strong>苻坚</strong>，其生母苟太后与将军李威有私，苻坚为掩盖这段宫廷丑闻，不顾制度调阅了起居注和有关簿记，其中果然有苟太后与李威隐秘关系的记录，他恼羞成怒，将这些原始材料全部焚毁。而执笔史官均已去世，事情才就此作罢。</p>
+<p>东晋孙盛所作《晋阳秋》一书中，如实记载了桓温北伐为前燕大败之事，桓温阅后大为恼怒，强令孙盛修改，孙盛誓死不从，后来是他儿子私自修改才了事。幸亏孙盛事先已将《晋阳秋》誊抄了两部寄到前燕，后人才知道这段历史的真相。</p>
+</blockquote>
+</li>
+<li>本来按照周朝的制度，各诸侯国每年都必须到国都朝觐周天子并进贡各地方物，但到了春秋末年，王室衰微，周天子根本不被各诸侯放在眼里，反而要去参加诸侯的会盟。</li>
+<li>道教中常见某人服仙丹白日羽化升天之事，实际上均是汞、砷、铅等重金属急性中毒而导致的迅速死亡。但英国著名科学史家李约瑟博士在其巨著《中国科学技术史》中就对道士炼丹活动给予了高度评价，认为中国的炼丹术通过阿拉伯人传到西方世界，发展为炼金术，成为近代化学的起源。在欧洲历史上产生了翻天覆地变化的火药，也是中国道士在炼丹过程中偶然发明的。</li>
+<li>海瑞死时仅留下白银 20 两，尚不够殓葬的费用，可见官员们靠正常收是无法维持生活的。有的朝代还委任一些只有空衔不支俸禄的地方官，听任他们去“自负盈亏”，这样就造成了无官不贪的局面。平心而论，海瑞的廉洁自律，确实值得敬仰，但用如此崇高的道德规范来要求每一个官员，根本是不可能做到的。海瑞是宋明理学的坚定信仰者和实践者，在这点上，他确实是表里如一的，但其行事往往极端偏激而毫不近人情：明姚叔祥曾记载，海瑞年仅 5 岁的女儿，仅仅因为从男性家僮手中接了一块饼吃，便被海瑞认为犯了“男女授受不亲”不大防，强逼其自行饿死。</li>
+<li>在中国的七大古都中，安阳建都在杭州之前，年代比杭州久；开封也先于杭州，地位更加重要，但国内外知道杭州的人无疑要比知道开封、安阳的多得多。像杭州的“宋城”主题公园，全是新建的仿古建筑，游客也源源不绝。而杭州城南凤凰山麓真正的南宋皇城遗址却堙没于草木之间，到那里去发思古之幽情的恐怕没有几个。</li>
+<li>要了解魏晋风度就离不开《世说新语》的记载。</li>
+<li>毛泽东晚年很多做法，他都要在历史中找根据，而与中国实际越来越脱离。1958 年，中共八届六中全会通过《关于人民公社若干问题的决议》，毛泽东将《三国志-张鲁传》亲自作注，印发与会者。他对张鲁的五斗米道实行的“置义舍”（免费住宿）、“置义米肉”（吃饭不要钱）等措施极为欣赏，在批语中认为“现在的人民公社运动，是有我国的历史来源的”，以此作为“大跃进”和“人民公社化”运动的历史依据，终于酿成历史的惨剧。毛泽东研究专家，曾任毛泽东秘书的李锐对此有过切中肯綮(qìng)的评价：“毛泽东对中国传统文化最有兴趣，涉猎最广的是史书。他一生酷好读史，到老不衰。除常看卷帙浩繁的《资治通鉴》外，即使是专治史学的专家也未必人人通读过的《二十四史》，也基本读遍了。至于稗官野史，他更是兴趣极浓，熟悉之至。”（《毛泽东晚年错误思想形成的原因》，见《直言：李锐六十年的忧与思》，今日中国出版社 1998 年）但“他既有十分高远的想象，又有丰富的历史素养，独独缺少对人类（原文按，主要是西方资本主义）经济发展普遍规律的了解，其中有为马克思所总结过的，也有马克思以后 100 多年尤其是二次大战后新发展的，他都不熟悉，或者茫然无知；同时又违背革命年代自己的经验，急于求成，不是脚踏中国实际，用科学的实事求是的态度探索落后国家社会主义建设规律，终于造成了晚年的悲剧。”（《“大跃进”失败的教训何在》，同上）</li>
+<li>中国的三门峡水库由于无法解决的泥沙问题，建成不久即壅塞报废。</li>
+<li>大凡在社会大变革时期，一方面许多人通过不正当的手段攫取了大量的社会财富和政治利益，另一方面，旧体制下的既得利益者出于利益丧失，对社会现状产生不满。</li>
+<li>经济增长多半是由政府投资带动的，政府的大量投资可能造成财政赤字，往往就要依靠增发货币弥补，于是造成物价上涨。一般而言，高的经济增长率就会导致高的通货膨胀率。所以越是经济落后的地区，物价就越是出奇地低。</li>
+<li>玄武门之变后，唐高祖随即颁布诏令，以世民为太子，建成、元吉的十个儿子均以谋反罪名处死，两个月后，又宣布退位为太上皇，李世民登基。</li>
+<li>隋仁寿四年（604），隋文帝次子杨广发动宫廷政变，杀死其父杨坚和其兄杨勇自立，留在史书上的隋炀帝形象，是一个荒淫无耻、灭绝人伦的暴君，而导演了一场类似宫廷政变的李世民，却是大唐帝国的缔造者，是历史上少有的明君。之所以会有如此巨大的差别，就在于杨广上台后横征暴敛、诛杀功臣、穷兵黩武，不久即身死国灭，被后世视为亡国之君的典型，而李世民则能吸取历史的教训，任命包括原建成亲信魏征在内的一大批名臣，开创盛唐的“贞观之治”，自然可以从容地修改国史。</li>
+<li>唐太宗晚年因其诸子争夺储位而极其苦恼，甚至当着大臣的面“抽佩刀欲自刺”，就是他自己种下的恶果。</li>
+<li>整个唐朝都拥有今天越南的一部分，而当时青藏高原上的吐蕃却是唐朝的对手。</li>
+<li>王莽深受儒家“夷夏之辨”的影响，对边疆少数民族政治采取了一系列错误政策。他胁迫羌人“献”出青海湖一带的土地设立西海郡，以便与国内已有的北海郡（国）、南海郡、东海郡合起来凑全“四海”。为了使这块荒地像一个郡，必须强制移民，于是增加了五十条法令，以便增加成千上万的罪犯，满足移民的需要。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>历史</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+      </tags>
   </entry>
 </search>
