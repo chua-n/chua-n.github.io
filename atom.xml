@@ -6,7 +6,7 @@
   <link href="https://chua-n.github.io/atom.xml" rel="self"/>
   
   <link href="https://chua-n.github.io/"/>
-  <updated>2021-03-01T07:07:14.708Z</updated>
+  <updated>2021-03-12T05:11:44.121Z</updated>
   <id>https://chua-n.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python多进程</title>
+    <link href="https://chua-n.github.io/2021/03/12/Python%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
+    <id>https://chua-n.github.io/2021/03/12/Python%E5%A4%9A%E8%BF%9B%E7%A8%8B/</id>
+    <published>2021-03-12T01:39:04.000Z</published>
+    <updated>2021-03-12T05:11:44.121Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;接连面临多个耗时性程序，形势已经演变到必须了解 Python 并行计算的地步了。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="python" scheme="https://chua-n.github.io/categories/python/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>代理模式</title>

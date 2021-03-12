@@ -1078,4 +1078,94 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
         <tag>生活</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Python多进程</title>
+    <url>/2021/03/12/Python%E5%A4%9A%E8%BF%9B%E7%A8%8B/</url>
+    <content><![CDATA[<p>接连面临多个耗时性程序，形势已经演变到必须了解 Python 并行计算的地步了。</p>
+<a id="more"></a>
+<h2 id="0-从-Unix-Linux-的fork-说起"><a href="#0-从-Unix-Linux-的fork-说起" class="headerlink" title="0. 从 Unix/Linux 的fork()说起"></a>0. 从 Unix/Linux 的<code>fork()</code>说起</h2><p>在 Unix/Linux 系统中，提供了一个系统级函数<code>fork()</code>，普通的函数调用一次、返回一次，而<code>fork()</code>调用一次、返回两次，因为操作系统把当前进程（父进程）复制了一份（子进程），此时出现两份进程，于是该函数分别在该父、子进程中返回。</p>
+<p><code>fork()</code>函数在父进程中的返回值为子进程的进程 ID（Process ID, pid），在子进程中的返回值永远为 0。不过，在子进程中，可以通过调用<code>getppid()</code>拿到父进程的 pid。</p>
+<p>如以下在 linux 系统中的 python 程序演示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印当前进程，即父进程的pid</span></span><br><span class="line">print(<span class="string">f&quot;Process <span class="subst">&#123;os.getpid()&#125;</span> starts...&quot;</span>)</span><br><span class="line"></span><br><span class="line">pid = os.fork()  <span class="comment"># 创建了一个子进程</span></span><br><span class="line"><span class="keyword">if</span> pid == <span class="number">0</span>:</span><br><span class="line">    print(<span class="string">f&quot;I am child process <span class="subst">&#123;os.getpid()&#125;</span> and my parent process is <span class="subst">&#123;os.getppid()&#125;</span>.&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">f&quot;I (<span class="subst">&#123;os.getpid()&#125;</span>) just created a child process <span class="subst">&#123;pid&#125;</span>)&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Process 483317 starts...</span><br><span class="line">I (483317) just created a child process 483318)</span><br><span class="line">I am child process 483318 and my parent process is 483317.</span><br></pre></td></tr></table></figure>
+<p>故而，有了<code>fork()</code>，一个进程在处理某些任务时就可以复制出一个子进程来协助处理这些任务，充分利用计算机的多核处理优势，实现并行处理。</p>
+<h2 id="1-multiprocessing-标准库"><a href="#1-multiprocessing-标准库" class="headerlink" title="1. multiprocessing 标准库"></a>1. multiprocessing 标准库</h2><p>Windows 系统下没有<code>fork()</code>调用，不过 python 作为跨平台的编程语言，当然会提供统一的接口方便编写多进程程序，这就是标准库中的<code>multiprocessing</code>了。</p>
+<blockquote>
+<p>注意，<code>Process</code>类和<code>Pool</code>类都支持上下文管理器协议了，即可以使用<code>with</code>。</p>
+</blockquote>
+<h3 id="1-1-Process-类"><a href="#1-1-Process-类" class="headerlink" title="1.1. Process 类"></a>1.1. Process 类</h3><p>multiprocessing 库使用<code>Process</code>类代表一个进程对象，可以用它来在当前进程中创建子进程：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">name</span>):</span></span><br><span class="line">    print(<span class="string">f&quot;Child process <span class="subst">&#123;name&#125;</span> (<span class="subst">&#123;os.getpid()&#125;</span>) is running...&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(<span class="string">f&quot;Parent process is <span class="subst">&#123;os.getpid()&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># 创建一个子进程对象，但在执行它的start()方法之前它并非真正的“进程”</span></span><br><span class="line">p = Process(target=func, args=(<span class="string">&#x27;test&#x27;</span>,))</span><br><span class="line">print(<span class="string">&quot;Attention! Child process will start.&quot;</span>)</span><br><span class="line"><span class="comment"># 子进程被激活</span></span><br><span class="line">p.start()</span><br><span class="line"><span class="comment"># 调用进程的join()方法意味着：当前进程在子进程的任务完成以前，都不会向下执行语句</span></span><br><span class="line">p.join()</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Child process ends running.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">Parent process is 486285</span><br><span class="line">Attention! Child process will start.</span><br><span class="line">Child process test (486286) is running...</span><br><span class="line">Child process ends running.</span><br></pre></td></tr></table></figure>
+<p>对于不熟悉多进程的程序员而言，不妨试试将上述代码中的<code>p.join()</code>注释掉，会发现整个程序的执行结果<em>通常</em>如下，也就是主程序不会等待子进程的执行结束即立刻向下执行，导致子进程明明没有执行结束，却打印出昭示子进程运行结束的语句<code>Child process ends running.</code></p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">Parent process is 486490</span><br><span class="line">Attention! Child process will start.</span><br><span class="line">Child process ends running.</span><br><span class="line">Child process test (486491) is running...</span><br></pre></td></tr></table></figure>
+<p>关于<code>Process</code>类中方法的更多介绍，参见<a href="https://docs.python.org/zh-cn/3/library/multiprocessing.html#the-process-class">官方文档</a>。</p>
+<h3 id="1-2-Pool-类"><a href="#1-2-Pool-类" class="headerlink" title="1.2. Pool 类"></a>1.2. Pool 类</h3><p>当需要多个子进程时，每次都使用<code>Process</code>类去创建一个子进程太麻烦了，可以使用<strong>进程池</strong>来批量创建子进程：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longTimeTask</span>(<span class="params">name</span>):</span></span><br><span class="line">    print(<span class="string">f&quot;Run task <span class="subst">&#123;name&#125;</span> (<span class="subst">&#123;os.getpid()&#125;</span>)&quot;</span>)</span><br><span class="line">    start = time.time()</span><br><span class="line">    time.sleep(random.random()*<span class="number">5</span>)</span><br><span class="line">    end = time.time()</span><br><span class="line">    print(<span class="string">f&quot;Task <span class="subst">&#123;name&#125;</span> (<span class="subst">&#123;os.getpid()&#125;</span>) runs <span class="subst">&#123;end-start :<span class="number">.2</span>f&#125;</span> seconds.&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    print(<span class="string">f&quot;Parent process <span class="subst">&#123;os.getpid()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建有4个进程的进程池</span></span><br><span class="line">    p = Pool(<span class="number">4</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>):</span><br><span class="line">        <span class="comment"># apply_async方法随机挑选一个进程池中的空闲进程执行传入的方法</span></span><br><span class="line">        <span class="comment"># 并返回一个AsyncResult对象</span></span><br><span class="line">        p.apply_async(longTimeTask, args=(i,))</span><br><span class="line">    print(<span class="string">&quot;Waiting for all subprocesses done...&quot;</span>)</span><br><span class="line">    <span class="comment"># 关闭进程池：阻止后续任务提交到进程池，当所有任务执行完毕后工作进程退出</span></span><br><span class="line">    p.close()</span><br><span class="line">    <span class="comment"># 主程序等待工作进程结束。调用join()方法之前必须先调用close()或terminate()</span></span><br><span class="line">    p.join()</span><br><span class="line"></span><br><span class="line">    end = time.time()</span><br><span class="line">    print(<span class="string">f&quot;All subprocesses done, time cost is <span class="subst">&#123;end-start :<span class="number">.2</span>f&#125;</span>.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出结果如下（不熟悉并行计算的请注意总程序运行时间的 7.72 s 远远少于 7 个任务分别执行的耗时总和 1.74+3.80+4.72+4.90+4.53+2.73+2.76=25.18 s，这便是并行计算了）：</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">Parent process 493253</span><br><span class="line">Waiting for all subprocesses done...</span><br><span class="line">Run task 0 (493256)</span><br><span class="line">Run task 2 (493255)</span><br><span class="line">Run task 1 (493254)</span><br><span class="line">Run task 3 (493257)</span><br><span class="line">Task 2 (493255) runs 1.74 seconds.</span><br><span class="line">Run task 4 (493255)</span><br><span class="line">Task 1 (493254) runs 3.80 seconds.</span><br><span class="line">Run task 5 (493254)</span><br><span class="line">Task 0 (493256) runs 4.72 seconds.</span><br><span class="line">Run task 6 (493256)</span><br><span class="line">Task 3 (493257) runs 4.90 seconds.</span><br><span class="line">Task 4 (493255) runs 4.53 seconds.</span><br><span class="line">Task 5 (493254) runs 2.73 seconds.</span><br><span class="line">Task 6 (493256) runs 2.76 seconds.</span><br><span class="line">All subprocesses done, time cost is 7.52.</span><br></pre></td></tr></table></figure>
+<p>关于<code>Pool</code>类的方法（详情请见<a href="https://docs.python.org/zh-cn/3/library/multiprocessing.html#multiprocessing.pool.Pool">官方文档</a>）；</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>apply(func[, args[, kwds]])</code></td>
+<td style="text-align:center">调用一个进程池中的空闲进程执行相关函数，该函数执行完毕之前父进程会阻塞</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>apply_async(func[, args[, kwds[, callback[, error_callback]]]])</code></td>
+<td style="text-align:center"><code>apply()</code>方法的一个变种，区别是不会阻塞，并返回一个<code>AsyncResult</code>对象</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>map(func, iterable[, chunksize])</code></td>
+<td style="text-align:center">内置函数<code>map()</code>的并行版本，这会保持阻塞直到被执行函数执行结束</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>map_async(func, iterable[, chunksize[, callback[, error_callback]]])</code></td>
+<td style="text-align:center"><code>map()</code> 方法的一个变种，区别是不会阻塞，并返回一个<code>AsyncResult</code>对象</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>imap(func, iterable[, chunksize])</code></td>
+<td style="text-align:center"><code>map()</code>的延迟执行版本</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>imap_unordered(func, iterable[, chunksize])</code></td>
+<td style="text-align:center">和 <code>imap()</code> 相同，只是通过迭代器返回的结果是任意的</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>starmap(func, iterable[, chunksize])</code></td>
+<td style="text-align:center">和 <code>map()</code> 类似，不过 iterable 中的每一项会被解包再作为函数参数</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>starmap_async(func, iterable[, chunksize[, callback[, error_callback]]])</code></td>
+<td style="text-align:center">相当于<code>starmap()</code>与<code>map_async()</code>的结合</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>close()</code></td>
+<td style="text-align:center">阻止后续任务提交到进程池，当所有任务执行完成后，工作进程会退出</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>terminate()</code></td>
+<td style="text-align:center">不等待未完成任务，立即停止工作进程。当进程池对象被垃圾回收时， 会立即调用<code>terminate()</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>join()</code></td>
+<td style="text-align:center">等待工作进程结束。调用<code>join()</code>前必须先调用<code>close()</code>或者<code>terminate</code>()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2-进程同步、进程通信等"><a href="#2-进程同步、进程通信等" class="headerlink" title="2. 进程同步、进程通信等"></a>2. 进程同步、进程通信等</h2><p>未完待续……</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+  </entry>
 </search>
