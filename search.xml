@@ -1173,10 +1173,18 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
     <url>/2021/03/19/Python%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E8%87%B3%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C/</url>
     <content><![CDATA[<p>编程语言在读取文本文件时总是自首行读取，因此文本开头的内容读取速度很快，那么如果文本量较大，如何快速读取文本仅最后一行呢？</p>
 <blockquote>
-<p>说得一本正经，但并不是为此而生(* ￣︿￣)</p>
+<p>说得一本正经，但并不是为此而生(* ￣︿￣)。</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="1-需求"><a href="#1-需求" class="headerlink" title="1. 需求"></a>1. 需求</h2><p>办公室另个课题组野外项目多，经常要测各种数据，某天偶然聊到他们竟然有这样一个奇葩的需求：某仪器每次测一次数据，会得到一个含 725 份 txt 文本文件的数据，其中每个 txt 文本为 1205 行、2 列的数据内容，每当仪器测出若干次数据后他们对数据进行一次分析，也就需要同时面对约二十个文件夹的近两万个 txt 文本，而他们的要求是所有的 txt 文本只取最后一行的第 2 个数字整理成 Excel 表然后做处理。</p>
+<h2 id="1-需求"><a href="#1-需求" class="headerlink" title="1. 需求"></a>1. 需求</h2><p>办公室另个课题组野外项目多，经常要测各种数据，某天偶然聊到他们竟然有这样一个奇葩的需求：某仪器每次测一次数据，会得到一个含 725 份 txt 文本文件的文件夹，其中每个 txt 文本为 1205 行、2 列的数据内容；每当仪器测出若干次数据后他们对数据进行一次分析，也就需要同时面对约二十个文件夹的近两万个 txt 文本，而他们的要求是所有的 txt 文本只取最后一行的第 2 个数字整理成 Excel 表然后做处理。</p>
+<ul>
+<li>一个文件夹：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tree -l</span></span><br><span class="line">.</span><br><span class="line">├── 1.txt</span><br><span class="line">├── 10.txt</span><br><span class="line">├── 100.txt</span><br><span class="line">├── 101.txt</span><br><span class="line">├── ...</span><br><span class="line">├── 96.txt</span><br><span class="line">├── 97.txt</span><br><span class="line">├── 98.txt</span><br><span class="line">└── 99.txt</span><br><span class="line"></span><br><span class="line">0 directories, 725 files</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一个文件：</li>
+</ul>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">         Step Z Displace...</span><br><span class="line">------------- -------------</span><br><span class="line"> 2.650000e+03 -3.941945e-08</span><br><span class="line"> 2.660000e+03 -1.150117e-07</span><br><span class="line"> 2.670000e+03 -1.168365e-07</span><br><span class="line"> 2.680000e+03 -3.220245e-07</span><br><span class="line"> 2.690000e+03 -2.561211e-06</span><br><span class="line">      ...          ...</span><br></pre></td></tr></table></figure>
 <p>他们原本是怎么做这项工作的呢？课题组分派六、七个有闲的人，每人均分一部分工作，通过 windows 记事本打开每个 txt 文本，拖动鼠标至最后一行，然后复制粘贴相应数据到 Excel 表格中，据师兄说这样差不多要干一个通宵。</p>
 <p>我意识到这个“固定模式的简单重复性工作”写一份代码可以完全自动化批量处理呀，于是帮师兄师姐写了份 python 脚本，师兄也把刚刚已经分配给几位师弟的文件全收回来交给我统一处理，脚本在几秒钟就做完了他们的工作。这份代码其实异常简单，寥寥几行，留之无用、弃之可惜，笔者也就权当纪念意义留在这里吧。</p>
 <h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2. 代码"></a>2. 代码</h2><blockquote>
