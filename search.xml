@@ -368,7 +368,7 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
   <entry>
     <title>常用linux命令杂记</title>
     <url>/2021/01/15/%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4%E6%9D%82%E8%AE%B0/</url>
-    <content><![CDATA[<p><code>tmux</code>命令、更改 apt 源</p>
+    <content><![CDATA[<p><code>tmux</code>命令、更改 apt 源、<code>cloc</code>命令</p>
 <a id="more"></a>
 <h2 id="1-tmux"><a href="#1-tmux" class="headerlink" title="1. tmux"></a>1. tmux</h2><p>当在本地的命令行中使用 SSH 连接到远程服务器进行工作时，如果 SSH 连接突然停止，会导致远程服务器中运行的相关命令停止执行（因为 SSH 创建的进程被关闭），这意味着如果你正在服务器中进行一个长时间执行的操作，比方说训练一个神经网络，当网络意外中断、或你关闭了本地的命令行窗口，将导致该操作的运行终止，而不是继续在服务器中执行。那么如何让“连接中断时，正在执行的指令仍旧保持运行”呢，这就可以用到 tmux 命令了。</p>
 <h3 id="1-1-tmux-简介"><a href="#1-1-tmux-简介" class="headerlink" title="1.1. tmux 简介"></a>1.1. tmux 简介</h3><p>tmux(terminal multiplexer) 是一个终端复用器，它可以在一个窗口屏幕上创建、访问、控制多个终端。</p>
