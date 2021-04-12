@@ -1,6 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python快速定位至文本文件的最后一行</title>
+    <url>/2021/03/19/Python%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E8%87%B3%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C/</url>
+    <content><![CDATA[<p>编程语言在读取文本文件时总是自首行读取，因此文本开头的内容读取速度很快，那么如果文本量较大，如何快速读取文本仅最后一行呢？</p>
+<blockquote>
+<p>说得一本正经，但并不是为此而生(* ￣︿￣)。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="1-需求"><a href="#1-需求" class="headerlink" title="1. 需求"></a>1. 需求</h2><p>办公室另个课题组野外项目多，经常要测各种数据，某天偶然聊到他们竟然有这样一个奇葩的需求：某仪器每次测一次数据，会得到一个含 725 份 txt 文本文件的文件夹，其中每个 txt 文本为 1000 多行、2 列的数据内容；每当仪器测出若干次数据后他们对数据进行一次分析，也就需要同时面对约二十个文件夹的近两万个 txt 文本，而他们的要求是所有的 txt 文本只取最后一行的第 2 个数字整理成 Excel 表然后做处理。</p>
+<ul>
+<li>一个文件夹：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tree -l</span></span><br><span class="line">.</span><br><span class="line">├── 1.txt</span><br><span class="line">├── 10.txt</span><br><span class="line">├── 100.txt</span><br><span class="line">├── 101.txt</span><br><span class="line">├── ...</span><br><span class="line">├── 96.txt</span><br><span class="line">├── 97.txt</span><br><span class="line">├── 98.txt</span><br><span class="line">└── 99.txt</span><br><span class="line"></span><br><span class="line">0 directories, 725 files</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一个文件：</li>
+</ul>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">         Step Z Displace...</span><br><span class="line">------------- -------------</span><br><span class="line"> 2.650000e+03 -3.941945e-08</span><br><span class="line"> 2.660000e+03 -1.150117e-07</span><br><span class="line"> 2.670000e+03 -1.168365e-07</span><br><span class="line"> 2.680000e+03 -3.220245e-07</span><br><span class="line"> 2.690000e+03 -2.561211e-06</span><br><span class="line">      ...          ...</span><br></pre></td></tr></table></figure>
+<p>他们原本是怎么做这项工作的呢？课题组分派六、七个有闲的人，每人均分一部分工作，通过 windows 记事本打开每个 txt 文本，拖动鼠标至最后一行，然后复制粘贴相应数据到 Excel 表格中，据师兄说这样差不多要干一个通宵。</p>
+<p>我意识到这个“固定模式的简单重复性工作”写一份代码可以完全自动化批量处理呀，于是帮师兄师姐写了份 python 脚本，师兄也把刚刚已经分配给几位师弟的文件全收回来交给我统一处理，脚本在几秒钟就做完了他们的工作。这份代码其实异常简单，寥寥几行，留之无用、弃之可惜，笔者也就权当纪念意义留在这里吧。</p>
+<h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2. 代码"></a>2. 代码</h2><blockquote>
+<p>注：笔者的第一版本其实并非以下代码，原实现为暴力式搜索文本最后一行，此版源自网络，思路与性能更佳，故而也颇值得记录。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_last_line</span>(<span class="params">file</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Find the last line of a file.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    -----------</span></span><br><span class="line"><span class="string">    file(str): Absolute path of a file.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">        offset = -<span class="number">50</span>  <span class="comment"># initial offset</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            file_obj.seek(offset, <span class="number">2</span>)</span><br><span class="line">            lines = file_obj.readlines()</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">len</span>(lines) &gt; <span class="number">1</span>):</span><br><span class="line">                last_line = lines[-<span class="number">1</span>]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                offset *= <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> last_line.decode()</span><br></pre></td></tr></table></figure>
+<h2 id="3-附：完整脚本"><a href="#3-附：完整脚本" class="headerlink" title="3. 附：完整脚本"></a>3. 附：完整脚本</h2><p>以上仅是定位文本最后一行的函数定义，以下将为师兄处理数据的完整工作脚本作为附录。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_last_line</span>(<span class="params">file</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Find the last line of a file.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    -----------</span></span><br><span class="line"><span class="string">    file(str): Absolute path of a file.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">        offset = -<span class="number">50</span>  <span class="comment"># initial offset</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            file_obj.seek(offset, <span class="number">2</span>)</span><br><span class="line">            lines = file_obj.readlines()</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">len</span>(lines) &gt; <span class="number">1</span>):</span><br><span class="line">                last_line = lines[-<span class="number">1</span>]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                offset *= <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> last_line.decode()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">collect</span>(<span class="params">folder</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Collect the last data from a group of data-files in a folder</span></span><br><span class="line"><span class="string">    into a data structure, of pandas.Series, for later convenience.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    -----------</span></span><br><span class="line"><span class="string">    folder(str): Absolute path of a folder.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    files = os.listdir(folder)</span><br><span class="line">    files.sort(key=<span class="keyword">lambda</span> filename: <span class="built_in">int</span>(filename[:-<span class="number">4</span>]))</span><br><span class="line">    excel = []</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">        file = os.path.join(folder, file)</span><br><span class="line">        last_line = find_last_line(file)</span><br><span class="line">        excel.append(last_line.split()[-<span class="number">1</span>])</span><br><span class="line">    excel = pd.Series(excel, index=files)</span><br><span class="line">    <span class="keyword">return</span> excel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    basefolder = <span class="string">&quot;./ych&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> folder <span class="keyword">in</span> os.listdir(basefolder):</span><br><span class="line"></span><br><span class="line">        folder = os.path.join(basefolder, folder)</span><br><span class="line">        folder = os.path.abspath(folder)</span><br><span class="line">        <span class="keyword">if</span> os.path.isfile(folder):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        excel = collect(folder)</span><br><span class="line">        excel_name = os.path.basename(folder) + <span class="string">&#x27;.xlsx&#x27;</span></span><br><span class="line">        <span class="comment"># 写入具体的excel文件</span></span><br><span class="line">        excel.to_excel(os.path.join(basefolder, excel_name), header=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>WSL下安装MySQL</title>
+    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
+    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
+<a id="more"></a>
+<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
+<li><code>apt-get install mysql-server mysql-client</code></li>
+<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
+</ol>
+<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
+<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
+<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
+<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
+<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+        <category>WSL</category>
+        <category>mysql</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用SSH把个人电脑配置成 linux 服务器</title>
+    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
+<a id="more"></a>
+<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
+<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+<p>找到以下这两行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
+<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
+<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
+<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
+<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
+<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
+<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>linux 下从源码安装 Python——小白踩坑记</title>
+    <url>/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/</url>
+    <content><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：如果想要安装某个非系统自带的 Python 版本，切忌冲动删除系统自带的 Python 2.7 和 Python 3.5，某些系统应用可能依赖于这些 Python 环境的调用，防止系统出错！</p>
+</blockquote>
+<h2 id="1-官网下载-python-源码"><a href="#1-官网下载-python-源码" class="headerlink" title="1. 官网下载 python 源码"></a>1. 官网下载 python 源码</h2><p>在官网<a href="https://www.python.org/downloads/source/">这里</a>下载你想要的 linux 环境下的 python 源码，如我下载的是下图第一个 Gzipped source tarball，其实二选一就好。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python源码包.png" alt="python源码.png"></p>
+<p>我下载完成后是一个叫 Python-3.8.3.tgz 的文件，在下载目录里使用<code>tar -xvf Python-3.8.3.tgz</code> 命令解压文件包，目录里多出一个 Python-3.8.3 的文件夹，cd 命令进入该文件夹。</p>
+<p>上述操作总结起来如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz</span><br><span class="line">tar -xvf Python-3.8.3.tgz</span><br><span class="line"><span class="built_in">cd</span> Python-3.8.3</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装依赖"><a href="#2-安装依赖" class="headerlink" title="2. 安装依赖"></a>2. 安装依赖</h2><p>Python 源码编译、安装过程中需要用到一些工具，你的系统里可能有、可能没有这些工具，保险起见，使下以下命令先把这些依赖安装好吧。</p>
+<blockquote>
+<p>这一步其实可以放在最开始执行。</p>
+</blockquote>
+<ol>
+<li>Ubuntu/Debian 系列： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl</span><br></pre></td></tr></table></figure></li>
+<li>Fedora/CentOS/RHEL 等可参考： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel xz xz-devel libffi-devel</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h2 id="3-编译并安装-python"><a href="#3-编译并安装-python" class="headerlink" title="3. 编译并安装 python"></a>3. 编译并安装 python</h2><p>注意根据第 1 节最后的 cd 命令，我们现在是在 python 的源码文件夹里进行操作。</p>
+<h3 id="3-1-指定-python-的安装目录"><a href="#3-1-指定-python-的安装目录" class="headerlink" title="3.1. 指定 python 的安装目录"></a>3.1. 指定 python 的安装目录</h3><p>作为 CS 小白，我还是要区别一下 python 的“源码目录”和“安装目录”两个概念的，毕竟是第一次在 linux 下从源码安装软件。</p>
+<p>要知道，当前我们所在的目录<code>Python-3.8.3</code>是由最开始下载的源码压缩包解压出来的，因此这个目录里是 python 这个软件开源的源码，故称之为<strong>源码目录</strong>；而<strong>安装目录</strong>是说我们这个 python 软件要安装在系统的哪个地方，你启动 python 的时候实际是从这里启动的。</p>
+<p>类比下 windows 的话就是：源码目录是你下载的那个安装程序<code>xxx.exe</code>所在的目录，还记得一些大型软件（如 office 2016）安装的时候通常是一个文件夹里有一个<code>setup.exe</code>的程序吗（当然，很多软件你下载下来的安装包其实就一个单独的.exe 可执行文件就没了），windows 下就是直接点击这个<code>xxx.exe</code>进行安装的，这就是所谓的<strong>源码目录</strong>；那么显而易见，<strong>安装目录</strong>就是你在运行<code>xxx.exe</code>进行安装的时候选择的安装地址，譬如说经常是<code>C:\Program Files\</code>等等。真正的软件组件肯定是在安装目录里，软件需要从这里启动，而你平常习惯的在 windows 桌面/开始菜单里点击的图标就是从安装目录里延伸出的快捷方式。</p>
+<p>回归主题，我选择的 python 安装目录是<code>/opt/python3.8</code>，因此通过如下命令先建立这个文件夹：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /opt/python3.8</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-执行-configure"><a href="#3-2-执行-configure" class="headerlink" title="3.2. 执行./configure"></a>3.2. 执行./configure</h3><p>python 源码目录里有一个 configure 可执行文件，这个命令的作用是生成一个 MakeFile 文件，此 Makefile 文件用来被之后的 make 命令所使用进行源码编译（Linux 需要按照 Makefile 所指定的顺序来编译 (build) 程序组件）。</p>
+<p>configure 通常有一些参数选项，最常见的是—prefix，用来指定安装目录。此外，要注意的是，python3.4 以后自带了 pip，为了在之后能够成功使用这个 pip 进行 python 库的安装，最好加上—with-ssl 参数。—with-ssl 这个参数不加的话 python 的安装过程不受影响，只是当你想要用 pip 安装 python 库的时候会报错，发现它无法连接到 pypi，跟 pip 连不上网没啥区别。</p>
+<p>总之，使用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --with-ssl --prefix=/opt/python3.8</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-make-编译"><a href="#3-3-make-编译" class="headerlink" title="3.3. make 编译"></a>3.3. make 编译</h3><p><code>make</code>命令实际就是编译源代码，其根据 Makefile 文件执行编译指令并生成可执行文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-使用-make-install-进行安装"><a href="#3-4-使用-make-install-进行安装" class="headerlink" title="3.4. 使用 make install 进行安装"></a>3.4. 使用 make install 进行安装</h3><p>当 make 的源代码编译无误，使用<code>make install</code>就是进行软件的安装，似乎也要根据 Makefile 文件以及根据 make 生成的可执行文件进行执行，原理尚不明确，现在确定的是其现实意义是把软件安装到<code>configure</code>命令指定的目录，对我而言就是<code>/opt/python3.8</code>。</p>
+<p><code>make install</code>因为是软件安装，因此通常需要 sudo 权限。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h2 id="4-配置环境"><a href="#4-配置环境" class="headerlink" title="4. 配置环境"></a>4. 配置环境</h2><p>至此 python 的安装过程其实已经完成，在安装目录里使用<code>./bin/python3</code>即可打开安装好的 python 可执行文件并进入 python 命令行了：</p>
+<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python命令行.png" alt="启动python.png"></p>
+<p>但是每次要从安装目录里启动 python 很不方便，我们想要达到的是在 shell 中随时随地唤醒这个 python，这便需要进行相关的环境配置。</p>
+<h3 id="4-1-删除原有的软链接"><a href="#4-1-删除原有的软链接" class="headerlink" title="4.1. 删除原有的软链接"></a>4.1. 删除原有的软链接</h3><p>开头的时候提到，我的系统中默认的 python 命令打开的是系统自带的 python2.7，现在要更改这个命令让它打开的是新安装的 python3.8，这需要我们先理解命令行(shell)中的命令是怎么执行的：</p>
+<ul>
+<li>在 shell 中，执行的所有命令如 cd、ls、ps、python 等，分为“内建命令”和“外部命令”。<strong>内建命令</strong>是 shell 自带的命令，好比编程语言不需要使用函数库而自带的那些函数，如<code>print()</code>函数；<strong>外部命令</strong>是为了丰富 shell 的功能而自己安装的一些命令，好比你编程时使用的第三方库，当然，有些外部命令是你安装 linux 系统时就已经自带的命令，好比编程语言的标准库，虽然是“自带的”但依然是“外部命令”。</li>
+<li>python 毫无疑问是外部命令，那么外部命令是怎么执行呢？这就要提到平常经常见到的<code>PATH</code>概念了。当 shell 中输入一个命令时，shell 首先检验它是不是内建命令，当内建命令中找不到这条命令时，shell 就搜索你的<code>PATH</code>，这个东西就是一个存储了你的外部命令所在路径的集合，shell 在这些路径中寻找你输入的命令对应的那个可执行文件，找得到就在 shell 中执行，找不到就报错。</li>
+<li>于是，shell 中 python 命令的执行过程为：在<code>PATH</code>存储的那么路径里（包含很多路径，其中一个是<code>/usr/bin/</code>）寻找一个名为<code>python</code>的可执行文件，一般情况下，有这么一个文件：<code>/usr/bin/python</code>，找到它以后执行，就打开了 python。</li>
+</ul>
+<p>现在我们使用<code>ls -l /usr/bin/python</code>查看这个文件的详细信息，发现它是一个执行 python2.7 的软链接（相当于 windows 里的快捷方式），把它删掉，这样在 shell 中直接输入 python 就再也打不开任何 python 环境了，它成了一个无效命令。</p>
+<p>总结一下，这步操作的命令过程为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l /usr/bin/python</span><br><span class="line">sudo rm /usr/bin/python</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-建立新的软链接"><a href="#4-2-建立新的软链接" class="headerlink" title="4.2. 建立新的软链接"></a>4.2. 建立新的软链接</h3><p>使用软链接创建命令<code>ln -s</code>把新安装的 python 链接到上步删除的旧的软链接所在目录即可。即：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s /opt/python3.8/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
+<p>此时在任意工作目录的 shell 中任意输入 python，即可打开新安装的 python 3.8 了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chuan@workstation:~$ python</span><br><span class="line">Python 3.8.3 (default, Jun 21 2020, 16:34:59)</span><br><span class="line">[GCC 5.4.0 20160609] on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-配置-pip-命令"><a href="#4-3-配置-pip-命令" class="headerlink" title="4.3. 配置 pip 命令"></a>4.3. 配置 pip 命令</h3><p>你的系统可能也自带了 pip 或 pip2、pip3 等命令，由于自带的 pip 关联的肯定是原有的 python 环境，此时盲目使用 pip install 一些库的话，这些库其实被安装到了系统自带的 python 环境里了，在你新安装的 python3.8 里根本无法导入这些库，这就尴尬了。</p>
+<p>这个 pip 其实和之前被删除的 python 软链接一样，是一个在相同目录下的 pip 软链接，和更改 python 命令一样，删除掉原来的 pip 被建立一个新的 pip 软链接即可。为了让 pip 关联的是新下载的 python3.8，新的 pip 应该来自 python3.8 自带的那个 pip，其路径为<code>./opt/python3.8/bin/pip3</code>。话不多说，代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/bin/pip</span><br><span class="line">ln -s /opt/python3.8/bin/pip3 /usr/bin/pip</span><br></pre></td></tr></table></figure>
+<h2 id="5-前方告捷，嘿嘿"><a href="#5-前方告捷，嘿嘿" class="headerlink" title="5. 前方告捷，嘿嘿"></a>5. 前方告捷，嘿嘿</h2><h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>新安装的 pip 在安装第三方库时还是有一个小小的报错，提示什么文件夹权限不明确/不足以及：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Could not install packages due to an EnvironmentError: [Errno 13] Permission denied</span><br></pre></td></tr></table></figure>
+<p>根据百度，出现这个报错之后，在 pip install 之后加个—user 可解决，如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install --user numpy</span><br></pre></td></tr></table></figure>
+<p>第一次加过—user 之后便不再有报错，但不明所以的是这样之后 pip 安装的第三方库的目录被定在了<code>~/.local/</code>，原来似乎不存在这个文件夹。不过这并没有造成后续什么问题，暂且不管了，挖个坑后续再研究。</p>
+<p>另外，不知道能不能选择直接把一个已安装的 pip 绑定到指定的 python 环境，而不用这么折腾，未完待续吧……</p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>jupyter notebook中使用mayavi三维绘图库</title>
+    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
+    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
+<a id="more"></a>
+<blockquote>
+<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
+</blockquote>
+<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
+<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
+<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
+<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
+<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>jupyter</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
+    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda/</url>
+    <content><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
+<a id="more"></a>
+<blockquote>
+<p>其实可直接看第 4 步的总结……</p>
+</blockquote>
+<h2 id="1-走官网教程"><a href="#1-走官网教程" class="headerlink" title="1. 走官网教程"></a>1. 走官网教程</h2><p>首先想的当然是走官网的 cuda 安装教程啦，尝试了<a href="https://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux&amp;target_arch=x86_64&amp;target_distro=Ubuntu&amp;target_version=1604&amp;target_type=runfilelocal">官网页面</a>里的<code>runfile(local)</code>、<code>deb(local)</code>安装方式选项均失败，失败过程的详细说明如下：</p>
+<h3 id="1-1-使用deb-local-方法（不推荐）"><a href="#1-1-使用deb-local-方法（不推荐）" class="headerlink" title="1.1. 使用deb(local)方法（不推荐）"></a>1.1. 使用<code>deb(local)</code>方法（不推荐）</h3><p>官网给的安装方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-ubuntu1604.pin</span><br><span class="line">$ sudo mv cuda-ubuntu1604.pin /etc/apt/preferences.d/cuda-repository-pin-600</span><br><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo dpkg -i cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get -y install cuda</span><br></pre></td></tr></table></figure>
+<p>虽然服务器上已经有安装的 cuda 9.0，但此方法不需要先卸载老版本（大概是因为用的 apt-get 安装会自动覆盖吧），一路执行下来都没有报错，畅快地安装完成。然而，后又经过各种尝试后发现，在执行到最后一句<code>sudo apt-get -y install cuda</code>时，安装好的版本总是当前 NVIDIA 最新的 cuda 版本——截止到 2020.06.21 是 cuda 11.0，而我要安装的是 cuda 10.2（因为当前 PyTorch 只支持到 cuda 10.2）！</p>
+<p>事实上，如果你要安装最新的 cuda 版本的话，这个方法非常好，安装流程到这里就可以结束了。</p>
+<p>至于为什么总是安装的最新的 cuda 版本，而不是你以为的你指定的版本，大抵是因为最后那一句命令本质上还是用 apt 从软件源里下载 cuda，而软件源里的是最新版本所以你安装的也只能是最新版本吧。</p>
+<h3 id="1-2-使用runfile-local-方法（推荐）"><a href="#1-2-使用runfile-local-方法（推荐）" class="headerlink" title="1.2. 使用runfile(local)方法（推荐）"></a>1.2. 使用<code>runfile(local)</code>方法（推荐）</h3><p>对于<code>runfile(local)</code>，官网给的安装方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</span><br><span class="line">$ sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
+<p>这个看上去靠谱多了，毕竟是下载到本地你指定的安装包然后直接在本地安装，但是在执行<code>sudo sh cuda_10.2.89_440.33.01_linux.run</code>发现依然报错，按其提示，用 cat 或 vim 查看相应的日志记录如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[INFO]: Driver not installed.</span><br><span class="line">[INFO]: Checking compiler version...</span><br><span class="line">[INFO]: gcc location: &#x2F;usr&#x2F;bin&#x2F;gcc</span><br><span class="line"></span><br><span class="line">[INFO]: gcc version: gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)</span><br><span class="line"></span><br><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Components to install:</span><br><span class="line">[INFO]: Driver</span><br><span class="line">[INFO]: 440.33.01</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-440.33.01.run --ui&#x3D;none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed.</span><br><span class="line">[ERROR]: Install of 440.33.01 failed, quitting</span><br></pre></td></tr></table></figure>
+<p>注意最后的<code>[ERROR]: Install of driver component failed.</code>，意思是驱动安装失败，我简直莫名奇妙。</p>
+<p>找了找查看驱动相关的命令，使用<code>sudo dpkg --list | grep nvidia-*</code>命令查看了驱动版本号，发现竟然装了两个驱动版本！啥意思呢？就是原来我服务器上装的那个驱动，加上在上一步尝试<code>deb(local)</code>方法安装 cuda 时自动装的一个驱动，两个同时存在了。</p>
+<blockquote>
+<p>为啥 cuda 覆盖了而 nvidia 驱动没覆盖，难道是我记错了 w(ﾟ Д ﾟ)w ？不过这其实并不重要，反正无论一个/两个都要卸载。</p>
+</blockquote>
+<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>。</p>
+<h2 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h2><p>配置好 nvidia 驱动后，可以安装 cuda 了，先删除原有的 cuda，再对 1.2 节里下载的文件运行安装就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt autoremove cuda</span><br><span class="line"><span class="comment"># 若上一步删不干净，接着使用：</span></span><br><span class="line">sudo apt --purge remove <span class="string">&quot;*cublas*&quot;</span> <span class="string">&quot;cuda*&quot;</span></span><br><span class="line"><span class="comment"># 在 1.2 节之前下载的文件目录下运行：</span></span><br><span class="line">sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
+<p>按照安装过程中的提示一步步走下来即可，会让你选择安装的组件等等，像 nvidia samples 后面那几个组件我就没有装。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>简而言之，总的流程其实是：</p>
+<ol>
+<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>；</li>
+<li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
+<li>按照第 3 节进行安装。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>mayavi离屏渲染</title>
+    <url>/2020/12/07/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/</url>
+    <content><![CDATA[<p>有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。</p>
+<a id="more"></a>
+<h2 id="1-mlab-options-offscreen-之坑"><a href="#1-mlab-options-offscreen-之坑" class="headerlink" title="1. mlab.options.offscreen 之坑"></a>1. <code>mlab.options.offscreen</code> 之坑</h2><p>mayavi 虽然提供有一个直接的选项<code>mlab.options.offscreen</code>可以打开/关闭离屏渲染，但在实测中非常难用，linux 下在 python 脚本中设置<code>mlab.options.offscreen = True</code>根本不奏效。</p>
+<p>笔者参照 <a href="http://docs.enthought.com/mayavi/mayavi/tips.html?highlight=offscreen">mayavi 官方文档</a>进行了大量尝试，最后在这里总结出比较好用的方案。</p>
+<h2 id="2-关闭渲染弹窗"><a href="#2-关闭渲染弹窗" class="headerlink" title="2. 关闭渲染弹窗"></a>2. 关闭渲染弹窗</h2><p>解决方案是：建立一个虚拟的“显示器（X 服务）”，在虚拟的服务上进行图形渲染。具体地，可以有两种选择：</p>
+<ol>
+<li>结合 linux 的 xvfb-run 命令运行编写好的 python 脚本： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># xvfb-run ... x24&quot;会开启一个相应分辨率的虚拟屏幕</span></span><br><span class="line"><span class="comment"># 后面再结合一个具体的命令便可在开启的虚拟屏幕上运行该命令</span></span><br><span class="line"><span class="comment"># 这里执行的便是让python运行一个mayavi绘图脚本的命令</span></span><br><span class="line">xvfb-run --server-args=<span class="string">&quot;-screen 0 1024x768x24&quot;</span> python my_mayavi.py</span><br></pre></td></tr></table></figure></li>
+<li>通过 python 脚本内部进行类似上述设置，此时需引入第三方库 PyVirtualDisplay： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"><span class="comment"># 开启一个分辨率为1280*1024的虚拟屏幕</span></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line"><span class="comment"># 启动该屏幕</span></span><br><span class="line">display.start()</span><br></pre></td></tr></table></figure>
+此后必然无法再在脚本运行的过程中看到渲染的图形弹窗，需要使用<code>mlab.savefig()</code>命令把后台渲染出的图像保存下来再在其他地方进行查看。</li>
+</ol>
+<h2 id="3-推荐方案"><a href="#3-推荐方案" class="headerlink" title="3. 推荐方案"></a>3. 推荐方案</h2><p>这里推荐解决方案中的第 2 种，因为其更通用也更优雅和方便。不过，仅仅进行上述设置会导致<code>mlab.savefig()</code>命令存储下来的图片就是一个黑屏（你生成的虚拟 X 服务对应的黑屏），正确操作应该同时把 mlab.options.offscreen 设置为 True，才能正确地保存你的图形。所以，干脆直接在脚本中加入以下命令吧：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>为了方案的“移值性”更强，建议直接将上述命令保存成一个 python 模块，以后每次希望离屏渲染时从这个模块中导入 mlab，不希望离屏渲染时则仍旧从 mayavi 中导入 mlab。如，笔者将其打包为<code>mayaviOffScreen.py</code>文件，并添加了一些注释：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Render the mayavi scene off screen.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">When you don&#x27;t need display the mayavi scene while running python scripts,</span></span><br><span class="line"><span class="string">importing `mlab` from this module is recommended, i.e.,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">from mayaviOffScreen imoprt mlab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notes:</span></span><br><span class="line"><span class="string">-------</span></span><br><span class="line"><span class="string">    1. If you are using mayavi from remote host by SSH, etc, you must</span></span><br><span class="line"><span class="string">        import `mlab` from this module. Or something wrong happens!</span></span><br><span class="line"><span class="string">    2. Under the circumstance above, if you need import some other modules meanwhile</span></span><br><span class="line"><span class="string">        and those modules import `mlab` as well in themselves, make sure the sentence</span></span><br><span class="line"><span class="string">        `from mayaviOffScreen import mlab` appears before `import otherModule`!</span></span><br><span class="line"><span class="string">        So that `mayaviOffScreen.mlab` covers `otherModule.mlab`.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br><span class="line">print(<span class="string">&quot;Set mlab.options.offscreen=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(mlab.options.offscreen))</span><br></pre></td></tr></table></figure>
+<p>以后每次需要离屏渲染时，把这个文件复制到项目文件夹，然后使用<code>from mayaviOffScreen import mlab</code>命令代替正常情况下的<code>from mayavi import mlab</code>即可。</p>
+<h2 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4. 注意事项"></a>4. 注意事项</h2><ol>
+<li>在具体执行 mayavi 绘图脚本时，可能你导入的其他模块（<code>import othermodule</code>）中事实上存在<code>from mayavi import mlab</code>语句，如果在你的执行脚本中<code>import othermodule</code>语句先于<code>from mayaviOffScreen import mlab</code>出现，那么依然会导致离屏渲染失败。因此，最好令这条离屏渲染语句<code>from mayaviOffScreen import mlab</code>作为你的执行模块的第一条语句。</li>
+<li>通过虚拟 X 服务渲染图形后，可不要再调用<code>mlab.show()</code>命令了，因为这意味着你进入和图形交互的状态，而这个“图形框”是虚拟的，你看不到摸不着，也就无法像正常那样通过关闭图形框来让<code>mlab.show()</code>命令停止了，于是你这个相应的脚本进入无限等待的阻塞状态，只有关闭相关进程才能将其终止。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>linux 命令行下适配 nvidia 驱动</title>
+    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/</url>
+    <content><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
+<a id="more"></a>
+<h2 id="1-下载相应驱动"><a href="#1-下载相应驱动" class="headerlink" title="1. 下载相应驱动"></a>1. 下载相应驱动</h2><p>在官网<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn">这里</a>选择适应你 GPU 的驱动版本，在下载界面可用右键得到下载链接，然后在 linux 命令行下使用 wget 进行下载，如我下载的是 1080 Ti 的驱动版本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.nvidia.cn/content/DriverDownload-March2009/confirmation.php?url=/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run&amp;lang=cn&amp;<span class="built_in">type</span>=TITAN</span><br></pre></td></tr></table></figure>
+<p>下载完成后是一个名为<code>NVIDIA-Linux-x86_64-440.82.run</code>的文件。此时若使用<code>sudo sh NVIDIA-Linux-x86_64-440.82.run</code>进行安装，会产生如下报错：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">You appear to be running an X server; please exit X before installing.</span><br></pre></td></tr></table></figure>
+<p>这主要是由于通常而言你的电脑上已经有 nvidia 驱动并且在运行了，此时无法进行新驱动的安装，因为会影响依赖你现有驱动的应用的正常运行。比方说你的桌面程序就需要依靠现有的显卡驱动进行显示。</p>
+<p>回到这个报错，百度了解到是有一个叫做 X 的进程服务在依赖着 nvidia 驱动的运行，这个 X 进程似乎就是支撑你的图形桌面的服务。使用<code>ps aux | grep X</code>命令可查看到这个正在运行的服务：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1459  0.0  0.0  15984   928 pts/40   S+   19:12   0:00 grep X</span><br><span class="line">root      1643  0.0  0.1 426836 187692 tty7    Ssl+ 10:43   0:15 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch</span><br><span class="line">root      3604  0.0  0.0 387052 71108 tty8     Ssl+ 10:44   0:22 /usr/lib/xorg/Xorg -core :1 -seat seat0 -auth /var/run/lightdm/root/:1 -nolisten tcp vt8 -novtswitch</span><br><span class="line">git       3909  0.0  0.0  43732  4264 ?        Ss   10:44   0:03 dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-E2NLgH7XO1</span><br></pre></td></tr></table></figure>
+<h2 id="2-关闭-X-服务"><a href="#2-关闭-X-服务" class="headerlink" title="2. 关闭 X 服务"></a>2. 关闭 X 服务</h2><p>为了能够安装新的 nvidia 驱动，我们需要关闭这个 X 服务，我的 Ubuntu 是基于 lightdm 类型的桌面系统，采用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /etc/init.d/lightdm stop</span><br><span class="line">sudo /etc/init.d/lightdm status</span><br></pre></td></tr></table></figure>
+<p>对于其他的 linux 版本，如果桌面系统是基于 gdm 类型，应该把命令中的 lightdm 改为 gdm 即可；非这两种桌面系统类型的，百度一下你的 linux 版本关闭 X 服务的相关命令吧。</p>
+<p>关闭了 X 服务后图形桌面可能会关闭，因为我是通过 ssh 连接的服务器进行的操作，所以也没有看到具体的变化，不确定具体会发生什么情况，不过别慌就是了。</p>
+<p>关闭 X 后，可再次用 ps 命令查看相关进程以确认，我这里显示如下，确实没有运行的 X 服务了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1656  0.0  0.0  15984  1084 pts/40   S+   19:15   0:00 grep X</span><br></pre></td></tr></table></figure>
+<h2 id="3-卸载旧的驱动"><a href="#3-卸载旧的驱动" class="headerlink" title="3. 卸载旧的驱动"></a>3. 卸载旧的驱动</h2><p>终于可以卸载旧驱动了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get --purge remove nvidia-*</span><br><span class="line"><span class="comment"># 也有的说用下面的命令进行卸载，我个人均有尝试，无碍</span></span><br><span class="line">sudo apt-get --purge remove <span class="string">&quot;*nvidia*&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-安装新驱动"><a href="#4-安装新驱动" class="headerlink" title="4. 安装新驱动"></a>4. 安装新驱动</h2><p>在第 1 步下载的驱动文件目录里运行安装包即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-440.82.run</span><br></pre></td></tr></table></figure>
+<p>值得一提的是，中间可能会有一些小的 warning 提示（好像还有一个 error？），但流程走下来最终还是提示 successfully complete，这就中了！使用<code>nvidia-smi</code>已经可以看到你的新驱动版本号（Driver Version）产生了变化：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nvidia-smi</span></span><br><span class="line">Sun Jun 21 19:16:54 2020</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 440.82       Driver Version: 440.82       CUDA Version: 10.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  GeForce GTX 108...  Off  | 00000000:02:00.0 Off |                  N/A |</span><br><span class="line">| 27%   35C    P5    24W / 250W |      0MiB / 11170MiB |      2%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">|  GPU       PID   Type   Process name                             Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Python多进程</title>
     <url>/2021/03/12/Python%E5%A4%9A%E8%BF%9B%E7%A8%8B/</url>
     <content><![CDATA[<p>接连面临多个耗时性程序，形势已经演变到必须了解 Python 并行计算的地步了。</p>
@@ -88,337 +348,6 @@
 ]]></content>
       <categories>
         <category>python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用SSH把个人电脑配置成 linux 服务器</title>
-    <url>/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
-<a id="more"></a>
-<h2 id="1-更新软件源"><a href="#1-更新软件源" class="headerlink" title="1. 更新软件源"></a>1. 更新软件源</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-<h2 id="2-安装并启动-sshserver"><a href="#2-安装并启动-sshserver" class="headerlink" title="2. 安装并启动 sshserver"></a>2. 安装并启动 sshserver</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br><span class="line"><span class="comment"># 查看是否已默认启动，如已下输出看到了sshd则已经启动</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"><span class="comment"># 若无，启动sshserver</span></span><br><span class="line">/etc/init.d/ssh start</span><br><span class="line">/etc/init.d/ssh restart</span><br><span class="line"><span class="comment"># 可再次查看sshd进程是否已启动</span></span><br><span class="line">ps -e | grep ssh</span><br></pre></td></tr></table></figure>
-<h2 id="3-创建-linux-使用帐户"><a href="#3-创建-linux-使用帐户" class="headerlink" title="3. 创建 linux 使用帐户"></a>3. 创建 linux 使用帐户</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail /etc/passwd  <span class="comment"># 查看已有用户</span></span><br><span class="line">useradd chuan -ms /bin/bash</span><br><span class="line">passwd chuan  <span class="comment"># 更改密码</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-添加管理员权限（可选）"><a href="#4-添加管理员权限（可选）" class="headerlink" title="4. 添加管理员权限（可选）"></a>4. 添加管理员权限（可选）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sudoers</span><br></pre></td></tr></table></figure>
-<p>找到以下这两行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># User privilege specification</span></span><br><span class="line">root ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure>
-<p>在下面跟<code>root ALL=(ALL:ALL) ALL</code>对齐着添加<code>chuan ALL=(ALL:ALL) ALL</code>即可。</p>
-<h2 id="5-远程连接服务器"><a href="#5-远程连接服务器" class="headerlink" title="5. 远程连接服务器"></a>5. 远程连接服务器</h2><p>方法很多，linux 系统下可直接在 shell 中连接，windows 也可以在 cmd 里连接（但要安装有 ssh），还有装 Git 的时候附带的 git bash 里其实也能连接。具体命令行操作为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># username为你在服务器上注册的用户名，host_ip为服务器的 IP 地址</span></span><br><span class="line">ssh username@host_ip</span><br></pre></td></tr></table></figure>
-<p>此外，windows 下还可以通过流行的 Xshell 等软件来连接。</p>
-<h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>值得一提的是，通过 ssh 的连接方式似乎不能直接在公共的互联网上使用，在校园环境内，个人电脑与服务器都是学校的局域网，所以能直接连接，个人电脑在校外的时候需要用学校的 VPN 接入校园网络后才能连接。</p>
-<p>我之前做实验，在家里先将自己的笔记本配置成服务器，让位于其他省的同学尝试连接我的笔记本，结果就是连不上的，但是此时再用一台笔记本连上自己家的网，就能连接了，因为是在同一个小局域网之下。前者失败的原因，百度了下好像是由于我是通过家里的无线 WIFI 连网的，这个首先要设置好路由器的跳转连接，不然人家对你的 IP 地址搜不到；不过，即便个人路由器已配置好，能否直接通过公有的互联网连接成功尚有疑问。</p>
-<p>先挖个坑，后续有时间了再来了解下相关原理吧。</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>WSL下安装MySQL</title>
-    <url>/2020/08/14/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL/</url>
-    <content><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
-<a id="more"></a>
-<h2 id="1-安装-mysql"><a href="#1-安装-mysql" class="headerlink" title="1. 安装 mysql"></a>1. 安装 mysql</h2><ol>
-<li><code>apt-get install mysql-server mysql-client</code></li>
-<li>此时试图在 shell 中进入<code>mysql</code>会报错如下：<br><code>ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</code></li>
-</ol>
-<h2 id="2-解决方法"><a href="#2-解决方法" class="headerlink" title="2. 解决方法"></a>2. 解决方法</h2><p>使用如下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /var/run/mysqld</span><br><span class="line">sudo chown mysql /var/run/mysqld/</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
-<h2 id="3-问题原因分析"><a href="#3-问题原因分析" class="headerlink" title="3. 问题原因分析"></a>3. 问题原因分析</h2><p>在 WSL 中，<code>/var/run/mysqld/mysqld.sock</code> 文件不存在。执行<code>vim /etc/mysql/my.cnf</code>将会看到如下内容：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># The MySQL database server configuration file.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># You can copy this to one of:</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;/etc/mysql/my.cnf&quot;</span> to <span class="built_in">set</span> global options,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> - <span class="string">&quot;~/.my.cnf&quot;</span> to <span class="built_in">set</span> user-specific options.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># One can use all long options that the program supports.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Run program with --<span class="built_in">help</span> to get a list of available options and with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --print-defaults to see <span class="built_in">which</span> it would actually understand and use.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># For explanations see</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> http://dev.mysql.com/doc/mysql/en/server-system-variables.html</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># * IMPORTANT: Additional settings that can override those from this file!</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The files must end with <span class="string">&#x27;.cnf&#x27;</span>, otherwise they<span class="string">&#x27;ll be ignored.</span></span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash">!includedir /etc/mysql/conf.d/</span></span><br><span class="line">!includedir /etc/mysql/mysql.conf.d/</span><br></pre></td></tr></table></figure>
-<p>这里的 mysql 的配置在/etc/mysql/mysql.conf.d 目录下的 mysqld.cnf 文件，打开可以看到:<code>bind-address = 127.0.0.1</code> <code>socket = /var/run/mysqld/mysqld.sock</code> 等信息。</p>
-<p>而 WSL 的/var/run 下面没有 mysqld 目录，如果执行上述解决方法中的命令，目录和 sock 文件就都有了。</p>
-<p>此时再输入 mysql 即可进入 mysql 的命令环境：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Welcome <span class="keyword">to</span> the MySQL monitor.  Commands <span class="keyword">end</span> <span class="keyword">with</span> ; <span class="keyword">or</span> \g.</span><br><span class="line">Your MySQL connection id <span class="keyword">is</span> <span class="number">13</span></span><br><span class="line">Server version: <span class="number">8.0</span><span class="number">.20</span><span class="number">-0</span>ubuntu0<span class="number">.20</span><span class="number">.04</span><span class="number">.1</span> (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">2000</span>, <span class="number">2020</span>, Oracle <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its affiliates. <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle <span class="keyword">is</span> a registered trademark <span class="keyword">of</span> Oracle Corporation <span class="keyword">and</span><span class="operator">/</span><span class="keyword">or</span> its</span><br><span class="line">affiliates. Other names may be trademarks <span class="keyword">of</span> their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> help. Type <span class="string">&#x27;\c&#x27;</span> <span class="keyword">to</span> clear the <span class="keyword">current</span> input statement.</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-        <category>WSL</category>
-        <category>mysql</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>jupyter notebook中使用mayavi三维绘图库</title>
-    <url>/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/</url>
-    <content><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
-<a id="more"></a>
-<blockquote>
-<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
-</blockquote>
-<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
-<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
-<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
-<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>jupyter</category>
-        <category>mayavi</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Python快速定位至文本文件的最后一行</title>
-    <url>/2021/03/19/Python%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E8%87%B3%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C/</url>
-    <content><![CDATA[<p>编程语言在读取文本文件时总是自首行读取，因此文本开头的内容读取速度很快，那么如果文本量较大，如何快速读取文本仅最后一行呢？</p>
-<blockquote>
-<p>说得一本正经，但并不是为此而生(* ￣︿￣)。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="1-需求"><a href="#1-需求" class="headerlink" title="1. 需求"></a>1. 需求</h2><p>办公室另个课题组野外项目多，经常要测各种数据，某天偶然聊到他们竟然有这样一个奇葩的需求：某仪器每次测一次数据，会得到一个含 725 份 txt 文本文件的文件夹，其中每个 txt 文本为 1000 多行、2 列的数据内容；每当仪器测出若干次数据后他们对数据进行一次分析，也就需要同时面对约二十个文件夹的近两万个 txt 文本，而他们的要求是所有的 txt 文本只取最后一行的第 2 个数字整理成 Excel 表然后做处理。</p>
-<ul>
-<li>一个文件夹：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tree -l</span></span><br><span class="line">.</span><br><span class="line">├── 1.txt</span><br><span class="line">├── 10.txt</span><br><span class="line">├── 100.txt</span><br><span class="line">├── 101.txt</span><br><span class="line">├── ...</span><br><span class="line">├── 96.txt</span><br><span class="line">├── 97.txt</span><br><span class="line">├── 98.txt</span><br><span class="line">└── 99.txt</span><br><span class="line"></span><br><span class="line">0 directories, 725 files</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一个文件：</li>
-</ul>
-<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">         Step Z Displace...</span><br><span class="line">------------- -------------</span><br><span class="line"> 2.650000e+03 -3.941945e-08</span><br><span class="line"> 2.660000e+03 -1.150117e-07</span><br><span class="line"> 2.670000e+03 -1.168365e-07</span><br><span class="line"> 2.680000e+03 -3.220245e-07</span><br><span class="line"> 2.690000e+03 -2.561211e-06</span><br><span class="line">      ...          ...</span><br></pre></td></tr></table></figure>
-<p>他们原本是怎么做这项工作的呢？课题组分派六、七个有闲的人，每人均分一部分工作，通过 windows 记事本打开每个 txt 文本，拖动鼠标至最后一行，然后复制粘贴相应数据到 Excel 表格中，据师兄说这样差不多要干一个通宵。</p>
-<p>我意识到这个“固定模式的简单重复性工作”写一份代码可以完全自动化批量处理呀，于是帮师兄师姐写了份 python 脚本，师兄也把刚刚已经分配给几位师弟的文件全收回来交给我统一处理，脚本在几秒钟就做完了他们的工作。这份代码其实异常简单，寥寥几行，留之无用、弃之可惜，笔者也就权当纪念意义留在这里吧。</p>
-<h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2. 代码"></a>2. 代码</h2><blockquote>
-<p>注：笔者的第一版本其实并非以下代码，原实现为暴力式搜索文本最后一行，此版源自网络，思路与性能更佳，故而也颇值得记录。</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_last_line</span>(<span class="params">file</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Find the last line of a file.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    -----------</span></span><br><span class="line"><span class="string">    file(str): Absolute path of a file.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">        offset = -<span class="number">50</span>  <span class="comment"># initial offset</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            file_obj.seek(offset, <span class="number">2</span>)</span><br><span class="line">            lines = file_obj.readlines()</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">len</span>(lines) &gt; <span class="number">1</span>):</span><br><span class="line">                last_line = lines[-<span class="number">1</span>]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                offset *= <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> last_line.decode()</span><br></pre></td></tr></table></figure>
-<h2 id="3-附：完整脚本"><a href="#3-附：完整脚本" class="headerlink" title="3. 附：完整脚本"></a>3. 附：完整脚本</h2><p>以上仅是定位文本最后一行的函数定义，以下将为师兄处理数据的完整工作脚本作为附录。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_last_line</span>(<span class="params">file</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Find the last line of a file.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    -----------</span></span><br><span class="line"><span class="string">    file(str): Absolute path of a file.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> file_obj:</span><br><span class="line">        offset = -<span class="number">50</span>  <span class="comment"># initial offset</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            file_obj.seek(offset, <span class="number">2</span>)</span><br><span class="line">            lines = file_obj.readlines()</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">len</span>(lines) &gt; <span class="number">1</span>):</span><br><span class="line">                last_line = lines[-<span class="number">1</span>]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                offset *= <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> last_line.decode()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">collect</span>(<span class="params">folder</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Collect the last data from a group of data-files in a folder</span></span><br><span class="line"><span class="string">    into a data structure, of pandas.Series, for later convenience.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">    -----------</span></span><br><span class="line"><span class="string">    folder(str): Absolute path of a folder.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    files = os.listdir(folder)</span><br><span class="line">    files.sort(key=<span class="keyword">lambda</span> filename: <span class="built_in">int</span>(filename[:-<span class="number">4</span>]))</span><br><span class="line">    excel = []</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">        file = os.path.join(folder, file)</span><br><span class="line">        last_line = find_last_line(file)</span><br><span class="line">        excel.append(last_line.split()[-<span class="number">1</span>])</span><br><span class="line">    excel = pd.Series(excel, index=files)</span><br><span class="line">    <span class="keyword">return</span> excel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    basefolder = <span class="string">&quot;./ych&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> folder <span class="keyword">in</span> os.listdir(basefolder):</span><br><span class="line"></span><br><span class="line">        folder = os.path.join(basefolder, folder)</span><br><span class="line">        folder = os.path.abspath(folder)</span><br><span class="line">        <span class="keyword">if</span> os.path.isfile(folder):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        excel = collect(folder)</span><br><span class="line">        excel_name = os.path.basename(folder) + <span class="string">&#x27;.xlsx&#x27;</span></span><br><span class="line">        <span class="comment"># 写入具体的excel文件</span></span><br><span class="line">        excel.to_excel(os.path.join(basefolder, excel_name), header=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
-    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda/</url>
-    <content><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
-<a id="more"></a>
-<blockquote>
-<p>其实可直接看第 4 步的总结……</p>
-</blockquote>
-<h2 id="1-走官网教程"><a href="#1-走官网教程" class="headerlink" title="1. 走官网教程"></a>1. 走官网教程</h2><p>首先想的当然是走官网的 cuda 安装教程啦，尝试了<a href="https://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux&amp;target_arch=x86_64&amp;target_distro=Ubuntu&amp;target_version=1604&amp;target_type=runfilelocal">官网页面</a>里的<code>runfile(local)</code>、<code>deb(local)</code>安装方式选项均失败，失败过程的详细说明如下：</p>
-<h3 id="1-1-使用deb-local-方法（不推荐）"><a href="#1-1-使用deb-local-方法（不推荐）" class="headerlink" title="1.1. 使用deb(local)方法（不推荐）"></a>1.1. 使用<code>deb(local)</code>方法（不推荐）</h3><p>官网给的安装方式为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-ubuntu1604.pin</span><br><span class="line">$ sudo mv cuda-ubuntu1604.pin /etc/apt/preferences.d/cuda-repository-pin-600</span><br><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo dpkg -i cuda-repo-ubuntu1604-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb</span><br><span class="line">$ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get -y install cuda</span><br></pre></td></tr></table></figure>
-<p>虽然服务器上已经有安装的 cuda 9.0，但此方法不需要先卸载老版本（大概是因为用的 apt-get 安装会自动覆盖吧），一路执行下来都没有报错，畅快地安装完成。然而，后又经过各种尝试后发现，在执行到最后一句<code>sudo apt-get -y install cuda</code>时，安装好的版本总是当前 NVIDIA 最新的 cuda 版本——截止到 2020.06.21 是 cuda 11.0，而我要安装的是 cuda 10.2（因为当前 PyTorch 只支持到 cuda 10.2）！</p>
-<p>事实上，如果你要安装最新的 cuda 版本的话，这个方法非常好，安装流程到这里就可以结束了。</p>
-<p>至于为什么总是安装的最新的 cuda 版本，而不是你以为的你指定的版本，大抵是因为最后那一句命令本质上还是用 apt 从软件源里下载 cuda，而软件源里的是最新版本所以你安装的也只能是最新版本吧。</p>
-<h3 id="1-2-使用runfile-local-方法（推荐）"><a href="#1-2-使用runfile-local-方法（推荐）" class="headerlink" title="1.2. 使用runfile(local)方法（推荐）"></a>1.2. 使用<code>runfile(local)</code>方法（推荐）</h3><p>对于<code>runfile(local)</code>，官网给的安装方式为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</span><br><span class="line">$ sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
-<p>这个看上去靠谱多了，毕竟是下载到本地你指定的安装包然后直接在本地安装，但是在执行<code>sudo sh cuda_10.2.89_440.33.01_linux.run</code>发现依然报错，按其提示，用 cat 或 vim 查看相应的日志记录如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[INFO]: Driver not installed.</span><br><span class="line">[INFO]: Checking compiler version...</span><br><span class="line">[INFO]: gcc location: &#x2F;usr&#x2F;bin&#x2F;gcc</span><br><span class="line"></span><br><span class="line">[INFO]: gcc version: gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)</span><br><span class="line"></span><br><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Components to install:</span><br><span class="line">[INFO]: Driver</span><br><span class="line">[INFO]: 440.33.01</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-440.33.01.run --ui&#x3D;none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed.</span><br><span class="line">[ERROR]: Install of 440.33.01 failed, quitting</span><br></pre></td></tr></table></figure>
-<p>注意最后的<code>[ERROR]: Install of driver component failed.</code>，意思是驱动安装失败，我简直莫名奇妙。</p>
-<p>找了找查看驱动相关的命令，使用<code>sudo dpkg --list | grep nvidia-*</code>命令查看了驱动版本号，发现竟然装了两个驱动版本！啥意思呢？就是原来我服务器上装的那个驱动，加上在上一步尝试<code>deb(local)</code>方法安装 cuda 时自动装的一个驱动，两个同时存在了。</p>
-<blockquote>
-<p>为啥 cuda 覆盖了而 nvidia 驱动没覆盖，难道是我记错了 w(ﾟ Д ﾟ)w ？不过这其实并不重要，反正无论一个/两个都要卸载。</p>
-</blockquote>
-<h2 id="2-解决驱动问题"><a href="#2-解决驱动问题" class="headerlink" title="2. 解决驱动问题"></a>2. 解决驱动问题</h2><p>为了这个专门写了篇博客，移步<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>。</p>
-<h2 id="3-安装"><a href="#3-安装" class="headerlink" title="3. 安装"></a>3. 安装</h2><p>配置好 nvidia 驱动后，可以安装 cuda 了，先删除原有的 cuda，再对 1.2 节里下载的文件运行安装就可以了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt autoremove cuda</span><br><span class="line"><span class="comment"># 若上一步删不干净，接着使用：</span></span><br><span class="line">sudo apt --purge remove <span class="string">&quot;*cublas*&quot;</span> <span class="string">&quot;cuda*&quot;</span></span><br><span class="line"><span class="comment"># 在 1.2 节之前下载的文件目录下运行：</span></span><br><span class="line">sudo sh cuda_10.2.89_440.33.01_linux.run</span><br></pre></td></tr></table></figure>
-<p>按照安装过程中的提示一步步走下来即可，会让你选择安装的组件等等，像 nvidia samples 后面那几个组件我就没有装。</p>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>简而言之，总的流程其实是：</p>
-<ol>
-<li>适配好你需要的 NVIDIA Driver(英伟达驱动)，参考<a href="https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/">这里</a>；</li>
-<li>使用 1.2 节的<code>runfile(local)</code>方法先下载好相应的 cuda 版本；</li>
-<li>按照第 3 节进行安装。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 命令行下适配 nvidia 驱动</title>
-    <url>/2020/06/29/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8/</url>
-    <content><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
-<a id="more"></a>
-<h2 id="1-下载相应驱动"><a href="#1-下载相应驱动" class="headerlink" title="1. 下载相应驱动"></a>1. 下载相应驱动</h2><p>在官网<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn">这里</a>选择适应你 GPU 的驱动版本，在下载界面可用右键得到下载链接，然后在 linux 命令行下使用 wget 进行下载，如我下载的是 1080 Ti 的驱动版本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.nvidia.cn/content/DriverDownload-March2009/confirmation.php?url=/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run&amp;lang=cn&amp;<span class="built_in">type</span>=TITAN</span><br></pre></td></tr></table></figure>
-<p>下载完成后是一个名为<code>NVIDIA-Linux-x86_64-440.82.run</code>的文件。此时若使用<code>sudo sh NVIDIA-Linux-x86_64-440.82.run</code>进行安装，会产生如下报错：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">You appear to be running an X server; please exit X before installing.</span><br></pre></td></tr></table></figure>
-<p>这主要是由于通常而言你的电脑上已经有 nvidia 驱动并且在运行了，此时无法进行新驱动的安装，因为会影响依赖你现有驱动的应用的正常运行。比方说你的桌面程序就需要依靠现有的显卡驱动进行显示。</p>
-<p>回到这个报错，百度了解到是有一个叫做 X 的进程服务在依赖着 nvidia 驱动的运行，这个 X 进程似乎就是支撑你的图形桌面的服务。使用<code>ps aux | grep X</code>命令可查看到这个正在运行的服务：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1459  0.0  0.0  15984   928 pts/40   S+   19:12   0:00 grep X</span><br><span class="line">root      1643  0.0  0.1 426836 187692 tty7    Ssl+ 10:43   0:15 /usr/lib/xorg/Xorg -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch</span><br><span class="line">root      3604  0.0  0.0 387052 71108 tty8     Ssl+ 10:44   0:22 /usr/lib/xorg/Xorg -core :1 -seat seat0 -auth /var/run/lightdm/root/:1 -nolisten tcp vt8 -novtswitch</span><br><span class="line">git       3909  0.0  0.0  43732  4264 ?        Ss   10:44   0:03 dbus-daemon --fork --session --address=unix:abstract=/tmp/dbus-E2NLgH7XO1</span><br></pre></td></tr></table></figure>
-<h2 id="2-关闭-X-服务"><a href="#2-关闭-X-服务" class="headerlink" title="2. 关闭 X 服务"></a>2. 关闭 X 服务</h2><p>为了能够安装新的 nvidia 驱动，我们需要关闭这个 X 服务，我的 Ubuntu 是基于 lightdm 类型的桌面系统，采用如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /etc/init.d/lightdm stop</span><br><span class="line">sudo /etc/init.d/lightdm status</span><br></pre></td></tr></table></figure>
-<p>对于其他的 linux 版本，如果桌面系统是基于 gdm 类型，应该把命令中的 lightdm 改为 gdm 即可；非这两种桌面系统类型的，百度一下你的 linux 版本关闭 X 服务的相关命令吧。</p>
-<p>关闭了 X 服务后图形桌面可能会关闭，因为我是通过 ssh 连接的服务器进行的操作，所以也没有看到具体的变化，不确定具体会发生什么情况，不过别慌就是了。</p>
-<p>关闭 X 后，可再次用 ps 命令查看相关进程以确认，我这里显示如下，确实没有运行的 X 服务了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | grep X</span><br><span class="line">root      1656  0.0  0.0  15984  1084 pts/40   S+   19:15   0:00 grep X</span><br></pre></td></tr></table></figure>
-<h2 id="3-卸载旧的驱动"><a href="#3-卸载旧的驱动" class="headerlink" title="3. 卸载旧的驱动"></a>3. 卸载旧的驱动</h2><p>终于可以卸载旧驱动了：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get --purge remove nvidia-*</span><br><span class="line"><span class="comment"># 也有的说用下面的命令进行卸载，我个人均有尝试，无碍</span></span><br><span class="line">sudo apt-get --purge remove <span class="string">&quot;*nvidia*&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-安装新驱动"><a href="#4-安装新驱动" class="headerlink" title="4. 安装新驱动"></a>4. 安装新驱动</h2><p>在第 1 步下载的驱动文件目录里运行安装包即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-440.82.run</span><br></pre></td></tr></table></figure>
-<p>值得一提的是，中间可能会有一些小的 warning 提示（好像还有一个 error？），但流程走下来最终还是提示 successfully complete，这就中了！使用<code>nvidia-smi</code>已经可以看到你的新驱动版本号（Driver Version）产生了变化：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nvidia-smi</span></span><br><span class="line">Sun Jun 21 19:16:54 2020</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 440.82       Driver Version: 440.82       CUDA Version: 10.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  GeForce GTX 108...  Off  | 00000000:02:00.0 Off |                  N/A |</span><br><span class="line">| 27%   35C    P5    24W / 250W |      0MiB / 11170MiB |      2%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">|  GPU       PID   Type   Process name                             Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>linux 下从源码安装 Python——小白踩坑记</title>
-    <url>/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/</url>
-    <content><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
-<a id="more"></a>
-<blockquote>
-<p>注：如果想要安装某个非系统自带的 Python 版本，切忌冲动删除系统自带的 Python 2.7 和 Python 3.5，某些系统应用可能依赖于这些 Python 环境的调用，防止系统出错！</p>
-</blockquote>
-<h2 id="1-官网下载-python-源码"><a href="#1-官网下载-python-源码" class="headerlink" title="1. 官网下载 python 源码"></a>1. 官网下载 python 源码</h2><p>在官网<a href="https://www.python.org/downloads/source/">这里</a>下载你想要的 linux 环境下的 python 源码，如我下载的是下图第一个 Gzipped source tarball，其实二选一就好。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python源码包.png" alt="python源码.png"></p>
-<p>我下载完成后是一个叫 Python-3.8.3.tgz 的文件，在下载目录里使用<code>tar -xvf Python-3.8.3.tgz</code> 命令解压文件包，目录里多出一个 Python-3.8.3 的文件夹，cd 命令进入该文件夹。</p>
-<p>上述操作总结起来如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz</span><br><span class="line">tar -xvf Python-3.8.3.tgz</span><br><span class="line"><span class="built_in">cd</span> Python-3.8.3</span><br></pre></td></tr></table></figure>
-<h2 id="2-安装依赖"><a href="#2-安装依赖" class="headerlink" title="2. 安装依赖"></a>2. 安装依赖</h2><p>Python 源码编译、安装过程中需要用到一些工具，你的系统里可能有、可能没有这些工具，保险起见，使下以下命令先把这些依赖安装好吧。</p>
-<blockquote>
-<p>这一步其实可以放在最开始执行。</p>
-</blockquote>
-<ol>
-<li>Ubuntu/Debian 系列： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl</span><br></pre></td></tr></table></figure></li>
-<li>Fedora/CentOS/RHEL 等可参考： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo yum install zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel xz xz-devel libffi-devel</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<hr>
-<h2 id="3-编译并安装-python"><a href="#3-编译并安装-python" class="headerlink" title="3. 编译并安装 python"></a>3. 编译并安装 python</h2><p>注意根据第 1 节最后的 cd 命令，我们现在是在 python 的源码文件夹里进行操作。</p>
-<h3 id="3-1-指定-python-的安装目录"><a href="#3-1-指定-python-的安装目录" class="headerlink" title="3.1. 指定 python 的安装目录"></a>3.1. 指定 python 的安装目录</h3><p>作为 CS 小白，我还是要区别一下 python 的“源码目录”和“安装目录”两个概念的，毕竟是第一次在 linux 下从源码安装软件。</p>
-<p>要知道，当前我们所在的目录<code>Python-3.8.3</code>是由最开始下载的源码压缩包解压出来的，因此这个目录里是 python 这个软件开源的源码，故称之为<strong>源码目录</strong>；而<strong>安装目录</strong>是说我们这个 python 软件要安装在系统的哪个地方，你启动 python 的时候实际是从这里启动的。</p>
-<p>类比下 windows 的话就是：源码目录是你下载的那个安装程序<code>xxx.exe</code>所在的目录，还记得一些大型软件（如 office 2016）安装的时候通常是一个文件夹里有一个<code>setup.exe</code>的程序吗（当然，很多软件你下载下来的安装包其实就一个单独的.exe 可执行文件就没了），windows 下就是直接点击这个<code>xxx.exe</code>进行安装的，这就是所谓的<strong>源码目录</strong>；那么显而易见，<strong>安装目录</strong>就是你在运行<code>xxx.exe</code>进行安装的时候选择的安装地址，譬如说经常是<code>C:\Program Files\</code>等等。真正的软件组件肯定是在安装目录里，软件需要从这里启动，而你平常习惯的在 windows 桌面/开始菜单里点击的图标就是从安装目录里延伸出的快捷方式。</p>
-<p>回归主题，我选择的 python 安装目录是<code>/opt/python3.8</code>，因此通过如下命令先建立这个文件夹：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /opt/python3.8</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-执行-configure"><a href="#3-2-执行-configure" class="headerlink" title="3.2. 执行./configure"></a>3.2. 执行./configure</h3><p>python 源码目录里有一个 configure 可执行文件，这个命令的作用是生成一个 MakeFile 文件，此 Makefile 文件用来被之后的 make 命令所使用进行源码编译（Linux 需要按照 Makefile 所指定的顺序来编译 (build) 程序组件）。</p>
-<p>configure 通常有一些参数选项，最常见的是—prefix，用来指定安装目录。此外，要注意的是，python3.4 以后自带了 pip，为了在之后能够成功使用这个 pip 进行 python 库的安装，最好加上—with-ssl 参数。—with-ssl 这个参数不加的话 python 的安装过程不受影响，只是当你想要用 pip 安装 python 库的时候会报错，发现它无法连接到 pypi，跟 pip 连不上网没啥区别。</p>
-<p>总之，使用如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./configure --with-ssl --prefix=/opt/python3.8</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-make-编译"><a href="#3-3-make-编译" class="headerlink" title="3.3. make 编译"></a>3.3. make 编译</h3><p><code>make</code>命令实际就是编译源代码，其根据 Makefile 文件执行编译指令并生成可执行文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
-<h3 id="3-4-使用-make-install-进行安装"><a href="#3-4-使用-make-install-进行安装" class="headerlink" title="3.4. 使用 make install 进行安装"></a>3.4. 使用 make install 进行安装</h3><p>当 make 的源代码编译无误，使用<code>make install</code>就是进行软件的安装，似乎也要根据 Makefile 文件以及根据 make 生成的可执行文件进行执行，原理尚不明确，现在确定的是其现实意义是把软件安装到<code>configure</code>命令指定的目录，对我而言就是<code>/opt/python3.8</code>。</p>
-<p><code>make install</code>因为是软件安装，因此通常需要 sudo 权限。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<h2 id="4-配置环境"><a href="#4-配置环境" class="headerlink" title="4. 配置环境"></a>4. 配置环境</h2><p>至此 python 的安装过程其实已经完成，在安装目录里使用<code>./bin/python3</code>即可打开安装好的 python 可执行文件并进入 python 命令行了：</p>
-<p><img src="https://chua-n.gitee.io/blog-images/linux源码安装python/python命令行.png" alt="启动python.png"></p>
-<p>但是每次要从安装目录里启动 python 很不方便，我们想要达到的是在 shell 中随时随地唤醒这个 python，这便需要进行相关的环境配置。</p>
-<h3 id="4-1-删除原有的软链接"><a href="#4-1-删除原有的软链接" class="headerlink" title="4.1. 删除原有的软链接"></a>4.1. 删除原有的软链接</h3><p>开头的时候提到，我的系统中默认的 python 命令打开的是系统自带的 python2.7，现在要更改这个命令让它打开的是新安装的 python3.8，这需要我们先理解命令行(shell)中的命令是怎么执行的：</p>
-<ul>
-<li>在 shell 中，执行的所有命令如 cd、ls、ps、python 等，分为“内建命令”和“外部命令”。<strong>内建命令</strong>是 shell 自带的命令，好比编程语言不需要使用函数库而自带的那些函数，如<code>print()</code>函数；<strong>外部命令</strong>是为了丰富 shell 的功能而自己安装的一些命令，好比你编程时使用的第三方库，当然，有些外部命令是你安装 linux 系统时就已经自带的命令，好比编程语言的标准库，虽然是“自带的”但依然是“外部命令”。</li>
-<li>python 毫无疑问是外部命令，那么外部命令是怎么执行呢？这就要提到平常经常见到的<code>PATH</code>概念了。当 shell 中输入一个命令时，shell 首先检验它是不是内建命令，当内建命令中找不到这条命令时，shell 就搜索你的<code>PATH</code>，这个东西就是一个存储了你的外部命令所在路径的集合，shell 在这些路径中寻找你输入的命令对应的那个可执行文件，找得到就在 shell 中执行，找不到就报错。</li>
-<li>于是，shell 中 python 命令的执行过程为：在<code>PATH</code>存储的那么路径里（包含很多路径，其中一个是<code>/usr/bin/</code>）寻找一个名为<code>python</code>的可执行文件，一般情况下，有这么一个文件：<code>/usr/bin/python</code>，找到它以后执行，就打开了 python。</li>
-</ul>
-<p>现在我们使用<code>ls -l /usr/bin/python</code>查看这个文件的详细信息，发现它是一个执行 python2.7 的软链接（相当于 windows 里的快捷方式），把它删掉，这样在 shell 中直接输入 python 就再也打不开任何 python 环境了，它成了一个无效命令。</p>
-<p>总结一下，这步操作的命令过程为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l /usr/bin/python</span><br><span class="line">sudo rm /usr/bin/python</span><br></pre></td></tr></table></figure>
-<h3 id="4-2-建立新的软链接"><a href="#4-2-建立新的软链接" class="headerlink" title="4.2. 建立新的软链接"></a>4.2. 建立新的软链接</h3><p>使用软链接创建命令<code>ln -s</code>把新安装的 python 链接到上步删除的旧的软链接所在目录即可。即：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s /opt/python3.8/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
-<p>此时在任意工作目录的 shell 中任意输入 python，即可打开新安装的 python 3.8 了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chuan@workstation:~$ python</span><br><span class="line">Python 3.8.3 (default, Jun 21 2020, 16:34:59)</span><br><span class="line">[GCC 5.4.0 20160609] on linux</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="4-3-配置-pip-命令"><a href="#4-3-配置-pip-命令" class="headerlink" title="4.3. 配置 pip 命令"></a>4.3. 配置 pip 命令</h3><p>你的系统可能也自带了 pip 或 pip2、pip3 等命令，由于自带的 pip 关联的肯定是原有的 python 环境，此时盲目使用 pip install 一些库的话，这些库其实被安装到了系统自带的 python 环境里了，在你新安装的 python3.8 里根本无法导入这些库，这就尴尬了。</p>
-<p>这个 pip 其实和之前被删除的 python 软链接一样，是一个在相同目录下的 pip 软链接，和更改 python 命令一样，删除掉原来的 pip 被建立一个新的 pip 软链接即可。为了让 pip 关联的是新下载的 python3.8，新的 pip 应该来自 python3.8 自带的那个 pip，其路径为<code>./opt/python3.8/bin/pip3</code>。话不多说，代码如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm /usr/bin/pip</span><br><span class="line">ln -s /opt/python3.8/bin/pip3 /usr/bin/pip</span><br></pre></td></tr></table></figure>
-<h2 id="5-前方告捷，嘿嘿"><a href="#5-前方告捷，嘿嘿" class="headerlink" title="5. 前方告捷，嘿嘿"></a>5. 前方告捷，嘿嘿</h2><h2 id="6-附记"><a href="#6-附记" class="headerlink" title="6. 附记"></a>6. 附记</h2><p>新安装的 pip 在安装第三方库时还是有一个小小的报错，提示什么文件夹权限不明确/不足以及：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Could not install packages due to an EnvironmentError: [Errno 13] Permission denied</span><br></pre></td></tr></table></figure>
-<p>根据百度，出现这个报错之后，在 pip install 之后加个—user 可解决，如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install --user numpy</span><br></pre></td></tr></table></figure>
-<p>第一次加过—user 之后便不再有报错，但不明所以的是这样之后 pip 安装的第三方库的目录被定在了<code>~/.local/</code>，原来似乎不存在这个文件夹。不过这并没有造成后续什么问题，暂且不管了，挖个坑后续再研究。</p>
-<p>另外，不知道能不能选择直接把一个已安装的 pip 绑定到指定的 python 环境，而不用这么折腾，未完待续吧……</p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>mayavi离屏渲染</title>
-    <url>/2020/12/07/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/</url>
-    <content><![CDATA[<p>有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。</p>
-<a id="more"></a>
-<h2 id="1-mlab-options-offscreen-之坑"><a href="#1-mlab-options-offscreen-之坑" class="headerlink" title="1. mlab.options.offscreen 之坑"></a>1. <code>mlab.options.offscreen</code> 之坑</h2><p>mayavi 虽然提供有一个直接的选项<code>mlab.options.offscreen</code>可以打开/关闭离屏渲染，但在实测中非常难用，linux 下在 python 脚本中设置<code>mlab.options.offscreen = True</code>根本不奏效。</p>
-<p>笔者参照 <a href="http://docs.enthought.com/mayavi/mayavi/tips.html?highlight=offscreen">mayavi 官方文档</a>进行了大量尝试，最后在这里总结出比较好用的方案。</p>
-<h2 id="2-关闭渲染弹窗"><a href="#2-关闭渲染弹窗" class="headerlink" title="2. 关闭渲染弹窗"></a>2. 关闭渲染弹窗</h2><p>解决方案是：建立一个虚拟的“显示器（X 服务）”，在虚拟的服务上进行图形渲染。具体地，可以有两种选择：</p>
-<ol>
-<li>结合 linux 的 xvfb-run 命令运行编写好的 python 脚本： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># xvfb-run ... x24&quot;会开启一个相应分辨率的虚拟屏幕</span></span><br><span class="line"><span class="comment"># 后面再结合一个具体的命令便可在开启的虚拟屏幕上运行该命令</span></span><br><span class="line"><span class="comment"># 这里执行的便是让python运行一个mayavi绘图脚本的命令</span></span><br><span class="line">xvfb-run --server-args=<span class="string">&quot;-screen 0 1024x768x24&quot;</span> python my_mayavi.py</span><br></pre></td></tr></table></figure></li>
-<li>通过 python 脚本内部进行类似上述设置，此时需引入第三方库 PyVirtualDisplay： <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"><span class="comment"># 开启一个分辨率为1280*1024的虚拟屏幕</span></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line"><span class="comment"># 启动该屏幕</span></span><br><span class="line">display.start()</span><br></pre></td></tr></table></figure>
-此后必然无法再在脚本运行的过程中看到渲染的图形弹窗，需要使用<code>mlab.savefig()</code>命令把后台渲染出的图像保存下来再在其他地方进行查看。</li>
-</ol>
-<h2 id="3-推荐方案"><a href="#3-推荐方案" class="headerlink" title="3. 推荐方案"></a>3. 推荐方案</h2><p>这里推荐解决方案中的第 2 种，因为其更通用也更优雅和方便。不过，仅仅进行上述设置会导致<code>mlab.savefig()</code>命令存储下来的图片就是一个黑屏（你生成的虚拟 X 服务对应的黑屏），正确操作应该同时把 mlab.options.offscreen 设置为 True，才能正确地保存你的图形。所以，干脆直接在脚本中加入以下命令吧：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-<p>为了方案的“移值性”更强，建议直接将上述命令保存成一个 python 模块，以后每次希望离屏渲染时从这个模块中导入 mlab，不希望离屏渲染时则仍旧从 mayavi 中导入 mlab。如，笔者将其打包为<code>mayaviOffScreen.py</code>文件，并添加了一些注释：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;Render the mayavi scene off screen.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">When you don&#x27;t need display the mayavi scene while running python scripts,</span></span><br><span class="line"><span class="string">importing `mlab` from this module is recommended, i.e.,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">from mayaviOffScreen imoprt mlab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Notes:</span></span><br><span class="line"><span class="string">-------</span></span><br><span class="line"><span class="string">    1. If you are using mayavi from remote host by SSH, etc, you must</span></span><br><span class="line"><span class="string">        import `mlab` from this module. Or something wrong happens!</span></span><br><span class="line"><span class="string">    2. Under the circumstance above, if you need import some other modules meanwhile</span></span><br><span class="line"><span class="string">        and those modules import `mlab` as well in themselves, make sure the sentence</span></span><br><span class="line"><span class="string">        `from mayaviOffScreen import mlab` appears before `import otherModule`!</span></span><br><span class="line"><span class="string">        So that `mayaviOffScreen.mlab` covers `otherModule.mlab`.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pyvirtualdisplay <span class="keyword">import</span> Display</span><br><span class="line"></span><br><span class="line">display = Display(visible=<span class="literal">False</span>, size=(<span class="number">1280</span>, <span class="number">1024</span>))</span><br><span class="line">display.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.options.offscreen = <span class="literal">True</span></span><br><span class="line">print(<span class="string">&quot;Set mlab.options.offscreen=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(mlab.options.offscreen))</span><br></pre></td></tr></table></figure>
-<p>以后每次需要离屏渲染时，把这个文件复制到项目文件夹，然后使用<code>from mayaviOffScreen import mlab</code>命令代替正常情况下的<code>from mayavi import mlab</code>即可。</p>
-<h2 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4. 注意事项"></a>4. 注意事项</h2><ol>
-<li>在具体执行 mayavi 绘图脚本时，可能你导入的其他模块（<code>import othermodule</code>）中事实上存在<code>from mayavi import mlab</code>语句，如果在你的执行脚本中<code>import othermodule</code>语句先于<code>from mayaviOffScreen import mlab</code>出现，那么依然会导致离屏渲染失败。因此，最好令这条离屏渲染语句<code>from mayaviOffScreen import mlab</code>作为你的执行模块的第一条语句。</li>
-<li>通过虚拟 X 服务渲染图形后，可不要再调用<code>mlab.show()</code>命令了，因为这意味着你进入和图形交互的状态，而这个“图形框”是虚拟的，你看不到摸不着，也就无法像正常那样通过关闭图形框来让<code>mlab.show()</code>命令停止了，于是你这个相应的脚本进入无限等待的阻塞状态，只有关闭相关进程才能将其终止。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>mayavi</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用 python 绘制不同尺寸的球——利用Mayavi库</title>
-    <url>/2020/12/22/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83/</url>
-    <content><![CDATA[<p>“万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。</p>
-<a id="more"></a>
-<h2 id="1-思路"><a href="#1-思路" class="headerlink" title="1. 思路"></a>1. 思路</h2><p>mayavi 的 mlab 类似 matplotlib 的 pyplot, 其中<code>points3d</code>函数用来绘制一些三维空间的离散点，在实际情况中，一个点必然需要一种“表示方式”，在<code>points3d</code>函数中，提供了<code>&quot;sphere&quot;, &quot;point&quot;, &quot;cylinder&quot;, &quot;cone&quot;, &quot;cube&quot;, &quot;2darrow&quot;, &quot;2dcircle&quot;</code>等很多模式，即用“球、点、圆柱、圆锥、方块、二维箭头、二维圆”等来表示一个点，当选择<code>&quot;point&quot;</code>时，往往可能由于点的可视感太低而显示出来的结果“啥都没有”，所以此函数默认的图例模式为<code>&quot;sphere&quot;</code>。由此引发感想，若可控制每个球的大小，那么不就可以用这些球来表示出自己想画的一些球了嘛。</p>
-<p>于是通过研究<code>mlab.points3d()</code>函数发现，可以传入若干球的球心坐标对应的<code>x,y,z</code>，以及相应的半径<code>r</code>，然后设置好<code>scale_factor</code>、<code>resolution</code>、<code>mode</code>参数即可。这三个参数和<code>r</code>参数的说明如下：</p>
-<ol>
-<li><code>scale_factor</code>：缩放因子，mayavi 的<a href="http://docs.enthought.com/mayavi/mayavi/auto/mlab_helper_functions.html#mayavi.mlab.points3d">官方文档</a>说得很含糊，其到底怎么发挥作用的完全没有说清楚，这里经过多次试验总结为：将其设置为<code>scale_factor=1</code>的话，即会按传入的“大小参数”<code>r</code>进行一比一缩放，这个参数可视为不存在。</li>
-<li><code>resolution</code>：每一个点（球）的解析度/分辨率，为整数，默认值为 8，默认值为 8 时可明显看出用球表示点时球有“棱角”，这里将其设置为 30。<br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/1.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/2.png" alt=""><blockquote>
-<p>观察这里的坐标，显然，<code>resolution</code>参数还会一定程度上影响计算的精度吧，毕竟表面是计算后渲染出来的！咳，这点以后再说吧，目前只是需要绘制图形效果。</p>
-</blockquote>
-</li>
-<li><code>mode</code>：其实可以不设置，默认情况即是用 sphere 作为点的的图例，这里拿出来只是作为强调，应该设置为<code>mode=&quot;sphere&quot;</code>。</li>
-<li><code>r</code>：按照官方文档，严格来说这不是<code>r</code>参数，其形参名为<code>s</code>，但不管叫什么，它就是表示<code>points3d</code>函数绘制出来的点的大小的一个参数。这里经过多次试验，发现它的数值表示的“大小含义”，对于<code>mode=&quot;sphere&quot;</code>来说就是球的直径，对于<code>mode=&quot;cube&quot;</code>来说就是立方体的边长，对于<code>mode=&quot;cone&quot;</code>来说就是圆锥的高，对于<code>mode=&quot;cylinder&quot;</code>来说就是圆柱的高。概括而言，在内部实现中，这种对应关系是否有统一理论指导其代码实现尚不得而知。</li>
-</ol>
-<h2 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h2><p>这样绘制你的球：<code>mlab.points3d(x, y, z, r*2, scale_factor=1, resolution=30)</code></p>
-<h2 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h2><p>设置一个位于原点的单位球，然后在其上、下、左、右、前、后再各放置 1 个球，检验他们的相切情况。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">points = np.array([[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [-<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, -<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0.5</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, -<span class="number">2</span>, <span class="number">0.5</span>]])</span><br><span class="line"></span><br><span class="line">x, y, z, r = points[:, <span class="number">0</span>], points[:, <span class="number">1</span>], points[:, <span class="number">2</span>], points[:, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">mlab.points3d(x, y, z, r*<span class="number">2</span>, scale_factor=<span class="number">1</span>, resolution=<span class="number">30</span>, mode=<span class="string">&quot;sphere&quot;</span>)</span><br><span class="line">mlab.outline()</span><br><span class="line">mlab.axes()</span><br><span class="line">mlab.show()</span><br></pre></td></tr></table></figure>
-<p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/3.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/4.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/5.png" alt=""></p>
-<h2 id="4-附录"><a href="#4-附录" class="headerlink" title="4. 附录"></a>4. 附录</h2><h3 id="4-1-我本来想要画的球堆积颗粒模型："><a href="#4-1-我本来想要画的球堆积颗粒模型：" class="headerlink" title="4.1. 我本来想要画的球堆积颗粒模型："></a>4.1. 我本来想要画的球堆积颗粒模型：</h3><p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/6.png" alt=""></p>
-<h3 id="4-2-原本我采用的绘球函数："><a href="#4-2-原本我采用的绘球函数：" class="headerlink" title="4.2. 原本我采用的绘球函数："></a>4.2. 原本我采用的绘球函数：</h3><p>若要在一张图上绘制很多球的话，这种方式只能使用 for 循环一个球一个球地进行绘制，效率比较低，硬件成本也比较高。也是为此一直在研究<code>points3d</code>函数的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Plotter</span>:</span></span><br><span class="line">    random.seed(<span class="number">3.14</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">randomColor</span>(<span class="params">cls</span>):</span></span><br><span class="line">        color = (random.random(), random.random(), random.random())</span><br><span class="line">        <span class="keyword">return</span> color</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sphere</span>(<span class="params">cls, center, radius, nPoints=<span class="number">100</span>, opacity=<span class="number">1.0</span>, color=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Draw a sphere according to given center and radius.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        -----------</span></span><br><span class="line"><span class="string">        center(tuple): (x, y, z) coordinate</span></span><br><span class="line"><span class="string">        radius(float): radius of the sphere</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        u = np.linspace(<span class="number">0</span>, <span class="number">2</span> * np.pi, nPoints)</span><br><span class="line">        v = np.linspace(<span class="number">0</span>, np.pi, nPoints)</span><br><span class="line">        x = radius * np.outer(np.cos(u), np.sin(v)) + center[<span class="number">0</span>]</span><br><span class="line">        y = radius * np.outer(np.sin(u), np.sin(v)) + center[<span class="number">1</span>]</span><br><span class="line">        z = radius * np.outer(np.ones(np.size(u)), np.cos(v)) + center[<span class="number">2</span>]</span><br><span class="line">        <span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">        color = cls.randomColor() <span class="keyword">if</span> color <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> color</span><br><span class="line">        scene = mlab.mesh(x, y, z, color=color, opacity=opacity)</span><br><span class="line">        <span class="keyword">return</span> scene</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>python</category>
-        <category>mayavi</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>决策树之特征选择</title>
-    <url>/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/</url>
-    <content><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
-<a id="more"></a>
-<blockquote>
-<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
-</blockquote>
-<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
-<p>样本集合$D$的信息熵定义为</p>
-<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
-Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
-<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
-</blockquote>
-<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
-s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
-\end{aligned}
-\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
-<blockquote>
-<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
-</blockquote>
-<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
-\begin{aligned}
-\text{数据集$D$的纯度：} \\
-Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
-&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
-\end{aligned}</script><blockquote>
-<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
-</blockquote>
-<p>属性$a$的基尼指数：</p>
-<script type="math/tex; mode=display">
-Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
-\tag{3}</script><blockquote>
-<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
-<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
-]]></content>
-      <categories>
-        <category>ML</category>
       </categories>
   </entry>
   <entry>
@@ -510,6 +439,49 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
 <h3 id="4-2-已有方法的动态增强"><a href="#4-2-已有方法的动态增强" class="headerlink" title="4.2. 已有方法的动态增强"></a>4.2. 已有方法的动态增强</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TargetInterface</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Target</span> <span class="keyword">implements</span> <span class="title">TargetInterface</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;save running...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增强代码</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Advice</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;前置增强......&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;后置增强......&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Target target = <span class="keyword">new</span> Target(); <span class="comment">//目标对象</span></span><br><span class="line">        Advice advice = <span class="keyword">new</span> Advice(); <span class="comment">// 增强对象</span></span><br><span class="line">        TargetInterface proxy = (TargetInterface) Proxy.newProxyInstance(</span><br><span class="line">                target.getClass().getClassLoader(), <span class="comment">// 目标对象的类加载器</span></span><br><span class="line">                target.getClass().getInterfaces(), <span class="comment">// 目标对象相同的接口字节码对象数组</span></span><br><span class="line">                <span class="keyword">new</span> InvocationHandler() &#123;</span><br><span class="line">                    <span class="comment">// 调用代理对象的任何方法，实质执行的都是invoke方法</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                        advice.before();</span><br><span class="line">                        method.invoke(target, args);</span><br><span class="line">                        advice.afterReturning();</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">        );</span><br><span class="line">        proxy.save();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>决策树之特征选择</title>
+    <url>/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/</url>
+    <content><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
+<a id="more"></a>
+<blockquote>
+<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
+</blockquote>
+<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
+<p>样本集合$D$的信息熵定义为</p>
+<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
+Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
+<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
+</blockquote>
+<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
+s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
+\end{aligned}
+\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
+<blockquote>
+<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
+</blockquote>
+<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
+\begin{aligned}
+\text{数据集$D$的纯度：} \\
+Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
+&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
+\end{aligned}</script><blockquote>
+<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
+</blockquote>
+<p>属性$a$的基尼指数：</p>
+<script type="math/tex; mode=display">
+Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
+\tag{3}</script><blockquote>
+<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
+<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
+]]></content>
+      <categories>
+        <category>ML</category>
       </categories>
   </entry>
   <entry>
@@ -838,30 +810,6 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
       </tags>
   </entry>
   <entry>
-    <title>配置jupyter notebook远程连接服务</title>
-    <url>/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/</url>
-    <content><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
-<a id="more"></a>
-<h2 id="1-安装-jupyter-notebook"><a href="#1-安装-jupyter-notebook" class="headerlink" title="1. 安装 jupyter notebook"></a>1. 安装 jupyter notebook</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
-<h2 id="2-生成相关配置文件"><a href="#2-生成相关配置文件" class="headerlink" title="2. 生成相关配置文件"></a>2. 生成相关配置文件</h2><p>在命令行中运行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
-<h2 id="3-设置连接-jupyter-notebook-服务时的密码"><a href="#3-设置连接-jupyter-notebook-服务时的密码" class="headerlink" title="3. 设置连接 jupyter notebook 服务时的密码"></a>3. 设置连接 jupyter notebook 服务时的密码</h2><p>在命令行中进入 IPython 进行如下操作：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> notebook.auth <span class="keyword">import</span> passwd</span><br><span class="line">In [<span class="number">2</span>]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>复制上面 Out[2]: 出来的密文，即引号中的内容，后续会用到。</p>
-<h2 id="4-在上面生成的配置文件中进行配置"><a href="#4-在上面生成的配置文件中进行配置" class="headerlink" title="4. 在上面生成的配置文件中进行配置"></a>4. 在上面生成的配置文件中进行配置</h2><p>这里我们通过在 vim 编辑器中进行设置：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<p>在上面文件的最后面插入以下设置，其含义见注释即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">&#x27;0.0.0.0&#x27;</span>  <span class="comment"># 所有IP都可以访问</span></span><br><span class="line">c.NotebookApp.port = 8888  <span class="comment"># 默认的端口是8888</span></span><br><span class="line"><span class="comment"># 禁止自动在服务器上打开jupyter</span></span><br><span class="line"><span class="comment"># 若不设置此选项，则在命令行中输入`jupyter notebook`时会自动打开你的浏览器连接刚刚开启的jupyter服务</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line"><span class="comment"># 将之前复制的密文复制到这里</span></span><br><span class="line"><span class="comment"># 测试了一下，如不设置此选项，在浏览器中连接时会出现异常，虽然也提示你输入密码，但是就是无法连接成功</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br><span class="line"><span class="comment"># 设置启动Jupyter后其工作的根目录</span></span><br><span class="line"><span class="comment"># 该文件夹需要你自己去创建，我设置的为我在我的家目录中创建的jupyter文件夹</span></span><br><span class="line"><span class="comment"># 若不设置此项，打开jupyter时的工作目录为你在命令行输入jupyter notebook命令时对应的目录</span></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">&quot;/path_of/root_directory/where/jupyter/works/&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="5-启动-jupyter-notebook"><a href="#5-启动-jupyter-notebook" class="headerlink" title="5. 启动 jupyter notebook"></a>5. 启动 jupyter notebook</h2><p>在终端中输入<code>jupyter notebook</code>即可，此时可在本地或者远程连接此 jupyter notebook 服务。</p>
-<h2 id="6-远程连接"><a href="#6-远程连接" class="headerlink" title="6. 远程连接"></a>6. 远程连接</h2><p>在你的本地浏览器中，输入地址名<code>http://hostIpAddress:8888</code>（其中 hostIpAddress 以你主机的 IP 地址进行替换），输入登陆密码即可连接。</p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>linux</category>
-        <category>jupyter</category>
-      </categories>
-  </entry>
-  <entry>
     <title>在远程服务器中使用mayavi渲染三维图——借助jupyter notebook</title>
     <url>/2021/02/01/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E4%BD%BF%E7%94%A8mayavi%E6%B8%B2%E6%9F%93%E4%B8%89%E7%BB%B4%E5%9B%BE%E2%80%94%E2%80%94%E5%80%9F%E5%8A%A9jupyter-notebook/</url>
     <content><![CDATA[<p>mayavi 库基于 opengl 绘制三维图，似乎凡是通过 opengl 调用 GPU 进行图像渲染的相关功能在远程连接中都无法使用，SSH 与 linux 的连接如是，win10 的远程桌面连接亦如是，曾经在 2020 年寒假使用服务器工作时深受其害，至 2021 年寒假竟然碰巧发现一些窍门可以正常使用 mayavi 了。</p>
@@ -892,6 +840,58 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
       <categories>
         <category>python</category>
         <category>jupyter</category>
+        <category>mayavi</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>配置jupyter notebook远程连接服务</title>
+    <url>/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
+<a id="more"></a>
+<h2 id="1-安装-jupyter-notebook"><a href="#1-安装-jupyter-notebook" class="headerlink" title="1. 安装 jupyter notebook"></a>1. 安装 jupyter notebook</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install jupyter</span><br></pre></td></tr></table></figure>
+<h2 id="2-生成相关配置文件"><a href="#2-生成相关配置文件" class="headerlink" title="2. 生成相关配置文件"></a>2. 生成相关配置文件</h2><p>在命令行中运行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
+<h2 id="3-设置连接-jupyter-notebook-服务时的密码"><a href="#3-设置连接-jupyter-notebook-服务时的密码" class="headerlink" title="3. 设置连接 jupyter notebook 服务时的密码"></a>3. 设置连接 jupyter notebook 服务时的密码</h2><p>在命令行中进入 IPython 进行如下操作：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> notebook.auth <span class="keyword">import</span> passwd</span><br><span class="line">In [<span class="number">2</span>]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>复制上面 Out[2]: 出来的密文，即引号中的内容，后续会用到。</p>
+<h2 id="4-在上面生成的配置文件中进行配置"><a href="#4-在上面生成的配置文件中进行配置" class="headerlink" title="4. 在上面生成的配置文件中进行配置"></a>4. 在上面生成的配置文件中进行配置</h2><p>这里我们通过在 vim 编辑器中进行设置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<p>在上面文件的最后面插入以下设置，其含义见注释即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">&#x27;0.0.0.0&#x27;</span>  <span class="comment"># 所有IP都可以访问</span></span><br><span class="line">c.NotebookApp.port = 8888  <span class="comment"># 默认的端口是8888</span></span><br><span class="line"><span class="comment"># 禁止自动在服务器上打开jupyter</span></span><br><span class="line"><span class="comment"># 若不设置此选项，则在命令行中输入`jupyter notebook`时会自动打开你的浏览器连接刚刚开启的jupyter服务</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line"><span class="comment"># 将之前复制的密文复制到这里</span></span><br><span class="line"><span class="comment"># 测试了一下，如不设置此选项，在浏览器中连接时会出现异常，虽然也提示你输入密码，但是就是无法连接成功</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha1:***yourcode***&#x27;</span></span><br><span class="line"><span class="comment"># 设置启动Jupyter后其工作的根目录</span></span><br><span class="line"><span class="comment"># 该文件夹需要你自己去创建，我设置的为我在我的家目录中创建的jupyter文件夹</span></span><br><span class="line"><span class="comment"># 若不设置此项，打开jupyter时的工作目录为你在命令行输入jupyter notebook命令时对应的目录</span></span><br><span class="line">c.NotebookApp.notebook_dir = <span class="string">&quot;/path_of/root_directory/where/jupyter/works/&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-启动-jupyter-notebook"><a href="#5-启动-jupyter-notebook" class="headerlink" title="5. 启动 jupyter notebook"></a>5. 启动 jupyter notebook</h2><p>在终端中输入<code>jupyter notebook</code>即可，此时可在本地或者远程连接此 jupyter notebook 服务。</p>
+<h2 id="6-远程连接"><a href="#6-远程连接" class="headerlink" title="6. 远程连接"></a>6. 远程连接</h2><p>在你的本地浏览器中，输入地址名<code>http://hostIpAddress:8888</code>（其中 hostIpAddress 以你主机的 IP 地址进行替换），输入登陆密码即可连接。</p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>linux</category>
+        <category>jupyter</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用 python 绘制不同尺寸的球——利用Mayavi库</title>
+    <url>/2020/12/22/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83/</url>
+    <content><![CDATA[<p>“万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。</p>
+<a id="more"></a>
+<h2 id="1-思路"><a href="#1-思路" class="headerlink" title="1. 思路"></a>1. 思路</h2><p>mayavi 的 mlab 类似 matplotlib 的 pyplot, 其中<code>points3d</code>函数用来绘制一些三维空间的离散点，在实际情况中，一个点必然需要一种“表示方式”，在<code>points3d</code>函数中，提供了<code>&quot;sphere&quot;, &quot;point&quot;, &quot;cylinder&quot;, &quot;cone&quot;, &quot;cube&quot;, &quot;2darrow&quot;, &quot;2dcircle&quot;</code>等很多模式，即用“球、点、圆柱、圆锥、方块、二维箭头、二维圆”等来表示一个点，当选择<code>&quot;point&quot;</code>时，往往可能由于点的可视感太低而显示出来的结果“啥都没有”，所以此函数默认的图例模式为<code>&quot;sphere&quot;</code>。由此引发感想，若可控制每个球的大小，那么不就可以用这些球来表示出自己想画的一些球了嘛。</p>
+<p>于是通过研究<code>mlab.points3d()</code>函数发现，可以传入若干球的球心坐标对应的<code>x,y,z</code>，以及相应的半径<code>r</code>，然后设置好<code>scale_factor</code>、<code>resolution</code>、<code>mode</code>参数即可。这三个参数和<code>r</code>参数的说明如下：</p>
+<ol>
+<li><code>scale_factor</code>：缩放因子，mayavi 的<a href="http://docs.enthought.com/mayavi/mayavi/auto/mlab_helper_functions.html#mayavi.mlab.points3d">官方文档</a>说得很含糊，其到底怎么发挥作用的完全没有说清楚，这里经过多次试验总结为：将其设置为<code>scale_factor=1</code>的话，即会按传入的“大小参数”<code>r</code>进行一比一缩放，这个参数可视为不存在。</li>
+<li><code>resolution</code>：每一个点（球）的解析度/分辨率，为整数，默认值为 8，默认值为 8 时可明显看出用球表示点时球有“棱角”，这里将其设置为 30。<br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/1.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/2.png" alt=""><blockquote>
+<p>观察这里的坐标，显然，<code>resolution</code>参数还会一定程度上影响计算的精度吧，毕竟表面是计算后渲染出来的！咳，这点以后再说吧，目前只是需要绘制图形效果。</p>
+</blockquote>
+</li>
+<li><code>mode</code>：其实可以不设置，默认情况即是用 sphere 作为点的的图例，这里拿出来只是作为强调，应该设置为<code>mode=&quot;sphere&quot;</code>。</li>
+<li><code>r</code>：按照官方文档，严格来说这不是<code>r</code>参数，其形参名为<code>s</code>，但不管叫什么，它就是表示<code>points3d</code>函数绘制出来的点的大小的一个参数。这里经过多次试验，发现它的数值表示的“大小含义”，对于<code>mode=&quot;sphere&quot;</code>来说就是球的直径，对于<code>mode=&quot;cube&quot;</code>来说就是立方体的边长，对于<code>mode=&quot;cone&quot;</code>来说就是圆锥的高，对于<code>mode=&quot;cylinder&quot;</code>来说就是圆柱的高。概括而言，在内部实现中，这种对应关系是否有统一理论指导其代码实现尚不得而知。</li>
+</ol>
+<h2 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h2><p>这样绘制你的球：<code>mlab.points3d(x, y, z, r*2, scale_factor=1, resolution=30)</code></p>
+<h2 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h2><p>设置一个位于原点的单位球，然后在其上、下、左、右、前、后再各放置 1 个球，检验他们的相切情况。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">points = np.array([[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [-<span class="number">4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, -<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0.5</span>],</span><br><span class="line">                   [<span class="number">0</span>, <span class="number">0</span>, -<span class="number">2</span>, <span class="number">0.5</span>]])</span><br><span class="line"></span><br><span class="line">x, y, z, r = points[:, <span class="number">0</span>], points[:, <span class="number">1</span>], points[:, <span class="number">2</span>], points[:, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">mlab.points3d(x, y, z, r*<span class="number">2</span>, scale_factor=<span class="number">1</span>, resolution=<span class="number">30</span>, mode=<span class="string">&quot;sphere&quot;</span>)</span><br><span class="line">mlab.outline()</span><br><span class="line">mlab.axes()</span><br><span class="line">mlab.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/3.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/4.png" alt=""><br><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/5.png" alt=""></p>
+<h2 id="4-附录"><a href="#4-附录" class="headerlink" title="4. 附录"></a>4. 附录</h2><h3 id="4-1-我本来想要画的球堆积颗粒模型："><a href="#4-1-我本来想要画的球堆积颗粒模型：" class="headerlink" title="4.1. 我本来想要画的球堆积颗粒模型："></a>4.1. 我本来想要画的球堆积颗粒模型：</h3><p><img src="https://chua-n.gitee.io/blog-images/python绘制三维球/6.png" alt=""></p>
+<h3 id="4-2-原本我采用的绘球函数："><a href="#4-2-原本我采用的绘球函数：" class="headerlink" title="4.2. 原本我采用的绘球函数："></a>4.2. 原本我采用的绘球函数：</h3><p>若要在一张图上绘制很多球的话，这种方式只能使用 for 循环一个球一个球地进行绘制，效率比较低，硬件成本也比较高。也是为此一直在研究<code>points3d</code>函数的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Plotter</span>:</span></span><br><span class="line">    random.seed(<span class="number">3.14</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">randomColor</span>(<span class="params">cls</span>):</span></span><br><span class="line">        color = (random.random(), random.random(), random.random())</span><br><span class="line">        <span class="keyword">return</span> color</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sphere</span>(<span class="params">cls, center, radius, nPoints=<span class="number">100</span>, opacity=<span class="number">1.0</span>, color=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Draw a sphere according to given center and radius.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        -----------</span></span><br><span class="line"><span class="string">        center(tuple): (x, y, z) coordinate</span></span><br><span class="line"><span class="string">        radius(float): radius of the sphere</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        u = np.linspace(<span class="number">0</span>, <span class="number">2</span> * np.pi, nPoints)</span><br><span class="line">        v = np.linspace(<span class="number">0</span>, np.pi, nPoints)</span><br><span class="line">        x = radius * np.outer(np.cos(u), np.sin(v)) + center[<span class="number">0</span>]</span><br><span class="line">        y = radius * np.outer(np.sin(u), np.sin(v)) + center[<span class="number">1</span>]</span><br><span class="line">        z = radius * np.outer(np.ones(np.size(u)), np.cos(v)) + center[<span class="number">2</span>]</span><br><span class="line">        <span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">        color = cls.randomColor() <span class="keyword">if</span> color <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> color</span><br><span class="line">        scene = mlab.mesh(x, y, z, color=color, opacity=opacity)</span><br><span class="line">        <span class="keyword">return</span> scene</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>python</category>
         <category>mayavi</category>
       </categories>
   </entry>
