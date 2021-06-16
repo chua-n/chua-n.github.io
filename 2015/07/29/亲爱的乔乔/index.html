@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"chua-n.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="疏理一下决策树的特征选择的方法，即决策树的节点划分。">
+  <meta name="description" content="小武写给乔乔的话——2015&#x2F;07&#x2F;29。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="决策树之特征选择">
-<meta property="og:url" content="https://chua-n.github.io/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/index.html">
+<meta property="og:title" content="亲爱的乔乔">
+<meta property="og:url" content="https://chua-n.github.io/2015/07/29/%E4%BA%B2%E7%88%B1%E7%9A%84%E4%B9%94%E4%B9%94/index.html">
 <meta property="og:site_name" content="这里是川！">
-<meta property="og:description" content="疏理一下决策树的特征选择的方法，即决策树的节点划分。">
+<meta property="og:description" content="小武写给乔乔的话——2015&#x2F;07&#x2F;29。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-29T07:51:00.000Z">
-<meta property="article:modified_time" content="2021-01-12T07:41:31.938Z">
+<meta property="article:published_time" content="2015-07-29T08:15:00.000Z">
+<meta property="article:modified_time" content="2021-06-16T03:53:07.180Z">
 <meta property="article:author" content="荒流">
-<meta property="article:tag" content="NaniNani">
+<meta property="article:tag" content="生活">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://chua-n.github.io/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/">
+<link rel="canonical" href="https://chua-n.github.io/2015/07/29/%E4%BA%B2%E7%88%B1%E7%9A%84%E4%B9%94%E4%B9%94/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>决策树之特征选择 | 这里是川！</title>
+  <title>亲爱的乔乔 | 这里是川！</title>
   
 
 
@@ -206,7 +206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2020/06/29/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/">
+    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2015/07/29/%E4%BA%B2%E7%88%B1%E7%9A%84%E4%B9%94%E4%B9%94/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://chua-n.gitee.io/blog-images/avatar.png">
@@ -219,7 +219,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          决策树之特征选择
+          亲爱的乔乔
         </h1>
 
         <div class="post-meta">
@@ -229,24 +229,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-29 15:51:00" itemprop="dateCreated datePublished" datetime="2020-06-29T15:51:00+08:00">2020-06-29</time>
+              <time title="创建时间：2015-07-29 16:15:00" itemprop="dateCreated datePublished" datetime="2015-07-29T16:15:00+08:00">2015-07-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 15:41:31" itemprop="dateModified" datetime="2021-01-12T15:41:31+08:00">2021-01-12</time>
+                <time title="修改时间：2021-06-16 11:53:07" itemprop="dateModified" datetime="2021-06-16T11:53:07+08:00">2021-06-16</time>
               </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-                </span>
-            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -261,14 +252,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -280,41 +271,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
+        <blockquote>
+<p>小武写给乔乔的话——2015/07/29。</p>
+</blockquote>
 <a id="more"></a>
-<blockquote>
-<p>一般而言，随着划分过程不断进行，我们希望决策树的分支结点所包含的样本尽可能属于同一类别，即结点的“纯度”(purity)越来越高。</p>
-</blockquote>
-<h2 id="1-符号声明"><a href="#1-符号声明" class="headerlink" title="1. 符号声明"></a>1. 符号声明</h2><p>假设当前样本集合$D$中第$k$类样本所占的比例为$p_k\:(k=1,2,…,|\mathcal Y|))$，离散属性$a$有$V$个可能的取值${a^1,a^2,…,a^V}$，若使用$a$来对样本集$D$进行划分，则会产生$V$个分支结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记作$D^v$。</p>
-<p>样本集合$D$的信息熵定义为</p>
-<script type="math/tex; mode=display">Ent(D)=-\sum_{k=1}^\mathcal{|Y|} p_k\log_2{p_k}</script><h2 id="2-信息增益"><a href="#2-信息增益" class="headerlink" title="2. 信息增益"></a>2. 信息增益</h2><script type="math/tex; mode=display">
-Gain(D,a) = Ent(D)-\sum_{v=1}^{V} \frac{|D^v|}{|D|}Ent(D^v)\tag{1}</script><blockquote>
-<p>实际上，信息增益准则对可取数目较多的属性有所偏好。</p>
-</blockquote>
-<h2 id="3-增益率"><a href="#3-增益率" class="headerlink" title="3. 增益率"></a>3. 增益率</h2><p>$C4.5$决策树算法选择增益率(gain ratio)来选择最优划分属性。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-Gain\_ratio(D, a)=\frac{Gain(D,a)}{IV(a)} \\
-s.t. \quad IV(a)=-\sum_{v=1}^{V}\frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}
-\end{aligned}
-\tag{2}</script><p>$IV(a)$称作属性$a$的固有值(intrinsic value)。</p>
-<blockquote>
-<p>需注意的是，增益率准则对可取值较少的属性有所偏好，因此，$C4.5$算法并不是直接选择增益率最大的候选划分属性，而是使用了一个启发式：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。</p>
-</blockquote>
-<h2 id="4-基尼指数"><a href="#4-基尼指数" class="headerlink" title="4. 基尼指数"></a>4. 基尼指数</h2><script type="math/tex; mode=display">
-\begin{aligned}
-\text{数据集$D$的纯度：} \\
-Gini(D) &= \sum_{k=1}^{\mathcal{|Y|}}\sum_{k' \neq k}p_k p_{k'}\\
-&= 1-\sum_{k=1}^{\mathcal{|Y|}}p_k^{2}
-\end{aligned}</script><blockquote>
-<p>直观来讲，$Gini(D)$反映了从数据集$D$中随机抽取两个样本，其类别标记不一致的概率。因此，$Gini(D)$越小，则数据集$D$的纯度越高。</p>
-</blockquote>
-<p>属性$a$的基尼指数：</p>
-<script type="math/tex; mode=display">
-Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
-\tag{3}</script><blockquote>
-<p>于是，我们在候选属性集合$A$中，选择那个使得划分后基尼指数最小的属性作为最优划分属性，即：</p>
-<script type="math/tex; mode=display">a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)</script></blockquote>
+<p>暑假在床上坐着看闲书，看着书中男主对生病的女主那样细腻的描写，我看了看卧在床下的你，屁股对着我，便叫了你一声——“乔！”你淡定的回过头看了看我，象征性的摇了摇尾巴，便让我有了写一下你的想法。</p>
+<h2 id="1-初遇"><a href="#1-初遇" class="headerlink" title="1. 初遇"></a>1. 初遇</h2><p>你是在我上初中时来到我家的，应该是初一的一个假期里，这样子算的话，你应该有六七岁了吧，也算是中老年狗啦！</p>
+<p>你是胖胖姥姥家的宝宝和魂儿生的狗仔，都是平常老百姓家养的狗，根本说不上什么品种，就是纯杂种狗吧，当时还嫌你是母的，怕你以后乱跑，生小狗，没办法处理，可是公的都被要走了，只剩下了你。</p>
+<p>刚来的时候你刚断奶，吃的胖乎乎圆滚滚的，还很小，一只手就能把你抱起。浑身黑色的毛，两只眼睛上面有两个白色的圆点，嘴巴及身体内侧是白色，还有四肢，最可爱的是你下巴长毛的地方又有一点黑，简直太可爱。你刚到陌生环境，晚上一直不安的哇哇乱叫，还用爪子挠我房门，终于被你吵醒，给你打开门，抱你进屋，打开一袋零食嚼碎了一点一点喂你，真的就像在照顾一个 Baby~</p>
+<p>那时候具体的样子记不得了，因为没有给你拍过照片，唯一比较深的印象就是给你起的名字吧，乔乔，和你长得一样可爱，我给你起的哦！</p>
+<h2 id="2-长大后"><a href="#2-长大后" class="headerlink" title="2. 长大后"></a>2. 长大后</h2><p>后来，我们都长大了，你也渐渐大到得用两个手抱你，大到熟悉了你的名字，以及一些话语。一开始想用链子拴着你，后来你太渴望自由了，总是自己用“缩头神功”从链子下跑掉，只好作罢；再后来你甚至要挣脱整个院子的束缚，一逮住机会就往外面跑，开始几次还担心你，怕你找不到回家的路，后来你真的是野惯了，于是，你肚子被搞大了-_-</p>
+<p>第一窝小狗崽是在冬天生的，你估计是没经验，最后一只生了好久，不过还是夭折了；已经记不清楚小狗送给谁了；第二窝最漂亮，也拍了很多照片；第三窝是两只白色的，一只后来便生病死了；最后一窝就是去年暑假我高考完后回来，两只黑色的，都送了人。养母狗的痛苦之处其实是在于，生了一堆可爱的小狗狗，我看着它们从学会爬，到睁眼，到一跳一跳的抢食物、玩耍，那可爱的小圆球们简直萌瞎我的眼，最后却不能养下去，而是得送给别人，从此生死未卜，而且总是感觉那些人都不会有自己照顾的好，狗狗会被欺负…每次送人狗仔，都是这样痛苦的心情。</p>
+<p>而乔乔你，真是没有一点母性光辉呐！好像压根就不关心你的狗仔，你长的也不太大，真担心你奶水不足，饿着狗崽；喂它们点好吃的吧，你还厚着脸皮跟小狗抢，有你这样当妈的嘛！真受不了你~~~</p>
+<h2 id="3-生活"><a href="#3-生活" class="headerlink" title="3. 生活"></a>3. 生活</h2><p>你还是很聪明的，虽然我们没有那个心思去训练你什么，你知道自觉往花池里面大小便，虽然经常会整个身子都在土里面，只露出个屁股在外面，把尿完好无损的尿到了外面，真傻乎乎的；刚开始不喜欢洗澡，后来终于感受到了洗澡的好处，再洗时就不用费劲按住你了；还有察言观色，我们在家你就敢进屋，只有大人在家时你就不敢进屋了。</p>
+<p>你的待遇实在不能算是宠物的级别，最多算是家畜吧，不过也该比其他一些在平民家的狗要好一些，至少有自己的名字，至少不会饿着；但我还是觉得你肯定活得不是那么开心。</p>
+<p>大人们肯定只是把你当做一条狗来对待，喂你不会喂得很好，能看家就行，名字是无所谓的，更多的是烦你随地大小便，有客人来了也乱叫，狗毛到处飞，什么的；而我们小孩，在大人的基础上会对你好一点，一时兴起还会早上起来遛你一圈，把你乐得找不着北，但我们也是自私的，只有当自己的物质和精神满足后，才会想到你；我平日里上学，跟同学们玩，我的世界里有很多很多人，只有所有人都不理我时，我才能想到你，才会想到去逗你玩一下，而你，全部的世界只有我一个人。</p>
+<h2 id="4-你喜欢的"><a href="#4-你喜欢的" class="headerlink" title="4. 你喜欢的"></a>4. 你喜欢的</h2><p>你年轻的时候啊，特别有活力，喜欢玩球，能弹跳的球，乒乓球都不知被你咬坏了多少，你跟着弹起来的球爪子一上一下一前一后的样子真是太可爱了！还有自己玩空瓶子，咬来咬去，再不小心踢飞，然后飞速跑过去咬，又跑又跳的，看上去玩的真是不亦乐乎呢。然而你也只能玩些这种游戏吧，苦中作乐？不知道你是怎么想的，反正如果我是你的话，肯定无聊死了天天。偶尔我们一时兴起，会跟你在院子里玩一会儿，无非就是追着跑来跑去，你飞奔的样子可真是卖命，绕着院子无尽的转圈啊转圈，腿又短，跳阶梯的时候还摔倒过，真是滑稽，哦对了，你高兴起来总是会咬自己的尾巴，然后咬不到，团团转啊团团转~你还特别喜欢我们抚摸你，哪怕用脚蹭两下，你也会顺势倒下四脚朝天，期待更多的触摸，可惜你身上很脏，每次动完你都得洗手，所以我们也并不经常满足你。</p>
+<p>这几年你老了，便不再那么疯，但还是本性不改，每次拿出链子要去遛你，你总是开心的快要疯掉，明明是你在遛我，拽着我往前走；每次久别重逢，你总是快要把尾巴摇掉来欢迎我，每天早上我从我屋里出去，你总是会赶紧上前欢迎，送我到厕所，再在厕所门口等我出来，然后继续在我前面摇着尾巴低着耳朵开路。你的叫声依旧很响亮，听上去像条凶猛的大狗一样；你的样子似乎没变，一身黑毛，身体内侧是白色，夹杂着些许黄色。你还是仇恨于小麻雀们落到院子上，每次都能冲出去把它们吓跑~此刻你正在我脚下，舔来舔去，调戏我的脚，想让我摸摸你，你真的是非常渴求陪伴啊，可是，我不在家的那么多日子里，谁来陪你呢？</p>
+<p>你喜欢吃我喜欢吃的，苹果西瓜面条玉米红薯馒头黄瓜西红柿……当然少不了你的骨头，而你真的是很馋很馋，一旦有肉吃，你立马就不吃水果蔬菜了，看你那馋样儿，真想饿上你几天，看你吃不吃饭！可爱的样子是当你看到我手上拿着好吃的时，或者隔了几个房间都能灵敏的听到我悄悄撕开零食包装时，立马站起来跑到我面前摇着尾巴，伸出舌头舔一圈嘴巴，睁着个大眼睛满眼的期待，都不忍心不喂你了~</p>
+<h2 id="5-你在想什么呢"><a href="#5-你在想什么呢" class="headerlink" title="5. 你在想什么呢"></a>5. 你在想什么呢</h2><p>更多的时候你是静卧，可能真的是太无聊了吧，家里的人上学的挣钱的，谁会天天逗你玩呢。你似是早已习惯了这种孤单，总是一个狗，去那儿卧一会儿，来这儿趴一会儿，我在家时你总是来到我身边，看看我，见我在忙，你就默默的趴到地板上，有时鼻子还出一口气，听上去像是在叹气。最无语的是有一次某个早晨，我睁了一下迷糊的双眼，床头边赫然探出一个狗头来！真是把我吓得够呛~</p>
+<p>你要是会说话就好啦，我常常这样想。你总是默不作声，当我陪着你的时候，我常常有很多心事，一边逗你玩一边发呆，你也总是看看我，不说话，我有时候还会问你这问你那，可惜你都不会回答。你现在又把屁股朝着我，小脑袋放到前爪上卧着了。你无聊的时候都是想些什么呢？会想我吗？当我不在家的时候，会想到生老病死这些狗生哲理吗？我离开的时候你会难过吗？你晚上会做梦吗？会梦到我吗？</p>
+<hr>
+<p>遗憾的是，我不能陪你很久了……在家的每时每刻都让我想离开——当然不是因为你，愿你每日开心，愿下生能再遇见。</p>
 
     </div>
 
@@ -323,19 +301,20 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
     
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag"><i class="fa fa-tag"></i> 生活</a>
+          </div>
 
         
 
 
         
     <div class="post-nav">
+      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/06/23/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="使用SSH把个人电脑配置成 linux 服务器">
-      <i class="fa fa-chevron-left"></i> 使用SSH把个人电脑配置成 linux 服务器
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/06/29/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python/" rel="next" title="linux 下从源码安装 Python——小白踩坑记">
-      linux 下从源码安装 Python——小白踩坑记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/05/17/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7/" rel="next" title="逆变换采样">
+      逆变换采样 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -395,7 +374,7 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%AC%A6%E5%8F%B7%E5%A3%B0%E6%98%8E"><span class="nav-text">1. 符号声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A"><span class="nav-text">2. 信息增益</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%A2%9E%E7%9B%8A%E7%8E%87"><span class="nav-text">3. 增益率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%9F%BA%E5%B0%BC%E6%8C%87%E6%95%B0"><span class="nav-text">4. 基尼指数</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%9D%E9%81%87"><span class="nav-text">1. 初遇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%95%BF%E5%A4%A7%E5%90%8E"><span class="nav-text">2. 长大后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%9F%E6%B4%BB"><span class="nav-text">3. 生活</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BD%A0%E5%96%9C%E6%AC%A2%E7%9A%84"><span class="nav-text">4. 你喜欢的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%BD%A0%E5%9C%A8%E6%83%B3%E4%BB%80%E4%B9%88%E5%91%A2"><span class="nav-text">5. 你在想什么呢</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -582,59 +561,6 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
