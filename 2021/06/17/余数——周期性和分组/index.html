@@ -20,22 +20,20 @@
     var CONFIG = {"hostname":"chua-n.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。">
+  <meta name="description" content="余数，作除法运算时剩下的数。尽管从小学起我们就反复练习加、减、乘、除的计算，但有关余数的计算只在学习除法时略见其影，事实上，无论在数学还是编程中，余数都起着非常重要的作用。因为我们将意识到，“余数就是分组”，而且它的神奇性在于，将较大的数字除一次就能分组。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jupyter notebook中使用mayavi三维绘图库">
-<meta property="og:url" content="https://chua-n.github.io/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/index.html">
+<meta property="og:title" content="余数——周期性和分组">
+<meta property="og:url" content="https://chua-n.github.io/2021/06/17/%E4%BD%99%E6%95%B0%E2%80%94%E2%80%94%E5%91%A8%E6%9C%9F%E6%80%A7%E5%92%8C%E5%88%86%E7%BB%84/index.html">
 <meta property="og:site_name" content="这里是川！">
-<meta property="og:description" content="就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。">
+<meta property="og:description" content="余数，作除法运算时剩下的数。尽管从小学起我们就反复练习加、减、乘、除的计算，但有关余数的计算只在学习除法时略见其影，事实上，无论在数学还是编程中，余数都起着非常重要的作用。因为我们将意识到，“余数就是分组”，而且它的神奇性在于，将较大的数字除一次就能分组。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png">
-<meta property="article:published_time" content="2020-12-08T13:09:00.000Z">
-<meta property="article:modified_time" content="2021-01-12T05:21:05.894Z">
+<meta property="article:published_time" content="2021-06-17T01:16:36.000Z">
+<meta property="article:modified_time" content="2021-06-17T05:44:48.791Z">
 <meta property="article:author" content="荒流">
-<meta property="article:tag" content="NaniNani">
+<meta property="article:tag" content="coding">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png">
 
-<link rel="canonical" href="https://chua-n.github.io/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/">
+<link rel="canonical" href="https://chua-n.github.io/2021/06/17/%E4%BD%99%E6%95%B0%E2%80%94%E2%80%94%E5%91%A8%E6%9C%9F%E6%80%A7%E5%92%8C%E5%88%86%E7%BB%84/">
 
 
 <script id="page-configurations">
@@ -48,7 +46,7 @@
   };
 </script>
 
-  <title>jupyter notebook中使用mayavi三维绘图库 | 这里是川！</title>
+  <title>余数——周期性和分组 | 这里是川！</title>
   
 
 
@@ -208,7 +206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/">
+    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2021/06/17/%E4%BD%99%E6%95%B0%E2%80%94%E2%80%94%E5%91%A8%E6%9C%9F%E6%80%A7%E5%92%8C%E5%88%86%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://chua-n.gitee.io/blog-images/avatar.png">
@@ -221,7 +219,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          jupyter notebook中使用mayavi三维绘图库
+          余数——周期性和分组
         </h1>
 
         <div class="post-meta">
@@ -230,31 +228,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-12-08 21:09:00" itemprop="dateCreated datePublished" datetime="2020-12-08T21:09:00+08:00">2020-12-08</time>
+              <time title="创建时间：2021-06-17 09:16:36 / 修改时间：13:44:48" itemprop="dateCreated datePublished" datetime="2021-06-17T09:16:36+08:00">2021-06-17</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 13:21:05" itemprop="dateModified" datetime="2021-01-12T13:21:05+08:00">2021-01-12</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/jupyter/" itemprop="url" rel="index"><span itemprop="name">jupyter</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/mayavi/" itemprop="url" rel="index"><span itemprop="name">mayavi</span></a>
+                  <a href="/categories/%E6%95%B0%E5%AD%A6%EF%BC%8C%E6%95%B0%E5%AD%97/" itemprop="url" rel="index"><span itemprop="name">数学，数字</span></a>
                 </span>
             </span>
 
@@ -271,7 +255,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>414</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -290,18 +274,128 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
+        <p>余数，作除法运算时剩下的数。尽管从小学起我们就反复练习加、减、乘、除的计算，但有关余数的计算只在学习除法时略见其影，事实上，无论在数学还是编程中，余数都起着非常重要的作用。因为我们将意识到，“余数就是分组”，而且它的神奇性在于，将较大的数字除一次就能分组。</p>
 <a id="more"></a>
+<h2 id="1-星期数问题"><a href="#1-星期数问题" class="headerlink" title="1. 星期数问题"></a>1. 星期数问题</h2><p>以这样一个常见的问题为例：</p>
 <blockquote>
-<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
+<p>今天是星期日，那么 1 亿天以后是星期几？</p>
 </blockquote>
-<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
-<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
-<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
-<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
+<p>对于这个问题，我们显然知道，一周有 7 天，那么“7”是星期数的周期，从<u>今天</u>起每过 7 天，便循环到<u>和今天</u>相同的星期数。如果今天是星期日，则 7 天后、14 天后、21 天后……这种“7 的整数倍”天后都是星期日。由此我们便可引入除法运算，看 1 亿天里有几个 7 天，也就是周期的重复出现了多少次，以便将这个重复性影响剔除，方便我们解决问题。</p>
+<p>显然，有</p>
+<script type="math/tex; mode=display">
+10^8 \div 7 =14285714 \cdots 2</script><p>这表示，1 亿（$10^8$）里面有 14285714 个星期数周期，将它们忽略，日子便相当于只前进了 2 天，因此从今天的星期日开始往后数 2 天，便是星期二，故而 1 亿天以后必然是星期 2。</p>
+<h2 id="2-更进一步——隐藏的周期性分组"><a href="#2-更进一步——隐藏的周期性分组" class="headerlink" title="2. 更进一步——隐藏的周期性分组"></a>2. 更进一步——隐藏的周期性分组</h2><p>在星期数的问题上，如果数字更大呢？比如：</p>
+<blockquote>
+<p>今天是星期日，那么$10^{100}$天以后是星期几？</p>
+</blockquote>
+<p>我们固然可以套用之前的方法解决这个类似的问题，但是说实在的$10^{100}$这个数太大了，计算机计算起来都相当费力，我们需要更进一步的思考。</p>
+<p>我们并不急于求出$10^{100}$，而可以像$1,10,100,1000,10000\cdots$这样，依次增加 0 的个数，观察其规律：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数字</th>
+<th style="text-align:center">0 的个数</th>
+<th style="text-align:center">除法计算</th>
+<th style="text-align:center">星期数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$1 \div 7 = 0 \cdots 1$</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">$10$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$10 \div 7 = 1 \cdots 3$</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^2$</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">$10^2 \div 7 = 14 \cdots 2$</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^3$</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">$10^3 \div 7 = 142 \cdots 6$</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^4$</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">$10^4 \mod 7 = 4$</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^5$</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">$10^5 \mod 7 = 5$</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^6$</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">$10^6 \mod 7 = 1$</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^7$</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">$10^7 \mod 7 = 3$</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^8$</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">$10^8 \mod 7 = 2$</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^9$</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">$10^9 \mod 7 = 6$</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^{10}$</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">$10^{10} \mod 7 = 4$</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^{11}$</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">$10^{11} \mod 7 = 5$</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^{12}$</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">$10^{12} \mod 7 = 1$</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">$10^{13}$</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">$10^{13} \mod 7 = 3$</td>
+<td style="text-align:center">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们发现，余数以$1、3、2、6、4、5\cdots$的顺序循环，即星期数在这个层面上也处于循环之中，循环周期为 6，故而$10^{100}$与$10^{94}、10^{88}、10^{82}\cdots$的星期数相同，我们将指数位置处的 100 对 6 作除法：</p>
+<script type="math/tex; mode=display">
+100 \div 6 = 16 \cdots 4</script><p>因此$10^{100}$与$10^{4}$的星期数相同，而在上表中我们已经通过$10^4 \mod 7 = 4$知道了$10^{4}$为星期 4，因此我们已经找到了答案。</p>
+<h2 id="3-乘方尾数的周期性（异曲同工）"><a href="#3-乘方尾数的周期性（异曲同工）" class="headerlink" title="3. 乘方尾数的周期性（异曲同工）"></a>3. 乘方尾数的周期性（异曲同工）</h2><p>上面我们用星期数的案例为例描述了余数的作用，其实还有一个典型的问题与之类似：</p>
+<blockquote>
+<p>$1234567^{987654321}$的个位数是什么？</p>
+</blockquote>
+<p>$1234567^{987654321}$的数值显然同样大到难以计算，我们可以采用同样的做法解决这个问题，此外，由于我们只关注个位数字，因此可将高位数字忽略掉。具体计算方法这里不再赘述，答案为 7。</p>
 
     </div>
 
@@ -309,9 +403,19 @@
     
     
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/05/17/逆变换采样/" rel="bookmark">逆变换采样</a></div>
+    </li>
+  </ul>
 
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/coding/" rel="tag"><i class="fa fa-tag"></i> coding</a>
+          </div>
 
         
 
@@ -319,13 +423,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/" rel="prev" title="配置jupyter notebook远程连接服务">
-      <i class="fa fa-chevron-left"></i> 配置jupyter notebook远程连接服务
+    <a href="/2021/03/19/Python%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E8%87%B3%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C/" rel="prev" title="Python快速定位至文本文件的最后一行">
+      <i class="fa fa-chevron-left"></i> Python快速定位至文本文件的最后一行
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/22/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83/" rel="next" title="使用 python 绘制不同尺寸的球——利用Mayavi库">
-      使用 python 绘制不同尺寸的球——利用Mayavi库 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -384,7 +485,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E9%9C%80%E8%A6%81%E7%9A%84-python-%E4%BE%9D%E8%B5%96"><span class="nav-text">1. 安装需要的 python 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%BF%9B%E8%A1%8C%E8%AE%BE%E7%BD%AE"><span class="nav-text">2. 进行设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8"><span class="nav-text">3. 开始使用</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%98%9F%E6%9C%9F%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-text">1. 星期数问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9B%B4%E8%BF%9B%E4%B8%80%E6%AD%A5%E2%80%94%E2%80%94%E9%9A%90%E8%97%8F%E7%9A%84%E5%91%A8%E6%9C%9F%E6%80%A7%E5%88%86%E7%BB%84"><span class="nav-text">2. 更进一步——隐藏的周期性分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B9%98%E6%96%B9%E5%B0%BE%E6%95%B0%E7%9A%84%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%88%E5%BC%82%E6%9B%B2%E5%90%8C%E5%B7%A5%EF%BC%89"><span class="nav-text">3. 乘方尾数的周期性（异曲同工）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -571,6 +672,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

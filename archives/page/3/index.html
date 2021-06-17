@@ -20,22 +20,18 @@
     var CONFIG = {"hostname":"chua-n.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="jupyter notebook中使用mayavi三维绘图库">
-<meta property="og:url" content="https://chua-n.github.io/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/index.html">
+  <meta name="description" content="合抱之木，生于毫末。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="这里是川！">
+<meta property="og:url" content="https://chua-n.github.io/archives/page/3/index.html">
 <meta property="og:site_name" content="这里是川！">
-<meta property="og:description" content="就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。">
+<meta property="og:description" content="合抱之木，生于毫末。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png">
-<meta property="article:published_time" content="2020-12-08T13:09:00.000Z">
-<meta property="article:modified_time" content="2021-01-12T05:21:05.894Z">
 <meta property="article:author" content="荒流">
 <meta property="article:tag" content="NaniNani">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png">
 
-<link rel="canonical" href="https://chua-n.github.io/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/">
+<link rel="canonical" href="https://chua-n.github.io/archives/page/3/">
 
 
 <script id="page-configurations">
@@ -43,12 +39,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>jupyter notebook中使用mayavi三维绘图库 | 这里是川！</title>
+  <title>归档 | 这里是川！</title>
   
 
 
@@ -201,138 +197,54 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content archive">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://chua-n.github.io/2020/12/08/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://chua-n.gitee.io/blog-images/avatar.png">
-      <meta itemprop="name" content="荒流">
-      <meta itemprop="description" content="合抱之木，生于毫末。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这里是川！">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          jupyter notebook中使用mayavi三维绘图库
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-08 21:09:00" itemprop="dateCreated datePublished" datetime="2020-12-08T21:09:00+08:00">2020-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 13:21:05" itemprop="dateModified" datetime="2021-01-12T13:21:05+08:00">2021-01-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/jupyter/" itemprop="url" rel="index"><span itemprop="name">jupyter</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/mayavi/" itemprop="url" rel="index"><span itemprop="name">mayavi</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>414</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <span class="collection-header">嗯..! 目前共计 21 篇日志。 继续努力。</span>
+      </div>
 
       
-        <p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
-<a id="more"></a>
-<blockquote>
-<p>注：以下假定已经安装好了 jupyter notebook 和 mayavi 库。</p>
-</blockquote>
-<h2 id="1-安装需要的-python-依赖"><a href="#1-安装需要的-python-依赖" class="headerlink" title="1. 安装需要的 python 依赖"></a>1. 安装需要的 python 依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ipywidgets ipyevents</span><br></pre></td></tr></table></figure>
-<h2 id="2-进行设置"><a href="#2-进行设置" class="headerlink" title="2. 进行设置"></a>2. 进行设置</h2><p>命令行中输入以下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jupyter nbextension install --py mayavi --user</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py mayavi --user</span><br></pre></td></tr></table></figure>
-<h2 id="3-开始使用"><a href="#3-开始使用" class="headerlink" title="3. 开始使用"></a>3. 开始使用</h2><p>打开 jupyter notebook，在正式开始使用 mayavi 绘图前，调用<code>mayavi.mlab.init_notebook()</code>函数即可。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> mayavi <span class="keyword">import</span> mlab</span><br><span class="line">mlab.init_notebook()</span><br></pre></td></tr></table></figure>
-<p>此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。</p>
-<p><img src="https://chua-n.gitee.io/blog-images/jupyter%20notebook中使用mayavi/jupyter效果图.png" alt=""></p>
-
+    <div class="collection-year">
+      <span class="collection-header">2015</span>
     </div>
 
-    
-    
-    
-      
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2015-07-29T16:15:00+08:00"
+              content="2015-07-29">
+          07-29
+        </time>
+      </div>
 
-      <footer class="post-footer">
+      <div class="post-title">
+          <a class="post-title-link" href="/2015/07/29/%E4%BA%B2%E7%88%B1%E7%9A%84%E4%B9%94%E4%B9%94/" itemprop="url">
+            <span itemprop="name">亲爱的乔乔</span>
+          </a>
+      </div>
 
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/12/08/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1/" rel="prev" title="配置jupyter notebook远程连接服务">
-      <i class="fa fa-chevron-left"></i> 配置jupyter notebook远程连接服务
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/22/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83/" rel="next" title="使用 python 绘制不同尺寸的球——利用Mayavi库">
-      使用 python 绘制不同尺寸的球——利用Mayavi库 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+
+    </div>
+  </div>
   
   
   
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
 
 
 
@@ -384,7 +296,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85%E9%9C%80%E8%A6%81%E7%9A%84-python-%E4%BE%9D%E8%B5%96"><span class="nav-text">1. 安装需要的 python 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%BF%9B%E8%A1%8C%E8%AE%BE%E7%BD%AE"><span class="nav-text">2. 进行设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8"><span class="nav-text">3. 开始使用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
