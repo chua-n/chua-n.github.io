@@ -1384,7 +1384,8 @@ Gini\_index(D,a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|}Gini(D^v)
 <p>$1234567^{987654321}$的数值显然同样大到难以计算，我们可以采用同样的做法解决这个问题，此外，由于我们只关注个位数字，因此可将高位数字忽略掉。具体计算方法这里不再赘述，答案为 7。</p>
 ]]></content>
       <categories>
-        <category>数学，数字</category>
+        <category>数学</category>
+        <category>数字</category>
       </categories>
       <tags>
         <tag>coding</tag>
