@@ -1,0 +1,3 @@
+[submodule "resources/images_gitee"]
+	path = resources/images_gitee
+	url = git@gitee.com:chua-n/blog-images.git
