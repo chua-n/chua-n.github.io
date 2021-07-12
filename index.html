@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>荒流的笔记本</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="description" content="Description" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+        />
+
+        <!-- 配置主题 -->
+        <!-- <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+        /> -->
+        <link rel="stylesheet" href="resources/themes/themes-vue.css" />
+
+        <!-- 解决页面不能滚动的bug：来自 
+            https://github.com/RamblerW/python3/commit/db60d90fda58e57aec71d6bf6f0e177d0d4823c6 
+        -->
+        <!-- <style>
+            body {
+                overflow: auto !important;
+            }
+        </style> -->
+    </head>
+    <body>
+        <div id="app"></div>
+        <script>
+            window.$docsify = {
+                name: "封面",
+                repo: "https://github.com/chua-n/notebooks",
+                maxLevel: 6, // 对文档标题渲染成目录的最大层级
+                auto2top: true, //切换页面后是否自动跳转到页面顶部。
+                // homepage: // 设置首页文件加载路径：适合不想将 README.md 作为入口文件渲染，或是文档存放在其他位置的情况使用
+                relativePath: false, // 启用相对路径，默认为false
+                coverpage: true, // 启用封面页：默认加载 _coverpage.md 文件，也可以自定义文件名
+                onlyCover: true, // 封面单独成页，与主页不共享页面
+                // themeColor: "#3F51B5", // 替换主题色
+
+                // 开启侧边栏
+                // 侧边栏开启后默认不会再生成目录，可以通过设置生成目录的最大层级再次开启这个功能
+                loadSidebar: true,
+                subMaxLevel: 6,
+                autoHeader: true,
+                sidebarDisplayLevel: 0, // set sidebar display level
+
+                // 开启导航栏
+                loadNavbar: true,
+                mergeNavbar: true, // 小屏设备下合并导航栏到侧边栏
+
+                // 开启搜索功能
+                search: {
+                    maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+                    paths: "auto",
+                    placeholder: "搜索一下",
+                    noData: "没找到该内容",
+                    // 搜索标题的最大程级, 1 - 6
+                    depth: 6,
+                },
+
+                // 字数统计
+                count: {
+                    countable: true,
+                    fontsize: "0.9em",
+                    color: "rgb(90,90,90)",
+                    language: "chinese",
+                },
+
+                // 复制代码按钮 (defaults)
+                copyCode: {
+                    buttonText: "复制",
+                    errorText: "出错了",
+                    successText: "已复制",
+                },
+            };
+        </script>
+        <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+
+        <!-- 全文搜索 -->
+        <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+        <!-- 侧边栏折叠 -->
+        <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+        <!-- 折叠样式为文件夹目录形式 -->
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css"
+        />
+
+        <!-- Java代码高亮 -->
+        <script src="//unpkg.com/prismjs/components/prism-java.js"></script>
+        <!-- 复制到剪贴板 -->
+        <script src="//unpkg.com/docsify-copy-code"></script>
+        <!-- 图片缩放 -->
+        <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
+        <!-- 表情 -->
+        <script src="//unpkg.com/docsify/lib/plugins/emoji.js"></script>
+        <!-- 字数统计 -->
+        <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+        <!-- 支持数学公式 -->
+        <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+        />
+    </body>
+</html>
