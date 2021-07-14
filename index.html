@@ -25,6 +25,15 @@
                 overflow: auto !important;
             }
         </style> -->
+
+        <!-- 在github上编辑 -->
+        <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
+
+        <!-- gitalk评论系统 -->
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css"
+        />
     </head>
     <body>
         <div id="app"></div>
@@ -39,6 +48,8 @@
                 coverpage: true, // 启用封面页：默认加载 _coverpage.md 文件，也可以自定义文件名
                 onlyCover: true, // 封面单独成页，与主页不共享页面
                 // themeColor: "#3F51B5", // 替换主题色
+                // logo: "https://chua-n.gitee.io/blog-images/avatar.png",
+                topMargin: 0, // default: 0
 
                 // 开启侧边栏
                 // 侧边栏开启后默认不会再生成目录，可以通过设置生成目录的最大层级再次开启这个功能
@@ -75,6 +86,14 @@
                     errorText: "出错了",
                     successText: "已复制",
                 },
+
+                plugins: [
+                    EditOnGithubPlugin.create(
+                        "https://github.com/chua-n/notebooks/tree/main/",
+                        null,
+                        "编辑"
+                    ),
+                ],
             };
         </script>
         <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
@@ -106,5 +125,21 @@
             rel="stylesheet"
             href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
         />
+        <!-- 分页导航插件（上/下章节按钮）：https://github.com/imyelo/docsify-pagination#readme -->
+        <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+
+        <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+        <script>
+            const gitalk = new Gitalk({
+                clientID: "0677de831ba15682dc35",
+                clientSecret: "015674c696a05fb93871f6f4d8c95215fda3d448",
+                repo: "https://github.com/chua-n/notebooks",
+                owner: "chua-n",
+                admin: ["chua-n"],
+                // facebook-like distraction free mode
+                distractionFreeMode: false,
+            });
+        </script>
     </body>
 </html>
