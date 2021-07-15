@@ -57,7 +57,7 @@ HTML（Hyper Text Markup Language，超文本标记语言）是最基础的网�
 |      ~~`<hr>`~~      | 显示一条水平线。  可设置属性进行个性化：color, width, size, align等，但不推荐（HTML5已不支持），应该使用CSS来控制这些内容。 |
 |       `<b>`       | 字体加粗                                                     |
 |       `<i>`       | 字体斜体                                                     |
-|     `<font>`      | 字体标签，HTML5已弃用。可设置属性：color, size, face等       |
+|     ~~`<font>`~~     | 字体标签，HTML5已弃用。可设置属性：color, size, face等       |
 |    ~~`<center>`~~     | 文本居中（相对于父元素），HTML5已弃用                        |
 |      `&***;`      | 插入特殊符号，具体查表                                       |
 
