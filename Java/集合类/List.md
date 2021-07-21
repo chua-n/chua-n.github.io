@@ -6,7 +6,7 @@ List 接口代表的集合表示一个元素有序、可重复的集合，集合
 
 显然，List 判断对象相等只需 equals()方法返回 true。
 
-在老版本的 Java 实现中，ArrayList 的实现实际是 Vector 类，对于栈结构也有一个单独的 Stack 类，虽然这些老版本的实现是线程安全的，且功能与新版本的相关类相差无几，但还是建议使用新版本的实现而弃用老版本，即便在需要线程安全的条件下也应该使用新版本的实现然后用 Collections 工具类帮助线程同步。
+在老版本的 Java 实现中，ArrayList 的实际实现是 Vector 类，对于栈结构也有一个单独的 Stack 类，虽然这些老版本的实现是线程安全的，且功能与新版本的相关类相差无几，但还是建议使用新版本的实现而弃用老版本，即便在需要线程安全的条件下也应该使用新版本的实现然后用 Collections 工具类帮助线程同步。
 
 ### 1.1 `listIterator()`方法及其返回的`ListIterator`对象
 
@@ -31,13 +31,13 @@ List 作为 Collection 接口的子接口，当然可以使用 Collection 接口
 | int lastIndexOf(Object o)                | 返回对象 o 最后一次出现的位置索引                            |
 | Object remove(int index)                 | 删除并返回 index 索引处的元素                                |
 | Object set(int index, Object element)    | 将 index 索引处的元素替换成 element 对象，返回被替换的旧元素 |
-| List subList(int fromIndex, int toIndex) | 返回索引[fromIndex, toIndex)处所有集合元素组成的子集         |
+| List subList(int fromIndex, int toIndex) | 返回索引 [fromIndex, toIndex) 处所有集合元素组成的子集       |
 | void replaceAll(UnaryOperator operator)  | 根据 operator 指定的计算规则重新设置 List 集合的所有元素     |
 | void sort(Comparator c)                  | 根据 Comparator 类型的参数排序                               |
 
 ### 1.3 List 的使用建议
 
-关于使用 List 集合有如下建议：
+关于使用 List 有如下建议：
 
 1. 若需要遍历 List 集合元素，对于 ArrayList，应用使用随机访问方法(get)来遍历；对于 LinkedList，应该采用迭代器(Iterator)来遍历。
 

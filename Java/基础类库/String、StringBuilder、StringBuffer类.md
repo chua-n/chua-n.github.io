@@ -26,50 +26,50 @@ String 类提供了大量构造器来创建 String 对象，如：
 
 String 类也提供了大量方法来操作字符串对象：
 
-| 方法                                                              | 作用                                                                                                                                  |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| int length()                                                      | 返回当前字符串的长度                                                                                                                  |
-| char charAt(int index)                                            | 获取字符串中指定位置的字符                                                                                                            |
-| boolean startsWith(String prefix)                                 | 判断字符串是否以 prefix 开始                                                                                                          |
-| boolean startsWith(String prefix, int toffset)                    | 同上，但从 toffset 位置算起                                                                                                           |
-| boolean endsWidth(String suffix)                                  | 判断字符串是否以 suffix 结尾                                                                                                          |
-| String substring(int beginIndex)                                  | 获取从 beginIndex 位置开始到结束的子字符串                                                                                            |
-| String substring(int beginIndex, int endIndex)                    | 获取[beginIndex, endIndex)之间的字符串                                                                                                |
-| String replace(char oldChar, char newChar)                        | 将字符串中的第一个 oldChar 替换成 newChar，返回一个新字符串                                                                           |
-| byte[] getBytes()                                                 | 将该 String 对象转换成 byte 数组                                                                                                      |
-| char[] toCharArray()                                              | 将该字符串转换为 char 数组                                                                                                            |
-| String toLowerCase()                                              | 将字符串转换成小写                                                                                                                    |
-| String toUpperCase()                                              | 将字符串转换成大写                                                                                                                    |
-| int indexOf(int ch)                                               | 找出 ch 字符在该字符串中第一次出现的位置                                                                                              |
-| int indexOf(int ch, int fromIndex)                                | 同上，但从 fromIndex 开始                                                                                                             |
-| int indexOf(String str)                                           | 找出 str 子字符串在该字符串中第一次出现的位置                                                                                         |
-| int indexOf(String str, int fromIndex)                            | 同上，但从 fromIndex 开始                                                                                                             |
-| int lastIndexOf(int ch)                                           | 找出 ch 字符在该字符串中最后一次出现的位置                                                                                            |
-| int lastIndexOf(int ch, int fromIndex)                            | 同上，但从 fromIndex 开始                                                                                                             |
-| int lastIndexOf(String str)                                       | 找出 str 子字符串在该字符串中最后一次出现的位置                                                                                       |
-| int lastIndexOf(String str, int fromIndex)                        | 同上，但从 fromIndex 开始                                                                                                             |
-| int compareTo(String anotherString)                               | 比较两个字符串的大小： 相等返回 0； 不相等时，依次比较，返回第一个不相等的字符差； 若较短字符串恰是较长字符串的首部，返回它们的长度差 |
-| String concat(String str)                                         | 连接两个字符串，同+运算                                                                                                               |
-| boolean contentEquals(StringBuffer sb)                            | 与 StringBuffer 比较内容是否相同                                                                                                      |
-| static String copyValueOf(char[] data)                            | 将字符数组连缀成字符串                                                                                                                |
-| static String copyValueOf(char[] int offset, int count)           | 将字符数组从 offset 开始的 count 个字符连缀成字符串                                                                                   |
-| static String valueOf(X x)                                        | 一系列用于将基本类型值转换为 String 对象的方法                                                                                        |
-| boolean equals(Object anObject)                                   | 将该字符串与指定对象比较，判断二者包含的字符序列是否相等                                                                              |
-| boolean equalsIgnoreCase(String str)                              | 同上，但忽略大小写                                                                                                                    |
-| void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) | 将字符串从 srcBegin 开始，到 srcEnd 结束的字符复制到 dst 字符数组从 dstBegin 开始的位置中                                             |
+| 方法                                                         | 作用                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| int length()                                                 | 返回当前字符串的长度                                         |
+| char charAt(int index)                                       | 获取字符串中指定位置的字符                                   |
+| boolean startsWith(String prefix)                            | 判断字符串是否以 prefix 开始                                 |
+| boolean startsWith(String prefix, int toffset)               | 同上，但从 toffset 位置算起                                  |
+| boolean endsWidth(String suffix)                             | 判断字符串是否以 suffix 结尾                                 |
+| String substring(int beginIndex)                             | 获取从 beginIndex 位置开始到结束的子字符串                   |
+| String substring(int beginIndex, int endIndex)               | 获取[beginIndex, endIndex)之间的字符串                       |
+| String replace(char oldChar, char newChar)                   | 将字符串中的第一个 oldChar 替换成 newChar，返回一个新字符串  |
+| byte[] getBytes()                                            | 将该 String 对象转换成 byte 数组                             |
+| char[] toCharArray()                                         | 将该字符串转换为 char 数组                                   |
+| String toLowerCase()                                         | 将字符串转换成小写                                           |
+| String toUpperCase()                                         | 将字符串转换成大写                                           |
+| int indexOf(int ch)                                          | 找出 ch 字符在该字符串中第一次出现的位置                     |
+| int indexOf(int ch, int fromIndex)                           | 同上，但从 fromIndex 开始                                    |
+| int indexOf(String str)                                      | 找出 str 子字符串在该字符串中第一次出现的位置                |
+| int indexOf(String str, int fromIndex)                       | 同上，但从 fromIndex 开始                                    |
+| int lastIndexOf(int ch)                                      | 找出 ch 字符在该字符串中最后一次出现的位置                   |
+| int lastIndexOf(int ch, int fromIndex)                       | 同上，但从 fromIndex 开始                                    |
+| int lastIndexOf(String str)                                  | 找出 str 子字符串在该字符串中最后一次出现的位置              |
+| int lastIndexOf(String str, int fromIndex)                   | 同上，但从 fromIndex 开始                                    |
+| int compareTo(String anotherString)                          | 比较两个字符串的大小： <br />1) 相等返回 0；<br />2) 不相等时，依次比较，返回第一个不相等的字符差；<br />3) 若较短字符串恰是较长字符串的首部，返回它们的长度差 |
+| String concat(String str)                                    | 连接两个字符串，同+运算                                      |
+| boolean contentEquals(StringBuffer sb)                       | 与 StringBuffer 比较内容是否相同                             |
+| static String copyValueOf(char[] data)                       | 将字符数组连缀成字符串                                       |
+| static String copyValueOf(char[] int offset, int count)      | 将字符数组从 offset 开始的 count 个字符连缀成字符串          |
+| static String valueOf(X x)                                   | 一系列用于将基本类型值转换为 String 对象的方法               |
+| boolean equals(Object anObject)                              | 将该字符串与指定对象比较，判断二者包含的字符序列是否相等     |
+| boolean equalsIgnoreCase(String str)                         | 同上，但忽略大小写                                           |
+| void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) | 将字符串从 srcBegin 开始，到 srcEnd 结束的字符复制到 dst 字符数组从 dstBegin 开始的位置中 |
 
 ## StringBuilder/StringBuffer 的相关方法
 
-| 方法                                                                | 作用                                                               |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| int length()                                                        | 返回序列长度                                                       |
-| int capacity()                                                      | 返回容量                                                           |
-| void setLength(int newLength)                                       | 设置序列长度为 newLength，超出的被截断，不足的补""                 |
-| public StringBxxx append(String s)                                  | 将指定的字符串追加到此序列                                         |
-| public StringBxxx.insert(int offset, String str)                    | 将字符串 str 插入 offset 处的位置                                  |
+| 方法                                                         | 作用                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| int length()                                                 | 返回序列长度                                                 |
+| int capacity()                                               | 返回容量                                                     |
+| void setLength(int newLength)                                | 设置序列长度为 newLength，超出的被截断，不足的补""           |
+| public StringBxxx append(String s)                           | 将指定的字符串追加到此序列                                   |
+| public StringBxxx.insert(int offset, String str)             | 将字符串 str 插入 offset 处的位置                            |
 | public StringBxxx replace(int beginIndex, int endIndex, String str) | 使用给定 String 中的字符替换此序列的[beginIndex, endIndex)中的字符 |
-| .delete(int beginIndex, int endIndex)                               | 删除[beginIndex, endIndex)中的字符                                 |
-| public StringBxxx reverse()                                         | 将此字符序列以其反转形式替代                                       |
+| delete(int beginIndex, int endIndex)                         | 删除[beginIndex, endIndex)中的字符                           |
+| public StringBxxx reverse()                                  | 将此字符序列以其反转形式替代                                 |
 
 ## Java 9 改动
 

@@ -54,7 +54,30 @@ JVM是一个抽象的计算机，和实际的计算机一样，它具有指令�
 
 JRE是Java运行时环境，Java Runtime     Environment，它是运行Java程序的必需条件。简单地说，JRE包含JVM，一般而言，如果只是运行java程序，可以只安装JRE，无须安装JDK。
 
-## 4. Java垃圾回收
+## 4. Java环境变量：JAVA_HOME、CLASSPATH
+
+> Java有两个重要的相关环境变量需要理解及正确配置。
+
+安装好Java以后，各种IDE、Tomcat等软件是通过搜索操作系统的PATH环境变量来找到你安装的Java软件的，因而需要在PATH中配置Java的安装目录。通过像这样配置：在操作系统中新增JAVA_HOME环境变量，令其为Java安装目录，然后在PATH中添加一项来引用JAVA_HOME，即
+
+| 环境变量  |                内容                |
+| :-------: | :--------------------------------: |
+| JAVA_HOME | C:\Program Files\Java\jdk1.8.0_291 |
+|   PATH    |          %JAVA_HOME%\bin           |
+
+对于CLASSPATH环境变量，其含义是指定Java程序执行时JRE搜索Java类的路径，只有该.class文件包含在CLASSPATH的路径中，JRE才能找到该字节码文件并解释执行。
+
+你可以选择在操作系统中添加一个CLASSPATH属性，并指定相关文件夹路径以提供给JRE，如
+
+| 环境变量  |             内容              |
+| :-------: | :---------------------------: |
+| CLASSPATH | .;C:\Users\chuan\Desktop\temp |
+
+就将当前目录即桌面的temp/文件夹赋予了CLASSPATH。不过，这样未免太麻烦，事实上在默认情况下（不在操作系统中设置CLASSPATH环境变量），每次JRE执行时都会将当前目录作为搜索路径添加到CLASSPATH中，因而它总能找到当前目录下的Java可执行文件；此外，如果你需要执行其他目录下的.class文件，也通过在命令行下使用java命令的-classpath属性指定搜索路径`java -classpath dir1;dir2;dir3…;dirN JavaClassName`，或通过set命令`set classpath=dir1;dir2`设定搜索路径，达到同样的效果，不过要指出的是，这两种命令行的方法设置CLASSPATH属性都具有临时性——只在当前命令行中有效。
+
+需要进一步指出的是，一旦你像上述表格一样显示指定了CLASSPATH环境变量，（且执行时没有通过命令行额外增加搜索路径，）那么JRE便只会在该环境变量中搜索Java类。这也就是说，如果你将CLASSPATH显示设置为C:\Users\chuan\Desktop\temp，也即没有增加当前路径，那么即便你在某个目录下想要执行当前目录的.class文件，JRE也会报错。
+
+## 5. Java垃圾回收
 
 通常JRE会提供一个后台线程来进行检测和控制，一般都是在在CPU空闲或内存不足时自动进行垃圾回收，而程序员无法精确控制垃圾回收的时间和顺序等。
 
@@ -66,7 +89,7 @@ JRE是Java运行时环境，Java Runtime     Environment，它是运行Java程�
 
 虽然程序员可以通过调用Runtime对象的gc()或System.gc()等方法来建议系统进行垃圾回收，但这种调用仅仅是建议，依然不能精确控制垃圾回收机制的执行。
 
-## 5. 关于Java9
+## 6. 关于Java9
 
 模块化系统是JDK 9的重大更新，为此JDK专门引入了一种新的JMOD格式。
 

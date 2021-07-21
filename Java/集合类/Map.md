@@ -1,6 +1,6 @@
 ## 1. HashMap类
 
-HashMap是Map接口的典型实现类，其不能保定其中key-value对的顺序，可以使用null作为key或value。
+HashMap是Map接口的典型实现类，其不能保证其中key-value对的顺序，可以使用null作为key或value。
 
 毫无疑问，HashMap判断两个key相等的标准跟Set一样，需要其equals()返回true且hashCode值相等；而HashMap判断两个value相等的标准则只需要equals()返回true。
 
