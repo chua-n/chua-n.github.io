@@ -6,7 +6,7 @@ HashSet 与 TreeSet 是 Set 接口最常用的两个实现：
 
 1. HashSet 的性能总是比 TreeSet 好，特别是最常用的添加、查询操作，因为 TreeSet 需要额外的红黑树算法来维护集合元素的次序；
 
-2. 只有当需要一个保持排序的 Set 时，才应用使用 TreeSet，否则都应该使用 HashSet。
+2. 只有当需要一个保持排序的 Set 时，才应该使用 TreeSet，否则都应该使用 HashSet。
 
 HashSet 与 LinkedHashSet：
 
@@ -28,9 +28,13 @@ HashSet 具有如下特点：
 2. HashSet 不是同步的，如果多个线程同时访问一个 HashSet，必须通过代码来保证同步；
 3. 集合元素值可以是 null
 
-HashSet 判断两个元素相等的标准是两个对象通过 equals()方法比较相等，并且两个对象的 hashCode()方法返回值也相等。
+HashSet 判断两个元素相等的标准是：
 
--   故而，若要把一个对象放入 HashSet 中，如果需要重写该对象对应类的 equals()方法，也应该重写其 hashCode()方法，保证当两个对象通过 equals()方法比较返回 true 时两个对象的 hashCode 值也相同；
+- 两个对象通过 equals()方法比较后相等；
+- 并且两个对象的 hashCode()方法返回值也相等。
+
+故而，若要把一个对象放入 HashSet 中，如果需要重写该对象对应类的 equals()方法，也应该同时重写其 hashCode()方法，从而保证当两个对象通过 equals()方法比较返回 true 时两个对象的 hashCode 值也相同；
+
 -   若两个对象 equals()为 true，但 hashCode()不同，将导致 HashSet 把这两个对象保存在 Hash 表的不同位置，从而使两个对象都添加成功，然而这种情况与 Set 集合的理念存在冲突；
 -   若两个对象 equals()为 false，但 hashCode()相同，HashSet 会试图把它们保存在同一位置，导致在这个位置用链式结构来保存多个对象，使得 HashSet 的性能下降。
 
@@ -48,7 +52,7 @@ LinkedHashSet 是 HashSet 的一个子类，其也根据元素的 hashCode 值�
 
 ## 4. TreeSet 类
 
-TreeSet 是 SortedSet 接口的实现类，TreeSet 可以确保集合处于排序状态。
+TreeSet 是 SortedSet 接口的实现类，TreeSet 可以确保集合处于有序状态。
 
 与 HashSet 相比，TreeSet 提供了以下几个额外的方法：
 
@@ -69,15 +73,19 @@ TreeSet 是 SortedSet 接口的实现类，TreeSet 可以确保集合处于排�
 
 TreeSet 支持两种排序方法：**自然排序**和**定制排序**，默认为自然排序。
 
-当把一个对象加入 TreeSet 集合中时，TreeSet 调用该对象的 compareTo(Object obj)方法与容器中的其他对象比较大小，然后根据红黑树结构找到它的存储位置。
+自然排序的集合元素必须都实现了 `Comparable` 接口，当把一个对象加入 TreeSet 集合中时，TreeSet 调用该对象的 `compareTo(Object obj)`方法与容器中的其他对象比较大小，然后根据红黑树结构找到它的存储位置。
 
--   若两个对象通过 compareTo(Object obj)方法比较相等，新对象将无法添加到 TreeSet 集合中，这也意味着 TreeSet 集合判断两个对象是否相等的唯一标准是两个对象通过 compareTo(Object obj)方法比较是否返回 0。
--   由此也意味着，当需要把一个对象放入 TreeSet 中时，重写该对象对应类的 equals()方法时，应保证该方法与 compareTo(Object obj)方法有一致的结果。即，若两个对象通过 equals()方法比较返回 true 时，它们通过 compareTo(Object obj)方法比较应返回 0。
+- 若两个对象比较后相等，新对象将无法添加到 TreeSet 集合中。
+
+- 由此也意味着，如果需要把一个对象放入 TreeSet 中，在重写该对象对应类的 equals()方法时，应保证该方法与 compareTo(Object obj)方法有一致的结果。
+
+    > 即，若两个对象通过 equals()方法比较返回 true 时，它们通过 compareTo(Object obj)方法比较应返回 0。
+
 -   如果若 TreeSet 中添加一个可变对象后，后面程序修改了该可变对象的实例变量，这将导致它与其他对象的大小顺序发生改变，而 TreeSet 不会再次调整它们的顺序。
 
-自然排序：TreeSet 会调用集合元素的 compareTo(Ojbect obj)方法来比较元素之间的大小关系，然后将集合元素按升序排列，这种方式就是自然排序。自然排序的集合元素必须都实现了 Comparable 接口，同时，TreeSet 应该只添加一种类型的对象。
+自然排序：TreeSet 会调用集合元素的compareTo(Ojbect obj)方法来比较元素之间的大小关系，然后将集合元素按升序排列，这种方式就是自然排序。自然排序的集合元素必须都实现了 Comparable 接口，同时，TreeSet 应该只添加一种类型的对象。
 
-定制排序：如果需要实现定制排序，则需要在创建 TreeSet 集合对象时，提供一个 Comparator 对象与该 TreeSet 集合关联，由该 Comparator 对象负责集合元素的排序逻辑。
+定制排序：如果需要实现定制排序，则需要在创建 TreeSet 集合对象时，提供一个 `Comparator` 对象与该 TreeSet 集合关联，由该 Comparator 对象负责集合元素的排序逻辑。
 
 ## 5. EnumSet 类
 
@@ -85,7 +93,7 @@ EnumSet 是一个专为枚举类设计的集合类，EnumSet 中的所有元素�
 
 EnumSet 的集合元素也是有序的，EnumSet 以枚举值在 Enum 类内的定义顺序来决定集合元素的顺序。
 
-EnumSet 在内部以位向量的形式存储，这种存储形式非常紧凑、高效，因此 EnumSet 对象占用内存很小且运行效率很好。
+EnumSet 在内部以**位向量**的形式存储，这种存储形式非常紧凑、高效，因此 EnumSet 对象占用内存很小且运行效率很好。
 
 EnumSet 不允许加入 null 元素，但若只想判断 EnumSet 是否包含 null 元素或试图删除 null 元素都不会抛出异常，只是删除操作将返回 false。
 

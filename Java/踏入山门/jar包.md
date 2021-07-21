@@ -1,6 +1,6 @@
-<font size="5">JAR 文件</font>的全称为 Java Archive File，意思为 Java 档案文件。
+<font size="5">**JAR 文件**</font>的全称为 Java Archive File，意思为 Java 档案文件。
 
-通常 jar 文件是一种压缩文件，与常见的 ZIP 压缩文件兼容，通常也被称为 jar 包。jar 文件与 ZIP 文件的区别就是在 JAR 文件中默认包含了一个名为 META-INF/MANIFEST.MF 的清单文件，这个清单文件是在生成 jar 文件时由系统自动创建的。
+通常 jar 文件是一种压缩文件，与常见的 ZIP 压缩文件兼容，通常也被称为<font size="5"> **jar 包**</font>。jar 文件与 ZIP 文件的区别就是在 JAR 文件中默认包含了一个名为 META-INF/MANIFEST.MF 的清单文件，这个清单文件是在生成 jar 文件时由系统自动创建的。
 
 把一个 jar 文件添加到系统的 CLASSPATH 环境变量中后，JVM 就可以自动在内存中解压这个 JAR 包。Java 会把这个 jar 文件当成一个路径来处理，在其中查询所需要的类或包层次对应的路径结构。
 
@@ -20,7 +20,7 @@
 
 3. 将一个应用程序制作成可执行的 jar 包，通过 jar 包来发布应用程序：
 
-4.  - 如果开发者把整个应用制作成一个可执行的 jar 包交给用户，那么用户使用起来就方便了。在 Windows 下安装 JRE 时，安装文件会将*.jar 文件映射成由 javaw.exe 打开，对于一个可执行的 jar 包，用户只需要双击它就可以运行程序了，和阅读*.chm 文档一样方便（\*.chm 文档默认是由 hh.exe 打开的）。
+    - 如果开发者把整个应用制作成一个可执行的 jar 包交给用户，那么用户使用起来就方便了。在 Windows 下安装 JRE 时，安装文件会将*.jar 文件映射成由 javaw.exe 打开，对于一个可执行的 jar 包，用户只需要双击它就可以运行程序了，和阅读*.chm 文档一样方便（\*.chm 文档默认是由 hh.exe 打开的）。
 
     - 创建可执行的 jar 包的关键在于：让 javaw 命令知道 jar 包中哪个类是主类，javaw 命令可以通过运行该主类来运行程序。
 
@@ -35,6 +35,7 @@
 
         - 使用 java 命令：`java -jar test.jar`
         - 使用 javaw 命令：`javaw test.jar`
+
 
 ## jar 命令
 

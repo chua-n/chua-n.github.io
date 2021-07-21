@@ -20,9 +20,9 @@ Java的Queue接口中定义了如下几个方法：
     | Object  peek()           | 获取队列头部的元素，但不删除该元素。若队列为空，返回null |
     | Object  poll()           | 获取并删除队列头部的元素。若队列为空，返回null           |
 
-Queue接口有一个Deque子接口，代表一个双端队列，双端队列可以同时从两端来添加、删除元素，故Deque的实现类即可当成队列使用，也可当成栈使用。
+Queue接口有一个Deque子接口，代表一个双端队列，双端队列可以同时从两端来添加、删除元素，故Deque的实现类既可当成队列使用，也可当成栈使用。
 
-Queue有一个PriorityQueue实现类，Deque有ArrayDeque,     LinkedList两个实现类。
+Queue接口有一个PriorityQueue实现类，Deque接口有ArrayDeque、LinkedList两个实现类。
 
 ## 2. PriorityQueue类
 
@@ -32,9 +32,9 @@ PriorityQueue保存队列元素的顺序并不是按加入队列的顺序，而�
 
 PriorityQueue的元素有两种排序方式：
 
-1. 自然排序：采用自然排序的PriorityQueue中的元素必须实现了Comparable接口，而且应该是同一个类的多个实例，否则可能导致ClassCastException异常；
+1. 自然排序：采用自然排序的PriorityQueue中的元素必须实现了`Comparable`接口，而且应该是同一个类的多个实例，否则可能导致ClassCastException异常；
 
-2. 定排排序：创建PriorityQueue队列时，传入一个Comparator对象，该对象负责对队列中的所有元素进行排序，此时不要求队列元素实现Comparable接口。
+2. 定排排序：创建PriorityQueue队列时，传入一个`Comparator`对象，该对象负责对队列中的所有元素进行排序，此时不要求队列元素实现Comparable接口。
 
 ## 3. Deque接口
 

@@ -16,6 +16,38 @@ Junit 使用步骤：
 
 1. 导入 junit 依赖；
 
+    > Junit5相较于Junit4发生了较大变化，其API及在pom.xml导入的坐标发生改变。
+    >
+    > 详见 [JUnit 5官网](https://junit.org/junit5/) 及 [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven) ，JUni5 可能还需要配置maven插件。
+
+    - JUnit4
+
+        ```xml
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.13</version>
+          <scope>test</scope>
+        </dependency>
+        ```
+
+    - JUnit5
+
+        ```xml
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        ```
+
 2. 定义一个测试类（测试用例），建议测试类名为“被测试的类名+Test”，同时包名为 xxx.xxx.xxx.test。
 
 3. 定义测试方法，其可以独立运行。建议方法名命名为“test+测试的方法名”，返回值设定为 void，参数列表定义为空。

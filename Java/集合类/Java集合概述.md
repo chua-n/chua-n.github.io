@@ -41,7 +41,7 @@ Collection接口里定义了如下操作集合元素的方法：
 
 ---
 
-Collection集合还有一个removeIf(Predicate filter)方法，可用于批量删除符合filter条件的所有元素，其参数为一个Predicate（谓词）对象，Predicate也是函数式接口，故可用Lambda表达式作为参数。详细以后再说吧……
+Collection集合接口还有一个removeIf(Predicate filter)方法，可用于批量删除符合filter条件的所有元素，其参数为一个Predicate（谓词）对象，Predicate也是函数式接口，故可用Lambda表达式作为参数。详细以后再说吧……
 
 ```java
 import java.util.*;
@@ -62,11 +62,11 @@ public class PredicateTest {
 
 ### 2.2 Collection的遍历
 
-#### 2.2.1 使用Lambda表达式遍历集合
+#### 2.2.1 借助Iterable遍历集合
 
 Java为Iterable接口新增了一个forEach(Consumer action)默认方法，其参数类型是一个函数式接口，而Iterable接口是Collection接口的父接口，因此Collection集合可直接调用该方法；
 
-当程序调用Iterable的forEach(Consumer     action)遍历集合元素时，程序会依次将集合元素传给Consumer的accept(T t)方法。
+当程序调用Iterable的forEach(Consumer action)遍历集合元素时，程序会依次将集合元素传给Consumer的accept(T t)方法。
 
 ```java
 import java.util.*;
@@ -136,7 +136,7 @@ public class IteratorTest {
 
 foreach循环中的迭代变量也不是集合元素本身，系统只是依次把集合元素的值赋给迭代变量，因此在foreach循环中修改迭代变量的值也没有任何实际意义。
 
-foreach循环迭代访问集合元素时，该集合元素也不能被改变，否则将引发ConcurrentModificationException异常。
+foreach循环迭代访问集合元素时，该集合元素（集合元素还是集合结构啊？）也不能被改变，否则将引发ConcurrentModificationException异常。
 
 ```java
 import java.util.*;
@@ -152,7 +152,7 @@ public class ForeachTest {
             String book = (String) obj;
             System.out.println(book);
             if (book.equals("Java ME")) {
-                // 下面会引发异常
+                // 下面会引发java.util.ConcurrentModificationException异常
                 books.remove(book);
             }
         }
@@ -169,12 +169,13 @@ Java 8还新增了Stream, IntStream, LongStream, DoubleStream等流式API，支�
 
 2. Java8还为上面每个流式API提供了对应的Builder，例如Stream.Builder, IntStream.Builder, LongStream.Builder, DoubleStream.Builder，开发者可以通过这些Builder来创建对应的流。
 
-3. 独立使用Stream的步骤如下：
-    1. 使用Stream或XxxStream的builder()类方法创建该Stream对应的Builder；
 
-    2. 重复调用Builder的add()方法向该流中添加多个元素；
-    3. 调用Builder的build()方法获取对应的Stream；
-    4. 调用Stream的聚集方法。
+独立使用Stream的步骤如下：
+1. 使用Stream或XxxStream的builder()类方法创建该Stream对应的Builder；
+
+2. 重复调用Builder的add()方法向该流中添加多个元素；
+3. 调用Builder的build()方法获取对应的Stream；
+4. 调用Stream的聚集方法。
 
 对于大部分聚集方法而言，每个Stream只能执行一次（有点类似“Python迭代器”？），如下程序：
 
@@ -191,8 +192,8 @@ class IntStreamTest {
         System.out.println(is.average());
         // is所有元素的平方是否都大于20
         System.out.println(is.allMatch(ele -> ele * ele > 20));
-        is是否包含任何元素的平方大于20
-            System.out.println(is.anyMatch(ele -> ele * ele > 20));
+        // is是否包含任何元素的平方大于20
+        System.out.println(is.anyMatch(ele -> ele * ele > 20));
         // 将is映射成一个新Stream，新Stream的每个元素是原Stream元素的2倍+1
         IntStream newIs = is.map(ele -> ele * 2 + 1);
         // 使用方法引用的方式来遍历集合元素
@@ -300,7 +301,7 @@ hash算法中，hash表里可以存储元素的位置叫做“桶”。
     - 负载因子为0，表示空的hash表；
     - 0.5表示半满的hash表，依此类推。
     - 轻负载的hash表具有冲突少、适宜插入与查询的特点，但是使用Iterator迭代元素时比较慢。
-- 负载极限：一个0-1的数值，其决定了hash表的最大填满程度。当hash表中的负载因子达到指定的“负载极限”时，hash表会自动成倍地增加容量（桶的数量），并将原有的对象重新分配，放入新的桶内，这称为rehashing。HashSet和HashMap的构造器允许指定一个负载极限，其默认值为0.75。
+- 负载极限：一个0~1的数值，其决定了hash表的最大填满程度。当hash表中的负载因子达到指定的“负载极限”时，hash表会自动成倍地增加容量（桶的数量），并将原有的对象重新分配，放入新的桶内，这称为<font size=5>**rehashing**</font>。HashSet和HashMap的构造器允许指定一个负载极限，其默认值为0.75。
 
 如果开始就知道HashSet和HashMap会保存很多记录，可以在创建时就使用较大的初始化容量，如果初始化容量始终大于HashSet和HashMap所包含的最大记录数/负载极限，就不会发生rehashing。虽然这样可以更高效地增加记录，但也要注意将初始化容量设置太高可能会浪费空间。
 
@@ -431,7 +432,7 @@ Java提供了一个操作Set、List和Map等集合的工具类：Collections，�
 
 ### 5.3 同步控制
 
-Collections类中提供了多个synchronizedXxx()方法，该方法可以将指定集合争装成线程同步的集合，从而可以解决多线程并发访问集合时的线程安全问题。
+Collections类中提供了多个synchronizedXxx()方法，该方法可以将指定集合包装成线程同步的集合，从而可以解决多线程并发访问集合时的线程安全问题。
 
 Java常用集合框架的实现类 HashSet, TreeSet, ArrayList, ArrayDeque, LinkedList, HashMap, TreeMap 都是线程不安全的。Collections提供了多个类方法可以把它们包装成线程同步的集合。
 
@@ -493,7 +494,7 @@ Java集合有个缺点——把一个对象“丢进”集合里之后，集合�
 
 增了泛型支持后的集合，完全可以记住集合中元素的类型，并可以在编译时检查集合中元素的类型，如果试图向集合中添加不满足类型要求的对象，编译器会报错。
 
-Java的参数化类型被称为**泛型(Generic)**。
+Java的参数化类型被称为**泛型(Generic)** 。
 
 定义泛型：
 
@@ -520,6 +521,7 @@ public class DiamondTest {
         books.add("疯狂Android讲义");
         // 遍历books集合，集合元素就是String类型
         books.forEach(ele -> System.out.println(ele.length()));
+        
         // Java自动推断出HashMap的<>里应该是String, List<String>
         Map<String, List<String>> schoolsInfo = new HashMap<>();
         List<String> schools = new ArrayList<>();
