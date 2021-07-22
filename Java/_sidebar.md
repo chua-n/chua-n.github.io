@@ -97,6 +97,16 @@
     - [UDP编程](/Java/网络编程/UDP编程.md)
     - [Proxy、ProxySelector](/Java/网络编程/Proxy、ProxySelector.md)
 
+- [图形用户界面](/Java/图形用户界面/)
+
+    - [Applet](/Java/图形用户界面/Applet.md)
+    - [绘图](/Java/图形用户界面/绘图.md)
+    - [Swing基础](/Java/图形用户界面/Swing基础.md)
+    - [Swing事件](/Java/图形用户界面/Swing事件.md)
+    - [Swing组件详解](/Java/图形用户界面/Swing组件详解.md)
+    - [其他Swing特性](/Java/图形用户界面/其他Swing特性.md)
+    - [桌面API](/Java/图形用户界面/桌面API.md)
+
 - [设计模式](/Java/设计模式/)
 
     - [单例模式](/Java/设计模式/单例模式.md)

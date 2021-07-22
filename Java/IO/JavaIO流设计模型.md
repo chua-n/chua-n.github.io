@@ -145,11 +145,74 @@ Java输入/输出流体系中常用的流分类（有些流无法提供字节流
 
 ### 5.2 标准输入/输出流
 
-Java使用System.in和System.out来代表标准输入/输出，即键盘输入/显示器，System.in是InputStream类的实例。在System类里提供了如下三个重定向标准输入/输出的方法：
+Java使用System.in和System.out来代表标准输入/输出，即键盘输入/显示器。
+
+- System.in：标准输入流，InputStream类型，这个流是已经打开了的，默认状态对应于键盘输入；
+- System.out：标准输出流，PrintStream类型，默认状态对应于屏幕输出；
+- System.err：标准错误信息输出流，PrintStream类型，默认状态对应于屏幕输出。
+
+在System类里提供了如下三个重定向标准输入/输出的方法：
 
 | 方法                                 | 作用                 |
 | ------------------------------------ | -------------------- |
-| static  void setErr(PrintStream err) | 重定向标准错误输出流 |
 | static  void setIn(InputStream in)   | 重定向标准输入流     |
 | static  void setOut(PrintStream out) | 重定向标准输出流     |
+| static  void setErr(PrintStream err) | 重定向标准错误输出流 |
+
+示例——一个方便的API把文本转换成基本类型或者String：
+
+```java
+Scanner scanner = new Scanner(System.in);
+int num = scanner.nextInt();
+
+// Scanner还有如下方法：
+// nextByte()
+// nextDouble()
+// nextFloat()
+// nextInt()
+// nextInt()
+// nextLong()
+// nextShort()
+```
+
+### 5.3 写文本文件示例——FileWriter与BufferedWriter
+
+```java
+package com.chuan;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import org.junit.Test;
+
+public class FileWriterTest {
+    @Test
+    public void testWrite() throws IOException {
+        String filename = "C:\\Users\\chuan\\Desktop\\temp\\hello.txt";
+        FileWriter writer = new FileWriter(filename); // 如果文件已存在，会覆盖
+        // FileWriter writer = new FileWriter(filename, true); // 如果文件已存在，会追加内容
+        writer.write("Hello!\n");
+        writer.write("This is my first text file,\n");
+        writer.write("You can see how this is done.\n");
+        writer.write("输入一行中文也可以");
+        writer.close();
+    }
+}
+```
+
+注意事项：
+
+- 创建一个磁盘文件
+- 关闭一个磁盘文件
+- write()方法
+- 捕获I/O异常
+
+BufferedWriter类：如果需要写入的内容很多，就应该使用更为高效的缓冲器类BufferedWriter，其不同于FileWriter类的区别是BufferedWriter多提供了一个`newLine()`方法用于换行，该方法可以输出在当前计算机上正确的换行符。
+
+类似地，关于读文本文件的FileReader类与BufferedReader类，后者拥有`readLine()`方法可以进行按行读。
+
+> 文件结束时，Reader返回-1，而BufferedReader返回null。
+
+### 5.4 DataInputStream/DataOutputStream
+
+二进制文件的DataInputStream/DataOutputStream可以按照类型读写。
 
