@@ -1,0 +1,10 @@
+/* 让docsify的图片居中显示 */
+.medium-zoom-image {
+    clear: both;
+    display: block;
+    margin: auto;
+}
+/* 设置搜索框的placehold的字体 */
+.search input {
+    font-family: 华文中宋, 思源宋体;
+}
