@@ -1,6 +1,6 @@
 ## 1. 概念
 
-**AOP(Aspect Oriented Programming)**为面向切面编程，是通过预编译方式和运行期**动态代理**实现程序功能的统一维护的一种技术。
+**AOP(Aspect Oriented Programming)** 为面向切面编程，是通过预编译方式和运行期**动态代理**实现程序功能的统一维护的一种技术。
 
 AOP 是 OOP 的延续，是软件开发中的一个热点，也是 Spring 框架中的一个重要内容，是函数式编程的一种衍生范型。利用 AOP 可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 
@@ -19,7 +19,7 @@ AOP技术在Spring中实现的内容：Spring框架监控切点方法的执行�
 > -   JDK 代理：基于接口的动态代理技术
 > -   cglib 代理 ：基于父类的动态代理技术
 >
-> ![17](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/17.png)
+> <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/17.png" alt="17" style="zoom:50%;" />
 
 Spring 的 AOP 实现底层就是对 JDK 代理、cglib 代理的方式进行了封装，封装后我们只需要对需要关注的部分进行代码编写，并通过配置的方式完成指定目标的方法增强。
 
@@ -72,11 +72,6 @@ pom.xml
         <version>1.8.4</version>
     </dependency>
     <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>5.0.5.RELEASE</version>
-    </dependency>
-    <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
@@ -127,8 +122,8 @@ applicationContext.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:apo="http://www.springframework.org/schema/aop"
-    xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 ">
@@ -140,7 +135,7 @@ applicationContext.xml
     <aop:config>
         <!--  声明切面  -->
         <aop:aspect ref="myAspect">
-            <apo:before method="test" pointcut="execution(public void com.itheima.aop.Target.save())"/>
+            <aop:before method="test" pointcut="execution(public void com.itheima.aop.Target.save())"/>
         </aop:aspect>
     </aop:config>
 </beans>
