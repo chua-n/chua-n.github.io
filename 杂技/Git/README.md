@@ -1,16 +1,5 @@
-# Git分支管理和PR规范
+> 此处为Git笔记。通过左侧导航栏进行阅读吧。
 
-![image-20210825134600740](C:\Users\chuan\AppData\Roaming\Typora\typora-user-images\image-20210825134600740.png)
+[git commit之后，想撤销commit - 持＆恒 - 博客园 (cnblogs.com)](https://www.cnblogs.com/lfxiao/p/9378763.html)
 
-develop分支一有变动就会触发jenkins发布。
-
-![image-20210825141216120](C:\Users\chuan\AppData\Roaming\Typora\typora-user-images\image-20210825141216120.png)
-
-release分支相当于一个正式发版前的“临时的、缓存的分支”？
-
-![image-20210825143227196](C:\Users\chuan\AppData\Roaming\Typora\typora-user-images\image-20210825143227196.png)
-
-具体的merge操作需由PR发起人点击，并非由PR审核人点击merge。
-
-![image-20210825144156852](C:\Users\chuan\AppData\Roaming\Typora\typora-user-images\image-20210825144156852.png)
-
+[Git撤销远程仓库的修改（push）_CaptainBuggy的博客-CSDN博客_git取消push到远程仓库](https://blog.csdn.net/weixin_43738524/article/details/107005596)
