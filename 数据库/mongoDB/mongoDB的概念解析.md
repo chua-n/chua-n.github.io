@@ -1,0 +1,16 @@
+## MongoDB 概念解析
+
+在mongodb中基本的概念是文档、集合、数据库，下面我们挨个介绍。
+
+| SQL术语/概念 | MongoDB术语/概念 | 解释/说明                           |
+| ------------ | ---------------- | ----------------------------------- |
+| database     | database         | 数据库                              |
+| table        | collection       | 数据库表/集合                       |
+| row          | document         | 数据记录行/文档                     |
+| column       | field            | 数据字段/域                         |
+| index        | index            | 索引                                |
+| table joins  | /                | 表连接,MongoDB不支持                |
+| primary key  | primary key      | 主键,MongoDB自动将_id字段设置为主键 |
+
+![18](D:\code\notebooks\resources\images-gitee\notebooks\数据库\18.png)
+

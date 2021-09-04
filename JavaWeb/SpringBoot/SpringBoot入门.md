@@ -31,9 +31,89 @@ SpringBoot的主要优点：
 
 ## 2. 快速入门案例
 
+### 2.1 引入依赖
+
 > 所有的官方springboot依赖都以spring-boot-starter开头。
 
-- pom.xml
+依赖主要涉及**父工程**和**启动器**。
+
+核心依赖在父工程中：spring-boot-dependencies；在引入一些springboot依赖时，不需要指定版本，因为有这些版本仓库。
+
+启动器：说白了就是SpringBoot的启动场景，如spring-boot-starter-web会帮我们自动导入web环境所有的依赖。springboot会将所有的功能场景都变成一个个的启动器，当我们要使用##功能，只需找到相应的启动器starter即可。
+
+```xml
+<!-- 父工程 -->
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.4.4</version>
+</parent>
+
+<dependencies>
+    <!-- 启动器 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+</dependencies>
+```
+
+### 2.2 创建主程序
+
+```java
+package com.kuang.helloWorld;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+// @SpringBootApplication：标注这个类是一个springboot的应用
+@SpringBootApplication
+public class HelloworldApplication {
+    // 将springboot的应用启动
+    public static void main(String[] args) {
+        SpringApplication.run(HelloworldApplication.class, args);
+    }
+}
+```
+
+`@SpringBootApplication`标注一个类是一个springboot的应用
+
+springboot所有的自动配置都是在启动的时候被扫描并加载：所有的自动配置类都在spring.factories里，但是不一定生效（要判断条件是否成立），只有导入对应的启动器starter，自动装配才会生效。
+
+### 2.3 编写业务
+
+```java
+@RestController
+public class HelloController {
+    @RequestMapping("/hello")
+    public String handle01(){
+        return "Hello, Spring Boot 2!";
+    }
+}
+```
+
+### 2.4 测试
+
+直接运行主程序的main方法。
+
+### 2.5 简化部署
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    </plugins>
+</build>
+```
+
+把项目打成jar包，直接在目标服务器执行即可。
+
+注意点：取消掉cmd的快速编辑模式。
+
+### 2.6 附：总的pom.xml（一般意义）
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

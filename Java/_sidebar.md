@@ -63,6 +63,7 @@
     - [Queue](/Java/集合类/Queue.md)
     - [List](/Java/集合类/List.md)
     - [Map](/Java/集合类/Map.md)
+    - [流](/Java/集合类/流.md)
 
 - [IO](/Java/IO/)
 

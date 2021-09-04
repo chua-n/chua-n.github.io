@@ -1,10 +1,10 @@
 ## 1. Spring简介
 
-Spring是分层的Jave  SE/EE应用的全栈的轻量级开源框架，以**IoC**(Inverse of Control，反转控制 )和**AOP**(Aspect Oriented Programming，面向切面编程)为内核。
+Spring是分层的Jave  SE/EE应用的全栈的轻量级开源框架，以<font size=5>**IoC**(Inverse of Control，控制反转 )</font>和<font size=5>**AOP**(Aspect Oriented Programming，面向切面编程)</font>为内核。
 
-- 所谓**反转控制**：即可通过Spring提供的IOC容器，可以将对象的依赖关系交由Spring进行控制，避免硬编码所造成的过度耦合。
+> 所谓**控制反转**：即可通过Spring提供的IOC容器，可以将对象的依赖关系交由Spring进行控制，避免硬编码所造成的过度耦合。
 
-Spring提供了**展示层SpringMVC**和**持久层pring JDBCTemplate**以及**业务事务管理**等众多的企业级应用技术，还能整合开源世界众多著名的第三方框架和类库，逐渐成为使用最多的Java EE企业应用开源框架。
+Spring提供了**展示层SpringMVC**和**持久层Spring JDBCTemplate**以及**业务事务管理**等众多的企业级应用技术，还能整合开源世界众多著名的第三方框架和类库，逐渐成为使用最多的Java EE企业应用开源框架。
 
 Spring的优势：
 

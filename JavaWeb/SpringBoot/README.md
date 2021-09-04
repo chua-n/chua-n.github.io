@@ -1,8 +1,8 @@
 > 本章是关于SpringBoot的笔记内容。
 
-这里暂附一下关于lombok的东西。
+这里介绍两个开发小工具。
 
-## lombok
+## 1. lombok
 
 ### 坐标：
 
@@ -59,5 +59,19 @@ lombok是一个插件工具类包，其提供了一些注解去简化实体类�
     }
     ```
 
+## 2. dev-tools
 
+dev-tools工具可实现springboot的热部署，只要在pom.xml中添加一个功能坐标即可：
+
+```xml
+<!-- 热部署配置 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+</dependency>
+```
+
+> 项目或者页面修改以后：Ctrl+F9（需要吗？）
+
+默认配置下，针对`/static`、`/public`和`/templates`目录中的文件修改，不会自动重启，因为禁用缓存后，这些文件的修改可以实时更新。
 
