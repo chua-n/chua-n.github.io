@@ -12,7 +12,7 @@
 - 暂存区：是一个文件，保存了下次将要提交的文件列表信息，一般在 Git 仓库目录中。 按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。
 - Git 仓库目录：是 Git 用来保存项目的元数据和对象数据库的地方。 这是 Git 中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。
 
-<img src="D:\code\notebooks\resources\images-gitee\notebooks\杂技\Git\1.png" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/杂技/Git/1.png" style="zoom:50%;" />
 
 基本的 Git 工作流程如下：
 
@@ -100,7 +100,7 @@ $ git config --global user.email johndoe@example.com
 
 若你使用 Git 时需要获取帮助，有三种等价的方法可以找到 Git 命令的综合手册（manpage）：
 
-```console
+```bash
 $ git help <verb>
 $ git <verb> --help
 $ man git-<verb>
@@ -108,7 +108,7 @@ $ man git-<verb>
 
 例如，要想获得 `git config` 命令的手册，执行
 
-```console
+```bash
 $ git help config
 ```
 
