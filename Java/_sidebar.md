@@ -30,6 +30,7 @@
     - [接口](/Java/面向对象/接口.md)
     - [内部类](/Java/面向对象/内部类.md)
     - [枚举类](/Java/面向对象/枚举类.md)
+    - [函数式接口](/Java/面向对象/函数式接口.md)
     - [Lambda表达式](/Java/面向对象/Lambda表达式.md)
     - [一些Java常用接口](/Java/面向对象/一些Java常用接口.md)
     - [泛型](/Java/面向对象/泛型.md)
@@ -56,14 +57,14 @@
     - [日期与时间](/Java/基础类库/日期与时间.md)
     - [正则表达式](/Java/基础类库/正则表达式.md)
 
-- [集合类](/Java/集合类/)
+- [集合与流](/Java/集合与流/)
 
-    - [Java集合概述](/Java/集合类/Java集合概述.md)
-    - [Set](/Java/集合类/Set.md)
-    - [Queue](/Java/集合类/Queue.md)
-    - [List](/Java/集合类/List.md)
-    - [Map](/Java/集合类/Map.md)
-    - [流](/Java/集合类/流.md)
+    - [Java集合概述](/Java/集合与流/Java集合概述.md)
+    - [Set](/Java/集合与流/Set.md)
+    - [Queue](/Java/集合与流/Queue.md)
+    - [List](/Java/集合与流/List.md)
+    - [Map](/Java/集合与流/Map.md)
+    - [流](/Java/集合与流/流.md)
 
 - [IO](/Java/IO/)
 

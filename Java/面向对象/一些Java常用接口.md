@@ -64,10 +64,25 @@ Java还提供了一个类似上述Comparable接口的Comparator接口，Comparat
 
 Java8 在 java.util.function 包下预定义了大量函数式接口，典型地包含如下 4 类接口：
 
-| 方法            | 作用                                                         |
-| --------------- | ------------------------------------------------------------ |
-| `XxxFunction`   | 通常包含一个 apply()抽象方法，该方法对参数进行处理、转换，然后返回一个新的值 |
-| `XxxConsumer`   | 通常包含一个 accept()抽象方法，该方法与 XxxFunction 接口中的 apply()方法基本相似，也负责对参数进行处理，只是该方法不会返回处理结果 |
-| `XxxxPredicate` | 通常包含一个 test()抽象方法，该方法通常用来对参数进行某种判断，然后返回一个 boolean 值 |
-| `XxxSupplier`   | 通常包含一个 getAsXxx()抽象方法，该方法不需要输入参数，该方法会按某种逻辑算法返回一个数据 |
+| 函数式接口  | 抽象方法   | 说明                                                         |
+| ----------- | ---------- | ------------------------------------------------------------ |
+| `Function`  | apply()    | 对参数进行处理、转换，然后返回一个新的值                     |
+| `Consumer`  | accept()   | 与 Function 接口中的 apply()方法基本相似，也负责对参数进行处理，但其不返回处理结果 |
+| `Predicate` | test()     | 通常用来对参数进行某种判断，然后返回一个 boolean 值          |
+| `Supplier`  | getAsXxx() | 无参方法，其按某种逻辑算法返回一个数据                       |
+
+
+
+
+| 函数式接口            | 函数描述符          | 原始类型特化                                                 |
+| --------------------- | ------------------- | ------------------------------------------------------------ |
+| `Predict<T>`          | `T -> boolean`      | IntPredict<br />LongPredict<br />DoublePredict               |
+| `Consumer<T>`         | `T -> void`         | IntConsumer<br />LongConsumer<br />DoubleConsumer            |
+| `Function<T,R>`       | `T -> R`            | IntFunction\<R><br />IntToDoubleFunction<br />IntToLongFunction<br />LontFunction\<R><br />LongToDoubleFunction<br />LongToIntFunction<br />DoubleFunction\<R><br />ToIntFunction\<T><br />ToDoubleFunction\<T><br />ToLongFunction\<T> |
+| `Supplier<T>`         | `() -> T`           | BooleanSupplier<br />IntSupplier<br />LongSupplier<br />DoubleSupplier |
+| `UnaryOperator<T>`    | `T -> T`            | IntUnaryOperator<br />LongUnaryOperator<br />DoubleUnaryOperator |
+| `BinaryOperator<T>`   | `(T, T) -> T`       | IntBinaryOperator<br />LongBinaryOperator<br />DoubleBinaryOperator |
+| `BiPredicate<L, R>`   | `(L, R) -> boolean` |                                                              |
+| `BiConsumer<T, U>`    | `(T, U) -> void`    | ObjIntConsumer\<T><br />ObjLongConsumer\<T><br />ObjDoubleConsumer\<T> |
+| `BiFunction<T, U, R>` | `(T, U) -> R`       | ToIntBiFunction<T, U><br />ToLongBiFunction<T, U><br />ToDoubleBiFunction<T, U> |
 
