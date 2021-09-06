@@ -56,6 +56,10 @@ $ git branch testing
 >
 > 正如你所见，当前 `master` 和 `testing` 分支均指向校验和以 `f30ab` 开头的提交对象。
 
+### 从历史版本中创建分支
+
+使用`git branch <branch> <commitId>`即可（同样的方式也生效于git checkout -b 命令）。
+
 ## 3. 分支切换
 
 要切换到一个已存在的分支，你需要使用 `git checkout` 命令。 我们现在切换到新创建的 `testing` 分支去：
@@ -819,6 +823,7 @@ $ git branch -d server
 | --------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------ |
 | git branch                                          | 查看本地仓库所有分支                           | 当前所在分支（所检出的分支）的前面会标明一个*号              |
 | git branch \<newBranch>                             | 创建一个新的分支                               | 在底层只是在当前的提交对象上（HEAD的指向）创建了一个新的指针 |
+| git branch \<newBranch> \<commitId>                 | 从历史记录中创建一个新的分支                   | 同样的方式也生效于git checkout -b 命令                       |
 | git checkout \<branch>                              | 检出一个已存在的分支                           | 即切换到branch指定的分支（此时工作目录中的文件会改变），此时HEAD指向branch分支 |
 | git checkout -b \<newBranch>                        | 创建一个新分支的同时切换到该分支               | 相当于两条命令：<br />1) git branch \<newBranch><br />2) git checkout \<newBranch><br />注：如果该分支已存在，则只切换分支。 |
 | git merge \<branch>                                 | 把branch分支合并到当前所在分支                 |                                                              |
