@@ -98,7 +98,7 @@ $ vim test.rb
 $ git commit -a -m 'made other changes'
 ```
 
-现在，这个项目的提交历史已经产生了分叉（参见 [项目分叉历史](https://git-scm.com/book/zh/v2/ch00/divergent_history)），因为刚才你创建了一个新分支，并切换过去进行了一些工作，随后又切换回 master 分支进行了另外一些工作。 上述两次改动针对的是不同分支，你可以在不同分支间不断地来回切换和工作，并在时机成熟时将它们合并起来。 而所有这些工作，你需要的命令只有 `branch`、`checkout` 和 `commit`。
+现在，这个项目的提交历史已经产生了分叉（见下图），因为刚才你创建了一个新分支，并切换过去进行了一些工作，随后又切换回 master 分支进行了另外一些工作。 上述两次改动针对的是不同分支，你可以在不同分支间不断地来回切换和工作，并在时机成熟时将它们合并起来。 而所有这些工作，你需要的命令只有 `branch`、`checkout` 和 `commit`。
 
 <img src="https://chua-n.gitee.io/blog-images/notebooks/杂技/Git/advance-master.png" style="zoom:80%;" />
 
@@ -117,7 +117,7 @@ $ git commit -a -m 'made other changes'
 
 由于 Git 的分支实质上仅是包含所指对象校验和（长度为 40 的 SHA-1 值字符串）的文件，所以它的创建和销毁都异常高效。 创建一个新分支就相当于往一个文件中写入 41 个字节（40 个字符和 1 个换行符），如此的简单能不快吗？
 
-> 注意,如果你想创建新分支的同时切换过去,可以使用`git checkout -b <newbranchname>` 一条命令搞定。
+> 注意,如果你想创建新分支的同时切换过去,可以使用`git checkout -b <newbranch>` 一条命令搞定。
 
 ## 4. 分支合并
 
@@ -298,7 +298,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 >>>>>>> iss53:index.html
 ```
 
-这表示 `HEAD` 所指示的版本（也就是你的 `master` 分支所在的位置，因为你在运行 merge 命令的时候已经检出到了这个分支）在这个区段的上半部分（`=======` 的上半部分），而 `iss53` 分支所指示的版本在 `=======` 的下半部分。 为了解决冲突，你必须选择使用由 `=======` 分割的两部分中的一个，或者你也可以自行合并这些内容。 例如，你可以通过把这段内容换成下面的样子来解决冲突：
+这表示 `HEAD` 所指示的版本（这里也就是你的 `master` 分支所在的位置）在这个区段的上半部分（`=======` 的上半部分），而 `iss53` 分支所指示的版本在 `=======` 的下半部分。 为了解决冲突，你必须选择使用由 `=======` 分割的两部分中的一个，或者你也可以自行合并这些内容。 例如，你可以通过把这段内容换成下面的样子来解决冲突：
 
 ```html
 <div id="footer">
@@ -347,7 +347,7 @@ Conflicts:
 
 如果你觉得上述的信息不够充分，不能完全体现分支合并的过程，你可以修改上述信息， 添加一些细节给未来检视这个合并的读者一些帮助，告诉他们你是如何解决合并冲突的，以及理由是什么。
 
-## 6. 管理分支
+## 6. 管理分支——git branch
 
 现在已经创建、合并、删除了一些分支，让我们看看一些常用的分支管理命令。
 
@@ -360,7 +360,11 @@ $ git branch
   testing
 ```
 
-注意 `master` 分支前的 `*` 字符：它代表现在检出的那一个分支（也就是说，当前 `HEAD` 指针所指向的分支），这意味着如果在这时候提交，`master` 分支将会随着新的工作向前移动。 如果需要查看每一个分支的最后一次提交，可以运行 `git branch -v` 命令：
+注意 `master` 分支前的 `*` 字符：它代表现在检出的那一个分支（也就是说，当前 `HEAD` 指针所指向的分支），这意味着如果在这时候提交，`master` 分支将会随着新的工作向前移动。 
+
+### -v选项
+
+如果需要查看每一个分支的最后一次提交，可以运行 `git branch -v` 命令：
 
 ```bash
 $ git branch -v
@@ -368,6 +372,8 @@ $ git branch -v
 * master  7a98805 Merge branch 'iss53'
   testing 782fd34 add scott to the author list in the readmes
 ```
+
+### --merged、--no-merged选项
 
 `--merged` 与 `--no-merged` 这两个有用的选项可以过滤这个列表中已经合并或尚未合并到当前分支的分支。 
 
@@ -381,7 +387,7 @@ $ git branch -v
 
     因为之前已经合并了 `iss53` 分支，所以现在看到它在列表中。 在这个列表中分支名字前没有 `*` 号的分支通常可以使用 `git branch -d` 删除掉——你已经将它们的工作整合到了另一个分支，所以并不会失去任何东西。
 
-- 查看所有包含未合并工作的分支，可以运行 `git branch --no-merged`：
+- 查看所有包含未合并到当前分支的工作的分支，可以运行 `git branch --no-merged`：
 
     ```bash
     $ git branch --no-merged
@@ -396,9 +402,6 @@ $ git branch -v
     If you are sure you want to delete it, run 'git branch -D testing'.
     ```
 
-
-如果真的想要删除分支并丢掉那些工作，如同帮助信息里所指出的，可以使用 `-D` 选项强制删除它。
-
 > 注意：上面描述的选项 `--merged` 和 `--no-merged` 会在没有给定提交或分支名作为参数时， 分别列出已合并或未合并到 **当前** 分支的分支。
 >
 > 你总是可以提供一个附加的参数来查看其它分支的合并状态而不必检出它们。 例如，尚未合并到 `master` 分支的有哪些？
@@ -406,9 +409,19 @@ $ git branch -v
 > ```bash
 > $ git checkout testing
 > $ git branch --no-merged master
->   topicA
->   featureB
+> topicA
+> featureB
 > ```
+
+### -d选项
+
+用来删除分支。
+
+详见上面的“--merged、--no-merged选项”所述内容。
+
+### -D选项
+
+如果真的想要删除分支并丢掉那些工作，如同帮助信息里所指出的，可以使用 `-D` 选项强制删除它。
 
 ## 7. 分支开发工作流
 
@@ -460,7 +473,7 @@ $ git branch -v
 
 #### 示例1
 
-这可能有一点儿难以理解，让我们来看一个例子。 假设你的网络里有一个在 `git.ourcompany.com` 的 Git 服务器。 如果你从这里克隆，Git 的 `clone` 命令会为你自动将其命名为 `origin`，拉取它的所有数据， 创建一个指向它的 `master` 分支的指针，并且在本地将其命名为 `origin/master`。 Git 也会给你一个与 origin 的 `master` 分支在指向同一个地方的本地 `master` 分支，这样你就有工作的基础。
+假设你的网络里有一个在 `git.ourcompany.com` 的 Git 服务器。 如果你从这里克隆，Git 的 `clone` 命令会为你自动将其命名为 `origin`，拉取它的所有数据， 创建一个指向它的 `master` 分支的指针，并且在本地将其命名为 `origin/master`。 Git 也会给你一个与 origin 的 `master` 分支在指向同一个地方的本地 `master` 分支，这样你就有工作的基础。
 
 > 注意，“origin” 并无特殊含义：
 >
@@ -519,35 +532,47 @@ To https://github.com/schacon/simplegit
 
 ### 8.3 跟踪分支
 
-从一个远程跟踪分支检出一个本地分支会自动创建所谓的“跟踪分支”（它跟踪的分支叫做“上游分支”）。 跟踪分支是与远程分支有直接关系的本地分支。 如果在一个跟踪分支上输入 `git pull`，Git 能自动地识别去哪个服务器上抓取、合并到哪个分支。
+从一个远程分支检出一个本地分支会自动创建所谓的“跟踪分支”（它跟踪的分支叫做“上游分支”）。 跟踪分支是与远程分支有直接关系的本地分支。 如果在一个跟踪分支上输入 `git pull`，Git 能自动地识别去哪个服务器上抓取、合并到哪个分支。
 
-当克隆一个仓库时，它通常会自动地创建一个跟踪 `origin/master` 的 `master` 分支。 然而，如果你愿意的话可以设置其他的跟踪分支，或是一个在其他远程仓库上的跟踪分支，又或者不跟踪 `master` 分支。 最简单的实例就是像之前看到的那样，运行 `git checkout -b <branch> <remote>/<branch>`。 这是一个十分常用的操作所以 Git 提供了 `--track` 快捷方式：
+> 当克隆一个仓库时，会默认创建一个跟踪 `origin/master` 的本地 `master` 分支。 
 
-```bash
-$ git checkout --track origin/serverfix
-Branch serverfix set up to track remote branch serverfix from origin.
-Switched to a new branch 'serverfix'
-```
+#### 8.3.1 从远程分支检出本地分支时
 
-由于这个操作太常用了，该捷径本身还有一个捷径。 如果你尝试检出的分支 (a) 不存在且 (b) 刚好只有一个名字与之匹配的远程分支，那么 Git 就会为你创建一个跟踪分支：
+从远程分支检出本地分支时可以对跟踪分支进行更详细的设置：
 
-```bash
-$ git checkout serverfix
-Branch serverfix set up to track remote branch serverfix from origin.
-Switched to a new branch 'serverfix'
-```
+1. 例如上面的例子运行的 `git checkout -b <branch> <remote>/<branch>`。
 
-如果想要将本地分支与远程分支设置为不同的名字，你可以轻松地使用上一个命令增加一个不同名字的本地分支：
+2. 由于这是一个十分常用的操作，所以 Git 提供了 `--track` 快捷方式：
 
-```bash
-$ git checkout -b sf origin/serverfix
-Branch sf set up to track remote branch serverfix from origin.
-Switched to a new branch 'sf'
-```
+    ```bash
+    $ git checkout --track origin/serverfix
+    Branch serverfix set up to track remote branch serverfix from origin.
+    Switched to a new branch 'serverfix'
+    ```
 
-现在，本地分支 `sf` 会自动从 `origin/serverfix` 拉取。
+3. 上面的命令太常用了，因此Git有更进一步的简化，即如果你尝试检出的分支不存在且刚好有且只有一个与之名字匹配的远程分支，那么 Git 就会自动为你创建一个跟踪分支：
 
-设置已有的本地分支跟踪一个刚刚拉取下来的远程分支，或者想要修改正在跟踪的上游分支， 你可以在任意时间使用 `-u` 或 `--set-upstream-to` 选项运行 `git branch` 来显式地设置。
+    ```bash
+    $ git checkout serverfix
+    Branch serverfix set up to track remote branch serverfix from origin.
+    Switched to a new branch 'serverfix'
+    ```
+
+> 显然，上面的第2、3条选项的命令创建的本地分支将会与远程分支的名称完全相同。
+>
+> 而如果你想要将本地分支与远程分支设置为不同的名字，仍旧使用上面第一条命令即可：
+>
+> ```bash
+> $ git checkout -b sf origin/serverfix
+> Branch sf set up to track remote branch serverfix from origin.
+> Switched to a new branch 'sf'
+> ```
+>
+> > 现在，本地分支 `sf` 会自动从 `origin/serverfix` 拉取。
+
+#### 8.3.2 修改本地已有分支的上游分支
+
+如果想要设置已有的本地分支跟踪一个刚刚拉取下来的远程分支，或者想要修改正在跟踪的上游分支，使用 `git branch` 的 `-u` 或 `--set-upstream-to` 选项即可：
 
 ```bash
 $ git branch -u origin/serverfix
@@ -557,6 +582,8 @@ Branch serverfix set up to track remote branch serverfix from origin.
 > 注，上游快捷方式：
 >
 > 当设置好跟踪分支后，可以通过简写 `@{upstream}` 或 `@{u}` 来引用它的上游分支。 所以在 `master` 分支时并且它正在跟踪 `origin/master` 时，如果愿意的话可以使用 `git merge @{u}` 来取代 `git merge origin/master`。
+
+#### 8.3.3 查看本地仓库设置的所有跟踪分支
 
 如果想要查看设置的所有跟踪分支，可以使用 `git branch` 的 `-vv` 选项。 这会将所有的本地分支列出来并且包含更多的信息，如每一个分支正在跟踪哪个远程分支与本地分支是否是领先、落后或是都有。
 
@@ -570,7 +597,7 @@ $ git branch -vv
 
 这里可以看到 `iss53` 分支正在跟踪 `origin/iss53` 并且 “ahead” 是 2，意味着本地有两个提交还没有推送到服务器上。 也能看到 `master` 分支正在跟踪 `origin/master` 分支并且是最新的。 接下来可以看到 `serverfix` 分支正在跟踪 `teamone` 服务器上的 `server-fix-good` 分支并且领先 3 落后 1， 意味着服务器上有一次提交还没有合并入同时本地有三次提交还没有推送。 最后看到 `testing` 分支并没有跟踪任何远程分支。
 
-需要重点注意的一点是这些数字的值来自于你从每个服务器上最后一次抓取的数据。 这个命令并没有连接服务器，它只会告诉你关于本地缓存的服务器数据。 如果想要统计最新的领先与落后数字，需要在运行此命令前抓取所有的远程仓库。 可以像这样做：
+需要重点注意的一点是这些数字的值来自于你从每个服务器上最后一次抓取的数据，也即这个命令并没有连接服务器，它只会告诉你关于本地缓存的服务器数据。 如果想要统计最新的领先与落后数字，需要在运行此命令前抓取所有的远程仓库。 可以像这样做：
 
 ```bash
 $ git fetch --all; git branch -vv
@@ -786,21 +813,46 @@ $ git branch -d server
 
 总的原则是，只对尚未推送或分享给别人的本地修改执行变基操作清理历史， 从不对已推送至别处的提交执行变基操作，这样，你才能享受到两种方式带来的便利。
 
-## 10. 分支管理命令速查？
+## 10. 分支管理命令速查
 
-| Git命令                                      | 作用                                          | 说明                                                         |
-| -------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------ |
-| git checkout -b \<branchName>                | 创建并切换到一个新分支dev                     | 相当于两条命令：<br />1) git branch dev<br />2) git checkout dev |
-| git branch                                   | 查看所有分支，当前分支前面会标明一个*号       |                                                              |
-| git merge dev                                | 把dev分支的工作合并到master分支上             | 其中会提示Fast-forward信息，这指出当前合并是快进模式，也就是直接把master指针指向dev的当前提交，所以合并速度非常快 |
-| git merge --no-ff -m "merge with no-off" dev | 使用--no-ff参数表示禁用Fast forward的合并模式 | 由于这种合并要创建一个新的commit，所以加上-m参数。           |
-| git branch -d dev                            | 删掉dev分支                                   |                                                              |
-| git branch -D \<branchName>                  | 强行删除某分支                                | 如果因为突然原因要丢弃一个没有被合并过的分支，可以通过此命令强行删除 |
-| git switch \<branchName>                     | 切换到某分支                                  | 最新的版本，比git checkout操作要好                           |
-| git switch -c dev                            | 创建并切换到新的dev分支                       | 比git checkout -b要好，因为checkout还有个功能为撤销修改，容易混淆 |
+| Git命令                                             | 作用                                           | 说明                                                         |
+| --------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------ |
+| git branch                                          | 查看本地仓库所有分支                           | 当前所在分支（所检出的分支）的前面会标明一个*号              |
+| git branch \<newBranch>                             | 创建一个新的分支                               | 在底层只是在当前的提交对象上（HEAD的指向）创建了一个新的指针 |
+| git checkout \<branch>                              | 检出一个已存在的分支                           | 即切换到branch指定的分支（此时工作目录中的文件会改变），此时HEAD指向branch分支 |
+| git checkout -b \<newBranch>                        | 创建一个新分支的同时切换到该分支               | 相当于两条命令：<br />1) git branch \<newBranch><br />2) git checkout \<newBranch><br />注：如果该分支已存在，则只切换分支。 |
+| git merge \<branch>                                 | 把branch分支合并到当前所在分支                 |                                                              |
+| git merge --no-ff -m "merge with no-off" \<branch>  | 使用--no-ff参数表示禁用Fast forward的合并模式  | 由于这种合并要创建一个新的commit，所以加上-m参数。           |
+| git branch -v                                       | 查看本地仓库所有分支的同时显示它们最后一次提交 |                                                              |
+| git branch -r                                       | 查看所有远程分支                               |                                                              |
+| git branch -a                                       | 查看所有本地和远程的分支                       | 远程分支会以remotes/开头，如果命令行支持颜色显示的话还会显示为红色 |
+| git branch --merged [branch]                        | 查看那些已经合并到当前分支的分支               | 若指定了branch，则显示已经合并到branch分支的分支             |
+| git branch --no-merged [branch]                     | 查看那些未合并到当前分支的分支                 | 若指定了branch，则显示未合并到branch分支的分支               |
+| git branch -d \<branch>                             | 删掉branch分支                                 |                                                              |
+| git branch -D \<branch>                             | 强行删除branch分支                             | 如果因为突然原因要丢弃一个没有被合并过的分支，可以通过此命令强行删除 |
+| git push \<remote> \<branch>                        | 向远程仓库remote推送本地的branch分支           | 推送到远程的哪个分支？                                       |
+| git push \<remote> \<branch:remoteBranch>           |                                                | 推送本地分支到指定的远程分支                                 |
+| git checkout -b \<branch> \<remote>/\<remoteBranch> | 远程分支检出一个本地分支                       | 可对跟踪分支信息进行详细设置                                 |
+| git checkout --track \<remote>/\<remoteBranch>      | 同上                                           | 但检出的本地分支名不能进行设置，会与上游分支同名             |
+| git checkout \<branch>                              | 检出一个已存在的分支（上面已经提到过）         | 如果branch在本地不存在，而远端正好有且只有一个名为branch的分支，则检出到本地且自动设置好跟踪信息 |
+| git branch -u \<remote>/\<remoteBranch>             | 修改本地分支的上游分支                         | 也可令本地分支跟踪一个刚刚拉取下来的远程分支（？）           |
+| git branch -vv                                      | 查看本地仓库设置的所有跟踪分支                 |                                                              |
+| git fetch                                           | 拉取上游分支但不合并                           |                                                              |
+| git pull                                            | 拉取上游分支并进行合并                         |                                                              |
+| git push \<remote> --delete \<remoteBranch>         | 删除远端上的分支                               | 本地对应的分支不受影响，需要单独删除                         |
+
+---
+
+| 边缘命令？                | 作用                    | 说明                                                         |
+| ------------------------- | ----------------------- | ------------------------------------------------------------ |
+| git ls-remote \<remote>   |                         |                                                              |
+| git remote show \<remote> |                         |                                                              |
+| git switch \<branch>  | 切换到某分支            | 最新的版本，比git checkout操作要好                           |
+| git switch -c dev         | 创建并切换到新的dev分支 | 比git checkout -b要好，因为checkout还有个功能为撤销修改，容易混淆 |
 
 要在BUG分支上修复bug时：
 
 1. 修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
 2. 当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场；
 3. 在master分支上修复的bug，想要合并到当前dev分支上，可以用git       cherry-pick <commit>命令，把bug提交的修改“复制”到当前分支，避免重复劳动。
+
