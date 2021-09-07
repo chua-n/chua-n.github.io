@@ -56,7 +56,6 @@
     -   [MyBatis逆向工程](/JavaWeb/MyBatis/MyBatis逆向工程.md)
     -   [SSM整合](/JavaWeb/MyBatis/SSM整合.md)
 -   [SpringBoot](/JavaWeb/SpringBoot/)
-
     -   [SpringBoot入门](/JavaWeb/SpringBoot/SpringBoot入门.md)
     -   [自动装配](/JavaWeb/SpringBoot/自动装配.md)
     -   [启动类](/JavaWeb/SpringBoot/启动类.md)
@@ -64,4 +63,8 @@
     -   [Web开发](/JavaWeb/SpringBoot/Web开发.md)
     -   [SpringBoot的配置文件](/JavaWeb/SpringBoot/SpringBoot的配置文件.md)
     -   [SpringBoot集成其他框架](/JavaWeb/SpringBoot/SpringBoot集成其他框架.md)
+
+-   [SpringData](/JavaWeb/SpringData/)
+    -   [SpringBoot入门](/JavaWeb/SpringBoot/SpringBoot入门.md)
+    -   
 
