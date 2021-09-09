@@ -65,6 +65,7 @@
     -   [SpringBoot集成其他框架](/JavaWeb/SpringBoot/SpringBoot集成其他框架.md)
 
 -   [SpringData](/JavaWeb/SpringData/)
-    -   [SpringBoot入门](/JavaWeb/SpringBoot/SpringBoot入门.md)
-    -   
+    -   [JPA基础](/JavaWeb/SpringData/JPA基础.md)
+    -   [SpringData-JPA](/JavaWeb/SpringData/SpringData-JPA.md)
+    -   [SpringData-MongoDB](/JavaWeb/SpringData/SpringData-MongoDB.md)
 
