@@ -4,7 +4,7 @@ SpringData JPA是SpringData家庭的一个成员，是Spring Data对JPA封装之
 
 使用SpringData JPA时，开发者只需要声明DAO层的接口，不必再写实现类或其他代码，剩下的一切交给SpringData JPA来搞定即可。
 
-### 1. 1快速入门的步骤
+### 1.1 快速入门的步骤
 
 - 准备数据环境
 
@@ -51,6 +51,12 @@ SpringData JPA是SpringData家庭的一个成员，是Spring Data对JPA封装之
 
 - 添加Spring整合JPA的配置文件
 
+    - 配置包扫描
+    - 配置数据源
+    - 配置EntityManagerFactory
+    - 声明事务管理器
+    - 做一个jpa:repositroy的配置，其中base-package配置dao包的包名，它会为这个包内所有的接口动态产生代理对象
+
 - 测试
 
 ### 1.2 关于编写DAO接口
@@ -72,4 +78,28 @@ public interface ArticleDao extends JpaRepository<Article, Integer>, JpaSpecific
     
 }
 ```
+
+## SpringData JPA的多种查询方式
+
+### 父接口方法查询
+
+### 方法命名规则查询
+
+### JPQL查询
+
+### 本地SQL查询
+
+### Specification动态查询
+
+## SpringData JPA实现多表操作
+
+### 多表关系分析
+
+### 案例表间关系
+
+### 一对一关系
+
+### 一对多关系
+
+### 多对多关系
 
