@@ -667,14 +667,16 @@ body {
     line-height: 1.6rem;
     word-spacing: 0.05rem;
 }
-.markdown-section ol,
+/* .markdown-section ol,
 .markdown-section ul {
     padding-left: 1.5rem;
-}
+} */
 .markdown-section blockquote {
+    font-style: italic;
     border-left: 4px solid var(--theme-color, #42b983);
     color: #858585;
     margin: 2em 0;
+    margin-left: 2em;
     padding-left: 20px;
 }
 .markdown-section blockquote p {
@@ -730,7 +732,7 @@ body {
 .markdown-section pre > code {
     color: #525252;
     font-size: 0.8rem;
-    padding: 2.2em 5px;
+    padding: 0.5em 5px;
     line-height: inherit;
     margin: 0 2px;
     max-width: inherit;
