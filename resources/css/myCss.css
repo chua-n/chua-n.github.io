@@ -8,6 +8,10 @@
 .search input {
     font-family: 华文中宋, 思源宋体;
 }
+/* 设置代码复制按钮的圆角 */
+.docsify-copy-code-button {
+    border-radius: 6px !important;
+}
 /* 设置笔记本的图标 */
 /* .sidebar-nav ul:not(.app-sub-sidebar) > li.folder::before {
     background: center/contain no-repeat
