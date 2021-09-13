@@ -54,6 +54,7 @@
     - [Random、ThreadLocalRandom类](/Java/基础类库/Random、ThreadLocalRandom类.md)
     - [String、StringBuilder、StringBuffer类](/Java/基础类库/String、StringBuilder、StringBuffer类.md)
     - [BigDecimal类](/Java/基础类库/BigDecimal类.md)
+    - [Optional类](/Java/基础类库/Optional类.md)
     - [日期与时间](/Java/基础类库/日期与时间.md)
     - [正则表达式](/Java/基础类库/正则表达式.md)
 
