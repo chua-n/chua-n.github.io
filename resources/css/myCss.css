@@ -11,6 +11,7 @@
 /* 设置代码复制按钮的圆角 */
 .docsify-copy-code-button {
     border-radius: 6px !important;
+    padding: .15em .3em !important;
 }
 /* 设置笔记本的图标 */
 /* .sidebar-nav ul:not(.app-sub-sidebar) > li.folder::before {
