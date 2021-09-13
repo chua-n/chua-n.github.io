@@ -8,7 +8,7 @@
     -   <span hidden>占位符，以便将图标显示为文件夹</span>
 -   [杂技](/杂技/)
     -   <span hidden>占位符，以便将图标显示为文件夹</span>
--   [glodon](/glodon-notes/)
+-   [glodon](/glodon/)
     -   <span hidden>占位符，以便将图标显示为文件夹</span>
 
 
