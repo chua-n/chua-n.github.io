@@ -3,7 +3,7 @@
     -   [JavaWeb](/JavaWeb/)
     -   [数据库](/数据库/)
     -   [杂技](/杂技/)
-    -   [glodon](/glodon-notes/)
+    -   [glodon](/glodon/)
         <!-- -   [前端](/JavaWeb/前端/)
         -   [后端](/JavaWeb/后端/)
         -   [Spring](/JavaWeb/Spring/)

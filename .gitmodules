@@ -1,6 +1,6 @@
-[submodule "resources/images-gitee"]
-	path = resources/images-gitee
-	url = https://gitee.com/chua-n/blog-images.git
-[submodule "glodon-notes"]
-	path = glodon-notes
-	url = git@gitee.com:chua-n/glodon-notes.git
+[submodule "glodon"]
+	path = glodon
+	url = git@github.com:chua-n/glodon-notes.git
+[submodule "resources/images"]
+	path = resources/images
+	url = git@gitee.com:chua-n/blog-images.git
