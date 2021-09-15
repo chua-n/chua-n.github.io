@@ -23,13 +23,24 @@ https://tomcat.apache.org/ 下载安装包，解压后即可完成安装。建�
 
         - conf/server.xml
 
-        - ```xml
+            ```xml
             <Connector port="8888" protocol="HTTP/1.1"
                        connectionTimeout="20000"
                        redirectPort="8445" />
             ```
 
         - 一般会将Tomcat的默认端口号改为80，因为80是HTTP协议的默认端口号，这样的好处是在访问时地址拦可以不再专门输入端口号。
+
+修复Tomcat命令行中文乱码：
+
+- 方式一：修改CMD命令行的编码格式为UTF-8。
+
+- 方式二：将tomcat控制台日志输出编码格式更改为GBK。具体而言，修改Tomcat 根目录下 conf/logging.properties 文件中的 ConsoleHandler.encoding 配置项为GBK：
+
+    ```properties
+    # java.util.logging.ConsoleHandler.encoding = UTF-8
+    java.util.logging.ConsoleHandler.encoding = GBK
+    ```
 
 ## 2. Tomcat的目录结构
 
