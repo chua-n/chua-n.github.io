@@ -305,9 +305,10 @@ body.sticky .sidebar-toggle {
 }
 .markdown-section {
     margin: 0 auto;
-    max-width: 80%;
-    padding: 30px 15px 40px;
+    max-width: 61.8%;
+    padding: 40px;
     position: relative;
+    background-color: #fff;
 }
 .markdown-section > * {
     box-sizing: border-box;
@@ -590,7 +591,7 @@ section.cover blockquote > p > a:hover {
 }
 .sidebar,
 body {
-    background-color: #fff;
+    background-color: #eee;
 }
 .sidebar {
     color: #364149;
@@ -692,7 +693,7 @@ body {
 .markdown-section code,
 .markdown-section output:after,
 .markdown-section pre {
-    font-family: Roboto Mono, Monaco, courier, monospace;
+    font-family: courier, Roboto Mono, Monaco, monospace;
 }
 .markdown-section code,
 .markdown-section pre {
@@ -714,17 +715,15 @@ body {
     -webkit-font-smoothing: initial;
 }
 .markdown-section code {
-    border-radius: 2px;
+    border-radius: 6px;
     color: #e96900;
-    margin: 0 2px;
-    padding: 3px 5px;
+    margin: 0 1px;
     white-space: pre-wrap;
 }
 .markdown-section > :not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) code {
     font-size: 0.8rem;
 }
 .markdown-section pre {
-    padding: 0 1.4rem;
     line-height: 1.5rem;
     overflow: auto;
     word-wrap: normal;
