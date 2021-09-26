@@ -928,6 +928,39 @@ data: function () {
 
 - 局部注册
 
+    - 局部注册通过一个普通的js对象来定义组件
+
+        ```js
+        var ComponentA = { /* ... */ }
+        var ComponentB = { /* ... */ }
+        var ComponentC = { /* ... */ }
+        
+        new Vue({
+          el: '#app',
+          components: {
+            'component-a': ComponentA,
+            'component-b': ComponentB
+          }
+        })
+        ```
+
+        > 对于 `components` 对象中的每个 property 来说，其 property 名就是自定义元素的名字，其 property 值就是这个组件的选项对象。
+
+    - 局部注册的组件在子组件（意即非根组件？）中不可用
+
+        > 例如，如果你希望 `ComponentA` 在 `ComponentB` 中可用，则你需要这样写：
+        >
+        > ```js
+        > var ComponentA = { /* ... */ }
+        > 
+        > var ComponentB = {
+        >   components: {
+        >     'component-a': ComponentA
+        >   },
+        >   // ...
+        > }
+        > ```
+
 ### 4.3 通过`props`选项向子组件传递数据
 
 `props` 是在组件上注册的一些自定义 attribute，当一个值传递给一个 `props` attribute 的时候，它就变成了那个组件实例的一个 property。
@@ -1012,6 +1045,219 @@ Vue.component('blog-post', {
 ```
 
 现在，不论何时为 `post` 对象添加一个新的 property，它都会自动地在 `<blog-post>` 内可用。
+
+#### 4.3.1 prop的大小写
+
+HTML 中的 attribute 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。这意味着当你在 DOM 中使用模板时，camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短横线分隔命名) 命名：
+
+```js
+Vue.component('blog-post', {
+  // 在 JavaScript 中是 camelCase 的
+  props: ['postTitle'],
+  template: '<h3>{{ postTitle }}</h3>'
+})
+```
+
+```html
+<!-- 在 HTML 中是 kebab-case 的 -->
+<blog-post post-title="hello!"></blog-post>
+```
+
+#### 4.3.2 prop的类型
+
+通常你还希望每个 prop 都有指定的值类型，这时便可以以对象形式列出 prop，这些 property 的名称和值分别是 prop 各自的名称和类型：
+
+```js
+props: {
+  title: String,
+  likes: Number,
+  isPublished: Boolean,
+  commentIds: Array,
+  author: Object,
+  callback: Function,
+  contactsPromise: Promise // or any other constructor
+}
+```
+
+这样不仅为你的组件提供了文档，还会在它们遇到错误的类型时从浏览器的 JavaScript 控制台提示用户。
+
+#### 4.3.3 给prop传值
+
+静态与动态传值：
+
+- 静态传值：传过去的是字符串
+
+    ```html
+    <blog-post title="My journey with Vue"></blog-post>
+    ```
+
+- 动态赋值——通过 `v-bind` ：传过去的是js表达式
+
+    ```html
+    <!-- 动态赋予一个变量的值 -->
+    <blog-post v-bind:title="post.title"></blog-post>
+    
+    <!-- 动态赋予一个复杂表达式的值 -->
+    <blog-post
+      v-bind:title="post.title + ' by ' + post.author.name"
+    ></blog-post>
+    ```
+
+需要强调的是，给props传值时，通过静态传值，传过去的实际是一个字符串；而通过动态传值，虽然也使用了引号，但传过去的实际是js表达式。比如：
+
+```html
+<!-- 即便 `42` 是静态的，使用 `v-bind` 告诉了 Vue 这是一个 js 表达式而不是一个字符串 -->
+<blog-post v-bind:likes="42"></blog-post>
+
+<!-- 即便 `false` 是静态的，使用 `v-bind` 告诉了 Vue 这是一个 js 表达式而不是一个字符串 -->
+<blog-post v-bind:is-published="false"></blog-post>
+```
+
+当prop是布尔类型时，只要该prop出现在html标签内但没有显式赋值，都意味着其值为true。
+
+```html
+<!-- 该 prop 没有值时，意味着 `true` -->
+<blog-post is-published></blog-post>
+```
+
+当要传入一个对象的所有property时，可以使用不带参数的`v-bind`。例如，对于一个给定的对象 `post`：
+
+```js
+post: {
+  id: 1,
+  title: 'My Journey with Vue'
+}
+```
+
+下面的模板：
+
+```html
+<blog-post v-bind="post"></blog-post>
+```
+
+等价于：
+
+```html
+<blog-post
+  v-bind:id="post.id"
+  v-bind:title="post.title"
+></blog-post>
+```
+
+#### 4.3.4 prop的单向数据流
+
+所有的 prop 都会在其父子 prop 之间形成一个**单向下行绑定**：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。
+
+这样的设计可能防止在子组件中意外变更父级组件的状态，从而导致应用的数据流向难以理解。此外，如果你在一个子组件内部改变引用的父组件的 prop，Vue 会在浏览器的控制台中发出警告。
+
+对于以下两种场景：
+
+- 使用 prop 传递一个初始值，子组件接下来希望将其作为一个本地的 prop 数据来使用。此时最好定义一个本地的 data property 并将这个 prop 用作其初始值：
+
+    ```js
+    props: ['initialCounter'],
+    data: function () {
+      return {
+        counter: this.initialCounter
+      }
+    }
+    ```
+
+- 这个 prop 以一种原始的值传入且需要进行转换。此时最好使用这个 prop 的值来定义一个计算属性：
+
+    ```js
+    props: ['size'],
+    computed: {
+      normalizedSize: function () {
+        return this.size.trim().toLowerCase()
+      }
+    }
+    ```
+
+#### 4.3.5 prop验证
+
+ prop 的传值还可以进行更深层次的验证，例如：
+
+```js
+Vue.component('my-component', {
+  props: {
+    // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+    propA: Number,
+      
+    // 多个可能的类型
+    propB: [String, Number],
+      
+    // 必填的字符串
+    propC: {
+      type: String,
+      required: true
+    },
+      
+    // 带有默认值的数字
+    propD: {
+      type: Number,
+      default: 100
+    },
+      
+    // 带有默认值的对象
+    propE: {
+      type: Object,
+      // 对象或数组默认值必须从一个工厂函数获取
+      default: function () {
+        return { message: 'hello' }
+      }
+    },
+      
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      }
+    }
+  }
+})
+```
+
+当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。
+
+对于上述的type字段，它可以是
+
+- 原生构造函数：
+
+    - `String`
+    - `Number`
+    - `Boolean`
+    - `Array`
+    - `Object`
+    - `Date`
+    - `Function`
+    - `Symbol`
+
+- 自定义的构造函数：
+
+    如，给定下列现成的构造函数：
+
+    ```js
+    function Person (firstName, lastName) {
+      this.firstName = firstName
+      this.lastName = lastName
+    }
+    ```
+
+    你可以使用下述来验证 `author` prop 的值是否是通过 `new Person` 创建的：
+
+    ```js
+    Vue.component('blog-post', {
+      props: {
+        author: Person
+      }
+    })
+    ```
+
+#### 4.3.6 非prop的attribue？
+
+......这说的什么玩意啊，官方文档也太烂了吧......
 
 ### 4.4 监听子组件事件
 
@@ -1169,4 +1415,251 @@ Vue.component('custom-input', {
 - 字符串 (例如：`template: '...'`)
 - [单文件组件 (`.vue`)](https://cn.vuejs.org/v2/guide/single-file-components.html)
 - [`<script type="text/x-template">`](https://cn.vuejs.org/v2/guide/components-edge-cases.html#X-Templates)
+
+## 5. 组件
+
+当直接在 DOM 中使用一个组件 (而不是在字符串模板或[单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)) 的时候，我们强烈推荐遵循 [W3C 规范](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name)中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
+
+定义组件名的方式有两种：
+
+- 短横线——当使用 kebab-case (短横线分隔命名) 定义一个组件时，引用该元素时必须也使用 kebab-case，例如 `<my-component-name>`。
+
+    ```js
+    Vue.component('my-component-name', { /* ... */ })
+    ```
+
+- 驼峰法（首字母大写）——当使用 PascalCase (首字母大写命名) 定义一个组件时，引用该元素时两种命名法都可以使用。
+
+    ```js
+    Vue.component('MyComponentName', { /* ... */ })
+    ```
+
+    > `<my-component-name>` 和 `<MyComponentName>` 都可以使用。
+    >
+    > 不过，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。
+
+### 5.1 模块系统
+
+通过 `import`/`require` 可以使用一个模块系统。
+
+### 局部注册
+
+往往我们推荐创建一个`components`目录，并将每个组件放置在其各自的文件中，然后在局部注册之前通过import语句导入每个你想使用的组件。
+
+例如，在一个`ComponentC.js`或`ComponentC.vue`文件中：
+
+```js
+import ComponentA from './ComponentA'
+import ComponentB from './ComponentB'
+
+export default {
+  components: {
+    ComponentA,
+    ComponentB
+  },
+  // ...
+}
+```
+
+此时 `ComponentA` 和 `ComponentB` 便可以在 `ComponentC` 的模板中使用了。
+
+### 全局注册
+
+有些组件会被各个组件频繁地使用，它们有时被称为“基础组件”，因此为了方便，可能通过webpack的`require.context`方法对组件进行全局注册。
+
+比如，以下在`src/main.js`这样的应用入口文件中全局导入基础组件：
+
+```js
+import Vue from 'vue'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
+
+const requireComponent = require.context(
+  // 其组件目录的相对路径
+  './components',
+    
+  // 是否查询其子目录
+  false,
+    
+  // 匹配基础组件文件名的正则表达式
+  /Base[A-Z]\w+\.(vue|js)$/
+)
+
+requireComponent.keys().forEach(fileName => {
+  // 获取组件配置
+  const componentConfig = requireComponent(fileName)
+
+  // 获取组件的 PascalCase 命名
+  const componentName = upperFirst(
+    camelCase(
+      // 获取和目录深度无关的文件名
+      fileName
+        .split('/')
+        .pop()
+        .replace(/\.\w+$/, '')
+    )
+  )
+
+  // 全局注册组件
+  Vue.component(
+    componentName,
+    // 如果这个组件选项是通过 `export default` 导出的，
+    // 那么就会优先使用 `.default`，
+    // 否则回退到使用模块的根。
+    componentConfig.default || componentConfig
+  )
+})
+```
+
+> 记住全局注册的行为必须在根 Vue 实例 (通过 `new Vue`) 创建之前发生。
+
+### 5.2 组件的`v-model`
+
+一个组件上的 `v-model` 默认会利用该组件名为 `value` 的 prop 和名为 `input` 的事件，但是像单选框、复选框等类型的输入控件可能会将 `value` attribute 用于[不同的目的](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#Value)。`model` 选项可以用来避免这样的冲突：
+
+```js
+Vue.component('base-checkbox', {
+  model: {
+    prop: 'checked',
+    event: 'change'
+  },
+  props: {
+    checked: Boolean
+  },
+  template: `
+    <input
+      type="checkbox"
+      v-bind:checked="checked"
+      v-on:change="$emit('change', $event.target.checked)"
+    >
+  `
+})
+```
+
+现在在这个组件上使用 `v-model` 的时候：
+
+```html
+<base-checkbox v-model="lovingVue"></base-checkbox>
+```
+
+这里的 `lovingVue` 的值将会传入这个名为 `checked` 的 prop，同时当 `<base-checkbox>` 触发一个 `change` 事件并附带一个新的值的时候，这个 `lovingVue` 的 property 将会被更新。
+
+> 注意你仍然需要在组件的 `props` 选项里声明 `checked` 这个 prop。
+
+### 5.3 事件
+
+#### 5.3.1 自定义事件的命名
+
+对于自定义事件，始终推荐使用 kebab-case 的事件名。
+
+> 不同于组件和 prop，事件名不会被用作一个 JavaScript 变量名或 property 名，所以就没有理由使用 camelCase 或 PascalCase 了。并且 `v-on` 事件监听器在 DOM 模板中会被自动转换为全小写 (因为 HTML 是大小写不敏感的)，所以 `v-on:myEvent` 将会变成 `v-on:myevent`——导致 `myEvent` 不可能被监听到。
+
+#### 5.3.2 `$listeners`属性
+
+当需要在一个组件的根元素上直接监听一个原生事件时，你当然可以使用 `v-on` 的 `.native` 修饰符：
+
+```html
+<base-input v-on:focus.native="onFocus"></base-input>
+```
+
+此时，当监听的是一个类似 `<input>` 的非常特定的元素时，实际情况可能并不如意。比如上述 `<base-input>` 组件可能做了如下重构——根元素实际上是一个 `<label>` 元素：
+
+```html
+<label>
+  {{ label }}
+  <input
+    v-bind="$attrs"
+    v-bind:value="value"
+    v-on:input="$emit('input', $event.target.value)"
+  >
+</label>
+```
+
+这种情况下父级的 `.native` 监听器将静默失败——它不会产生任何报错，但是 `onFocus` 处理函数不会被调用。
+
+为了解决这个问题，Vue 提供了一个 `$listeners` property，它是一个对象，里面包含了作用在这个组件上的所有监听器，即：
+
+```js
+{
+  focus: function (event) { /* ... */ }
+  input: function (value) { /* ... */ },
+}
+```
+
+有了`$listeners`，就可以配合 `v-on="$listeners"` 将所有的事件监听器指向这个组件的某个特定的子元素。
+
+比如，对于类似 `<input>` 、希望它可以配合 `v-model` 来工作的组件来说，为这些监听器创建一个类似下述 `inputListeners` 的计算属性通常是非常有用的：
+
+```js
+Vue.component('base-input', {
+  inheritAttrs: false,
+  props: ['label', 'value'],
+  computed: {
+    inputListeners: function () {
+      var vm = this
+      // `Object.assign` 将所有的对象合并为一个新对象
+      return Object.assign({},
+        // 我们从父级添加所有的监听器
+        this.$listeners,
+        // 然后我们添加自定义监听器，
+        // 或覆写一些监听器的行为
+        {
+          // 这里确保组件配合 `v-model` 的工作
+          input: function (event) {
+            vm.$emit('input', event.target.value)
+          }
+        }
+      )
+    }
+  },
+  template: `
+    <label>
+      {{ label }}
+      <input
+        v-bind="$attrs"
+        v-bind:value="value"
+        v-on="inputListeners"
+      >
+    </label>
+  `
+})
+```
+
+这样 `<base-input>` 组件是一个**完全透明的包裹器**了，也就是说它可以完全像一个普通的 `<input>` 元素一样来使用：所有跟它相同的 attribute 和监听器都可以工作，不必再使用 `.native` 监听器。
+
+#### 5.3.4 `.sync`修饰符
+
+在有些情况下，我们可能需要对一个 prop 进行“双向绑定”，通常推荐以 `update:myPropName` 的模式触发事件来实现。举个例子，在一个包含 `title` prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图：
+
+```js
+this.$emit('update:title', newTitle)
+```
+
+然后父组件可以监听那个事件并根据需要更新一个本地的数据 property，比如：
+
+```html
+<text-document
+  v-bind:title="doc.title"
+  v-on:update:title="doc.title = $event"
+></text-document>
+```
+
+故而，为了方便起见，我们为这种模式提供一个缩写，即 `.sync` 修饰符：
+
+```html
+<text-document v-bind:title.sync="doc.title"></text-document>
+```
+
+当我们用一个对象同时设置多个 prop 的时候，也可以将这个 `.sync` 修饰符和 `v-bind` 配合使用：
+
+```
+<text-document v-bind.sync="doc"></text-document>
+```
+
+这样会把 `doc` 对象中的每一个 property (如 `title`) 都作为一个独立的 prop 传进去，然后各自添加用于更新的 `v-on` 监听器。
+
+> 注意：
+>
+> - 带有 `.sync` 修饰符的 `v-bind` **不能**和表达式一起使用 (例如 `v-bind:title.sync=”doc.title + ‘!’”` 是无效的)。取而代之的是，你只能提供你想要绑定的 property 名，类似 `v-model`。
+> - 将 `v-bind.sync` 用在一个字面量的对象上，例如 `v-bind.sync=”{ title: doc.title }”`，是无法正常工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。
 
