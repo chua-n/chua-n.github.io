@@ -1351,7 +1351,7 @@ methods: {
 
 写成代码之后如下：
 
-```html
+```js
 Vue.component('custom-input', {
   props: ['value'],
   template: `
@@ -1371,7 +1371,386 @@ Vue.component('custom-input', {
 
 ### 4.5 插槽：分发内容
 
-插槽是什么东西？
+#### 4.5.1 定义
+
+Vue将`<slot>`元素作为承载分发内容的出口。
+
+比如，这里是一个 `<navigation-link>` 模板：
+
+```js
+Vue.component('navigation-link', {
+  // ...
+  template: `
+    <a
+      v-bind:href="url"
+      class="nav-link"
+    >
+      <slot></slot>
+    </a>
+  `
+})
+```
+
+该模板在使用时，允许你像这样合成组件——当组件渲染时`<slot></slot>` 会被替换为“Your Profile”：
+
+```html
+<navigation-link url="/profile">
+  Your Profile
+</navigation-link>
+```
+
+> 如果 `<navigation-link>` 的 `template` 中没有包含一个 `<slot>` 元素，则该组件起始标签和结束标签之间的任何内容都会被抛弃。
+
+实际上，除文本外，插槽内可以包含任何模板代码，即：
+
+- 文本
+- HTML
+- 其他组件
+
+#### 4.5.2 插槽默认值
+
+对于一个含插槽的组件，在`<slot></slot>`闭合标签内设置的内容会在该组件不含内容时作为默认值自动渲染出来：
+
+例如在一个 `<submit-button>` 组件中：
+
+```html
+<button type="submit">
+  <slot></slot>
+</button>
+```
+
+我们可能希望这个 `<button>` 内绝大多数情况下都渲染文本“Submit”，于是可以将它放在 `<slot>` 标签内：
+
+```html
+<button type="submit">
+  <slot>Submit</slot>
+</button>
+```
+
+此后当在一个父级组件中使用 `<submit-button>` 并且不提供任何插槽内容时：
+
+```html
+<submit-button></submit-button>
+```
+
+默认值“Submit”将会被自动渲染，该组件相当于：
+
+```html
+<button type="submit">
+  Submit
+</button>
+```
+
+#### 4.5.3 具名插槽
+
+`<slot>` 元素有一个`name`属性，该属性可以用来定义具名插槽。例如：
+
+```html
+<div class="container">
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>
+```
+
+> 不带 `name` 的 `<slot>` 出口拥有默认名“default”。
+
+要向具名插槽提供内容，需要在一个 `<template>` 元素上使用 `v-slot` 指令，并以 `v-slot` 的参数的形式提供其名称：
+
+```html
+<base-layout>
+  <template v-slot:header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <!-- 这些没有被包裹在带有`v-slot`的`<template>`中的内容都会被视为默认插槽的内容 -->
+  <p>A paragraph for the main content.</p>
+  <p>And another one.</p>
+
+  <template v-slot:footer>
+    <p>Here's some contact info</p>
+  </template>
+</base-layout>
+```
+
+当然，如果希望对默认插槽使用更明确的表示，可以使用`v-slot:default`：
+
+```html
+<base-layout>
+  <template v-slot:header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <template v-slot:default>
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </template>
+
+  <template v-slot:footer>
+    <p>Here's some contact info</p>
+  </template>
+</base-layout>
+```
+
+上面两种写法都会渲染出以下内容：
+
+```html
+<div class="container">
+  <header>
+    <h1>Here might be a page title</h1>
+  </header>
+  <main>
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </main>
+  <footer>
+    <p>Here's some contact info</p>
+  </footer>
+</div>
+```
+
+> 注意， `v-slot` 只能添加在 `<template>` 上 (只有[一种例外情况](https://cn.vuejs.org/v2/guide/components-slots.html#独占默认插槽的缩写语法))。
+
+#### 4.5.4 插槽的作用域
+
+插槽跟模板的其它地方一样可以访问相同的实例 property ，但不能访问 `<navigation-link>` 的作用域。例如上述的 `url` 在插槽中是访问不到的：
+
+```html
+<navigation-link url="/profile">
+  Logged in as {{ user.name }}
+  Clicking here will send you to: {{ url }}
+  <!--
+  这里的 `url` 会是 undefined，因为其 (指该插槽的) 内容是
+  _传递给_ <navigation-link> 的而不是
+  在 <navigation-link> 组件内部定义的。
+  -->
+</navigation-link>
+```
+
+> 父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的。
+
+如果确实需要让插槽的内容能够访问组件中的数据，可以将该数据作为`<slot>`元素的一个属性绑定上去，此时该属性被称为**插槽prop**。比如，对于一个 `<current-user>` 组件：
+
+```js
+Vue.component('current-user', {
+  // ...
+  template: `
+    <span>
+      <slot>{{ user.lastName }}</slot>
+    </span>
+  `
+})
+```
+
+如果不使用模板的默认值，即希望使用firstName时，下述代码并不会正常工作，因为只有 `<current-user>` 组件可以访问到 `user`，而我们提供的内容是在父级渲染的：
+
+```html
+<current-user>
+  {{ user.firstName }}
+</current-user>
+```
+
+为了让 `user` 在父级的插槽内容中可用，可以将 `user` 作为 `<slot>` 元素的一个 attribute 绑定上去：
+
+```html
+<span>
+  <slot v-bind:user="user">
+    {{ user.lastName }}
+  </slot>
+</span>
+```
+
+如此一来我们便可以使用带值的 `v-slot` 来定义一个插槽 prop 的名字——比如下例中将包含所有插槽 prop 的对象命名为 `slotProps`：
+
+```html
+<current-user>
+  <template v-slot:default="slotProps">
+    {{ slotProps.user.firstName }}
+  </template>
+</current-user>
+```
+
+##### 简写
+
+当只有默认插槽时（如上例），可以把表示插槽prop的`v-slot`直接用在组件上：
+
+```html
+<current-user v-slot:default="slotProps">
+  {{ slotProps.user.firstName }}
+</current-user>
+```
+
+上面的default可以进一步省略——不带参数的 `v-slot` 被假定对应默认插槽：
+
+```html
+<current-user v-slot="slotProps">
+  {{ slotProps.user.firstName }}
+</current-user>
+```
+
+---
+
+注意默认插槽的缩写语法**不能**和具名插槽混用，这会导致作用域不明确：
+
+```html
+<!-- 无效，会导致警告 -->
+<current-user v-slot="slotProps">
+  {{ slotProps.user.firstName }}
+  <template v-slot:other="otherSlotProps">
+    slotProps is NOT available here
+  </template>
+</current-user>
+```
+
+因此，只要出现多个插槽，应该始终为所有的插槽使用完整的基于 `<template>` 的语法：
+
+```html
+<current-user>
+  <template v-slot:default="slotProps">
+    {{ slotProps.user.firstName }}
+  </template>
+
+  <template v-slot:other="otherSlotProps">
+    ...
+  </template>
+</current-user>
+```
+
+#### 4.5.5 插槽prop的原理（说的什么玩意儿......）
+
+插槽prop的内部原理是将你的插槽内容包裹在一个拥有单个参数的函数里：
+
+```js
+function (slotProps) {
+  // 插槽内容
+}
+```
+
+这意味着 `v-slot` 的值实际上可以是任何能够作为函数定义中的参数的 js 表达式。
+
+所以在支持的环境下 ([单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)或[现代浏览器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#浏览器兼容))也可以使用 [ES2015 解构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#解构对象)来传入具体的插槽 prop，如下：
+
+```html
+<current-user v-slot="{ user }">
+  {{ user.firstName }}
+</current-user>
+```
+
+这可以使模板更简洁，尤其是在该插槽提供了多个 prop 的时候。它同样开启了 prop 重命名等其它可能，比如将 `user` 重命名为 `person`：
+
+```html
+<current-user v-slot="{ user: person }">
+  {{ person.firstName }}
+</current-user>
+```
+
+你甚至可以定义默认内容用于插槽 prop 是 undefined 的情形：
+
+```html
+<current-user v-slot="{ user = { firstName: 'Guest' } }">
+  {{ user.firstName }}
+</current-user>
+```
+
+#### 4.5.6 其他
+
+##### 动态插槽名
+
+[动态指令参数](https://cn.vuejs.org/v2/guide/syntax.html#动态参数)也可以用在 `v-slot` 上，来定义动态的插槽名：
+
+```html
+<base-layout>
+  <template v-slot:[dynamicSlotName]>
+    ...
+  </template>
+</base-layout>
+```
+
+##### 具名插槽的缩写
+
+跟 `v-on` 和 `v-bind` 一样，`v-slot` 也有缩写，即把参数之前的所有内容 (`v-slot:`) 替换为字符 `#`。
+
+例如 `v-slot:header` 可以被重写为 `#header`：
+
+```html
+<base-layout>
+  <template #header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <p>A paragraph for the main content.</p>
+  <p>And another one.</p>
+
+  <template #footer>
+    <p>Here's some contact info</p>
+  </template>
+</base-layout>
+```
+
+此外，和其它指令一样，该缩写只在其有参数的时候才可用，因此以下语法是无效的：
+
+```html
+<!-- 这样会触发一个警告 -->
+<current-user #="{ user }">
+  {{ user.firstName }}
+</current-user>
+```
+
+##### 花样用法
+
+插槽 prop 允许我们将插槽转换为可复用的模板，这些模板可以基于输入的 prop 渲染出不同的内容。
+
+这在设计封装数据逻辑同时允许父级组件自定义部分布局的可复用组件时是最有用的，例如，我们要实现一个 `<todo-list>` 组件，它是一个列表且包含布局和过滤逻辑：
+
+```html
+<ul>
+  <li
+    v-for="todo in filteredTodos"
+    v-bind:key="todo.id"
+  >
+    {{ todo.text }}
+  </li>
+</ul>
+```
+
+我们可以将每个 todo 作为父级组件的插槽，以此通过父级组件对其进行控制，然后将 `todo` 作为一个插槽 prop 进行绑定：
+
+```html
+<ul>
+  <li
+    v-for="todo in filteredTodos"
+    v-bind:key="todo.id"
+  >
+    <!--
+    我们为每个 todo 准备了一个插槽，
+    将 `todo` 对象作为一个插槽的 prop 传入。
+    -->
+    <slot name="todo" v-bind:todo="todo">
+      <!-- 后备内容 -->
+      {{ todo.text }}
+    </slot>
+  </li>
+</ul>
+```
+
+现在当我们使用 `<todo-list>` 组件的时候，我们可以选择为 todo 定义一个不一样的 `<template>` 作为替代方案，并且可以从子组件获取数据：
+
+```html
+<todo-list v-bind:todos="todos">
+  <template v-slot:todo="{ todo }">
+    <span v-if="todo.isComplete">✓</span>
+    {{ todo.text }}
+  </template>
+</todo-list>
+```
+
+这只是作用域插槽用武之地的冰山一角，想了解更多现实生活中的作用域插槽的用法，我们推荐浏览诸如 [Vue Virtual Scroller](https://github.com/Akryum/vue-virtual-scroller)、[Vue Promised](https://github.com/posva/vue-promised) 和 [Portal Vue](https://github.com/LinusBorg/portal-vue) 等库。
 
 ### 4.6 动态组件
 
@@ -1384,13 +1763,72 @@ Vue.component('custom-input', {
 ```html
 <!-- 组件会在 `currentTabComponent` 改变时改变 -->
 <component v-bind:is="currentTabComponent"></component>
+<!-- `currentTabComponent` 可以包括“已注册组件的名字”或“一个组件的选项对象”。 -->
 ```
-
-在上述示例中，`currentTabComponent` 可以包括“已注册组件的名字”或“一个组件的选项对象”。
 
 需要注意的是，这个 attribute 也可以用于常规 HTML 元素，但此时这些元素将被视为组件——这意味着所有的 attribute **都会作为 DOM attribute 被绑定**。对于像 `value` 这样的 property，若想让其如预期般工作，你需要使用 [`.prop` 修饰器](https://cn.vuejs.org/v2/api/#v-bind)。
 
-### 4.7 注意事项
+默认情况下，在这些组件之间切换时，新标签会重新渲染——Vue创建了一个新的`currentTabComponent`实例，如果希望这些标签的组件实例能够在它们第一次被创建的时候就缓存下来，可以用一个`<keep-alive>`元素将动态组件包裹起来：
+
+```html
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+> 注意这个 `<keep-alive>` 要求被切换到的组件都有自己的名字，不论是通过组件的 `name` 选项还是局部/全局注册。
+
+### 4.7 异步组件
+
+在大型应用中，我们可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块。为应对这种场景，Vue 允许你以一个工厂函数的方式定义组件，该工厂函数在解析你的组件定义时会异步执行，Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染。
+
+例如，下面的示例中工厂函数会收到一个 `resolve` 回调，这个回调函数会在你从服务器得到组件定义的时候被调用（你也可以调用 `reject(reason)` 来表示加载失败）：
+
+```js
+Vue.component('async-example', function (resolve, reject) {
+  setTimeout(function () {
+    // 向 `resolve` 回调传递组件定义
+    resolve({
+      template: '<div>I am async!</div>'
+    })
+  }, 1000)
+})
+```
+
+上面的 `setTimeout` 是为了演示用的，如何获取组件取决于程序员，一个推荐的做法是将异步组件和 webpack 的 code-splitting 功能一起配合使用：
+
+```js
+Vue.component('async-webpack-example', function (resolve) {
+  // 这个特殊的 `require` 语法将会告诉 webpack
+  // 自动将你的构建代码切割成多个包，这些包
+  // 会通过 Ajax 请求加载
+  require(['./my-async-component'], resolve)
+})
+```
+
+此外，你也可以在工厂函数中返回一个 `Promise`。因而把 webpack 2 和 ES2015 语法加在一起的话，可以这样使用动态导入：
+
+```js
+Vue.component(
+  'async-webpack-example',
+  // 这个动态导入会返回一个 `Promise` 对象。
+  () => import('./my-async-component')
+)
+```
+
+> 当使用[局部注册](https://cn.vuejs.org/v2/guide/components-registration.html#局部注册)的时候，你也可以直接提供一个返回 `Promise` 的函数：
+>
+> ```js
+> new Vue({
+>   // ...
+>   components: {
+>     'my-component': () => import('./my-async-component')
+>   }
+> })
+> ```
+
+### 4.8 注意事项
 
 有些 HTML 元素对于哪些元素可以出现在其内部是有严格限制的，如 `<ul>`、`<ol>`、`<table>` 和 `<select>`；而有些元素，如 `<li>`、`<tr>` 和 `<option>`，只能出现在其它某些特定的元素内部。这会导致我们使用这些有约束条件的元素时遇到一些问题，例如：
 
@@ -1442,7 +1880,7 @@ Vue.component('custom-input', {
 
 通过 `import`/`require` 可以使用一个模块系统。
 
-### 局部注册
+#### 局部注册
 
 往往我们推荐创建一个`components`目录，并将每个组件放置在其各自的文件中，然后在局部注册之前通过import语句导入每个你想使用的组件。
 
@@ -1463,7 +1901,7 @@ export default {
 
 此时 `ComponentA` 和 `ComponentB` 便可以在 `ComponentC` 的模板中使用了。
 
-### 全局注册
+#### 全局注册
 
 有些组件会被各个组件频繁地使用，它们有时被称为“基础组件”，因此为了方便，可能通过webpack的`require.context`方法对组件进行全局注册。
 
@@ -1662,4 +2100,203 @@ this.$emit('update:title', newTitle)
 >
 > - 带有 `.sync` 修饰符的 `v-bind` **不能**和表达式一起使用 (例如 `v-bind:title.sync=”doc.title + ‘!’”` 是无效的)。取而代之的是，你只能提供你想要绑定的 property 名，类似 `v-model`。
 > - 将 `v-bind.sync` 用在一个字面量的对象上，例如 `v-bind.sync=”{ title: doc.title }”`，是无法正常工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。
+
+### 5.4 访问元素/组件
+
+> 在绝大多数情况下，我们最好不要触达另一个组件实例内部或手动操作 DOM 元素，不过也确实在一些情况下做这些事情是合适的。
+
+#### 5.4.1 访问根实例：`$root`
+
+在每个 `new Vue` 实例的子组件中，其根实例可以通过 `$root` property 进行访问。例如，对于一个根实例
+
+```js
+// Vue 根实例
+new Vue({
+  data: {
+    foo: 1
+  },
+  computed: {
+    bar: function () { /* ... */ }
+  },
+  methods: {
+    baz: function () { /* ... */ }
+  }
+})
+```
+
+所有的子组件都可以将这个实例作为一个全局 store 来访问或使用：
+
+```js
+// 获取根组件的数据
+this.$root.foo
+
+// 写入根组件的数据
+this.$root.foo = 2
+
+// 访问根组件的计算属性
+this.$root.bar
+
+// 调用根组件的方法
+this.$root.baz()
+```
+
+> 注：对于 demo 或非常小型的有少量组件的应用来说这是很方便的。不过这个模式扩展到中大型应用来说就不然了。因此在绝大多数情况下，我们强烈推荐使用 [Vuex](https://github.com/vuejs/vuex) 来管理应用的状态。
+
+#### 5.4.2 访问父实例：`$parent`
+
+和 `$root` 类似，`$parent` property 可以用来从一个子组件访问父组件的实例。`$parent`提供了一种可以在后期随时触达父级组件的机会，以替代将数据以 prop 的方式传入子组件的方式。
+
+> 在绝大多数情况下，触达父级组件会使得你的应用更难调试和理解，尤其是当你变更了父级组件的数据的时候——当我们稍后回看那个组件时，很难找出那个变更是从哪里发起的。
+
+另外在一些可能适当的时候，你需要特别地共享一些组件库。举个例子，在和 JavaScript API 进行交互而不渲染 HTML 的抽象组件内，诸如这些假设性的 Google 地图组件：
+
+```html
+<google-map>
+  <google-map-markers v-bind:places="iceCreamShops"></google-map-markers>
+</google-map>
+```
+
+这个 `<google-map>` 组件可以定义一个 `map` property，所有的子组件都需要访问它。在这种情况下 `<google-map-markers>` 可能想要通过类似 `this.$parent.getMap` 的方式访问那个地图，以便为其添加一组标记。
+
+请留意，尽管如此，通过这种模式构建出来的那个组件的内部仍然是容易出现问题的。比如，设想一下我们添加一个新的 `<google-map-region>` 组件，当 `<google-map-markers>` 在其内部出现的时候，只会渲染那个区域内的标记：
+
+```html
+<google-map>
+  <google-map-region v-bind:shape="cityBoundaries">
+    <google-map-markers v-bind:places="iceCreamShops"></google-map-markers>
+  </google-map-region>
+</google-map>
+```
+
+那么在 `<google-map-markers>` 内部你可能发现自己需要一些类似这样的 hack：
+
+```js
+var map = this.$parent.map || this.$parent.$parent.map
+```
+
+很快它就会失控。这也是我们针对需要向任意更深层级的组件提供上下文信息时推荐[依赖注入](https://cn.vuejs.org/v2/guide/components-edge-cases.html#依赖注入)的原因。
+
+#### 5.4.3 访问子组件实例/子元素：`$ref`
+
+尽管存在 prop 和事件，有的时候你可能仍需要在 js 里直接访问一个子组件。为了达到这个目的，你可以通过 `ref` 这个 attribute 为子组件赋予一个 ID 引用。例如：
+
+```html
+<base-input ref="usernameInput"></base-input>
+```
+
+现在，在你已经定义了这个 `ref` 的组件里，你可以使用：
+
+```js
+this.$refs.usernameInput
+```
+
+来访问这个 `<base-input>` 实例，以便不时之需。
+
+---
+
+示例：比如程序化地从一个父级组件聚焦这个输入框。在刚才那个例子中，该 `<base-input>` 组件也可以使用一个类似的 `ref` 提供对内部这个指定元素的访问，例如：
+
+```html
+<input ref="input">
+```
+
+甚至可以通过其父级组件定义方法：
+
+```js
+methods: {
+  // 用来从父级组件聚焦输入框
+  focus: function () {
+    this.$refs.input.focus()
+  }
+}
+```
+
+这样就允许父级组件通过下面的代码聚焦 `<base-input>` 里的输入框：
+
+```js
+this.$refs.usernameInput.focus()
+```
+
+---
+
+当 `ref` 和 `v-for` 一起使用的时候，你得到的 ref 将会是一个包含了对应数据源的这些子组件的数组。
+
+`$refs` 只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问 `$refs`。
+
+#### 5.4.4 依赖注入
+
+使用 `$parent` 无法很好地扩展到更深层级的父级嵌套组件上，这便是依赖注入的用武之地了。依赖注入用到了两个新的实例选项：`provide` 和 `inject`。
+
+- `provide` 选项允许我们指定我们想要**提供**给后代组件的数据/方法。
+
+-  `inject` 选项用于在后代组件里接收指定的 property：
+
+    ```js
+    inject: ['getMap']
+    ```
+
+比如，之前在我们描述[访问父级组件实例](https://cn.vuejs.org/v2/guide/components-edge-cases.html#访问父级组件实例)的时候，展示过一个类似这样的例子：
+
+```html
+<google-map>
+  <google-map-region v-bind:shape="cityBoundaries">
+    <google-map-markers v-bind:places="iceCreamShops"></google-map-markers>
+  </google-map-region>
+</google-map>
+```
+
+在这个组件里，所有 `<google-map>` 的后代都需要访问一个 `getMap` 方法，以便知道要跟哪个地图进行交互。此时`provide`和`inject`分别如下：
+
+```js
+provide: function () {
+  return {
+    getMap: this.getMap
+  }
+}
+```
+
+```
+inject: ['getMap']
+```
+
+> 相比 `$parent` 来说，这个用法可以让我们在*任意*后代组件中访问 `getMap`，而不需要暴露整个 `<google-map>` 实例。这允许我们更好的持续研发该组件，而不需要担心我们可能会改变/移除一些子组件依赖的东西。同时这些组件之间的接口是始终明确定义的，就和 `props` 一样。
+
+不过，依赖注入还是有负面影响的：
+
+- 它将你应用程序中的组件与它们当前的组织方式耦合起来，使重构变得更加困难。
+
+- 同时所提供的 property 是非响应式的。
+
+    > 这是出于设计的考虑，因为使用它们来创建一个中心化规模化的数据跟[使用 `$root`](https://cn.vuejs.org/v2/guide/components-edge-cases.html#访问根实例)做这件事都是不够好的。如果你想要共享的这个 property 是你的应用特有的，而不是通用化的，或者如果你想在祖先组件中更新所提供的数据，那么这意味着你可能需要换用一个像 [Vuex](https://github.com/vuejs/vuex) 这样真正的状态管理方案了。
+
+### 5.5 组件的循环引用
+
+#### 5.5.1 递归组件
+
+组件是可以在它们自己的模板中调用自身的，不过它们只能通过 `name` 选项来做这件事：
+
+```js
+name: 'unique-name-of-my-component'
+```
+
+当使用 `Vue.component` 全局注册一个组件时，这个全局的 ID 会自动设置为该组件的 `name` 选项：
+
+```js
+Vue.component('unique-name-of-my-component', {
+  // ...
+})
+```
+
+稍有不慎，递归组件就可能导致无限循环：
+
+```js
+name: 'stack-overflow',
+template: '<div><stack-overflow></stack-overflow></div>'
+```
+
+类似上述的组件将会导致“max stack size exceeded”错误，所以请确保递归调用是条件性的 (例如使用一个最终会得到 `false` 的 `v-if`)。
+
+#### 5.5.2 组件之间的循环引用
+
+......好像没必要单独记录
 
