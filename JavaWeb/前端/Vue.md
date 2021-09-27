@@ -270,6 +270,400 @@ var watchExampleVM = new Vue({
 
 除了 `watch` 选项之外，还可以使用命令式的 [vm.$watch API](https://cn.vuejs.org/v2/api/#vm-watch)。
 
+### 2.4 `render`函数
+
+Vue 推荐在绝大多数情况下使用模板来创建你的 HTML。然而在一些场景中，你真的需要 JavaScript 的完全编程的能力。这时你可以用**渲染函数`render`**，它比模板更接近编译器。
+
+比如，假设我们要生成一些带锚点的标题：
+
+```html
+<h1>
+  <a name="hello-world" href="#hello-world">
+    Hello world!
+  </a>
+</h1>
+```
+
+对于上面的 HTML，你决定这样定义组件接口：
+
+```html
+<anchored-heading :level="1">Hello world!</anchored-heading>
+```
+
+当开始写一个只能通过 `level` prop 动态生成标题的组件时，你可能很快想到这样实现：
+
+```html
+<script type="text/x-template" id="anchored-heading-template">
+  <h1 v-if="level === 1">
+    <slot></slot>
+  </h1>
+  <h2 v-else-if="level === 2">
+    <slot></slot>
+  </h2>
+  <h3 v-else-if="level === 3">
+    <slot></slot>
+  </h3>
+  <h4 v-else-if="level === 4">
+    <slot></slot>
+  </h4>
+  <h5 v-else-if="level === 5">
+    <slot></slot>
+  </h5>
+  <h6 v-else-if="level === 6">
+    <slot></slot>
+  </h6>
+</script>
+```
+
+```js
+Vue.component('anchored-heading', {
+  template: '#anchored-heading-template',
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+```
+
+然而这里用模板并不是最好的选择——不但代码冗长，而且在每一个级别的标题中重复书写了 `<slot></slot>`，在要插入锚点元素时还要再次重复。因此，虽然模板在大多数组件中都非常好用，但是显然在这里它就不合适了。这时，便可以尝试使用 `render` 函数重写上面的例子，下面的代码精简多了：
+
+```js
+Vue.component('anchored-heading', {
+  render: function (createElement) {
+    return createElement(
+      'h' + this.level,   // 标签名称
+      this.$slots.default // 子节点数组
+    )
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+```
+
+> 上面的例子中需要额外知道的是，向组件中传递不带 `v-slot` 指令的子节点时——比如 `anchored-heading` 中的 `Hello world!`，这些子节点被存储在组件实例中的 `$slots.default` 中。
+
+#### `createElement`：创建虚拟DOM
+
+Vue 通过建立一个**虚拟 DOM** 来追踪自己要如何改变真实的 DOM，上面的`return createElement('h1', this.blogTitle)`返回的其实不是一个真实的 DOM 元素，它更准确的名字可能是 `createNodeDescription`，因为它所包含的信息会告诉 Vue 页面上需要渲染什么样的节点，包括其子节点的描述信息。我们把这样的节点描述为虚拟节点 (virtual node)，也常简写为**VNode**。虚拟 DOM则是我们对由 Vue 组件树建立起来的整个 VNode 树的称呼。
+
+> 注意，组件树中所有的VNode必须是唯一的。
+>
+> 这意味着，下面的渲染函数是不合法的：
+>
+> ```js
+> render: function (createElement) {
+>   var myParagraphVNode = createElement('p', 'hi')
+>   return createElement('div', [
+>     // 错误 - 重复的 VNode
+>     myParagraphVNode, myParagraphVNode
+>   ])
+> }
+> ```
+>
+> 如果你真的需要重复很多次的元素/组件，你可以使用工厂函数来实现。例如，下面这渲染函数用完全合法的方式渲染了 20 个相同的段落：
+>
+> ```js
+> render: function (createElement) {
+>   return createElement('div',
+>     Array.apply(null, { length: 20 }).map(function () {
+>       return createElement('p', 'hi')
+>     })
+>   )
+> }
+> ```
+
+`createElement` 函数接受的参数为：
+
+```js
+// @returns {VNode}
+createElement(
+  // {String | Object | Function}
+  // 一个 HTML 标签名、组件选项对象，或者
+  // resolve 了上述任何一种的一个 async 函数。必填项。
+  'div',
+
+  // {Object}
+  // 一个与模板中 attribute 对应的数据对象。可选。
+  {
+    // (详情见下一节)
+  },
+
+  // {String | Array}
+  // 子级虚拟节点 (VNodes)，由 `createElement()` 构建而成，
+  // 也可以使用字符串来生成“文本虚拟节点”。可选。
+  [
+    '先写一些文字',
+    createElement('h1', '一则头条'),
+    createElement(MyComponent, {
+      props: {
+        someProp: 'foobar'
+      }
+    })
+  ]
+)
+```
+
+有一点要注意：正如 `v-bind:class` 和 `v-bind:style` 在模板语法中的特殊性，它们在 VNode 数据对象中也有对应的顶层字段：该对象既允许你绑定普通的 HTML attribute，也允许绑定如 `innerHTML` 这样的 DOM property (这会覆盖 `v-html` 指令)。
+
+```js
+{
+  // 与 `v-bind:class` 的 API 相同，
+  // 接受一个字符串、对象或字符串和对象组成的数组
+  'class': {
+    foo: true,
+    bar: false
+  },
+  // 与 `v-bind:style` 的 API 相同，
+  // 接受一个字符串、对象，或对象组成的数组
+  style: {
+    color: 'red',
+    fontSize: '14px'
+  },
+  // 普通的 HTML attribute
+  attrs: {
+    id: 'foo'
+  },
+  // 组件 prop
+  props: {
+    myProp: 'bar'
+  },
+  // DOM property
+  domProps: {
+    innerHTML: 'baz'
+  },
+  // 事件监听器在 `on` 内，
+  // 但不再支持如 `v-on:keyup.enter` 这样的修饰器。
+  // 需要在处理函数中手动检查 keyCode。
+  on: {
+    click: this.clickHandler
+  },
+  // 仅用于组件，用于监听原生事件，而不是组件内部使用
+  // `vm.$emit` 触发的事件。
+  nativeOn: {
+    click: this.nativeClickHandler
+  },
+  // 自定义指令。注意，你无法对 `binding` 中的 `oldValue`
+  // 赋值，因为 Vue 已经自动为你进行了同步。
+  directives: [
+    {
+      name: 'my-custom-directive',
+      value: '2',
+      expression: '1 + 1',
+      arg: 'foo',
+      modifiers: {
+        bar: true
+      }
+    }
+  ],
+  // 作用域插槽的格式为
+  // { name: props => VNode | Array<VNode> }
+  scopedSlots: {
+    default: props => createElement('span', props.text)
+  },
+  // 如果组件是其它组件的子组件，需为插槽指定名称
+  slot: 'name-of-slot',
+  // 其它特殊顶层 property
+  key: 'myKey',
+  ref: 'myRef',
+  // 如果你在渲染函数中给多个元素都应用了相同的 ref 名，
+  // 那么 `$refs.myRef` 会变成一个数组。
+  refInFor: true
+}
+```
+
+综上，本节最开始想实现的组件可以写作：
+
+```js
+var getChildrenTextContent = function (children) {
+  return children.map(function (node) {
+    return node.children
+      ? getChildrenTextContent(node.children)
+      : node.text
+  }).join('')
+}
+
+Vue.component('anchored-heading', {
+  render: function (createElement) {
+    // 创建 kebab-case 风格的 ID
+    var headingId = getChildrenTextContent(this.$slots.default)
+      .toLowerCase()
+      .replace(/\W+/g, '-')
+      .replace(/(^-|-$)/g, '')
+
+    return createElement(
+      'h' + this.level,
+      [
+        createElement('a', {
+          attrs: {
+            name: headingId,
+            href: '#' + headingId
+          }
+        }, this.$slots.default)
+      ]
+    )
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+```
+
+#### `render`中代替Vue模板功能的其他语法
+
+记住，只要在原生的 JavaScript 中可以轻松完成的操作，Vue 的渲染函数就不会提供专有的替代方法。
+
+> 比如，在模板中使用的 `v-if` 和 `v-for`：
+>
+> ```html
+> <ul v-if="items.length">
+>   <li v-for="item in items">{{ item.name }}</li>
+> </ul>
+> <p v-else>No items found.</p>
+> ```
+>
+> 它们都可以在渲染函数中用 JavaScript 的 `if`/`else` 和 `map` 来重写：
+>
+> ```js
+> props: ['items'],
+> render: function (createElement) {
+>   if (this.items.length) {
+>     return createElement('ul', this.items.map(function (item) {
+>       return createElement('li', item.name)
+>     }))
+>   } else {
+>     return createElement('p', 'No items found.')
+>   }
+> }
+> ```
+
+##### `v-model`
+
+渲染函数中没有与 `v-model` 的直接对应——你必须自己实现相应的逻辑：
+
+```js
+props: ['value'],
+render: function (createElement) {
+  var self = this
+  return createElement('input', {
+    domProps: {
+      value: self.value
+    },
+    on: {
+      input: function (event) {
+        self.$emit('input', event.target.value)
+      }
+    }
+  })
+}
+```
+
+这就是深入底层的代价，不过与 `v-model` 相比，这倒可以让你更好地控制交互细节。
+
+##### 事件 & 按键修饰符
+
+对于 `.passive`、`.capture` 和 `.once` 这些事件修饰符，Vue 提供了相应的前缀可以用于 `on`：
+
+| 修饰符                             | 前缀 |
+| :--------------------------------- | :--- |
+| `.passive`                         | `&`  |
+| `.capture`                         | `!`  |
+| `.once`                            | `~`  |
+| `.capture.once` 或 `.once.capture` | `~!` |
+
+例如：
+
+```js
+on: {
+  '!click': this.doThisInCapturingMode,
+  '~keyup': this.doThisOnce,
+  '~!mouseover': this.doThisOnceInCapturingMode
+}
+```
+
+对于所有其它的修饰符，私有前缀都不是必须的，因为你可以在事件处理函数中使用事件方法：
+
+| 修饰符                                      | 处理函数中的等价操作                                         |
+| :------------------------------------------ | :----------------------------------------------------------- |
+| `.stop`                                     | `event.stopPropagation()`                                    |
+| `.prevent`                                  | `event.preventDefault()`                                     |
+| `.self`                                     | `if (event.target !== event.currentTarget) return`           |
+| 按键： `.enter`, `.13`                      | `if (event.keyCode !== 13) return` (对于别的按键修饰符来说，可将 `13` 改为[另一个按键码](http://keycode.info/)) |
+| 修饰键： `.ctrl`, `.alt`, `.shift`, `.meta` | `if (!event.ctrlKey) return` (将 `ctrlKey` 分别修改为 `altKey`、`shiftKey` 或者 `metaKey`) |
+
+这里是一个使用所有修饰符的例子：
+
+```js
+on: {
+  keyup: function (event) {
+    // 如果触发事件的元素不是事件绑定的元素
+    // 则返回
+    if (event.target !== event.currentTarget) return
+    // 如果按下去的不是 enter 键或者
+    // 没有同时按下 shift 键
+    // 则返回
+    if (!event.shiftKey || event.keyCode !== 13) return
+    // 阻止 事件冒泡
+    event.stopPropagation()
+    // 阻止该元素默认的 keyup 事件
+    event.preventDefault()
+    // ...
+  }
+}
+```
+
+##### 插槽
+
+通过 `this.$slots` 可以访问静态插槽的内容，每个插槽都是一个 VNode 数组：
+
+```js
+render: function (createElement) {
+  // `<div><slot></slot></div>`
+  return createElement('div', this.$slots.default)
+}
+```
+
+也可以通过 `this.$scopedSlots`访问作用域插槽，每个作用域插槽都是一个返回若干 VNode 的函数：
+
+```js
+props: ['message'],
+render: function (createElement) {
+  // `<div><slot :text="message"></slot></div>`
+  return createElement('div', [
+    this.$scopedSlots.default({
+      text: this.message
+    })
+  ])
+}
+```
+
+如果要用渲染函数向子组件中传递作用域插槽，可以利用 VNode 数据对象中的 `scopedSlots` 字段：
+
+```js
+render: function (createElement) {
+  // `<div><child v-slot="props"><span>{{ props.text }}</span></child></div>`
+  return createElement('div', [
+    createElement('child', {
+      // 在数据对象中传递 `scopedSlots`
+      // 格式为 { name: props => VNode | Array<VNode> }
+      scopedSlots: {
+        default: function (props) {
+          return createElement('span', props.text)
+        }
+      }
+    })
+  ])
+}
+```
+
 ## 3. Vue模板语法
 
 Vue.js 使用了基于 HTML 的模板语法，允许开发者声明式地将 DOM 绑定至底层 Vue 实例的数据。所有 Vue.js 的模板都是合法的 HTML，所以能被遵循规范的浏览器和 HTML 解析器解析。在底层的实现上，Vue 将模板编译成虚拟 DOM 渲染函数。结合响应系统，Vue 能够智能地计算出最少需要重新渲染多少组件，并把 DOM 操作次数减到最少。
@@ -860,6 +1254,101 @@ example2.greet() // => 'Hello Vue.js!'
 
 - `.trim`：自动过滤用户输入的首尾空白字符。
 
+### 3.8 自定义指令
+
+在 Vue2.0 中，代码复用和抽象的主要形式是组件。然而，有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令。
+
+举个聚焦输入框的例子：当页面加载时，该元素将获得焦点。事实上，只要你在打开这个页面后还没点击过任何内容，这个输入框就应当还是处于聚焦状态。我们可以用指令来实现这个功能：
+
+```js
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
+```
+
+如果想注册局部指令，组件中也接受一个 `directives` 的选项：
+
+```js
+directives: {
+  focus: {
+    // 指令的定义
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+}
+```
+
+然后就可以在模板中任何元素上使用新的 `v-focus` 属性了，如比如：
+
+```html
+<input v-focus>
+```
+
+#### 指令对象的钩子函数
+
+一个指令定义对象可以提供如下几个钩子函数 (均为可选)：
+
+- `bind`：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+- `inserted`：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+- `update`：所在组件的 VNode 更新时调用，**但是可能发生在其子 VNode 更新之前**。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新 (详细的钩子函数参数见下)。
+- `componentUpdated`：指令所在组件的 VNode **及其子 VNode** 全部更新后调用。
+- `unbind`：只调用一次，指令与元素解绑时调用。
+
+指令钩子函数会被传入以下参数：
+
+> 除了 `el` 之外，其它参数都应该是只读的，切勿进行修改。如果需要在钩子之间共享数据，建议通过元素的 dataset 来进行。
+
+- `el`：指令所绑定的元素，可以用来直接操作 DOM。
+- `binding`：一个对象，包含以下 property：
+    - `name`：指令名，不包括 `v-` 前缀。
+    - `value`：指令的绑定值，例如：`v-my-directive="1 + 1"` 中，绑定值为 `2`。
+    - `oldValue`：指令绑定的前一个值，仅在 `update` 和 `componentUpdated` 钩子中可用。无论值是否改变都可用。
+    - `expression`：字符串形式的指令表达式。例如 `v-my-directive="1 + 1"` 中，表达式为 `"1 + 1"`。
+    - `arg`：传给指令的参数，可选。例如 `v-my-directive:foo` 中，参数为 `"foo"`。
+    - `modifiers`：一个包含修饰符的对象。例如：`v-my-directive.foo.bar` 中，修饰符对象为 `{ foo: true, bar: true }`。
+- `vnode`：Vue 编译生成的虚拟节点。移步 [VNode API](https://cn.vuejs.org/v2/api/#VNode-接口) 来了解更多详情。
+- `oldVnode`：上一个虚拟节点，仅在 `update` 和 `componentUpdated` 钩子中可用。
+
+以下为一个自定义钩子的示例：
+
+```html
+<div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+```
+
+```js
+Vue.directive('demo', {
+  bind: function (el, binding, vnode) {
+    var s = JSON.stringify
+    el.innerHTML =
+      'name: '       + s(binding.name) + '<br>' +
+      'value: '      + s(binding.value) + '<br>' +
+      'expression: ' + s(binding.expression) + '<br>' +
+      'argument: '   + s(binding.arg) + '<br>' +
+      'modifiers: '  + s(binding.modifiers) + '<br>' +
+      'vnode keys: ' + Object.keys(vnode).join(', ')
+  }
+})
+
+new Vue({
+  el: '#hook-arguments-example',
+  data: {
+    message: 'hello!'
+  }
+})
+```
+
+指令的参数也可以是动态的。
+
+### 3.9 模板编译
+
+Vue 的模板实际上被编译成了渲染函数，这是一个实现细节，通常不需要关心。但如果你想看看模板的功能具体是怎样被编译的，可能会发现非常有意思......
+
 ## 4. 组件
 
 ### 4.1 组件的含义
@@ -908,7 +1397,29 @@ data: function () {
 
 注意每个组件必须只有一个根元素。
 
-### 4.2 组件的组织
+### 4.2 组件的命名
+
+当直接在 DOM 中使用一个组件 (而不是在字符串模板或[单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)) 的时候，我们强烈推荐遵循 [W3C 规范](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name)中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
+
+定义组件名的方式有两种：
+
+- 短横线——当使用 kebab-case (短横线分隔命名) 定义一个组件时，引用该元素时必须也使用 kebab-case，例如 `<my-component-name>`。
+
+    ```js
+    Vue.component('my-component-name', { /* ... */ })
+    ```
+
+- 驼峰法（首字母大写）——当使用 PascalCase (首字母大写命名) 定义一个组件时，引用该元素时两种命名法都可以使用。
+
+    ```js
+    Vue.component('MyComponentName', { /* ... */ })
+    ```
+
+    > `<my-component-name>` 和 `<MyComponentName>` 都可以使用。
+    >
+    > 不过，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。
+
+### 4.3 组件的组织
 
 通常一个应用会以一棵嵌套的组件树的形式来组织，例如，你可能会有页头、侧边栏、内容区等组件，每个组件又包含了其它的像导航链接、博文之类的组件。
 
@@ -961,7 +1472,82 @@ data: function () {
         > }
         > ```
 
-### 4.3 通过`props`选项向子组件传递数据
+### 4.4 模块系统
+
+通过 `import`/`require` 可以使用一个模块系统。
+
+#### 局部注册
+
+往往我们推荐创建一个`components`目录，并将每个组件放置在其各自的文件中，然后在局部注册之前通过import语句导入每个你想使用的组件。
+
+例如，在一个`ComponentC.js`或`ComponentC.vue`文件中：
+
+```js
+import ComponentA from './ComponentA'
+import ComponentB from './ComponentB'
+
+export default {
+  components: {
+    ComponentA,
+    ComponentB
+  },
+  // ...
+}
+```
+
+此时 `ComponentA` 和 `ComponentB` 便可以在 `ComponentC` 的模板中使用了。
+
+#### 全局注册
+
+有些组件会被各个组件频繁地使用，它们有时被称为“基础组件”，因此为了方便，可能通过webpack的`require.context`方法对组件进行全局注册。
+
+比如，以下在`src/main.js`这样的应用入口文件中全局导入基础组件：
+
+```js
+import Vue from 'vue'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
+
+const requireComponent = require.context(
+  // 其组件目录的相对路径
+  './components',
+    
+  // 是否查询其子目录
+  false,
+    
+  // 匹配基础组件文件名的正则表达式
+  /Base[A-Z]\w+\.(vue|js)$/
+)
+
+requireComponent.keys().forEach(fileName => {
+  // 获取组件配置
+  const componentConfig = requireComponent(fileName)
+
+  // 获取组件的 PascalCase 命名
+  const componentName = upperFirst(
+    camelCase(
+      // 获取和目录深度无关的文件名
+      fileName
+        .split('/')
+        .pop()
+        .replace(/\.\w+$/, '')
+    )
+  )
+
+  // 全局注册组件
+  Vue.component(
+    componentName,
+    // 如果这个组件选项是通过 `export default` 导出的，
+    // 那么就会优先使用 `.default`，
+    // 否则回退到使用模块的根。
+    componentConfig.default || componentConfig
+  )
+})
+```
+
+> 记住全局注册的行为必须在根 Vue 实例 (通过 `new Vue`) 创建之前发生。
+
+### 4.5 通过`props`选项向子组件传递数据
 
 `props` 是在组件上注册的一些自定义 attribute，当一个值传递给一个 `props` attribute 的时候，它就变成了那个组件实例的一个 property。
 
@@ -1046,7 +1632,7 @@ Vue.component('blog-post', {
 
 现在，不论何时为 `post` 对象添加一个新的 property，它都会自动地在 `<blog-post>` 内可用。
 
-#### 4.3.1 prop的大小写
+#### 4.5.1 prop的大小写
 
 HTML 中的 attribute 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。这意味着当你在 DOM 中使用模板时，camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短横线分隔命名) 命名：
 
@@ -1063,7 +1649,7 @@ Vue.component('blog-post', {
 <blog-post post-title="hello!"></blog-post>
 ```
 
-#### 4.3.2 prop的类型
+#### 4.5.2 prop的类型
 
 通常你还希望每个 prop 都有指定的值类型，这时便可以以对象形式列出 prop，这些 property 的名称和值分别是 prop 各自的名称和类型：
 
@@ -1081,7 +1667,7 @@ props: {
 
 这样不仅为你的组件提供了文档，还会在它们遇到错误的类型时从浏览器的 JavaScript 控制台提示用户。
 
-#### 4.3.3 给prop传值
+#### 4.5.3 给prop传值
 
 静态与动态传值：
 
@@ -1144,7 +1730,7 @@ post: {
 ></blog-post>
 ```
 
-#### 4.3.4 prop的单向数据流
+#### 4.5.4 prop的单向数据流
 
 所有的 prop 都会在其父子 prop 之间形成一个**单向下行绑定**：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。
 
@@ -1174,7 +1760,7 @@ post: {
     }
     ```
 
-#### 4.3.5 prop验证
+#### 4.5.5 prop验证
 
  prop 的传值还可以进行更深层次的验证，例如：
 
@@ -1255,11 +1841,11 @@ Vue.component('my-component', {
     })
     ```
 
-#### 4.3.6 非prop的attribue？
+#### 4.5.6 非prop的attribue？
 
 ......这说的什么玩意啊，官方文档也太烂了吧......
 
-### 4.4 监听子组件事件
+### 4.6 监听子组件事件
 
 父级组件可以像处理 native DOM 事件一样通过 `v-on` 监听子组件实例的任意事件：
 
@@ -1280,7 +1866,7 @@ Vue.component('my-component', {
 
 有了这个 `v-on:enlarge-text="postFontSize += 0.1"` 监听器，父级组件就会接收该事件并更新 `postFontSize` 的值。
 
-#### 4.4.1 使用事件抛出一个值
+#### 4.6.1 使用事件抛出一个值
 
 有时我们需要用一个事件来抛出一个特定的值。例如我们可能想让 `<blog-post>` 组件决定它的文本要放大多少。这时可以使用 `$emit` 的第二个参数来提供这个值：
 
@@ -1316,7 +1902,7 @@ methods: {
 }
 ```
 
-#### 4.4.2 在组件上使用`v-model`
+#### 4.6.2 在组件上使用`v-model`
 
 对于自定义事件，它也可以用于创建支持`v-model`的“自定义输入组件”。
 
@@ -1369,9 +1955,9 @@ Vue.component('custom-input', {
 <custom-input v-model="searchText"></custom-input>
 ```
 
-### 4.5 插槽：分发内容
+### 4.7 插槽：分发内容
 
-#### 4.5.1 定义
+#### 4.7.1 定义
 
 Vue将`<slot>`元素作为承载分发内容的出口。
 
@@ -1407,7 +1993,7 @@ Vue.component('navigation-link', {
 - HTML
 - 其他组件
 
-#### 4.5.2 插槽默认值
+#### 4.7.2 插槽默认值
 
 对于一个含插槽的组件，在`<slot></slot>`闭合标签内设置的内容会在该组件不含内容时作为默认值自动渲染出来：
 
@@ -1441,7 +2027,7 @@ Vue.component('navigation-link', {
 </button>
 ```
 
-#### 4.5.3 具名插槽
+#### 4.7.3 具名插槽
 
 `<slot>` 元素有一个`name`属性，该属性可以用来定义具名插槽。例如：
 
@@ -1517,7 +2103,7 @@ Vue.component('navigation-link', {
 
 > 注意， `v-slot` 只能添加在 `<template>` 上 (只有[一种例外情况](https://cn.vuejs.org/v2/guide/components-slots.html#独占默认插槽的缩写语法))。
 
-#### 4.5.4 插槽的作用域
+#### 4.7.4 插槽的作用域
 
 插槽跟模板的其它地方一样可以访问相同的实例 property ，但不能访问 `<navigation-link>` 的作用域。例如上述的 `url` 在插槽中是访问不到的：
 
@@ -1622,7 +2208,7 @@ Vue.component('current-user', {
 </current-user>
 ```
 
-#### 4.5.5 插槽prop的原理（说的什么玩意儿......）
+#### 4.7.5 插槽prop的原理（说的什么玩意儿......）
 
 插槽prop的内部原理是将你的插槽内容包裹在一个拥有单个参数的函数里：
 
@@ -1658,7 +2244,7 @@ function (slotProps) {
 </current-user>
 ```
 
-#### 4.5.6 其他
+#### 4.7.6 其他
 
 ##### 动态插槽名
 
@@ -1752,206 +2338,7 @@ function (slotProps) {
 
 这只是作用域插槽用武之地的冰山一角，想了解更多现实生活中的作用域插槽的用法，我们推荐浏览诸如 [Vue Virtual Scroller](https://github.com/Akryum/vue-virtual-scroller)、[Vue Promised](https://github.com/posva/vue-promised) 和 [Portal Vue](https://github.com/LinusBorg/portal-vue) 等库。
 
-### 4.6 动态组件
-
-有的时候，在不同组件之间进行动态切换是非常有用的，比如在一个多标签的界面里：
-
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/前端/3.png" alt="image-20210925094520351" style="zoom:100%;" />
-
-上述内容可以通过 Vue 的 `<component>` 元素加一个特殊的 `is` attribute 来实现：
-
-```html
-<!-- 组件会在 `currentTabComponent` 改变时改变 -->
-<component v-bind:is="currentTabComponent"></component>
-<!-- `currentTabComponent` 可以包括“已注册组件的名字”或“一个组件的选项对象”。 -->
-```
-
-需要注意的是，这个 attribute 也可以用于常规 HTML 元素，但此时这些元素将被视为组件——这意味着所有的 attribute **都会作为 DOM attribute 被绑定**。对于像 `value` 这样的 property，若想让其如预期般工作，你需要使用 [`.prop` 修饰器](https://cn.vuejs.org/v2/api/#v-bind)。
-
-默认情况下，在这些组件之间切换时，新标签会重新渲染——Vue创建了一个新的`currentTabComponent`实例，如果希望这些标签的组件实例能够在它们第一次被创建的时候就缓存下来，可以用一个`<keep-alive>`元素将动态组件包裹起来：
-
-```html
-<!-- 失活的组件将会被缓存！-->
-<keep-alive>
-  <component v-bind:is="currentTabComponent"></component>
-</keep-alive>
-```
-
-> 注意这个 `<keep-alive>` 要求被切换到的组件都有自己的名字，不论是通过组件的 `name` 选项还是局部/全局注册。
-
-### 4.7 异步组件
-
-在大型应用中，我们可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块。为应对这种场景，Vue 允许你以一个工厂函数的方式定义组件，该工厂函数在解析你的组件定义时会异步执行，Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染。
-
-例如，下面的示例中工厂函数会收到一个 `resolve` 回调，这个回调函数会在你从服务器得到组件定义的时候被调用（你也可以调用 `reject(reason)` 来表示加载失败）：
-
-```js
-Vue.component('async-example', function (resolve, reject) {
-  setTimeout(function () {
-    // 向 `resolve` 回调传递组件定义
-    resolve({
-      template: '<div>I am async!</div>'
-    })
-  }, 1000)
-})
-```
-
-上面的 `setTimeout` 是为了演示用的，如何获取组件取决于程序员，一个推荐的做法是将异步组件和 webpack 的 code-splitting 功能一起配合使用：
-
-```js
-Vue.component('async-webpack-example', function (resolve) {
-  // 这个特殊的 `require` 语法将会告诉 webpack
-  // 自动将你的构建代码切割成多个包，这些包
-  // 会通过 Ajax 请求加载
-  require(['./my-async-component'], resolve)
-})
-```
-
-此外，你也可以在工厂函数中返回一个 `Promise`。因而把 webpack 2 和 ES2015 语法加在一起的话，可以这样使用动态导入：
-
-```js
-Vue.component(
-  'async-webpack-example',
-  // 这个动态导入会返回一个 `Promise` 对象。
-  () => import('./my-async-component')
-)
-```
-
-> 当使用[局部注册](https://cn.vuejs.org/v2/guide/components-registration.html#局部注册)的时候，你也可以直接提供一个返回 `Promise` 的函数：
->
-> ```js
-> new Vue({
->   // ...
->   components: {
->     'my-component': () => import('./my-async-component')
->   }
-> })
-> ```
-
-### 4.8 注意事项
-
-有些 HTML 元素对于哪些元素可以出现在其内部是有严格限制的，如 `<ul>`、`<ol>`、`<table>` 和 `<select>`；而有些元素，如 `<li>`、`<tr>` 和 `<option>`，只能出现在其它某些特定的元素内部。这会导致我们使用这些有约束条件的元素时遇到一些问题，例如：
-
-```html
-<table>
-  <blog-post-row></blog-post-row>
-</table>
-```
-
-这个自定义组件 `<blog-post-row>` 会被作为无效的内容提升到外部，并导致最终渲染结果出错。
-
-幸好前述特殊的 `is` attribute 给了我们一个变通的办法：
-
-```html
-<table>
-  <tr is="blog-post-row"></tr>
-</table>
-```
-
-不过，如果我们从以下来源使用模板的话，这条限制是不存在的：
-
-- 字符串 (例如：`template: '...'`)
-- [单文件组件 (`.vue`)](https://cn.vuejs.org/v2/guide/single-file-components.html)
-- [`<script type="text/x-template">`](https://cn.vuejs.org/v2/guide/components-edge-cases.html#X-Templates)
-
-## 5. 组件
-
-当直接在 DOM 中使用一个组件 (而不是在字符串模板或[单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)) 的时候，我们强烈推荐遵循 [W3C 规范](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name)中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
-
-定义组件名的方式有两种：
-
-- 短横线——当使用 kebab-case (短横线分隔命名) 定义一个组件时，引用该元素时必须也使用 kebab-case，例如 `<my-component-name>`。
-
-    ```js
-    Vue.component('my-component-name', { /* ... */ })
-    ```
-
-- 驼峰法（首字母大写）——当使用 PascalCase (首字母大写命名) 定义一个组件时，引用该元素时两种命名法都可以使用。
-
-    ```js
-    Vue.component('MyComponentName', { /* ... */ })
-    ```
-
-    > `<my-component-name>` 和 `<MyComponentName>` 都可以使用。
-    >
-    > 不过，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。
-
-### 5.1 模块系统
-
-通过 `import`/`require` 可以使用一个模块系统。
-
-#### 局部注册
-
-往往我们推荐创建一个`components`目录，并将每个组件放置在其各自的文件中，然后在局部注册之前通过import语句导入每个你想使用的组件。
-
-例如，在一个`ComponentC.js`或`ComponentC.vue`文件中：
-
-```js
-import ComponentA from './ComponentA'
-import ComponentB from './ComponentB'
-
-export default {
-  components: {
-    ComponentA,
-    ComponentB
-  },
-  // ...
-}
-```
-
-此时 `ComponentA` 和 `ComponentB` 便可以在 `ComponentC` 的模板中使用了。
-
-#### 全局注册
-
-有些组件会被各个组件频繁地使用，它们有时被称为“基础组件”，因此为了方便，可能通过webpack的`require.context`方法对组件进行全局注册。
-
-比如，以下在`src/main.js`这样的应用入口文件中全局导入基础组件：
-
-```js
-import Vue from 'vue'
-import upperFirst from 'lodash/upperFirst'
-import camelCase from 'lodash/camelCase'
-
-const requireComponent = require.context(
-  // 其组件目录的相对路径
-  './components',
-    
-  // 是否查询其子目录
-  false,
-    
-  // 匹配基础组件文件名的正则表达式
-  /Base[A-Z]\w+\.(vue|js)$/
-)
-
-requireComponent.keys().forEach(fileName => {
-  // 获取组件配置
-  const componentConfig = requireComponent(fileName)
-
-  // 获取组件的 PascalCase 命名
-  const componentName = upperFirst(
-    camelCase(
-      // 获取和目录深度无关的文件名
-      fileName
-        .split('/')
-        .pop()
-        .replace(/\.\w+$/, '')
-    )
-  )
-
-  // 全局注册组件
-  Vue.component(
-    componentName,
-    // 如果这个组件选项是通过 `export default` 导出的，
-    // 那么就会优先使用 `.default`，
-    // 否则回退到使用模块的根。
-    componentConfig.default || componentConfig
-  )
-})
-```
-
-> 记住全局注册的行为必须在根 Vue 实例 (通过 `new Vue`) 创建之前发生。
-
-### 5.2 组件的`v-model`
+### 4.8 组件的`v-model`
 
 一个组件上的 `v-model` 默认会利用该组件名为 `value` 的 prop 和名为 `input` 的事件，但是像单选框、复选框等类型的输入控件可能会将 `value` attribute 用于[不同的目的](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#Value)。`model` 选项可以用来避免这样的冲突：
 
@@ -1984,15 +2371,15 @@ Vue.component('base-checkbox', {
 
 > 注意你仍然需要在组件的 `props` 选项里声明 `checked` 这个 prop。
 
-### 5.3 事件
+### 4.9 事件
 
-#### 5.3.1 自定义事件的命名
+#### 4.9.1 自定义事件的命名
 
 对于自定义事件，始终推荐使用 kebab-case 的事件名。
 
 > 不同于组件和 prop，事件名不会被用作一个 JavaScript 变量名或 property 名，所以就没有理由使用 camelCase 或 PascalCase 了。并且 `v-on` 事件监听器在 DOM 模板中会被自动转换为全小写 (因为 HTML 是大小写不敏感的)，所以 `v-on:myEvent` 将会变成 `v-on:myevent`——导致 `myEvent` 不可能被监听到。
 
-#### 5.3.2 `$listeners`属性
+#### 4.9.2 `$listeners`属性
 
 当需要在一个组件的根元素上直接监听一个原生事件时，你当然可以使用 `v-on` 的 `.native` 修饰符：
 
@@ -2065,7 +2452,7 @@ Vue.component('base-input', {
 
 这样 `<base-input>` 组件是一个**完全透明的包裹器**了，也就是说它可以完全像一个普通的 `<input>` 元素一样来使用：所有跟它相同的 attribute 和监听器都可以工作，不必再使用 `.native` 监听器。
 
-#### 5.3.4 `.sync`修饰符
+#### 4.9.3 `.sync`修饰符
 
 在有些情况下，我们可能需要对一个 prop 进行“双向绑定”，通常推荐以 `update:myPropName` 的模式触发事件来实现。举个例子，在一个包含 `title` prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图：
 
@@ -2101,11 +2488,11 @@ this.$emit('update:title', newTitle)
 > - 带有 `.sync` 修饰符的 `v-bind` **不能**和表达式一起使用 (例如 `v-bind:title.sync=”doc.title + ‘!’”` 是无效的)。取而代之的是，你只能提供你想要绑定的 property 名，类似 `v-model`。
 > - 将 `v-bind.sync` 用在一个字面量的对象上，例如 `v-bind.sync=”{ title: doc.title }”`，是无法正常工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。
 
-### 5.4 访问元素/组件
+### 4.10 访问元素/组件
 
 > 在绝大多数情况下，我们最好不要触达另一个组件实例内部或手动操作 DOM 元素，不过也确实在一些情况下做这些事情是合适的。
 
-#### 5.4.1 访问根实例：`$root`
+#### 4.10.1 访问根实例：`$root`
 
 在每个 `new Vue` 实例的子组件中，其根实例可以通过 `$root` property 进行访问。例如，对于一个根实例
 
@@ -2142,7 +2529,7 @@ this.$root.baz()
 
 > 注：对于 demo 或非常小型的有少量组件的应用来说这是很方便的。不过这个模式扩展到中大型应用来说就不然了。因此在绝大多数情况下，我们强烈推荐使用 [Vuex](https://github.com/vuejs/vuex) 来管理应用的状态。
 
-#### 5.4.2 访问父实例：`$parent`
+#### 4.10.2 访问父实例：`$parent`
 
 和 `$root` 类似，`$parent` property 可以用来从一个子组件访问父组件的实例。`$parent`提供了一种可以在后期随时触达父级组件的机会，以替代将数据以 prop 的方式传入子组件的方式。
 
@@ -2176,7 +2563,7 @@ var map = this.$parent.map || this.$parent.$parent.map
 
 很快它就会失控。这也是我们针对需要向任意更深层级的组件提供上下文信息时推荐[依赖注入](https://cn.vuejs.org/v2/guide/components-edge-cases.html#依赖注入)的原因。
 
-#### 5.4.3 访问子组件实例/子元素：`$ref`
+#### 4.10.3 访问子组件实例/子元素：`$ref`
 
 尽管存在 prop 和事件，有的时候你可能仍需要在 js 里直接访问一个子组件。为了达到这个目的，你可以通过 `ref` 这个 attribute 为子组件赋予一个 ID 引用。例如：
 
@@ -2223,13 +2610,13 @@ this.$refs.usernameInput.focus()
 
 `$refs` 只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问 `$refs`。
 
-#### 5.4.4 依赖注入
+#### 4.10.4 依赖注入
 
 使用 `$parent` 无法很好地扩展到更深层级的父级嵌套组件上，这便是依赖注入的用武之地了。依赖注入用到了两个新的实例选项：`provide` 和 `inject`。
 
 - `provide` 选项允许我们指定我们想要**提供**给后代组件的数据/方法。
 
--  `inject` 选项用于在后代组件里接收指定的 property：
+- `inject` 选项用于在后代组件里接收指定的 property：
 
     ```js
     inject: ['getMap']
@@ -2269,9 +2656,9 @@ inject: ['getMap']
 
     > 这是出于设计的考虑，因为使用它们来创建一个中心化规模化的数据跟[使用 `$root`](https://cn.vuejs.org/v2/guide/components-edge-cases.html#访问根实例)做这件事都是不够好的。如果你想要共享的这个 property 是你的应用特有的，而不是通用化的，或者如果你想在祖先组件中更新所提供的数据，那么这意味着你可能需要换用一个像 [Vuex](https://github.com/vuejs/vuex) 这样真正的状态管理方案了。
 
-### 5.5 组件的循环引用
+### 4.11 组件的循环引用
 
-#### 5.5.1 递归组件
+#### 4.11.1 递归组件
 
 组件是可以在它们自己的模板中调用自身的，不过它们只能通过 `name` 选项来做这件事：
 
@@ -2296,7 +2683,381 @@ template: '<div><stack-overflow></stack-overflow></div>'
 
 类似上述的组件将会导致“max stack size exceeded”错误，所以请确保递归调用是条件性的 (例如使用一个最终会得到 `false` 的 `v-if`)。
 
-#### 5.5.2 组件之间的循环引用
+#### 4.11.2 组件之间的循环引用
 
 ......好像没必要单独记录
+
+### 4.12 动态组件
+
+有的时候，在不同组件之间进行动态切换是非常有用的，比如在一个多标签的界面里：
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/前端/3.png" alt="image-20210925094520351" style="zoom:100%;" />
+
+上述内容可以通过 Vue 的 `<component>` 元素加一个特殊的 `is` attribute 来实现：
+
+```html
+<!-- 组件会在 `currentTabComponent` 改变时改变 -->
+<component v-bind:is="currentTabComponent"></component>
+<!-- `currentTabComponent` 可以包括“已注册组件的名字”或“一个组件的选项对象”。 -->
+```
+
+需要注意的是，这个 attribute 也可以用于常规 HTML 元素，但此时这些元素将被视为组件——这意味着所有的 attribute **都会作为 DOM attribute 被绑定**。对于像 `value` 这样的 property，若想让其如预期般工作，你需要使用 [`.prop` 修饰器](https://cn.vuejs.org/v2/api/#v-bind)。
+
+默认情况下，在这些组件之间切换时，新标签会重新渲染——Vue创建了一个新的`currentTabComponent`实例，如果希望这些标签的组件实例能够在它们第一次被创建的时候就缓存下来，可以用一个`<keep-alive>`元素将动态组件包裹起来：
+
+```html
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+> 注意这个 `<keep-alive>` 要求被切换到的组件都有自己的名字，不论是通过组件的 `name` 选项还是局部/全局注册。
+
+### 4.13 异步组件
+
+在大型应用中，我们可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块。为应对这种场景，Vue 允许你以一个工厂函数的方式定义组件，该工厂函数在解析你的组件定义时会异步执行，Vue 只有在这个组件需要被渲染的时候才会触发该工厂函数，且会把结果缓存起来供未来重渲染。
+
+例如，下面的示例中工厂函数会收到一个 `resolve` 回调，这个回调函数会在你从服务器得到组件定义的时候被调用（你也可以调用 `reject(reason)` 来表示加载失败）：
+
+```js
+Vue.component('async-example', function (resolve, reject) {
+  setTimeout(function () {
+    // 向 `resolve` 回调传递组件定义
+    resolve({
+      template: '<div>I am async!</div>'
+    })
+  }, 1000)
+})
+```
+
+上面的 `setTimeout` 是为了演示用的，如何获取组件取决于程序员，一个推荐的做法是将异步组件和 webpack 的 code-splitting 功能一起配合使用：
+
+```js
+Vue.component('async-webpack-example', function (resolve) {
+  // 这个特殊的 `require` 语法将会告诉 webpack
+  // 自动将你的构建代码切割成多个包，这些包
+  // 会通过 Ajax 请求加载
+  require(['./my-async-component'], resolve)
+})
+```
+
+此外，你也可以在工厂函数中返回一个 `Promise`。因而把 webpack 2 和 ES2015 语法加在一起的话，可以这样使用动态导入：
+
+```js
+Vue.component(
+  'async-webpack-example',
+  // 这个动态导入会返回一个 `Promise` 对象。
+  () => import('./my-async-component')
+)
+```
+
+> 当使用[局部注册](https://cn.vuejs.org/v2/guide/components-registration.html#局部注册)的时候，你也可以直接提供一个返回 `Promise` 的函数：
+>
+> ```js
+> new Vue({
+>   // ...
+>   components: {
+>     'my-component': () => import('./my-async-component')
+>   }
+> })
+> ```
+
+### 4.14 函数式组件
+
+一个函数式组件无状态（没有响应式数据），无实例（没有this上下文），它的定义如下：
+
+```js
+Vue.component('my-component', {
+  functional: true,
+  // Props 是可选的
+  props: {
+    // ...
+  },
+  // 为了弥补缺少的实例
+  // 提供第二个参数作为上下文
+  render: function (createElement, context) {
+    // ...
+  }
+})
+```
+
+在 2.5.0 及以上版本中，如果你使用了[单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)，那么基于模板的函数式组件可以这样声明：
+
+```html
+<template functional>
+</template>
+```
+
+函数式组件需要的一切都是通过 `context` 参数传递，它是一个包括如下字段的对象：
+
+- `props`：提供所有 prop 的对象
+- `children`：VNode 子节点的数组
+- `slots`：一个函数，返回了包含所有插槽的对象
+- `scopedSlots`：(2.6.0+) 一个暴露传入的作用域插槽的对象。也以函数形式暴露普通插槽。
+- `data`：传递给组件的整个[数据对象](https://cn.vuejs.org/v2/guide/render-function.html#深入数据对象)，作为 `createElement` 的第二个参数传入组件
+- `parent`：对父组件的引用
+- `listeners`：(2.3.0+) 一个包含了所有父组件为当前组件注册的事件监听器的对象。这是 `data.on` 的一个别名。
+- `injections`：(2.3.0+) 如果使用了 [`inject`](https://cn.vuejs.org/v2/api/#provide-inject) 选项，则该对象包含了应当被注入的 property。
+
+在添加 `functional: true` 之后，需要更新我们的锚点标题组件的渲染函数，为其增加 `context` 参数，并将 `this.$slots.default` 更新为 `context.children`，然后将 `this.level` 更新为 `context.props.level`。
+
+因为函数式组件只是函数，所以渲染开销也低很多。
+
+在作为包装组件时函数式组件可能非常有用，比如：
+
+- 程序化地在多个组件中选择一个来代为渲染；
+- 在将 `children`、`props`、`data` 传递给子组件之前操作它们。
+
+下面是一个 `smart-list` 组件的例子，它能根据传入 prop 的值来代为渲染更具体的组件：
+
+```js
+var EmptyList = { /* ... */ }
+var TableList = { /* ... */ }
+var OrderedList = { /* ... */ }
+var UnorderedList = { /* ... */ }
+
+Vue.component('smart-list', {
+  functional: true,
+  props: {
+    items: {
+      type: Array,
+      required: true
+    },
+    isOrdered: Boolean
+  },
+  render: function (createElement, context) {
+    function appropriateListComponent () {
+      var items = context.props.items
+
+      if (items.length === 0)           return EmptyList
+      if (typeof items[0] === 'object') return TableList
+      if (context.props.isOrdered)      return OrderedList
+
+      return UnorderedList
+    }
+
+    return createElement(
+      appropriateListComponent(),
+      context.data,
+      context.children
+    )
+  }
+})
+```
+
+#### 向子元素/子组件中传递attribute和事件
+
+在普通组件中，没有被定义为 prop 的 attribute 会自动添加到组件的根元素上，将已有的同名 attribute 进行替换或与其进行[智能合并](https://cn.vuejs.org/v2/guide/class-and-style.html)。然而函数式组件要求你显式定义该行为：
+
+```js
+Vue.component('my-functional-button', {
+  functional: true,
+  render: function (createElement, context) {
+    // 完全透传任何 attribute、事件监听器、子节点等。
+    return createElement('button', context.data, context.children)
+  }
+})
+```
+
+通过向 `createElement` 传入 `context.data` 作为第二个参数，我们就把 `my-functional-button` 上面所有的 attribute 和事件监听器都传递下去了。
+
+如果你使用基于模板的函数式组件，则还需要手动添加 attribute 和监听器。因为我们可以访问到其独立的上下文内容，所以我们可以使用 `data.attrs` 传递任何 HTML attribute，也可以使用 `listeners` (即 `data.on` 的别名) 传递任何事件监听器。
+
+```html
+<template functional>
+  <button
+    class="btn btn-primary"
+    v-bind="data.attrs"
+    v-on="listeners"
+  >
+    <slot/>
+  </button>
+</template>
+```
+
+#### `slots()` 和 `children` 对比
+
+为什么同时需要 `slots()` 和 `children`呢，`slots().default` 不是和 `children` 类似吗？在一些场景中的确如此，但如果是如下的带有子节点的函数式组件，则不以为然：
+
+```html
+<my-functional-component>
+  <p v-slot:foo>
+    first
+  </p>
+  <p>second</p>
+</my-functional-component>
+```
+
+对于这个组件，`children` 会给你两个段落标签，而 `slots().default` 只会传递第二个匿名段落标签——`slots().foo` 会传递第一个具名段落标签。同时拥有 `children` 和 `slots()`意味着你可以选择让组件感知某个插槽机制，亦或是简单地通过传递 `children`移交给其它组件去处理。
+
+### 4.15 注意事项
+
+有些 HTML 元素对于哪些元素可以出现在其内部是有严格限制的，如 `<ul>`、`<ol>`、`<table>` 和 `<select>`；而有些元素，如 `<li>`、`<tr>` 和 `<option>`，只能出现在其它某些特定的元素内部。这会导致我们使用这些有约束条件的元素时遇到一些问题，例如：
+
+```html
+<table>
+  <blog-post-row></blog-post-row>
+</table>
+```
+
+这个自定义组件 `<blog-post-row>` 会被作为无效的内容提升到外部，并导致最终渲染结果出错。
+
+幸好前述特殊的 `is` attribute 给了我们一个变通的办法：
+
+```html
+<table>
+  <tr is="blog-post-row"></tr>
+</table>
+```
+
+不过，如果我们从以下来源使用模板的话，这条限制是不存在的：
+
+- 字符串 (例如：`template: '...'`)
+- [单文件组件 (`.vue`)](https://cn.vuejs.org/v2/guide/single-file-components.html)
+- [`<script type="text/x-template">`](https://cn.vuejs.org/v2/guide/components-edge-cases.html#X-Templates)
+
+## 5. 混入
+
+......作用是什么？
+
+## 6. 插件
+
+插件通常用来为 Vue 添加全局功能。插件的功能范围没有严格的限制，一般有下面几种：
+
+1. 添加全局方法或者 property。如：[vue-custom-element](https://github.com/karol-f/vue-custom-element)
+2. 添加全局资源：指令/过滤器/过渡等。如 [vue-touch](https://github.com/vuejs/vue-touch)
+3. 通过全局混入来添加一些组件选项。如 [vue-router](https://github.com/vuejs/vue-router)
+4. 添加 Vue 实例方法，通过把它们添加到 `Vue.prototype` 上实现。
+5. 一个库，提供自己的 API，同时提供上面提到的一个或多个功能。如 [vue-router](https://github.com/vuejs/vue-router)
+
+### 6.1 使用插件
+
+插件通过全局方法 `Vue.use()` 来使用，且需要在你调用 `new Vue()` 启动应用之前完成：
+
+```js
+// 调用 `MyPlugin.install(Vue)`
+Vue.use(MyPlugin)
+
+new Vue({
+  // ...组件选项
+})
+```
+
+也可以传入一个可选的选项对象：
+
+```js
+Vue.use(MyPlugin, { someOption: true })
+```
+
+> `Vue.use` 会自动阻止多次注册相同插件，届时即使多次调用也只会注册一次该插件。
+
+Vue.js 官方提供的一些插件 (如 `vue-router`) 在检测到 `Vue` 是可访问的全局变量时会自动调用 `Vue.use()`，然而在像 CommonJS 这样的模块环境中，依旧应该始终显式地调用 `Vue.use()`：
+
+```js
+// 用 Browserify 或 webpack 提供的 CommonJS 模块环境时
+var Vue = require('vue')
+var VueRouter = require('vue-router')
+
+// 不要忘了调用此方法
+Vue.use(VueRouter)
+```
+
+[awesome-vue](https://github.com/vuejs/awesome-vue#components--libraries) 集合了大量由社区贡献的插件和库。
+
+### 6.2 开发插件
+
+Vue.js 的插件应该暴露一个 `install` 方法，该方法的第一个参数是 `Vue` 构造器，第二个参数是一个可选的选项对象：
+
+```js
+MyPlugin.install = function (Vue, options) {
+  // 1. 添加全局方法或 property
+  Vue.myGlobalMethod = function () {
+    // 逻辑...
+  }
+
+  // 2. 添加全局资源
+  Vue.directive('my-directive', {
+    bind (el, binding, vnode, oldVnode) {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 3. 注入组件选项
+  Vue.mixin({
+    created: function () {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 4. 添加实例方法
+  Vue.prototype.$myMethod = function (methodOptions) {
+    // 逻辑...
+  }
+}
+```
+
+## 7. 过滤器
+
+Vue.js 允许自定义过滤器，可用于一些常见的文本格式化。
+
+过滤器可以用在两个地方：**双花括号插值和 `v-bind` 表达式**。过滤器应该被添加在 JavaScript 表达式的尾部，由“管道”符号指示：
+
+```html
+<!-- 在双花括号中 -->
+{{ message | capitalize }}
+
+<!-- 在 `v-bind` 中 -->
+<div v-bind:id="rawId | formatId"></div>
+```
+
+过滤器可以串联：
+
+```
+{{ message | filterA | filterB }}
+```
+
+在这个例子中，`filterA` 被定义为接收单个参数的过滤器函数，表达式 `message` 的值将作为参数传入到函数中。然后继续调用同样被定义为接收单个参数的过滤器函数 `filterB`，将 `filterA` 的结果传递到 `filterB` 中。
+
+### 定义过滤器
+
+可以在一个组件的选项中定义**本地过滤器**：
+
+```js
+filters: {
+  capitalize: function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  }
+}
+```
+
+或者在创建 Vue 实例之前定义**全局过滤器**：
+
+```js
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
+
+new Vue({
+  // ...
+})
+```
+
+当全局过滤器和局部过滤器重名时，会采用局部过滤器。
+
+过滤器是 JavaScript 函数，且过滤器函数总接收表达式的值 (之前的操作链的结果) 作为第一个参数，此外它还可以接收额外的参数：
+
+```
+{{ message | filterA('arg1', arg2) }}
+```
+
+> 这里，`filterA` 被定义为接收三个参数的过滤器函数。其中 `message` 的值作为第一个参数，普通字符串 `'arg1'` 作为第二个参数，表达式 `arg2` 的值作为第三个参数。
+
+## 8. 单文件组件
 
