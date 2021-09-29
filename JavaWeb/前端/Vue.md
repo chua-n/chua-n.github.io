@@ -2891,7 +2891,28 @@ Vue.component('my-functional-button', {
 
 对于这个组件，`children` 会给你两个段落标签，而 `slots().default` 只会传递第二个匿名段落标签——`slots().foo` 会传递第一个具名段落标签。同时拥有 `children` 和 `slots()`意味着你可以选择让组件感知某个插槽机制，亦或是简单地通过传递 `children`移交给其它组件去处理。
 
-### 4.15 注意事项
+### 4.15 单文件组件
+
+文件扩展名为 `.vue` 的 **single-file components (单文件组件)** 可以获得：
+
+- [完整语法高亮](https://github.com/vuejs/awesome-vue#source-code-editing)
+- [CommonJS 模块](https://webpack.js.org/concepts/modules/#what-is-a-webpack-module)
+- [组件作用域的 CSS](https://vue-loader.vuejs.org/zh-cn/features/scoped-css.html)
+
+此外，它还可以使用 webpack 或 Browserify 等构建工具，以及可以使用预处理器来构建简洁和功能更丰富的组件，比如 Pug，Babel (with ES2015 modules)、 Stylus。
+
+即便你不喜欢单文件组件，你也可以把 JavaScript、CSS 分离成独立的文件然后做到热重载和预编译。
+
+```html
+<!-- my-component.vue -->
+<template>
+  <div>This will be pre-compiled</div>
+</template>
+<script src="./my-component.js"></script>
+<style src="./my-component.css"></style>
+```
+
+### 4.16 注意事项
 
 有些 HTML 元素对于哪些元素可以出现在其内部是有严格限制的，如 `<ul>`、`<ol>`、`<table>` 和 `<select>`；而有些元素，如 `<li>`、`<tr>` 和 `<option>`，只能出现在其它某些特定的元素内部。这会导致我们使用这些有约束条件的元素时遇到一些问题，例如：
 
@@ -3059,5 +3080,248 @@ new Vue({
 
 > 这里，`filterA` 被定义为接收三个参数的过滤器函数。其中 `message` 的值作为第一个参数，普通字符串 `'arg1'` 作为第二个参数，表达式 `arg2` 的值作为第三个参数。
 
-## 8. 单文件组件
+## 8. 状态管理
+
+Vue 应用中原始 `data` 对象的实际来源经常被忽略——当访问数据对象时，一个 Vue 实例只是简单的代理访问。这导致了，如果你有一处需要被多个实例间共享的状态，那么可以很简单地通过维护一份数据来实现共享：
+
+```js
+var sourceOfTruth = {}
+
+var vmA = new Vue({
+  data: sourceOfTruth
+})
+
+var vmB = new Vue({
+  data: sourceOfTruth
+})
+```
+
+> 现在当 `sourceOfTruth` 发生变更，`vmA` 和 `vmB` 都将自动地更新它们的视图。子组件们的每个实例也会通过 `this.$root.$data` 去访问。
+
+然而，这对调试来说将会造成噩梦——任何时间，应用中的任何部分，在任何数据改变之后，都不会留下变更的痕迹。
+
+为了解决这个问题，Vue提供了一个简单的 **store 模式**：
+
+```js
+var store = {
+  debug: true,
+  state: {
+    message: 'Hello!'
+  },
+  setMessageAction (newValue) {
+    if (this.debug) console.log('setMessageAction triggered with', newValue)
+    this.state.message = newValue
+  },
+  clearMessageAction () {
+    if (this.debug) console.log('clearMessageAction triggered')
+    this.state.message = ''
+  }
+}
+```
+
+现在所有 store 中 state 的变更，都放置在 store 自身的 action 中去管理。这种集中式状态管理更易理解将会发生哪种类型的变更，以及它们是如何被触发的，当错误出现时，也会有一个 log 记录 bug 之前发生了什么。
+
+此外，每个实例/组件仍然可以拥有和管理自己的私有状态：
+
+```js
+var vmA = new Vue({
+  data: {
+    privateState: {},
+    sharedState: store.state
+  }
+})
+
+var vmB = new Vue({
+  data: {
+    privateState: {},
+    sharedState: store.state
+  }
+})
+```
+
+![状态管理](https://cn.vuejs.org/images/state.png)
+
+> 注意你不应该在 action 中 替换原始的状态对象 ——组件和 store 需要引用同一个共享对象，更改才能够被观察到。
+
+组件不允许直接变更属于 store 实例的 state，而应执行 action 来分发 (dispatch) 事件从而通知 store 去改变。这样的好处是我们能够记录所有 store 中发生的 state 变更，同时实现能做到记录变更、保存状态快照、历史回滚的先进的调试工具。
+
+## 9. 路由
+
+对于大多数**单页面应用**，都推荐使用官方支持的 [vue-router 库](https://github.com/vuejs/vue-router)。
+
+Vue Router 是 [Vue.js (opens new window)](http://cn.vuejs.org/)官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单页面应用变得易如反掌，Vue Router主要包含功能：
+
+- 嵌套的路由/视图表
+- 模块化的、基于组件的路由配置
+- 路由参数、查询、通配符
+- 基于 Vue.js 过渡系统的视图过渡效果
+- 细粒度的导航控制
+- 带有自动激活的 CSS class 的链接
+- HTML5 历史模式或 hash 模式，在 IE9 中自动降级
+- 自定义的滚动条行为
+
+### 9.1 路由示例
+
+基于 Vue.js 已经可以通过组合组件来组成一个应用程序，而当把 Vue Router 添加进来，从结构上要做的便是：
+
+1. 将组件 (components) 映射到路由 (routes)
+2. 告诉 Vue Router 在哪里渲染组件
+
+简单的路由示例：
+
+- html
+
+    ```html
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    
+    <div id="app">
+      <h1>Hello App!</h1>
+      <p>
+        <!-- 使用 router-link 组件来导航：<router-link> 默认会被渲染成一个 `<a>` 标签 -->
+        <!-- 通过传入 `to` 属性指定链接. -->
+        <router-link to="/foo">Go to Foo</router-link>
+        <router-link to="/bar">Go to Bar</router-link>
+      </p>
+      <!-- 路由出口：路由匹配到的组件将渲染在这里 -->
+      <router-view></router-view>
+    </div>
+    ```
+
+- js
+
+    ```js
+    // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
+    
+    // 1. 定义组件
+    const Foo = { template: '<div>foo</div>' }
+    const Bar = { template: '<div>bar</div>' }
+    
+    // 2. 定义路由
+    // 每个路由应该映射一个组件。其中"component" 可以是通过 Vue.extend() 创建的组件构造器，
+    // 或者，只是一个组件配置对象（关于嵌套路由的内容会在之后讨论）。
+    const routes = [
+      { path: '/foo', component: Foo },
+      { path: '/bar', component: Bar }
+    ]
+    
+    // 3. 创建 VueRouter 的实例，其中传入 `routes` 配置
+    const router = new VueRouter({
+      routes // (缩写) 相当于 routes: routes
+    })
+    
+    // 4. 创建和挂载根实例
+    // 需要通过 router 参数注入路由，从而让整个应用都有路由功能
+    const app = new Vue({
+      router
+    }).$mount('#app')
+    
+    // 现在，应用已经启动了！
+    ```
+
+- Home.vue
+
+    ```js
+    // Home.vue
+    export default {
+      computed: {
+        username() {
+          return this.$route.params.username
+        }
+      },
+      methods: {
+        goBack() {
+          window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+        }
+      }
+    }
+    ```
+
+通过注入路由器，我们可以在任何组件内通过 `this.$router` 访问路由器，也可以通过 `this.$route` 访问当前路由。
+
+当 `<router-link>` 对应的路由匹配成功，将自动设置其 class 属性值 `.router-link-active`
+
+> 注意， `this.$router` 和 `router` 使用起来完全一样。
+>
+> Vue文档中使用 `this.$router` 的原因是避免在每个独立需要封装路由的组件中都导入路由。
+>
+> ？？？？？？
+
+### `$route`对象
+
+除了 `$route.params` 外，`$route` 对象还提供了其它有用的信息，例如，`$route.query` (如果 URL 中有查询参数)、`$route.hash` 等等。你可以查看 [API 文档](https://router.vuejs.org/zh/api/#路由对象) 的详细说明。
+
+### 9.2 动态路由
+
+有些路由可能对应于同一种模式，需要全部映射到同个组件。例如，假设有一个 `User` 组件，对于所有 ID 各不相同的用户都要使用这个组件来渲染，那就可以在 `vue-router` 的路由路径中使用“动态路径参数”来达到这个效果：
+
+```js
+const User = {
+  template: '<div>User</div>'
+}
+
+const router = new VueRouter({
+  routes: [
+    // 动态路径参数以冒号开头
+    { path: '/user/:id', component: User }
+  ]
+})
+// 此时像 `/user/foo` 和 `/user/bar` 都将映射到相同的路由。
+```
+
+路径参数：
+
+- 一个“路径参数”使用冒号 `:` 标记，当匹配到一个路由时，参数值会被设置到 `this.$route.params`，它可以在每个组件内使用。
+
+- 可以在一个路由中设置多段“路径参数”，对应的值都会设置到 `$route.params` 中，如：
+
+    | 模式                          | 匹配路径            | $route.params                          |
+    | ----------------------------- | ------------------- | -------------------------------------- |
+    | /user/:username               | /user/evan          | `{ username: 'evan' }`                 |
+    | /user/:username/post/:post_id | /user/evan/post/123 | `{ username: 'evan', post_id: '123' }` |
+
+- 在动态路径中当路由参数切换时，原来的组件实例会被复用，例如从 `/user/foo` 导航到 `/user/bar`。因为两个路由都渲染同个组件，比起销毁再创建，复用则显得更加高效，但与此同时这也意味着组件的生命周期钩子不会被再次调用。
+
+    - 复用组件时，想对路由参数的变化作出响应的话，可以 watch  `$route` 对象：
+
+        ```js
+        const User = {
+          template: '...',
+          watch: {
+            $route(to, from) {
+              // 对路由变化作出响应...
+            }
+          }
+        }
+        ```
+
+    - 或者使用 `beforeRouteUpdate` 导航守卫：
+
+        ```js
+        const User = {
+          template: '...',
+          beforeRouteUpdate(to, from, next) {
+            // react to route changes...
+            // don't forget to call next()
+          }
+        }
+        ```
+
+- 路径参数也可以使用通配符`*`，此时，`$route.params` 内会添加一个名为 `pathMatch` 参数，其包含了 URL 通过通配符被匹配的部分：
+
+    ```js
+    // 给出一个路由 { path: '/user-*' }
+    this.$router.push('/user-admin')
+    this.$route.params.pathMatch // 'admin'
+    
+    // 给出一个路由 { path: '*' }
+    this.$router.push('/non-existing')
+    this.$route.params.pathMatch // '/non-existing'
+    ```
+
+- `vue-router` 使用 [path-to-regexp](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0)作为路径匹配引擎，因还支持很多高级的匹配模式
+
+- 同一个路径可以匹配多个路由，此时匹配的优先级按照路由的定义顺序：定义越早，优先级越高。
+
+### 9.3 嵌套路由
 
