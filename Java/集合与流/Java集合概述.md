@@ -327,18 +327,18 @@ Map也被称为字典/关联数组，Map接口中定义了如下常用的方法�
 
 Java 8为Map还增加了如下的特殊方法（待续）：
 
-| 方法                                                         | 作用 |
-| ------------------------------------------------------------ | ---- |
-| Object  compute(Object key, BiFunction remappingFunction)    |      |
-| Object  computeIfAbsent(Object key, Function mappingFunction) |      |
-| Object  computeIfPresent(Object key, BiFunction remappingFunction) |      |
-| void  forEach(BiConsumer action)                             |      |
-| Object  getOrDefault(Object key, V defaultValue)             |      |
-| Object  merge(Object key, Object value, BiFunction remappingFunction) |      |
-| Object  putIfAbsent(Object key, Object value)                |      |
-| Object  replace(Object key, Object value)                    |      |
-| boolean  replace(K key, V oldValue, V newValue)              |      |
-| replaceAll(BiFunction  function)                             |      |
+| 方法                                                         | 作用                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------- |
+| Object  compute(Object key, BiFunction remappingFunction)    |                                                         |
+| Object  computeIfAbsent(Object key, Function mappingFunction) |                                                         |
+| Object  computeIfPresent(Object key, BiFunction remappingFunction) |                                                         |
+| void  forEach(BiConsumer action)                             |                                                         |
+| Object  getOrDefault(Object key, V defaultValue)             | 如果key存在，就使用获取其对应的值，否则返回defaultValue |
+| Object  merge(Object key, Object value, BiFunction remappingFunction) |                                                         |
+| Object  putIfAbsent(Object key, Object value)                |                                                         |
+| Object  replace(Object key, Object value)                    |                                                         |
+| boolean  replace(K key, V oldValue, V newValue)              |                                                         |
+| replaceAll(BiFunction  function)                             |                                                         |
 
 ### 3.4 Map的内部类——Entry
 
