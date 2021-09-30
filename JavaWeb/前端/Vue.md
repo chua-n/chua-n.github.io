@@ -268,7 +268,7 @@ var watchExampleVM = new Vue({
 
 在上述示例中，使用 `watch` 选项允许我们执行异步操作 (访问一个 API)，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
 
-除了 `watch` 选项之外，还可以使用命令式的 [vm.$watch API](https://cn.vuejs.org/v2/api/#vm-watch)。
+除了 `watch` 选项之外，还可以使用命令式的 [`vm.$watch API`](https://cn.vuejs.org/v2/api/#vm-watch)。
 
 ### 2.4 `render`函数
 
