@@ -692,6 +692,7 @@ body {
 .markdown-section em {
   color: #7f8c8d;
 }
+code,
 .markdown-section code,
 .markdown-section output:after,
 .markdown-section pre {
