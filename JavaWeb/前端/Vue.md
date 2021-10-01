@@ -3247,7 +3247,7 @@ Vue Router 是 [Vue.js ](http://cn.vuejs.org/)官方的路由管理器。它和 
 >
 > ？？？？？？
 
-### \$route对象
+#### \$route对象
 
 除了 `$route.params` 外，`$route` 对象还提供了其它有用的信息，例如，`$route.query` (如果 URL 中有查询参数)、`$route.hash` 等等。你可以查看 [API 文档](https://router.vuejs.org/zh/api/#路由对象) 的详细说明。
 
@@ -3710,4 +3710,528 @@ const router = new VueRouter({
 不过要玩好 history 模式的话，还需要后台配置支持。
 
 ### 9.10 导航守卫
+
+> 所谓导航，表示路由正在发生改变。
+
+`vue-router` 提供的导航守卫主要用来通过跳转或取消的方式来守卫导航。
+
+每个守卫方法接收三个参数：
+
+- **`to: Route`**: 即将要进入的目标路由对象；
+- **`from: Route`**: 当前导航正要离开的路由；
+- **`next: Function`**: 必须调用`next`方法来解析这个(`Function`?)钩子，执行效果依赖 `next` 方法的调用参数：
+    - `next()`: 进行管道中的下一个钩子。如果全部钩子都执行完了，导航的状变为 confirmed。
+    - `next(false)`: 中断当前导航。如果浏览器的 URL 改变了，那么 URL 地址会重置到 `from` 路由对应的地址。
+    - `next('/')` 或 `next({ path: '/' })`: 跳转到一个不同的地址——当前的导航被中断，然后进行一个新的导航。你可以向 `next` 传递任意位置对象，且允许设置诸如 `replace: true`、`name: 'home'` 之类的选项以及任何用在 `router-link` 的 `to` prop或 `router.push`中的选项。
+    - `next(error)`: 如果参数是一个 `Error` 实例，导航会被终止且该错误会被传递给 [`router.onError()`](https://router.vuejs.org/zh/api/#router-onerror) 注册过的回调。
+
+在使用过程中应该确保 `next` 函数在任何给定的导航守卫中都被严格调用一次，否则钩子永远都不会被解析或报错。但在所有的逻辑路径都不重叠的情况下，`next`也可以出现多次。
+
+参数或查询的改变并不会触发进入/离开的导航守卫，这些变化可以通过[观察 `$route` 对象](https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#响应路由参数的变化)来应对，也可以使用 `beforeRouteUpdate` 的组件内守卫。
+
+导航守卫植入路由导航过程中的方式可以是：全局的、单个路由独享的、组件级的。
+
+#### 9.10.1 全局导航守卫
+
+##### 全局前置守卫
+
+可以使用 `router.beforeEach` 注册一个全局前置守卫：
+
+```js
+const router = new VueRouter({ ... })
+
+router.beforeEach((to, from, next) => {
+  // ...
+})
+```
+
+当一个导航触发时，全局前置守卫按照创建顺序调用。由于导航守卫是异步解析执行的，故而此时的导航在所有守卫解析完之前一直处于等待中。
+
+这里是一个在用户未能验证身份时重定向到 `/login` 的示例：
+
+```js
+// bad
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+  // 如果用户未能验证身份，则 `next` 会被调用两次
+  next()
+})
+
+// good
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+  else next()
+})
+```
+
+##### 全局解析守卫
+
+`router.beforeResolve` 和 `router.beforeEach` 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫`router.beforeResolve`就被调用。
+
+##### 全局后置钩子
+
+也可以注册全局后置钩子，不过和守卫不同的是，这些钩子不会接受 `next` 函数也不会改变导航本身：
+
+```js
+router.afterEach((to, from) => {
+  // ...
+})
+```
+
+#### 9.10.2 路由独享的守卫
+
+可以在路由配置上直接定义 `beforeEnter` 守卫：
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      beforeEnter: (to, from, next) => {
+        // ...
+      }
+    }
+  ]
+})
+```
+
+这个守卫与全局前置守卫的方法参数是一样的。
+
+#### 9.10.3 组件内的守卫
+
+可以在**路由组件内**直接定义以下导航守卫：
+
+- `beforeRouteEnter`
+- ``beforeRouteUpdate``
+- `beforeRouteLeave`
+
+```js
+const Foo = {
+  template: `...`,
+  beforeRouteEnter(to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+  },
+    
+  beforeRouteUpdate(to, from, next) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+  },
+    
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+  }
+}
+```
+
+`beforeRouteEnter` 守卫不能访问 `this`，因为守卫在导航确认前被调用，因此即将登场的新组件还没被创建。不过可以通过传一个回调给 `next`来访问组件实例，即在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
+
+```js
+beforeRouteEnter (to, from, next) {
+  next(vm => {
+    // 通过 `vm` 访问组件实例
+  })
+}
+```
+
+注意 `beforeRouteEnter` 是支持给 `next` 传递回调的唯一守卫。对于 `beforeRouteUpdate` 和 `beforeRouteLeave` 来说，`this` 已经可用了，所以Vue设定它们不支持传递回调。
+
+`beforeRouteLeave`守卫通常用来禁止用户在还未保存修改前突然离开，该导航可以通过 `next(false)` 来取消。
+
+```js
+beforeRouteLeave (to, from, next) {
+  const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+  if (answer) {
+    next()
+  } else {
+    next(false)
+  }
+}
+```
+
+#### 9.10.4 导航解析流程
+
+完整的导航解析流程：
+
+1. 导航被触发。
+2. 在失活的组件里调用 `beforeRouteLeave` 守卫。
+3. 调用全局的 `beforeEach` 守卫。
+4. 在重用的组件里调用 `beforeRouteUpdate` 守卫。
+5. 在路由配置里调用 `beforeEnter`。
+6. 解析异步路由组件。
+7. 在被激活的组件里调用 `beforeRouteEnter`。
+8. 调用全局的 `beforeResolve` 守卫。
+9. 导航被确认。
+10. 调用全局的 `afterEach` 钩子。
+11. 触发 DOM 更新。
+12. 调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数——创建好的组件实例会作为回调函数的参数传入。
+
+### 9.11 路由元信息
+
+通常称 `routes` 配置中的每个路由对象为 **路由记录**。路由记录可以是嵌套的，因此当一个路由匹配成功后，它可能匹配多个路由记录，一个路由匹配到的所有路由记录会暴露为 `$route` 对象的 `$route.matched` 数组。
+
+> 例如，根据下面的路由配置，`/foo/bar` 这个 URL 将会匹配父路由记录以及子路由记录。
+
+定义路由的时候可以配置 `meta` 字段：
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      children: [
+        {
+          path: 'bar',
+          component: Bar,
+          // a meta field
+          meta: { requiresAuth: true }
+        }
+      ]
+    }
+  ]
+})
+```
+
+通过遍历 `$route.matched` 可以获取路由记录中的 `meta` 字段。下例示意了在全局导航守卫中检查元字段：
+
+```js
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!auth.loggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 确保一定要调用 next()
+  }
+})
+```
+
+### 9.12 路由过渡动效
+
+`<router-view>` 是基本的动态组件，可以用 `<transition>` 组件给它添加一些过渡效果：
+
+```html
+<transition>
+  <router-view></router-view>
+</transition>
+```
+
+[Transition 的所有功能](https://cn.vuejs.org/guide/transitions.html)在这里同样适用。
+
+上面的写法会给所有路由设置一样的过渡效果，如果需要让每个路由组件有各自的过渡效果，可以在各路由组件内使用 `<transition>` 并设置不同的 name：
+
+```js
+const Foo = {
+  template: `
+    <transition name="slide">
+      <div class="foo">...</div>
+    </transition>
+  `
+}
+
+const Bar = {
+  template: `
+    <transition name="fade">
+      <div class="bar">...</div>
+    </transition>
+  `
+}
+```
+
+此外，还可以基于当前路由与目标路由的变化关系，动态设置过渡效果：
+
+```html
+<!-- 使用动态的 transition name -->
+<transition :name="transitionName">
+  <router-view></router-view>
+</transition>
+// 接着在父组件内
+// watch $route 决定使用哪种过渡
+watch: {
+  '$route' (to, from) {
+    const toDepth = to.path.split('/').length
+    const fromDepth = from.path.split('/').length
+    this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+  }
+}
+```
+
+### 9.13 数据获取
+
+有时候，进入某个路由后需要从服务器获取数据，这可以通过两种方式来实现：
+
+- 导航完成之后获取：先完成导航，然后在接下来的组件生命周期钩子中获取数据，在数据获取期间显示“加载中”之类的提示。
+- 导航完成之前获取：导航完成前，在路由进入的守卫中获取数据，在数据获取成功后执行导航。
+
+> 从技术角度讲，两种方式都没什么问题，主要取决于希望的用户体验是哪种。
+
+#### 9.13.1 导航完成之后获取
+
+这种方式会马上导航和渲染组件，然后在组件的 `created` 钩子中获取数据，因而通常在数据获取期间展示一个 loading 状态，同时还可以在不同视图间展示不同的 loading 状态。
+
+例如，假设有一个 `Post` 组件需要基于 `$route.params.id` 获取文章数据：
+
+```js
+<template>
+  <div class="post">
+    <div v-if="loading" class="loading">
+      Loading...
+    </div>
+
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+
+    <div v-if="post" class="content">
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.body }}</p>
+    </div>
+  </div>
+</template>
+export default {
+  data () {
+    return {
+      loading: false,
+      post: null,
+      error: null
+    }
+  },
+  created () {
+    // 组件创建完后获取数据，
+    // 此时 data 已经被 observed 了
+    this.fetchData()
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'fetchData'
+  },
+  methods: {
+    fetchData () {
+      this.error = this.post = null
+      this.loading = true
+      // replace getPost with your data fetching util / API wrapper
+      getPost(this.$route.params.id, (err, post) => {
+        this.loading = false
+        if (err) {
+          this.error = err.toString()
+        } else {
+          this.post = post
+        }
+      })
+    }
+  }
+}
+```
+
+#### 9.13.2 导航完成之前获取
+
+这种方式在导航转入新的路由前获取数据，通常在接下来的组件的 `beforeRouteEnter` 守卫中获取，当数据获取成功后只调用 `next` 方法。
+
+例如：
+
+```js
+export default {
+  data () {
+    return {
+      post: null,
+      error: null
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    getPost(to.params.id, (err, post) => {
+      next(vm => vm.setData(err, post))
+    })
+  },
+  // 路由改变前，组件就已经渲染完了
+  // 逻辑稍稍不同
+  beforeRouteUpdate (to, from, next) {
+    this.post = null
+    getPost(to.params.id, (err, post) => {
+      this.setData(err, post)
+      next()
+    })
+  },
+  methods: {
+    setData (err, post) {
+      if (err) {
+        this.error = err.toString()
+      } else {
+        this.post = post
+      }
+    }
+  }
+}
+```
+
+在为后面的视图获取数据时，用户会停留在当前的界面，因此建议在数据获取期间，显示一些进度条或者别的指示。如果数据获取失败，同样有必要展示一些全局的错误提醒。
+
+### 9.14 滚动行为
+
+在前端路由中当切换到新路由时，可以选择让页面滚到顶部/保持原先的滚动位置， `vue-router` 能更好地让你可以自定义路由切换时页面的滚动设置。
+
+> 不过这个功能只在支持 `history.pushState` 的浏览器中可用。
+
+具体而言，Vue Router 通过通过`VueRouter`实例的`scrollBehavior` 方法来控制滚动行为：
+
+```js
+const router = new VueRouter({
+  routes: [...],
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+  }
+})
+```
+
+`scrollBehavior` 方法：
+
+-  `to` ：路由对象
+-  `from` ：路由对象
+-  `savedPosition`： 当且仅当 `popstate` 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。
+- 返回值：返回滚动位置的对象信息，类似这样：
+    - `{ x: number, y: number }`
+    - ``{ selector: string, offset? : { x: number, y: number }}` 
+    - 如果返回一个 falsy 的值或一个空对象，那么不会发生滚动。
+
+示例：
+
+- 对于所有路由导航，简单地让页面滚动到顶部：
+
+    ```js
+    scrollBehavior (to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    }
+    ```
+
+- 模拟“滚动到锚点”的行为：
+
+    ```js
+    scrollBehavior (to, from, savedPosition) {
+      if (to.hash) {
+        return {
+          selector: to.hash
+        }
+      }
+    }
+    ```
+
+- 其实还可以利用[路由元信息](https://router.vuejs.org/zh/guide/advanced/meta.html)更细粒度地控制滚动，查看完整例子请[移步这里](https://github.com/vuejs/vue-router/blob/dev/examples/scroll-behavior/app.js)。
+
+#### 异步滚动
+
+可以返回一个 Promise 来得出预期的位置描述：
+
+```js
+scrollBehavior (to, from, savedPosition) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ x: 0, y: 0 })
+    }, 500)
+  })
+}
+```
+
+可以将上面的`scrollBehavior`挂载到从页面级别的过渡组件的事件上，令其滚动行为和页面过渡一起执行。不过考虑到用例的多样性和复杂性，Vue Router仅提供这个原始的接口，以支持不同用户场景的具体实现。
+
+#### 平滑滚动
+
+只需将 `behavior` 选项添加到 `scrollBehavior` 内部返回的对象中，就可以为支持它的浏览器启用原生平滑滚动：
+
+```js
+scrollBehavior (to, from, savedPosition) {
+  if (to.hash) {
+    return {
+      selector: to.hash,
+      behavior: 'smooth',
+    }
+  }
+}
+```
+
+### 9.15 路由懒加载
+
+当打包构建应用时，JavaScript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
+
+这可以通过结合 Vue 的[异步组件](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#异步组件)和 Webpack 的[代码分割功能](https://doc.webpack-china.org/guides/code-splitting-async/#require-ensure-/)来轻松实现路由组件的懒加载：
+
+1. 将异步组件定义为返回一个 Promise 的工厂函数 (该函数返回的 Promise 应该 resolve 组件本身)：
+
+    ```js
+    const Foo = () =>
+      Promise.resolve({
+        /* 组件定义对象 */
+      })
+    ```
+
+2. 在 Webpack 2 中，我们可以使用[动态 import](https://github.com/tc39/proposal-dynamic-import)语法来定义代码分块点 (split point)：
+
+    ```js
+    import('./Foo.vue') // 返回 Promise
+    ```
+
+综合来看，以下便定义了一个能够被 Webpack 自动代码分割的异步组件：
+
+```js
+const Foo = () => import('./Foo.vue')
+```
+
+与此同时在路由配置中是任何都不需要改变的，只要像往常一样使用 `Foo`即可：
+
+```js
+const router = new VueRouter({
+  routes: [{ path: '/foo', component: Foo }]
+})
+```
+
+### 9.16 导航故障
+
+导航故障是一个 `Error` 实例，但附带了一些额外的属性。
+
+要检查一个错误是否来自于路由器，可以使用 `isNavigationFailure` 函数：
+
+```js
+import VueRouter from 'vue-router'
+const { isNavigationFailure, NavigationFailureType } = VueRouter
+
+// 正在尝试访问 admin 页面
+router.push('/admin').catch(failure => {
+  if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
+    // 向用户显示一个小通知
+    showToast('Login in order to access the admin panel')
+  }
+})
+```
+
+> 如果你忽略第二个参数——`isNavigationFailure(failure)`，那么就只会检查这个错误是不是一个*导航故障*。
+
+`NavigationFailureType` 可以帮助开发者来区分不同类型的导航故障，它有4种不同的类型：
+
+- `redirected`：在导航守卫中调用了 `next(newLocation)` 重定向到了其他地方。
+- `aborted`：在导航守卫中调用了 `next(false)` 中断了本次导航。
+- `cancelled`：在当前导航还没有完成之前又有了一个新的导航。比如，在等待导航守卫的过程中又调用了 `router.push`。
+- `duplicated`：导航被阻止，因为我们已经在目标位置了。
+
+所有的导航故障都会有 `to` 和 `from` 属性，分别表示这次失败的导航的目标位置和当前位置：
+
+```js
+// 正在尝试访问 admin 页面
+router.push('/admin').catch(failure => {
+  if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
+    failure.to.path // '/admin'
+    failure.from.path // '/'
+  }
+})
+```
 
