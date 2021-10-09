@@ -532,7 +532,7 @@ a[target] {
 }
 ```
 
-下例选取所有带有 target="_blank" 属性的 <a> 元素：
+下例选取所有带有 target="_blank" 属性的 `<a>` 元素：
 
 ```css
 a[target="_blank"] { 

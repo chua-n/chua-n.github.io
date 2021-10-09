@@ -9,16 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 
     <!-- 配置主题 -->
-    <!-- <link
-            rel="stylesheet"
-            href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
-        /> -->
-    <link rel="stylesheet" href="resources/themes/themes-vue.css" />
+    <link rel="stylesheet" href="resources/css/themes/themes-vue.css" />
 
     <!-- 折叠样式为文件夹目录形式 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
-    
+
+    <!-- 引入自定义css -->
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
     <link rel="stylesheet" href="resources/css/mySytle.css" />
+    <link rel="stylesheet" href="resources/css/codeColor.css" />
 
     <!-- 解决页面不能滚动的bug：来自 
             https://github.com/RamblerW/python3/commit/db60d90fda58e57aec71d6bf6f0e177d0d4823c6 
@@ -48,9 +47,10 @@
             relativePath: false, // 启用相对路径，默认为false
             coverpage: true, // 启用封面页：默认加载 _coverpage.md 文件，也可以自定义文件名
             onlyCover: true, // 封面单独成页，与主页不共享页面
-            // themeColor: "#3F51B5", // 替换主题色
+            themeColor: "#6a005f", // 替换主题色
             // logo: "https://chua-n.gitee.io/blog-images/avatar.png",
             topMargin: 0, // default: 0
+            // routerMode: "history", // default: "hash"
 
             // 开启侧边栏
             // 侧边栏开启后默认不会再生成目录，可以通过设置生成目录的最大层级再次开启这个功能
@@ -134,9 +134,9 @@
     <!-- gitalk评论：开启后会影响其他功能有诸多小bug，暂时关闭了。 -->
     <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script> -->
     <!-- 以本地改写的资源替换上述js -->
-    <!-- <script src="resources/plugins-gitalk.min.js"></script>
+    <!-- <script src="resources/js/plugins-gitalk.min.js"></script>
         <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-        <script src="resources/md5.min.js"></script>
+        <script src="resources/js/md5.min.js"></script>
         <script>
             const gitalk = new Gitalk({
                 clientID: "0677de831ba15682dc35",
