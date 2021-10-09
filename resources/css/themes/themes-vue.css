@@ -57,7 +57,7 @@ body {
   color: #555555;
   font-family: Noto Serif SC, PingFang SC, 华文中宋, 思源宋体, Source Sans Pro,
     Helvetica Neue, Arial, sans-serif;
-  font-size: 15px;
+  font-size: 16.5px;
   letter-spacing: 0;
   margin: 0;
   overflow-x: hidden;
@@ -667,7 +667,7 @@ body {
 .markdown-section ol,
 .markdown-section p,
 .markdown-section ul {
-  line-height: 1.6rem;
+  line-height: 2;
   word-spacing: 0.05rem;
 }
 /* .markdown-section ol,
@@ -725,7 +725,7 @@ code,
   white-space: pre-wrap;
 }
 .markdown-section > :not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) code {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 .markdown-section pre {
   line-height: 1.5rem;
