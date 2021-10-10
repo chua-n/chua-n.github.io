@@ -145,5 +145,35 @@ Connection: keep-alive
 </html>
 ```
 
+## 4. HTTP Header
 
+要理解HTTP，最重要的就是要熟悉HTTP中的HTTP Header，Http Header控制着互联网上成千上万的用户的数据的传输。常见的如：
 
+| 常见的HTTP请求头 | 说明                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| Accept-Charset   | 用于指定客户端接受的字符集                                   |
+| Accept-Encoding  | 用于指定可接受的内容编码，如Accept-Encoding:gzip.deflate     |
+| Accept-Language  | 用于指定一种自然语言，如Accept-Language:zh-cn                |
+| Host             | 用于指定被请求资源的Internet主机和端口号，如Host:www.taobao.com |
+| User-Agent       | 客户端将它的操作系统、浏览器和其他属性告诉服务器             |
+| Connection       | 当前连接是否保持，如Connection: Keep-Alive                   |
+
+| 常见的HTTP响应头 | 说明                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| Server           | 使用的服务器名称，如Server: Apache/1.3.6(Unix)               |
+| Content-Type     | 用来指明发送给接收者的实体正文的媒体类型，如Content-Type:text/html;charset=GBK |
+| Content-Encoding | 与请求报头Accept-Encoding对应，告诉浏览器服务端采用的是什么压缩编码 |
+| Content-Language | 描述了资源所用的自然语言，与Accept-Language对应              |
+| Content-Length   | 指明实体正文的长度，用以字节方式存储的十进制数字来表示       |
+| Keep-Alive       | 保持连接的时间，如Keep-Alive: timeout=5,max=120              |
+
+| 常见的HTTP状态码 | 说明                                   |
+| ---------------- | -------------------------------------- |
+| 200              | 客户端请求成功                         |
+| 302              | 临时跳转，跳转的地址通过Location指定   |
+| 400              | 客户端请求有语法错误，不能被服务器识别 |
+| 403              | 服务器收到请求，但是拒绝提供服务       |
+| 404              | 请求的资源不存在                       |
+| 500              | 服务器发生不可预期的错误               |
+
+## 
