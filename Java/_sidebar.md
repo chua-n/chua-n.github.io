@@ -70,10 +70,12 @@
 - [IO](/Java/IO/)
 
     - [JavaIO概述](/Java/IO/JavaIO概述.md)
-    - [JavaIO流设计模型.md](/Java/IO/JavaIO流设计模型.md)
+    - [JavaIO流设计模型](/Java/IO/JavaIO流设计模型.md)
+    - [JavaIO工作的机制](/Java/IO/JavaIO工作的机制.md)
     - [File类](/Java/IO/File类.md)
     - [RandomAccessFile类](/Java/IO/RandomAccessFile类.md)
     - [NIO](/Java/IO/NIO.md)
+    - [IO调优](/Java/IO/IO调优.md)
     - [对象序列化](/Java/IO/对象序列化.md)
     - [读取properties配置文件](/Java/IO/读取properties配置文件.md)
 
@@ -114,8 +116,13 @@
 
     - [单例模式](/Java/设计模式/单例模式.md)
     - [简单工厂模式](/Java/设计模式/简单工厂模式.md)
-    - [命令模式](/Java/设计模式/命令模式.md)
     - [动态代理模式](/Java/设计模式/动态代理模式.md)
+    - [适配器模式](/Java/设计模式/适配器模式.md)
+    - [装饰器模式](/Java/设计模式/装饰器模式.md)
+    - [访问者模式](/Java/设计模式/访问者模式.md)
+    - [观察者模式](/Java/设计模式/观察者模式.md)
+    - [命令模式](/Java/设计模式/命令模式.md)
+    - [责任链模式](/Java/设计模式/责任链模式.md)
 
 - [第三方工具](/Java/第三方工具/)
 

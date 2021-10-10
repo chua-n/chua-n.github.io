@@ -6,6 +6,14 @@ Filter，过滤器：当客户端浏览器访问服务器的资源时，过滤�
 
 一般地，过滤器用于完成通用的操作，如登录验证、统一编码处理、敏感字符过滤……
 
+### 《深入理解JavaWeb技术内幕》
+
+实际上Filter可以完成与Servlet同样的工作，甚至比Servlet使用起来更加灵活，因为它除了提供了request和response对象外，还提供了一个FilterChain对象，这个对象可以让我们更加灵活地控制请求的流转。
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/30.png" style="zoom:67%;" />
+
+在Tomcat容器中，`FilterConfig`和`FilterChain`的实现类分别是`ApplicationFilterConfig`和`ApplicationFilterChain`，而Filter的实现类由用户自定义，只要实现Filter接口中定义的三个接口就行，这三个接口与在Servlet中的类似。
+
 ## 2. 快速入门案例
 
 1. 定义一个类，实现接口Filter，复写其方法；
