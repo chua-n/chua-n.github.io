@@ -33,7 +33,7 @@
   border-bottom: 1px solid #eee;
 }
 /* 设置选中文本时的颜色 */
-/* ::selection {
+::selection {
   background: #6a005f;
-  color: #fff;
-} */
+  color: #eee;
+}
