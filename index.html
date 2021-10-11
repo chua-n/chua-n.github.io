@@ -15,7 +15,8 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
 
     <!-- 引入自定义css -->
-    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+    <link rel="stylesheet"
+        href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
     <link rel="stylesheet" href="resources/css/mySytle.css" />
     <link rel="stylesheet" href="resources/css/codeColor.css" />
 
@@ -83,9 +84,9 @@
 
             // 复制代码按钮 (defaults)
             copyCode: {
-                buttonText: "复制",
-                errorText: "出错了",
-                successText: "已复制",
+                buttonText: "copy",
+                errorText: "error",
+                successText: "copied",
             },
 
             plugins: [
@@ -135,20 +136,20 @@
     <!-- <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script> -->
     <!-- 以本地改写的资源替换上述js -->
     <!-- <script src="resources/js/plugins-gitalk.min.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-        <script src="resources/js/md5.min.js"></script>
-        <script>
-            const gitalk = new Gitalk({
-                clientID: "0677de831ba15682dc35",
-                clientSecret: "015674c696a05fb93871f6f4d8c95215fda3d448",
-                repo: "notebooks",
-                owner: "chua-n",
-                admin: ["chua-n"],
-                id: md5(location.pathname),
-                // facebook-like distraction free mode
-                distractionFreeMode: false,
-            });
-        </script> -->
+    <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script src="resources/js/md5.min.js"></script>
+    <script>
+        const gitalk = new Gitalk({
+            clientID: "0677de831ba15682dc35",
+            clientSecret: "015674c696a05fb93871f6f4d8c95215fda3d448",
+            repo: "notebooks",
+            owner: "chua-n",
+            admin: ["chua-n"],
+            id: md5(location.pathname),
+            // facebook-like distraction free mode
+            distractionFreeMode: false,
+        });
+    </script> -->
     <!-- 引入动态背景 canvas_nest -->
     <script color="106, 0, 95" opacity="0.618" zIndex="-1" count="100"
         src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
