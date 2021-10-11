@@ -720,7 +720,6 @@ code,
 }
 .markdown-section code {
   color: #6a005f;
-  margin: 0 1px;
   padding: 2px 4px;
   white-space: pre-wrap;
 }
@@ -736,9 +735,8 @@ code,
   color: #525252;
   font-size: 0.8rem;
   background-color: #f7f7f7;
-  padding: 0.5em 5px;
+  padding: 0.5em 1em;
   line-height: inherit;
-  margin: 0 2px;
   max-width: inherit;
   overflow: inherit;
   white-space: inherit;
