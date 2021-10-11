@@ -1,4 +1,4 @@
-![logo](resources/icon.svg)
+![logo](resources/figs/icon.svg)
 
 # 荒流的笔记本 <small>1.0</small>
 
