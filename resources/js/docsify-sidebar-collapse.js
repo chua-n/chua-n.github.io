@@ -195,7 +195,7 @@
 
     function addFolderFileClass() {
         document.querySelectorAll(".sidebar-nav li").forEach(function (li) {
-            if (li.querySelector("ul:not(.app-sub-sidebar)")) {
+            if (li.querySelector("ul:not(.app-sub-sidebar)") || li.querySelector("a").hash.endsWith("/")) {
                 li.classList.add("folder");
             } else {
                 li.classList.add("file");
