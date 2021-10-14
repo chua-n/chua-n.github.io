@@ -5,7 +5,7 @@
 -   [数据库](/数据库/)
     -   [MySQL](数据库/MySQL/)
     -   [mongoDB](数据库/mongoDB/)
-    -   [Redi](数据库/Redis/)
+    -   [Redis](数据库/Redis/)
 -   [杂技](/杂技/)
     -   [操作系统](/杂技/操作系统)
     -   [Git](/杂技/Git/)
