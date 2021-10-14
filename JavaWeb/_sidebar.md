@@ -15,7 +15,7 @@
         -   [6.插件](/JavaWeb/前端/Vue/6.插件.md)
         -   [7.过滤器](/JavaWeb/前端/Vue/7.过滤器.md)
         -   [8.状态管理](/JavaWeb/前端/Vue/8.状态管理.md)
-        -   [9.状态管理](/JavaWeb/前端/Vue/9.状态管理.md)
+        -   [9.路由](/JavaWeb/前端/Vue/9.路由.md)
 -   [后端](/JavaWeb/后端/)
     -   [Web请求过程](/JavaWeb/后端/Web请求过程.md)
     -   [Tomcat](/JavaWeb/后端/Tomcat.md)
