@@ -12,7 +12,7 @@ Guava Cache与ConcurrentMap很相似，但也不完全一样。最基本的区�
 - 你预料到某些键会被查询一次以上。
 - 缓存中存放的数据总量不会超出内存容量（Guava Cache是单个应用运行时的本地缓存，它不把数据存放到文件或外部服务器。如果这不符合你的需求，可以尝试[Memcached](http://memcached.org/)这类工具）。
 
-Cache实例通过CacheBuilder生成器模式获取，如下：
+Cache实例通过CacheBuilder**建造者模式**获取，如下：
 
 ```java
 LoadingCache<Key, Graph> graphs = CacheBuilder.newBuilder()
