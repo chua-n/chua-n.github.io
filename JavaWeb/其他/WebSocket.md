@@ -22,7 +22,7 @@ Web 浏览器和服务器都必须实现 WebSockets 协议来建立和维护连�
 
 ## 2. WebSocket 客户端
 
-在客户端，没有必要为 WebSockets 使用 JavaScript 库，实现 WebSockets 的 Web 浏览器将通过 WebSockets 对象公开所有必需的客户端功能（主要指支持 Html5 的浏览器）。
+在客户端，没有必要为 WebSocket 使用 JavaScript 库，实现 WebSocket 的 Web 浏览器将通过 WebSocket 对象公开所有必需的客户端功能（主要指支持 Html5 的浏览器）。
 
 ### 2.1 创建 WebSocket 对象
 
@@ -31,12 +31,12 @@ Web 浏览器和服务器都必须实现 WebSockets 协议来建立和维护连�
 var socket = new WebSocket(url, [protocol] );
 ```
 
-### 2.2 WebSocket 属性
+### 2.2 WebSocket 对象的属性
 
-| 属性                    | 描述                                                         |
-| ----------------------- | ------------------------------------------------------------ |
-| `socket.readyState`     | 只读属性 `readyState` 表示连接状态，可以是以下值：<br />0 - 表示连接尚未建立。<br />1 - 表示连接已建立，可以进行通信。<br />2 - 表示连接正在进行关闭。<br />3 - 表示连接已经关闭或者连接不能打开。 |
-| `socket.bufferedAmount` | 只读属性 `bufferedAmount` 已被 `send()` 放入正在队列中等待传输，但是还没有发出的 UTF-8 文本字节数。 |
+| 属性             | 描述                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| `readyState`     | 只读属性 `readyState` 表示连接状态，可以是以下值：<br />0 - 表示连接尚未建立。<br />1 - 表示连接已建立，可以进行通信。<br />2 - 表示连接正在进行关闭。<br />3 - 表示连接已经关闭或者连接不能打开。 |
+| `bufferedAmount` | 只读属性 `bufferedAmount` 表示已被 `send()` 放入正在队列中等待传输，但是还没有发出的 UTF-8 文本字节数。 |
 
 ### 2.3 WebSocket 事件
 
