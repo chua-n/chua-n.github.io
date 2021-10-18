@@ -4,6 +4,8 @@
 
 WebSocket是一种网络通信协议，[RFC6455](https://tools.ietf.org/html/rfc6455) 定义了它的通信标准。WebSocket 是 HTML5 开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。
 
+Websocket 其实是一个新协议，跟 HTTP 协议基本没有关系，只是为了兼容现有浏览器的握手规范而已，也就是说它是 HTTP 协议上的一种补充。
+
 ### 为什么需要 WebSocket ？
 
 了解计算机网络协议的人，应该都知道：HTTP 协议是一种无状态的、无连接的、单向的应用层协议。它采用了请求/响应模型，通信请求只能由客户端发起，服务端对请求做出应答处理。
@@ -317,19 +319,7 @@ server {
 
 > 更多配置细节可以参考：[Nginx 官方的 websocket 文档](http://nginx.org/en/docs/http/websocket.html)
 
-## 5. FAQ
-
-### HTTP 和 WebSocket 有什么关系？
-
-Websocket 其实是一个新协议，跟 HTTP 协议基本没有关系，只是为了兼容现有浏览器的握手规范而已，也就是说它是 HTTP 协议上的一种补充。
-
-### Html 和 HTTP 有什么关系？
-
-Html 是超文本标记语言，是一种用于创建网页的标准标记语言。它是一种技术标准。Html5 是它的最新版本。
-
-Http 是一种网络通信协议。其本身和 Html 没有直接关系。
-
-## 6. 附：资料
+## 5. 附：资料
 
 - [WebSocket 详解教程 - 静默虚空 - 博客园 (cnblogs.com)](https://www.cnblogs.com/jingmoxukong/p/7755643.html)
 - [知乎高票答案——WebSocket 是什么原理](https://www.zhihu.com/question/20215561) - 对 WebSocket 原理的阐述简单易懂。
