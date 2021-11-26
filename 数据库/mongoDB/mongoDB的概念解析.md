@@ -14,3 +14,7 @@
 
 ![18](https://chua-n.gitee.io/blog-images/notebooks/数据库/18.png)
 
+## 启动mongodb服务
+
+同mysql——`net start mongodb`。
+
