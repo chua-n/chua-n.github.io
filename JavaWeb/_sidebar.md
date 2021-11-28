@@ -1,7 +1,7 @@
 <h1>JavaWeb</h1>
 
 -   [前端](/JavaWeb/前端/)
-    
+
     -   [web 概念概述](/JavaWeb/前端/web概念概述.md)
     -   [HTML&CSS](/JavaWeb/前端/HTML&CSS.md)
     -   [JavaScript](/JavaWeb/前端/JavaScript.md)
@@ -72,6 +72,11 @@
     -   [Web开发](/JavaWeb/SpringBoot/Web开发.md)
     -   [SpringBoot的配置文件](/JavaWeb/SpringBoot/SpringBoot的配置文件.md)
     -   [SpringBoot集成其他框架](/JavaWeb/SpringBoot/SpringBoot集成其他框架.md)
+-   [SpringCloud](/JavaWeb/SpringCloud/)
+    -   [SpringCloud](/JavaWeb/SpringCloud/SpringCloud.md)
+    -   [Eureka](/JavaWeb/SpringCloud/Eureka.md)
+    -   [Ribbon](/JavaWeb/SpringCloud/Ribbon.md)
+    -   [Nacos](/JavaWeb/SpringCloud/Nacos.md)
 -   [SpringData](/JavaWeb/SpringData/)
     -   [JPA基础](/JavaWeb/SpringData/JPA基础.md)
     -   [SpringData-JPA](/JavaWeb/SpringData/SpringData-JPA.md)
