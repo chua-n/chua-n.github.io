@@ -78,6 +78,7 @@
     -   [Ribbon](/JavaWeb/SpringCloud/Ribbon.md)
     -   [Nacos](/JavaWeb/SpringCloud/Nacos.md)
     -   [Feign](/JavaWeb/SpringCloud/Feign.md)
+    -   [Gateway](/JavaWeb/SpringCloud/Gateway.md)
 -   [SpringData](/JavaWeb/SpringData/)
     -   [JPA基础](/JavaWeb/SpringData/JPA基础.md)
     -   [SpringData-JPA](/JavaWeb/SpringData/SpringData-JPA.md)
