@@ -96,3 +96,128 @@ Feign运行自定义配置来覆盖默认配置，可以修改的配置如下（
 |   `feign.Contract`    |  支持的注解格式  |                 默认是SpringMVC的注解                  |
 |    `feign.Retryer`    |   失败重试机制   | 请求失败的重试机制，默认是没有，不过会使用Ribbon的重试 |
 
+配置Feign日志的方式：
+
+- 方式一：配置文件方式
+
+    - 全局生效：
+
+        ```yml
+        feign:
+          client:
+            config:
+              default: # 这里用default就是全局配置，如果是写服务名称，则是针对某个微服务的配置
+                loggerLevel: FULL # 日志级别
+        ```
+
+    - 局部生效：
+
+        ```yml
+        feign:
+          client:
+            config:
+              userservice: # 这里用default就是全局配置，如果是写服务名称，则是针对某个微服务的配置
+                loggerLevel: FULL # 日志级别
+        ```
+
+- 方式二：代码方式。需先声明一个Bean：
+
+    ```java
+    public class FeignClientConfiguration {
+        @Bean
+        public Logger.Level feignLogLevel() {
+            return Logger.Level.BASIC;
+        }
+    }
+    ```
+
+    - 全局配置——放到`@EnableFeignClients`注解中
+
+        ```java
+        @EnableFeignClients(defaultConfiguration = FeignClientConfiguration.class)
+        ```
+
+    - 局部配置——放到`@FeignClient`注解中：
+
+        ```java
+        @FeignClient(value = "userservice", configuration = FeignClientConfiguration.class)
+        ```
+
+## 4. Feign的性能优化
+
+Feign底层的客户端实现：
+
+- `URLConnection`: 默认实现，不支持连接池
+- `Apache HttpClient`: 支持连接池
+- `OKHttp`: 支持连接池
+
+因此优化Feign的性能主要包括：
+
+- 使用连接池替代默认的`URLConnection`
+
+    - 如Feign添加`HttpClient`的支持：
+
+        - 引入依赖：
+
+            ```xml
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-httpclient</artifactId>
+            </dependency>
+            ```
+
+        - 配置连接池：
+
+            ```yml
+            feign:
+              client:
+                config:
+                  default: # default全局的配置
+                    loggerLevel: FULL # 日志级别，BASIC就是基本的请求和响应消息
+              httpclient:
+                enabled: true # 开启feign对HttpClient的支持
+                max-connections: 200 # 最大的连接数
+                max-connections-per-route: 50 # 每个路径的最大连接数
+            ```
+
+- 日志级别，最好用`basic`或`none`
+
+## 5. Feign的最佳实践
+
+### 5.1 方式一：继承
+
+此法给消费者的`FeignClient`和提供者的`Controller`定义统一的父接口作为标准，其特点是：
+
+- 服务紧耦合
+- 父接口参数列表中的映射不会被继承
+
+![image-20211222154441762](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211222154441762.png)
+
+### 5.2 方式二：抽取
+
+将`FeignClient`抽取为独立模块，并且把接口有关的POJO、默认的Feign配置都放到这个模块中，提供给所有的消费者使用：
+
+![IMG_0948](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0948.JPG)
+
+抽取`FeignClient`的步骤：
+
+1. 首先创建一个module，命名为feign-api，然后引入feign的starter依赖；
+2. 将order-service中编写的UserClient, User, DefaultFeignConfiguration都复制到feign-api项目中；
+3. 在order-service中引入feign-api的依赖；
+4. 修改order-service中的所有与上述三个组件有关的import部分，改成导入feign-api中的包；
+5. 重启测试。
+
+当定义的`FeignClient`不在`SpringBootApplication`的扫描包范围时，这些`FeignClient`无法使用，可通过如下两种方式解决：
+
+- 方式一：指定`FeignClient`所在包
+
+    ```java
+    @EnableFeignClients(basePackages = "cn.itcast.feign.clients")
+    ```
+
+- 方式二：指定`FeignClient`字节码
+
+    ```java
+    @EnableFeignClients(clients = {UserClient.class})
+    ```
+
