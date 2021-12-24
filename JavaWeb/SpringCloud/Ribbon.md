@@ -2,19 +2,19 @@
 
 ## 1. 负载均衡流程：
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128203741731.png" alt="image-20211128203741731" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128203741731.png" alt="image-20211128203741731" style="zoom:33%;" />
 
 详细流程：
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128204715351.png" alt="image-20211128204715351" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128204715351.png" alt="image-20211128204715351" style="zoom:33%;" />
 
 ## 2. 负载均衡策略
 
 Ribbon的负载均衡规则是一个叫做IRule的接口来定义的，每一个子接口都是一种规则：
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128204937331.png" alt="image-20211128204937331" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128204937331.png" alt="image-20211128204937331" style="zoom:33%;" />
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128205019996.png" alt="image-20211128205019996" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128205019996.png" alt="image-20211128205019996" style="zoom:33%;" />
 
 ## 3. 配置负载均衡策略
 

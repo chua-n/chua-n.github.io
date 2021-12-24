@@ -1,6 +1,6 @@
 ## 1. Eureka注册中心
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128181508456.png" alt="image-20211128181508456" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128181508456.png" alt="image-20211128181508456" style="zoom:33%;" />
 
 Eureka的作用：
 
@@ -67,15 +67,15 @@ Eureka的作用：
 
 ## 2. 服务注册
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128183349685.png" alt="image-20211128183349685" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128183349685.png" alt="image-20211128183349685" style="zoom:50%;" />
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128183720269.png" alt="image-20211128183720269" style="zoom:25%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128183720269.png" alt="image-20211128183720269" style="zoom:25%;" />
 
 可以这样模拟配置同一个服务的多个实例：
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128183805641.png" alt="image-20211128183805641" style="zoom:30%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128183805641.png" alt="image-20211128183805641" style="zoom:30%;" />
 
-<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128183951686.png" alt="image-20211128183951686" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128183951686.png" alt="image-20211128183951686" style="zoom:33%;" />
 
 ## 3. 服务发现
 
@@ -89,7 +89,7 @@ Eureka的作用：
     String url = "http://userservice/user/" + order.getUserId();
     ```
 
-    <img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128184708067.png" alt="image-20211128184708067" style="zoom:33%;" />
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128184708067.png" alt="image-20211128184708067" style="zoom:33%;" />
 
 2. 在order-service项目的启动类`OrderApplication`中的`RestTemplate`添加负载均衡注解：
 
