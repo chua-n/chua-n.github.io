@@ -2,7 +2,7 @@
 
 为什么需要网关？
 
-![IMG_0953](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0953.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0953.JPG" alt="IMG_0953" style="zoom:40%;" />
 
 - 对用户请求做身份认证、权限校验
 - 将用户请求路由到微服务，并实现负载均衡
@@ -19,7 +19,7 @@
 
 搭建网关服务的步骤：
 
-![IMG_0960](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0960.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0960.JPG" alt="IMG_0960" style="zoom:50%;" />
 
 1. 创建新的module，引入`SpringCloudGateway`的依赖和`nacos`的服务发现依赖：
 
@@ -71,13 +71,13 @@
 
 我们在配置文件中写的断言规则只是字符串，这些字符串会被Predicate Factory读取并处理，转变为路由判断的条件。例如，`Path=/user/**`是按照路径匹配，这个规则是由`org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory`类来处理的，像这样的断言工厂（Route Predicate Factory）在`SpringCloudGateway`中还有十几个。
 
-![IMG_0963](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0963.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0963.JPG" alt="IMG_0963" style="zoom:33%;" />
 
 ## 4. 过滤器
 
 `GatewayFilter`是网关中提供的一种过滤器，可以对进入网关的请求和微服务返回的响应做处理：
 
-![IMG_0964](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0964.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0964.JPG" alt="IMG_0964" style="zoom:45%;" />
 
 Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例如：
 
@@ -90,19 +90,19 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 |  `RequestRateLimiter`  |       限制请求的流量       |
 |          ...           |           ......           |
 
-![IMG_0966](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0966.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0966.JPG" alt="IMG_0966" style="zoom:33%;" />
 
 #### 案例
 
 假设我们需要给所有进入`userservice`的请求添加一个请求头：`Truth=itcast is freaking awesome!`，其实现方式是，在`gateway`中修改`application.yml`文件，给`userservice`的路由添加过滤器：
 
-![IMG_0967](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0967.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0967.JPG" alt="IMG_0967" style="zoom:50%;" />
 
 ### 默认过滤器
 
 如果要对所有的路由都生效，可以将过滤器工厂写到default下，如：
 
-![IMG_0968](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0968.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0968.JPG" alt="IMG_0968" style="zoom:45%;" />
 
 ### 全局过滤器
 
@@ -110,7 +110,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 区别在于`GatewayFilter`通过配置定义，处理逻辑是固定的，而`GlobalFilter`的逻辑可以自定义，需要自己写代码实现，定义方式是实现`GlobalFilter`接口：
 
-![IMG_0969](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0969.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0969.JPG" alt="IMG_0969" style="zoom:45%;" />
 
 实现全局过滤器的步骤：
 
@@ -118,7 +118,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 - 添加`@Order`注解或实现`Ordered`接口
 - 编写处理逻辑
 
-> 附：![IMG_0973](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0973.jpg)
+> 附：<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0973.jpg" alt="IMG_0973" style="zoom:40%;" />
 
 #### 案例：定义全局过滤器，拦截并判断用户身份
 
@@ -131,7 +131,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 1. 自定义过滤器——自定义类，实现`GatewayFilter`接口，添加`@Order`注解：
 
-    ![IMG_0971](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0971.JPG)
+    <img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0971.JPG" alt="IMG_0971" style="zoom:45%;" />
 
 2. ...
 
@@ -146,7 +146,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 可参考下面几个类的源码来看：
 
-![IMG_0974](../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0974.JPG)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/IMG_0974.JPG" alt="IMG_0974" style="zoom:40%;" />
 
 ## 6. 跨域问题
 
@@ -159,7 +159,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 网关的解决方案：CORS，只需简单配置即可实现：
 
-![image-20211222175152188](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211222175152188.png)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211222175152188.png" alt="image-20211222175152188" style="zoom:35%;" />
 
 CORS跨域要配置的参数包括哪几个？
 
