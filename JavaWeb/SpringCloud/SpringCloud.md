@@ -1,23 +1,23 @@
 ## 1. 服务拆分注意事项
 
-![image-20211128174921800](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128174921800.png)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128174921800.png" alt="image-20211128174921800" style="zoom:25%;" />
 
 微服务远程调用：
 
-![image-20211128175731514](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128175731514.png)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128175731514.png" alt="image-20211128175731514" style="zoom:25%;" />
 
 远程调用方式分析——根源需要在Java代码中直接发起HTTP请求：
 
-![image-20211128175944257](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128175944257.png)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128175944257.png" alt="image-20211128175944257" style="zoom:25%;" />
 
 远程调用实现：
 
 - 基于`RestTemplate`发起的HTTP请求实现远程调用
 - HTTP请求做远程调用是与语言无关的调用，只要知道对方的IP、端口、接口路径、请求参数即可。
 
-![image-20211128180438194](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128180438194.png)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128180438194.png" alt="image-20211128180438194" style="zoom:45%;" />
 
-![image-20211128180501635](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128180501635.png)
+<img src="../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211128180501635.png" alt="image-20211128180501635" style="zoom:33%;" />
 
 ## 2. 微服务远程调用
 
