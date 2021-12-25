@@ -67,7 +67,28 @@ Eureka的作用：
 
 ## 2. 服务注册
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128183349685.png" alt="image-20211128183349685" style="zoom:50%;" />
+将user-service服务注册到EurekaServer步骤如下：
+
+1. 在user-service项目引入spring-cloud-starter-netflix-eureka-client的依赖：
+
+    ```xml
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    ```
+
+2. 在application.yml文件，编写下面的配置：
+
+    ```yaml
+    spring:
+      application:
+        name: userservice
+    eureka:
+      client:
+        service-url:
+          defaultZone: http://127.0.0.1:10086/eureka/
+    ```
 
 <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128183720269.png" alt="image-20211128183720269" style="zoom:25%;" />
 
@@ -89,7 +110,21 @@ Eureka的作用：
     String url = "http://userservice/user/" + order.getUserId();
     ```
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128184708067.png" alt="image-20211128184708067" style="zoom:33%;" />
+    ```java
+    public Order queryOrderById(Long orderId) {
+        // 1. 查询订单
+        Order order = orderMapper.findById(orderId);
+        // 2. 利用RestTemplate发起http请求，查询用户
+        // 2.1. url路径
+        String url = "http://userservice/user/" + order.getUserId();
+        // 2.2. 发送http请求，实现远程调用
+        User user = restTemplate.getForObject(url, User.class);
+        // 3. 封装user到Order
+        order.setUser(user);
+        // 4. 返回
+        return order;
+    }
+    ```
 
 2. 在order-service项目的启动类`OrderApplication`中的`RestTemplate`添加负载均衡注解：
 

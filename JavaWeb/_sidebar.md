@@ -73,7 +73,7 @@
     -   [SpringBoot的配置文件](/JavaWeb/SpringBoot/SpringBoot的配置文件.md)
     -   [SpringBoot集成其他框架](/JavaWeb/SpringBoot/SpringBoot集成其他框架.md)
 -   [SpringCloud](/JavaWeb/SpringCloud/)
-    -   [SpringCloud](/JavaWeb/SpringCloud/SpringCloud.md)
+    -   [RestTemplate](/JavaWeb/SpringCloud/RestTemplate.md)
     -   [Eureka](/JavaWeb/SpringCloud/Eureka.md)
     -   [Ribbon](/JavaWeb/SpringCloud/Ribbon.md)
     -   [Nacos](/JavaWeb/SpringCloud/Nacos.md)
