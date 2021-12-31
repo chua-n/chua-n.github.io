@@ -1,0 +1,170 @@
+## 1. RestClient
+
+ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/en/elasticsearch/client/index.html)，用来操作ES，这些客户端的本质就是组装DSL语句，通过HTTP请求发送给ES。
+
+![image-20211231225812173](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231225812173.png)
+
+## 2. RestClient操作索引库
+
+索引库操作的基本步骤：
+
+- 初始化`RestHighLevelClient`
+- 创建`XxxIndexRequest`（Xxx是Create, Get, Delete）
+- 准备DSL（Create时需要）
+- 发送请求——调用`RestHighLevelClient#indices().xxx()`方法，xxx是`create`, `exists`, `delete`
+
+案例——根据酒店数据创建索引库，索引库名为hotel，mapping属性根据数据库结构定义：
+
+1. 导入课前资料Demo：`tb_hotel.sql`, `hotel-demo`
+
+    ![image-20211231230302633](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231230302633.png)
+
+2. 分析数据结构，定义mapping属性——考虑字段名、数据类型、是否参与搜索、是否分词、如果分词那么分词器是什么
+
+3. 初始化JavaRestClient
+
+    1. 引入ES的RestHighLevelClient依赖：
+
+        ```xml
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        </dependency>
+        ```
+
+    2. 由于SpringBoot默认的ES版本是7.6.2，因此要覆盖默认的ES版本：
+
+        ```xml
+        <properties>
+            <java.version>1.8</java.version>
+            <elasticsearch.version>7.12.1</elasticsearch.version>
+        </properties>
+        ```
+
+    3. 初始化RestHighLevelClient：
+
+        ```java
+        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(HttpHost.create("http://192.168.150.101:9200")));
+        ```
+
+4. 利用JavaRestClient创建索引库
+
+    ![image-20211231231648680](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231231648680.png)
+
+    > ![image-20211231231940533](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231231940533.png)
+
+5. 利用JavaRestClient删除索引库
+
+    ```java
+    @Test
+    void testDeleteHotelIndex() throws IOException {
+        // 1. 创建Request对象
+        DeleteIndexRequest request = new DeleteIndexRequest("hotel");
+        // 2. 发起请求
+        client.indices().delete(request, RequestOptions.DEFAULT);
+    }
+    ```
+
+6. 利用JavaRestClient判断索引库是否存在
+
+    ```java
+    @Test
+    void testExistsHotelIndex() throws IOException {
+        // 1. 创建Request对象
+        GetIndexRequest request = new GetIndexRequest("hotel");
+        // 2. 发起请求
+        boolean exists = client.indices().exists(request, RequestOptions.DEFAULT);
+        // 3. 输出
+        System.out.println(exists);
+    }
+    ```
+
+## 3. RestClient操作文档
+
+文档操作的基本步骤：
+
+- 初始化`RestHighLevelClient`
+- 创建XxxRequest（Xxx是Index, Get, Update, Delete）
+- 准备参数（Index和Update时需要）
+- 发送请求——调用`RestHighLevelClient#.xxx()`方法，xxx是index, get, update, delete
+- 解析结果（Get时需要）
+
+案例——去数据库查询酒店数据，导入到hotel索引库，实现酒店数据的CRUD：
+
+1. 初始化JavaRestClient：
+
+    ```java
+    public class ElasticsearchDocumentTest {
+        // 客户端
+        private RestHighLevelClient client;
+        
+        @BeforeEach
+        void setUp() {
+            client = new RestHighLevelClient(RestClient.builder(HttpPost.create("http://192.168.150.101:9200")));
+        }
+        
+        @AfterEach
+        void tearDown() throws IOException {
+            client.close();
+        }
+    }
+    ```
+
+2. 新增酒店数据
+
+    ![image-20211231233648176](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233648176.png)
+
+    ![image-20211231233732619](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233732619.png)
+
+3. 根据id查询酒店数据
+
+    > 根据id查询到的文档数据是json，需要反序列化为Java对象
+
+    ![image-20211231233839531](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233839531.png)
+
+    ![image-20211231233915282](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233915282.png)
+
+4. 根据id修改酒店数据
+
+    > 依旧可分为全量更新与局部更新。
+
+    ![image-20211231234058245](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231234058245.png)
+
+5. 根据id删除文档数据
+
+    ![image-20211231234139694](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231234139694.png)
+
+### 批量处理
+
+需求：批量查询酒店数据，然后批量导入索引库中
+
+思路：
+
+1. 利用mybatis-plus查询酒店数据
+
+2. 将查询到的酒店数据（Hotel）转换为文档类型数据（HotelDoc）
+
+3. 利用JavaRestClient中的Bulk批处理，实现批量新增文档，示例代码：
+
+    ```java
+    @Test
+    void testBulkRequest() throws IOException() {
+        // 批量查询酒店数据
+        List<Hotel> hotels = hotelService.list();
+        // 1. 创建Request
+        BulkRequest request = new BulkRequest();
+        // 2. 准备参数，添加多个新增的Request
+        for (Hotel hotel : hotels) {
+            // 转换为文档类型HotelDoc
+            HotelDoc hotelDoc = new HotelDoc(hotel);
+            // 创建新增文档的Request对象
+            request.add(new IndexRequest("hotel")
+                        .id(hotelDoc.getId().toString()
+                        .source(JSON.toJSONString(hotelDoc), XContentType.JSON))
+                       );
+        }
+        // 3. 发送请求
+        client.bulk(request, RequestOptions.DEFAULT);
+    }
+    ```
+

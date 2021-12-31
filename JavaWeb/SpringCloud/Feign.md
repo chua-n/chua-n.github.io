@@ -18,7 +18,7 @@ User user = restTemplate.getForObject(url, User.class);
 
 ### Feign简介
 
-Feign就是一个声明式的HTTP客户端，官方地址https://github.com/OpenFeign/feign，其作用就是帮助我们优雅的实现HTTP请求的发送，解决上述问题。
+Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/OpenFeign/feign ，其作用就是帮助我们优雅的实现HTTP请求的发送，解决上述问题。
 
 <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0931.JPG" alt="IMG_0931" style="zoom:33%;" />
 
