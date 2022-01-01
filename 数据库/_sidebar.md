@@ -28,4 +28,8 @@
     - [概述](/数据库/Elasticsearch/概述.md)
     - [DSL](/数据库/Elasticsearch/DSL.md)
     - [RestAPI](/数据库/Elasticsearch/RestAPI.md)
+    - [分布式搜索引擎](/数据库/Elasticsearch/分布式搜索引擎.md)
+    - [自动补全](/数据库/Elasticsearch/自动补全.md)
+    - [数据同步](/数据库/Elasticsearch/数据同步.md)
+    - [ES集群](/数据库/Elasticsearch/ES集群.md)
 
