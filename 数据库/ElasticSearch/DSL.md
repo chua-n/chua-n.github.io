@@ -51,7 +51,7 @@ ES中支持两种地理坐标数据类型：
 
 ES中通过Restful请求操作索引库、文档，请求内容用DSL语句来表示。创建索引库和mapping的DSL语法如下：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231221313220.png" alt="image-20211231221313220" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20211231221313220.png" alt="image-20211231221313220" style="zoom:50%;" />
 
 小提示：字段拷贝可以使用copu_to属性将当前字段拷贝到指定字段，如：
 
@@ -116,7 +116,7 @@ PUT /heima/_mapping
 
 新增文档的DSL语法如下：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231222158358.png" alt="image-20211231222158358" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20211231222158358.png" alt="image-20211231222158358" style="zoom:50%;" />
 
 ### 查看文档
 
@@ -142,9 +142,9 @@ DELETE /索引库名/_doc/文档id
 
 - 全量修改：会删除旧文档，添加新文档
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1115.JPG" alt="IMG_1115" style="zoom:40%;" />
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/IMG_1115.JPG" alt="IMG_1115" style="zoom:40%;" />
 
 - 增量修改：修改指定字段值
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231222832555.png" alt="image-20211231222832555" style="zoom:40%;" />
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20211231222832555.png" alt="image-20211231222832555" style="zoom:40%;" />
 
