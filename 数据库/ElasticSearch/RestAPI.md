@@ -2,7 +2,7 @@
 
 ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/en/elasticsearch/client/index.html)，用来操作ES，这些客户端的本质就是组装DSL语句，通过HTTP请求发送给ES。
 
-![image-20211231225812173](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231225812173.png)
+<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231225812173.png" alt="image-20211231225812173" style="zoom:50%;" />
 
 ## 2. RestClient操作索引库
 
@@ -17,7 +17,7 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 1. 导入课前资料Demo：`tb_hotel.sql`, `hotel-demo`
 
-    ![image-20211231230302633](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231230302633.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231230302633.png" alt="image-20211231230302633" style="zoom:33%;" />
 
 2. 分析数据结构，定义mapping属性——考虑字段名、数据类型、是否参与搜索、是否分词、如果分词那么分词器是什么
 
@@ -49,9 +49,9 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 4. 利用JavaRestClient创建索引库
 
-    ![image-20211231231648680](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231231648680.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231231648680.png" alt="image-20211231231648680" style="zoom:40%;" />
 
-    > ![image-20211231231940533](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231231940533.png)
+    > <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231231940533.png" alt="image-20211231231940533" style="zoom:50%;" />
 
 5. 利用JavaRestClient删除索引库
 
@@ -112,27 +112,27 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 2. 新增酒店数据
 
-    ![image-20211231233648176](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233648176.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231233648176.png" alt="image-20211231233648176" style="zoom:45%;" />
 
-    ![image-20211231233732619](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233732619.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231233732619.png" alt="image-20211231233732619" style="zoom:55%;" />
 
 3. 根据id查询酒店数据
 
     > 根据id查询到的文档数据是json，需要反序列化为Java对象
 
-    ![image-20211231233839531](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233839531.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231233839531.png" alt="image-20211231233839531" style="zoom:45%;" />
 
-    ![image-20211231233915282](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231233915282.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231233915282.png" alt="image-20211231233915282" style="zoom:50%;" />
 
 4. 根据id修改酒店数据
 
     > 依旧可分为全量更新与局部更新。
 
-    ![image-20211231234058245](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231234058245.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231234058245.png" alt="image-20211231234058245" style="zoom:45%;" />
 
 5. 根据id删除文档数据
 
-    ![image-20211231234139694](../../resources/images/notebooks/JavaWeb/SpringCloud/image-20211231234139694.png)
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211231234139694.png" alt="image-20211231234139694" style="zoom:50%;" />
 
 ### 批量处理
 
