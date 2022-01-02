@@ -1,0 +1,24 @@
+以下是一些优化的经验：
+
+- 查询频繁的列需要建立索引；
+- 少用类似select * from t where xx is null（放弃索引全局扫描）
+- 尽量避免在 where 子句中使用 != 或 <> 操作符（放弃索引全局扫描）
+- 尽量避免在 where 子句中使用 or 来连接条件（任何一个条件列没有索引，将放弃索引全局扫描）
+- 尽量避免使用in 和 not in ，否则会导致全表扫描
+- 连续的数值，能用 between 就不要用 in 
+- 尽量用Exits代替In，（Exits会使用索引，In不会使用索引）
+- like ‘%abc%’不使用索引
+- 尽量避免在 where 子句中对字段进行表达式操作
+- select id from t where num/**2** = **100->** select id from t where num = **100*****2**
+- 避免在where子句中对字段进行函数操作，这将导致引擎放弃使用索引而进行全表扫描
+- select id from t where datediff(day,createdate,’**2005**-**11**-**30**′) = **0**
+- select id from t where name like 'abc%' select id from t where createdate >= '2005-11-30' and createdate < '2005-12-1‘
+- 对于多张大数据量（这里几百条就算大了）的表JOIN，要先分页再JOIN，否则逻辑读会很高，性能很差。
+- 尽量用Count（1）代替Count(*)
+- 索引列最好不要超过6个；
+- 尽量使用数字类型代替字符类型（数字类型只比较一次，字符类型逐个字符对比）
+- 尽可能的使用 varchar/nvarchar 代替 char/nchar ，因为首先变长字段存储空间小，可以节省存储空间，其次对于查询来说，在一个相对较小的字段内搜索效率显然要高些。
+- 任何地方都不要使用 select * from t ，用具体的字段列表代替“*”，不要返回用不到的任何字段
+- 尽量避免使用游标，因为游标的效率较差，如果游标操作的数据超过1万行，那么就应该考虑改写。
+- 尽量避免大事务操作，提高系统并发能力。
+- 尽量避免向客户端返回大数据量，若数据量过大，应该考虑相应需求是否合理。
