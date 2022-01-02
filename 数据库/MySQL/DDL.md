@@ -2,102 +2,98 @@
 
 ## 1. 库结构操作
 
-### 1.1 SHOW
+- `SHOW`
 
-- `SHOW DATABASES;`：列出本MySQL服务器上含有的所有数据库
-- `SHOW TABLES;`：查看当前数据库的所有表
-- `SHOW COLUMNS FROM customers;`：显式内部表的信息
-- `SHOW CREATE DATABASE/TABLE;`：显示创建某数据库/表的MySQL语句
-- `SHOW GRANTS;`：显示授予用户的安全权限
-- `SHOW STATUS;`：显示广泛的服务器状态信息
-- `SHOW ERRORS;`：显示服务器错误消息
-- `SHOW WARNINGS;`：显示服务器警告消息
+    - `SHOW DATABASES;`：列出本MySQL服务器上含有的所有数据库
 
-### 1.2 DESCRIBE
+    - `SHOW TABLES;`：查看当前数据库的所有表
 
-```sql
-DESCRIBE customers;
-```
+    - `SHOW COLUMNS FROM customers;`：显式内部表的信息
 
-作为 SHOW COLUMNS FROM 的一种快捷方式
+    - `SHOW CREATE DATABASE/TABLE;`：显示创建某数据库/表的MySQL语句
 
-### 1.3 CREATE
+    - `SHOW GRANTS;`：显示授予用户的安全权限
 
-```sql
--- 创建一个新的数据库
-CREATE DATABASE;
--- 创建一个新的表
-CREATE TABLE;
-```
+    - `SHOW STATUS;`：显示广泛的服务器状态信息
 
-```CMD
-mysql> CREATE DATABASE test;
-Query OK, 1 row affected (0.01 sec)
-```
+    - `SHOW ERRORS;`：显示服务器错误消息
 
-### 1.4 DROP
+    - `SHOW WARNINGS;`：显示服务器警告消息
 
-`DROP DATABASE/TABLE`删除一个数据库/表（删除一个数据库将导致该数据库的所有表全部被删除）
+- `DESCRIBE`：作为 `SHOW COLUMNS FROM` 的一种快捷方式
 
-```cmd
-mysql> DROP DATABASE test;
-Query OK, 0 rows affected (0.01 sec)
-```
+    ```sql
+    DESCRIBE customers;
+    ```
 
-### 1.5 USE
+- `CREATE`
 
-把某数据库切换为当前数据库，以便对其操作
+    ```sql
+    -- 创建一个新的数据库
+    CREATE DATABASE;
+    -- 创建一个新的表
+    CREATE TABLE;
+    ```
 
-```cmd
-mysql> USE test;
-Database changed
-```
+    ```cmd
+    mysql> CREATE DATABASE test;
+    Query OK, 1 row affected (0.01 sec)
+    ```
 
-### 1.6 EXIT
+- `DROP`：`DROP DATABASE/TABLE`删除一个数据库/表（删除一个数据库将导致该数据库的所有表全部被删除）
 
-退出mysql
+    ```cmd
+    mysql> DROP DATABASE test;
+    Query OK, 0 rows affected (0.01 sec)
+    ```
 
-### 1.7 HELP
+- `USE`：把某数据库切换为当前数据库，以便对其操作
 
-显示某命令的帮助。
+    ```cmd
+    mysql> USE test;
+    Database changed
+    ```
 
-```cmd
-mysql> HELP SHOW;
-```
+- `EXIT`：退出mysql
+
+- `HELP`：显示某命令的帮助
+
+    ```cmd
+    mysql> HELP SHOW;
+    ```
 
 ## 2. 表结构操作
 
-### 2.1 ADD COLUMN
+- `ADD COLUMN`：给students表新增一列birth：
 
-给students表新增一列birth：
+    ```sql
+    ALTER TABLE students ADD COLUMN birth VARCHAR(10) NOT NULL;
+    ```
 
-```sql
-ALTER TABLE students ADD COLUMN birth VARCHAR(10) NOT NULL;
-```
+- `CHANGE COLUMN`：修改birth列，把列名改为birthday，类型改为VARCHAR(20)：
 
-### 2.2 CHANGE COLUMN.
+    ````sql
+    ALTER TABLE students CHANGE COLUMN birth birthday VARCHAR(20) NOT NULL;
+    ````
 
-修改birth列，把列名改为birthday，类型改为VARCHAR(20)：
+- `DROP COLUMN`：删除列birthday
 
-```sql
-ALTER TABLE students CHANGE COLUMN birth birthday VARCHAR(20) NOT NULL;
-```
+    ```sql
+    ALTER TABLE students DROP COLUMN birthday;
+    ```
 
-### 2.3 DROP COLUMN
+- `AUTO_INCREMENT`：将表的`AUTO_INCREMENT`值修改为number：
 
-删除列birthday：
+    ```sql
+    ALTER TABLE students AUTO_INCREMENT number;
+    ```
 
-```sql
-ALTER TABLE students DROP COLUMN birthday;
-```
+- *`CREATE TABLE`* - 创建新表
 
-### 2.4 AUTO_INCREMENT
+- *`ALTER TABLE`* - 变更（改变）数据库表
 
-将表的AUTO_INCREMENT值修改为number：
+- *`DROP TABLE`* - 删除表
 
-```sql
-ALTER TABLE students AUTO_INCREMENT number;
-```
+- *`CREATE INDEX`* - 创建索引（搜索键）
 
-
-
+- *`DROP INDEX`* - 删除索引

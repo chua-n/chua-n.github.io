@@ -16,6 +16,7 @@
   - [字符集与校对](/数据库/MySQL/字符集与校对.md)
   - [访问控制](/数据库/MySQL/访问控制.md)
   - [数据库维护](/数据库/MySQL/数据库维护.md)
+  - [MySQL调优](/数据库/MySQL/MySQL调优.md)
 - [mongoDB](/数据库/mongoDB/)
     - [mongoDB的概念解析](/数据库/mongoDB/mongoDB的概念解析.md)
 - [Redis](/数据库/Redis/)
