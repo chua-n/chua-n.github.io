@@ -4,7 +4,7 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20211231225812173.png" alt="image-20211231225812173" style="zoom:50%;" />
 
-## 2. RestClient操作索引库
+## 2. 操作索引库
 
 索引库操作的基本步骤：
 
@@ -79,7 +79,7 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
     }
     ```
 
-## 3. RestClient操作文档
+## 3. 操作文档
 
 文档操作的基本步骤：
 
@@ -168,3 +168,98 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
     }
     ```
 
+> 分布式搜索引擎——Elasticsearch搜索功能。
+
+## 4. 搜索/查询文档
+
+### 通性概述
+
+查询的基本步骤是：
+
+1. 创建`SearchRequest`对象
+2. 准备`Request.source()`，也就是DSL
+    1. `QueryBuilders`构建查询条件
+    2. 传入`Request.source()`的`query()`方法
+3. 发送请求，得到结果
+4. 解析结果（参考JSON结果，从外到内，逐层解析）
+
+RestAPI中构建DSL是通过`HighLevelRestClient`中的`resource()`来实现的，其中包含了查询、排序、分页、高亮等所有功能：
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101130721646.png" alt="image-20220101130721646" style="zoom:45%;" />
+
+RestAPI中构建查询条件的核心部分是由一个名为QueryBuilders的工具类提供的，其中包含了各种查询方法：
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101130821791.png" alt="image-20220101130821791" style="zoom:36%;" />
+
+### match查询
+
+#### match_all
+
+这里通过`match_all`来演示基本的API：
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101130409162.png" alt="image-20220101130409162" style="zoom:50%;" />
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101130438837.png" alt="image-20220101130438837" style="zoom:60%;" />
+
+#### match、multi_match
+
+全文检索的`match`和`multi_match`查询与`match_all`的API基本一致，差别是查询条件，也就是query的部分，同样是利用`QueryBuilders`提供的方法：
+
+```java
+// 单字段查询
+QueryBuilders.matchQuery("all", "如家");
+// 多字段查询
+QueryBuilders.multiMatchQuery("如家", "name", "business");
+```
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101131436846.png" alt="image-20220101131436846" style="zoom:50%;" />
+
+### 精确查询
+
+```java
+// 词条查询
+QueryBuilders.termQuery("city", "杭州");
+// 范围查询
+QueryBuilders.rangeQuery("price").gte(100).let(150);
+```
+
+<img src="C:/Users/chuan/AppData/Roaming/Typora/typora-user-images/image-20220101131640604.png" alt="image-20220101131640604" style="zoom:50%;" />
+
+### 复合查询
+
+```java
+// 创建布尔查询
+BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+// 添加must条件
+boolQuery.must(QueryBuilders.termQuery("city", "杭州"));
+// 添加filter条件
+boolQuery.filter(QueryBuilders.rangeQuery("price").lte(250));
+```
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101131900230.png" alt="image-20220101131900230" style="zoom:50%;" />
+
+### 排序、分页、高亮
+
+搜索结果的排序和分页是与query同级的参数，对应的API如下：
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101132021781.png" alt="image-20220101132021781" style="zoom:50%;" />
+
+高亮API包括请求DSL构建和结果解析两部分：
+
+- DSL构建：
+
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101132103021.png" alt="image-20220101132103021" style="zoom:50%;" />
+
+- 结果解析：
+
+    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101132121066.png" alt="image-20220101132121066" style="zoom:50%;" />
+
+## 5. 数据聚合
+
+### RestAPI实现聚合
+
+以品牌聚合为例：
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101210151672.png" alt="image-20220101210151672" style="zoom:50%;" />
+
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101210215327.png" alt="image-20220101210215327" style="zoom:50%;" />
