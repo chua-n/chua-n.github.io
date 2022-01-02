@@ -2,7 +2,9 @@
 
 - [MySQL](/数据库/MySQL/)
   - [数据库概述](/数据库/MySQL/数据库概述.md)
-  - [SQL基操](/数据库/MySQL/SQL基操.md)
+  - [SQL语法概念](/数据库/MySQL/SQL语法概念.md)
+  - [DQL](/数据库/MySQL/DQL.md)
+  - [DML](/数据库/MySQL/DML.md)
   - [DDL](/数据库/MySQL/DDL.md)
   - [函数](/数据库/MySQL/函数.md)
   - [事务](/数据库/MySQL/事务.md)
@@ -14,7 +16,6 @@
   - [字符集与校对](/数据库/MySQL/字符集与校对.md)
   - [访问控制](/数据库/MySQL/访问控制.md)
   - [数据库维护](/数据库/MySQL/数据库维护.md)
-  - [ON和WHERE的区别](/数据库/MySQL/ON和WHERE的区别.md)
 - [mongoDB](/数据库/mongoDB/)
     - [mongoDB的概念解析](/数据库/mongoDB/mongoDB的概念解析.md)
 - [Redis](/数据库/Redis/)
