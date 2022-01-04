@@ -366,6 +366,22 @@ $ git branch
 
 注意 `master` 分支前的 `*` 字符：它代表现在检出的那一个分支（也就是说，当前 `HEAD` 指针所指向的分支），这意味着如果在这时候提交，`master` 分支将会随着新的工作向前移动。 
 
+### -l选项
+
+可加入显示列出分支的筛选参数：如：
+
+```bash
+$ git branch
+  develop
+  release/5.2.3
+* release/v5.6.4
+  tag-v5.6.4.1_pre
+
+$ git branch -l "*release*"
+  release/5.2.3
+* release/v5.6.4
+```
+
 ### -v选项
 
 如果需要查看每一个分支的最后一次提交，可以运行 `git branch -v` 命令：
