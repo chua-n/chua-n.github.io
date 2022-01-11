@@ -135,10 +135,10 @@ li input[type="checkbox"] {
   display: none;
   max-height: calc(100vh - 61px);
   overflow-y: auto;
-  padding: 10px 0;
+  padding: 0;
   position: absolute;
-  right: -15px;
-  text-align: left;
+  right: -31.4px;
+  text-align: center;
   top: 100%;
   white-space: nowrap;
 }
