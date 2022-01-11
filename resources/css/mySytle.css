@@ -3,6 +3,7 @@
   clear: both;
   display: block;
   margin: auto;
+  padding-bottom: 1em;
 }
 /* fixbug: 放大图片后图片位置错乱得离谱 */
 .medium-zoom-image--opened {
