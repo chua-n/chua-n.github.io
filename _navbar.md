@@ -14,6 +14,7 @@
     -   [Redis](/数据库/Redis/)
     -   [Elasticsearch](/数据库/Elasticsearch/)
 -   [杂技](/杂技/)
+    -   [C++](/C++/)
     -   [OS](/杂技/OS/)
     -   [Git](/杂技/Git/)
     -   [CV](/杂技/CV/)
