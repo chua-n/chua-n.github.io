@@ -2,13 +2,21 @@
 -   Java
     -   [Java](/Java/)
     -   [JavaWeb](/JavaWeb/)
+-   [Python](/Python/)
+-   数学
+    -   [离散数学](/数学/离散数学/)
+    -   [线性代数](/数学/线性代数/)
+    -   [运筹学](/数学/运筹学/)
+    -   [AI](/数学/AI/)
 -   [数据库](/数据库/)
     -   [MySQL](/数据库/MySQL/)
     -   [mongoDB](/数据库/mongoDB/)
     -   [Redis](/数据库/Redis/)
-    -   [ElasticSearch](/数据库/ElasticSearch/)
+    -   [Elasticsearch](/数据库/Elasticsearch/)
 -   [杂技](/杂技/)
-    -   [操作系统](/杂技/操作系统)
+    -   [OS](/杂技/OS/)
     -   [Git](/杂技/Git/)
+    -   [CV](/杂技/CV/)
+    -   [PyTorch](/杂技/PyTorch/)
 -   [glodon](/glodon/)
 
