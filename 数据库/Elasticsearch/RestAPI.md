@@ -223,7 +223,7 @@ QueryBuilders.termQuery("city", "杭州");
 QueryBuilders.rangeQuery("price").gte(100).let(150);
 ```
 
-<img src="C:/Users/chuan/AppData/Roaming/Typora/typora-user-images/image-20220101131640604.png" alt="image-20220101131640604" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101131640604.png" alt="image-20220101131640604" style="zoom:50%;" />
 
 ### 复合查询
 

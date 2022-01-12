@@ -96,7 +96,7 @@ EventBus不想给定开发者怎么使用；你可以在应用程序中按照不
 
 接口实现监听者的方式很难做到简洁，这甚至引出了一个模式，尤其是在Swing应用中，那就是用匿名类实现事件监听者的接口。比较以下两种实现：
 
-```
+```java
 class ChangeRecorder {
     void setCustomer(Customer cust) {
         cust.addChangeListener(new ChangeListener() {
@@ -120,7 +120,7 @@ class EventBusChangeRecorder {
 
 有些人已经建议过用泛型定义一个通用的监听者接口`Handler<T>`。这有点牵扯到Java类型擦除的问题，假设我们有如下这个接口：
 
-```
+```java
 interface Handler<T> {
     void handleEvent(T event);
 }
