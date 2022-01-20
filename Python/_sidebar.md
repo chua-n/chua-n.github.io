@@ -17,4 +17,14 @@
     -   [迭代器-生成器-装饰器-描述器](/Python/踏入山门/迭代器-生成器-装饰器-描述器.md)
     -   [元编程](/Python/踏入山门/元编程.md)
     -   [并发编程](/Python/踏入山门/并发编程.md)
+- 标准库
+    - [os](/Python/标准库/os.md)
+    - [collections](/Python/标准库/collections.md)
+    - [heapq](/Python/标准库/heapq.md)
+    - [operator](/Python/标准库/operator.md)
+    - [itertools](/Python/标准库/itertools.md)
+    - [weakref](/Python/标准库/weakref.md)
+    - [functools](/Python/标准库/functools.md)
+    - [shutil](/Python/标准库/shutil.md)
+    - [regex](/Python/标准库/regex.md)
 
