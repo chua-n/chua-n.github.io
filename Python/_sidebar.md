@@ -32,3 +32,12 @@
     - [数组操作](/Python/numpy/数组操作.md)
     - [结构化数组](/Python/numpy/结构化数组.md)
     - [其他](/Python/numpy/其他.md)
+- pandas
+    - [概述](/Python/pandas/概述.md)
+    - [数据操作](/Python/pandas/数据操作.md)
+    - [缺失值处理](/Python/pandas/缺失值处理.md)
+    - [eval与query](/Python/pandas/eval与query.md)
+    - [IO操作](/Python/pandas/IO操作.md)
+- [scipy](/Python/scipy/)
+- matplotlib
+    - [基础介绍](/Python/matplotlib/基础介绍.md)

@@ -1,0 +1,46 @@
+Scipy 本身的名称空间仅仅包含从 numpy 导入进来的函数，若要使用这些函数，最好直接从 numpy 库中使用。
+
+使用 Scipy 时，除了 scipy.io 子模块外（因为其与 python 标准库 io 容易混淆），建议导入你需要的子模块的名称空间而不是直接导入 Scipy。
+
+| 导入写法                                                 | 说明                         |
+| -------------------------------------------------------- | ---------------------------- |
+| from scipy import optimize result = optimize.curve_fit() | # Recommended                |
+| import scipy result = scipy.optimize.curve_fit()         | # Not recommended            |
+| import scipy.io as spio                                  | # Special scipy.io submodule |
+
+有时你需要的 API 在你使用的 scipy 子模块里的更深层次的名称空间内，在当前子模块名称空间是不可见的，如：
+
+-   \# Wrong, couldn't find this function in stats.
+
+    ```python
+    from scipy import stats
+    stats.lomax(…)
+    ```
+
+-   \# Right and recommended.
+
+    ```python
+    from scipy.stats import distributions
+    distributions.lomax(…)
+    ```
+
+Scipy 的功能分布在各种子扩展包内，其所含子包如下：
+
+| 子包              | 说明                                                                                                                                       | 一些方法                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| scipy.cluster     | 聚类算法                                                                                                                                   | scipy.cluster.vq scipy.cluster.hierarchy                                                                             |
+| scipy.constants   | 物理数学常数及单位                                                                                                                         |                                                                                                                      |
+| scipy.fftpack     | 傅里叶变换                                                                                                                                 |                                                                                                                      |
+| scipy.integrate   | 积分操作                                                                                                                                   |                                                                                                                      |
+| scipy.interpolate | 插值操作                                                                                                                                   |                                                                                                                      |
+| scipy.io          | I/O 操作                                                                                                                                   | scipy.io.arff scipy.io.harwell_boeing scipy.io.idl scipy.io.matlab scipy.io.netcdf scipy.io.wavfile                  |
+| scipy.linalg      | 线性代数                                                                                                                                   | scipy.linalg.blas scipy.linalg.cython_blas scipy.linalg.lapack scipy.linalg.cython_lapack scipy.linalg.interpolative |
+| scipy.misc        | Various utilities that don't have another home. Hahahaha...                                                                                |                                                                                                                      |
+| scipy.ndimage     | N-d 图像操作                                                                                                                               |                                                                                                                      |
+| scipy.odr         | 正交距离回归                                                                                                                               |                                                                                                                      |
+| scipy.optimize    | 优化算法                                                                                                                                   |                                                                                                                      |
+| scipy.signal      | 信号处理                                                                                                                                   | scipy.signal.windows                                                                                                 |
+| scipy.sparse      | 2-D 稀疏矩阵                                                                                                                               | scipy.sparse.linalg scipy.sparse.csgraph                                                                             |
+| scipy.spatial     | 空间操作 对一个点集计算其三角剖分、泰森多边形(voronoi diagram)、凸包； 另外还实现了用于最近邻搜索的 KD 树； 以及各种度量中的距离计算函数） | scipy.spatial.distance scipy.spatial.transform                                                                       |
+| scipy.special     | 提供了大量的数学物理的函数                                                                                                                 |                                                                                                                      |
+| scipy.stats       | 统计学内容（如各种概率分布）                                                                                                               | scipy.stats.distributions scipy.stats.mstats                                                                         |
