@@ -27,4 +27,8 @@
     - [functools](/Python/标准库/functools.md)
     - [shutil](/Python/标准库/shutil.md)
     - [regex](/Python/标准库/regex.md)
-
+- numpy
+    - [numpy简介](/Python/numpy/numpy简介.md)
+    - [数组操作](/Python/numpy/数组操作.md)
+    - [结构化数组](/Python/numpy/结构化数组.md)
+    - [其他](/Python/numpy/其他.md)
