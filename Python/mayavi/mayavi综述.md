@@ -21,7 +21,7 @@
 -   数据：标量(scalar) vs 矢量(vector)
 -   单元(cell)：多个相关的点组成单元
 
-![](../../resources/images/notebooks/Python/dataset_diagram.jpg)
+![](https://chua-n.gitee.io/blog-images/notebooks/Python/dataset_diagram.jpg)
 
 ## 2. Mayavi
 
@@ -108,7 +108,7 @@ Mayavi 支持的数据源格式有：VTK legacy, VTK XML, array, any other seque
 
 TVTK 有五种数据集：
 
-![](../../resources/images/notebooks/Python/dataset_diagram.jpg)
+![](https://chua-n.gitee.io/blog-images/notebooks/Python/dataset_diagram.jpg)
 
 -   connectivity
     -   隐式连接：隐式连接认为数据是排列在一个类似晶格的结构上，每个方向的层数相等，x 先沿着数组增加，然后是 y，最后是 z
@@ -137,8 +137,8 @@ TVTK 有五种数据集：
 
 |                           VTK name                           |                             Demo                             |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| [ImageData](http://docs.enthought.com/mayavi/mayavi/data.html#imagedata) | ![](../../resources/images/notebooks/Python/image_data1.jpg) |
-| [RectilinearGrid](http://docs.enthought.com/mayavi/mayavi/data.html#rectilineargrid) | ![](../../resources/images/notebooks/Python/rectilinear_grid1.jpg) |
-| [StructuredGrid](http://docs.enthought.com/mayavi/mayavi/data.html#structuredgrid) | ![](../../resources/images/notebooks/Python/structured_grid1.jpg) |
-| [PolyData](http://docs.enthought.com/mayavi/mayavi/data.html#polydata) |  ![](../../resources/images/notebooks/Python/poly_data.jpg)  |
-| [UnstructuredGrid](http://docs.enthought.com/mayavi/mayavi/data.html#unstructuredgrid) | ![](../../resources/images/notebooks/Python/unstructured_grid1.jpg) |
+| [ImageData](http://docs.enthought.com/mayavi/mayavi/data.html#imagedata) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/image_data1.jpg) |
+| [RectilinearGrid](http://docs.enthought.com/mayavi/mayavi/data.html#rectilineargrid) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/rectilinear_grid1.jpg) |
+| [StructuredGrid](http://docs.enthought.com/mayavi/mayavi/data.html#structuredgrid) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/structured_grid1.jpg) |
+| [PolyData](http://docs.enthought.com/mayavi/mayavi/data.html#polydata) |  ![](https://chua-n.gitee.io/blog-images/notebooks/Python/poly_data.jpg)  |
+| [UnstructuredGrid](http://docs.enthought.com/mayavi/mayavi/data.html#unstructuredgrid) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/unstructured_grid1.jpg) |

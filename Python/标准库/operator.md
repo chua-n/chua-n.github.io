@@ -40,9 +40,9 @@
 
 | 操作                                                 | 说明                                                         |
 | ---------------------------------------------------- | ------------------------------------------------------------ |
-| ![](../../resources/images/notebooks/Python/262.png) | ![](../../resources/images/notebooks/Python/263.png)         |
-| ![](../../resources/images/notebooks/Python/264.png) | `itemgetter()`函数也支持多个keys                             |
-| ![](../../resources/images/notebooks/Python/265.png) | `itemgetter()`有时候也可以用lambda表达式替代；<br/> 这种方案不错，但是`itemgetter()`方式会稍快一点。 |
-| ![](../../resources/images/notebooks/Python/266.png) | 其实，`itemgetter()`操作也适用于`min()`和`max()`函数         |
+| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/262.png) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/263.png)         |
+| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/264.png) | `itemgetter()`函数也支持多个keys                             |
+| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/265.png) | `itemgetter()`有时候也可以用lambda表达式替代；<br/> 这种方案不错，但是`itemgetter()`方式会稍快一点。 |
+| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/266.png) | 其实，`itemgetter()`操作也适用于`min()`和`max()`函数         |
 
 `operator.methodcaller()`函数可通过字符串形式的方法名称调用某个对象的对应方法。见“类”页面笔记。
