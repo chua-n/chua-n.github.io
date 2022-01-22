@@ -43,3 +43,7 @@
     - [基础介绍](/Python/matplotlib/基础介绍.md)
     - [图件配置](/Python/matplotlib/图件配置.md)
     - [各种图件](/Python/matplotlib/各种图件.md)
+- mayavi
+    - [mayavi综述](/Python/mayavi/mayavi综述.md)
+    - [mlab](/Python/mayavi/mlab.md)
+    - [远程使用mayavi](/Python/mayavi/远程使用mayavi.md)
