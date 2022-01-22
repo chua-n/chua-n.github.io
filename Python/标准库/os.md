@@ -114,8 +114,8 @@ os.path 子库以 path 为入口，用于操作和处理文件路径。
 | 操作                                                         | 含义                  | 说明                                                 |
 | ------------------------------------------------------------ | --------------------- | ---------------------------------------------------- |
 | `os.system(<command>)`                                       | 执行程序或命令command | 在windows系统中，返回值为cmd的调用返回信息           |
-| import os<br />os.system("C:\\Windows\\System32\\calc.exe")  | >>><br />0            | ![](../../resources/images/notebooks/Python/242.png) |
-| import os<br/>os.system("C:\\Windows\\System32\\mspaint.exe \<br/>D:\\PYECourse\\grwordcloud.png") | \>>><br />0           | ![](../../resources/images/notebooks/Python/243.png) |
+| import os<br />os.system("C:\\Windows\\System32\\calc.exe")  | >>><br />0            | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/242.png) |
+| import os<br/>os.system("C:\\Windows\\System32\\mspaint.exe \<br/>D:\\PYECourse\\grwordcloud.png") | \>>><br />0           | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/243.png) |
 
 ## 环境参数操作
 

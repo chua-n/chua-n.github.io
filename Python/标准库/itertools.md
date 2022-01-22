@@ -114,9 +114,9 @@
 
     | 示例                                                 |
     | ---------------------------------------------------- |
-    | ![](../../resources/images/notebooks/Python/267.png) |
-    | ![](../../resources/images/notebooks/Python/268.png) |
-    | ![](../../resources/images/notebooks/Python/269.png) |
+    | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/267.png) |
+    | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/268.png) |
+    | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/269.png) |
 
 过滤工具`itertools.compress()`，见“数据结构与算法”页面笔记
 
