@@ -47,6 +47,9 @@
     - [mayavi综述](/Python/mayavi/mayavi综述.md)
     - [mlab](/Python/mayavi/mlab.md)
     - [远程使用mayavi](/Python/mayavi/远程使用mayavi.md)
+- scikit-image
+    - [通性概念](/Python/scikit-image/通性概念.md)
+    - [图像算法](/Python/scikit-image/图像算法.md)
 - PyTorch
     - [torch](/Python/PyTorch/torch.md)
     - [Tensor](/Python/PyTorch/Tensor.md)
