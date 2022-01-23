@@ -38,7 +38,8 @@
     - [缺失值处理](/Python/pandas/缺失值处理.md)
     - [eval与query](/Python/pandas/eval与query.md)
     - [IO操作](/Python/pandas/IO操作.md)
-- [scipy](/Python/scipy/)
+- scipy
+    - [概述](/Python/scipy/概述.md)
 - matplotlib
     - [基础介绍](/Python/matplotlib/基础介绍.md)
     - [图件配置](/Python/matplotlib/图件配置.md)
