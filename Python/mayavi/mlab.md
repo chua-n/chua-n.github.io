@@ -98,16 +98,11 @@ gallery：
     | 参数          | 说明              |
     | ------------- | ----------------- |
     | `figure`      |                   |
-    | mode``        | `{'rgb', 'rgba'}` |
+    | `mode` |`{'rgb', 'rgba'}`|
     | `antialiased` | `{True, False}`   |
 
 -   `sync_camera`：在参考图的摄像机上同步目标图的摄像机，`mlab.sync_camera(reference_figure, target_figure)`
 
--   `text`：给图像添加文本，`mlab.text(*args, **kwargs)`
-
--   `text3d`：添加文本到当前 scene 中的 3D 位置，`mlab.text3d(*args, **kwargs)`
-
--   `title`：给图像建立标题，`mlab.title(*args, **kwargs)`
 
 图形装饰函数：
 
