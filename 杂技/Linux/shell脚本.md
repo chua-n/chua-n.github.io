@@ -16,7 +16,7 @@ GNOME 项目为程序员提供了一个简单的文本编辑器 gedit，Unity �
 
 每次运 Vim 编辑器时默认进入**命令模式**，此时需要先切换到**输入模式**后再进行文档编写工作，而每次编写完文档后需要先返回命令模式，然后再进入**末行模式**，执行文档的保存或退出操作。在 Vim 中，无法直接从输入模式切换到末行模式。Vim 的三种模式如下：
 
-<img src="../../resources/images/notebooks/杂技/Linux/30.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/杂技/Linux/30.png" style="zoom:67%;" />
 
 -   命令模式：控制光标移动，可对文本进行复制、粘贴、删除和查找等工作
 -   输入模式：正常的文本录入
@@ -69,13 +69,13 @@ Shell 脚本文件的名称可以任意，但为了避免被误以为是普通�
 
 | 脚本内容                                                | 执行脚本                                                |
 | ------------------------------------------------------- | ------------------------------------------------------- |
-| ![](../../resources/images/notebooks/杂技/Linux/31.png) | ![](../../resources/images/notebooks/杂技/Linux/32.png) |
+| ![](https://chua-n.gitee.io/blog-images/notebooks/杂技/Linux/31.png) | ![](https://chua-n.gitee.io/blog-images/notebooks/杂技/Linux/32.png) |
 
 执行脚本可用`bash <example.sh>`或输入完整路径`./example.sh`，不过后一种默认会因权限不足而提示错误，此时只要为脚本文件增加执行权限即可。
 
 SHELL 脚本中的条件测试语法可以判断表达式是否成立，若条件成立则返回数字 0，否则返回其他随机数值。切记，**条件表达式**两边均应有一个空格。
 
-![](../../resources/images/notebooks/杂技/Linux/33.png)
+![](https://chua-n.gitee.io/blog-images/notebooks/杂技/Linux/33.png)
 
 按照测试对象来划分，条件测试语句可分为文件测试、逻辑测试、整数值比较、字符串比较语句。其中，文件测试所用的参数为：
 
@@ -237,6 +237,6 @@ at 命令与 crond 服务：
 
 部署计划任务的时间格式为“分、时、日、月、星期 命令”，若某些字段没有设置，使用星号`*`占位：
 
-<img src="../../resources/images/notebooks/杂技/Linux/34.png" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/blog-images/notebooks/杂技/Linux/34.png" style="zoom:50%;" />
 
 计划任务中的“分”字段必须有数值，绝对不能为空或为\*号，而“日”和“星期”字段不能同时使用，否则就会发生冲突。

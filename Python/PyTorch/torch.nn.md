@@ -420,7 +420,7 @@ print(loss)
     >
     > `forward`函数得到`output`，`backward()`函数用来计算梯度。
 
-| ![](../../resources/images/notebooks/Python/578.png) | ![](../../resources/images/notebooks/Python/579.png) | ![](../../resources/images/notebooks/Python/580.png) | ![](../../resources/images/notebooks/Python/581.png) |
+| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/578.png) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/579.png) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/580.png) | ![](https://chua-n.gitee.io/blog-images/notebooks/Python/581.png) |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
 
 ## 其他
@@ -431,7 +431,7 @@ print(loss)
 
 2. `self.children()`只包括网络模块的第一代儿子模块
 
-    ![](../../resources/images/notebooks/Python/583.png)
+    ![](https://chua-n.gitee.io/blog-images/notebooks/Python/583.png)
 
     ```python
     class Net(nn.Module):
@@ -460,6 +460,6 @@ print(loss)
 
 2. 比如，PyTorch 在训练时是一个批量一个批量的输入，当使用了 BN 层时，其需要由这个批量计算输入的均值和方差，故无法在训练时处理 batch_size=1 的输入，而当设置为 `eval()`模式时，BN 层的均值、方差等参数已固定，故可以处理 batch_size=1 的输入；
 
-    ![](../../resources/images/notebooks/Python/582.png)
+    ![](https://chua-n.gitee.io/blog-images/notebooks/Python/582.png)
 
 3. 当模型中不含 BN, DropOut 等这些特殊层时，`train()`和 `eval()`模式其实没有区别。
