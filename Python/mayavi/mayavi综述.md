@@ -56,10 +56,10 @@ Mayavi 中所有的可视化对象都属于一个 `scene`，类似于 `pyplot` �
 Mayavi 用了像 VTK 一样的管道架构(pipeline architecture)，对于用户来说，这基本归结为一个简单的层次结构：
 
 1. 加载数据源：Mayavi 支持的数据源格式有：VTK legacy, VTK XML, array, any other sequence；
-
 2. 如需要，用 Filters 转换器转换数据；
-
 3. 用 Modules 模组可视化数据。
+
+### mayavi.mlab
 
 `mayavi.mlab` 模块提供了一个像 matplotlib 的 pylab 接口一样的接口，但 mlab 用来非常方便地绘制三维可视化图形。
 
