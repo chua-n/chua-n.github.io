@@ -333,7 +333,7 @@ body.sticky .sidebar-toggle {
   border-collapse: collapse;
   border-spacing: 0;
   display: table;
-  margin: auto;
+  margin: auto auto 1rem auto; /* 上 右 下 左 */
   overflow: auto;
   /* width: 100%; */
 }
