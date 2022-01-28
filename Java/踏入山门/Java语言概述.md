@@ -60,7 +60,7 @@ Java源程序命名：
 
 Java语言编写的程序需要经过编译步骤，但这个编译步骤并不会产生特定平台的机器码，而是生成一种与平台无关的**字节码**（也就是*.class文件），这种字节码不是可执行的，必须使用**Java虚拟机**来解释执行。因此可以认为，Java语言既是编译型语言，又是解释型语言。
 
-![1](https://chua-n.gitee.io/blog-images/notebooks/Java/1.png)
+![1](https://chua-n.gitee.io/figure-bed/notebook/Java/1.png)
 
 javac编译后生成的字节码文件有默认的文件名：文件名总是以源文件所定义类的类名作为主文件名，以.class作为扩展名。这意味着如果一个源文件里定义了多个类，将编译生成多个字节码文件。
 
@@ -80,7 +80,7 @@ Java解释器规定：如需某个类被解释器直接解释执行，则这个�
 
 - 若运行Java程序时在类名后紧跟一个或多个字符串（多个字符串之间以空格隔开），JVM就会把这些字符依次赋给args数组元素；若某参数本身包含了空格，则应该将该参数用双引号("")括起来，否则JVM会将这个空格当成参数分隔符，而非一个单独的参数。
 
-    ![2](https://chua-n.gitee.io/blog-images/notebooks/Java/2.png)
+    ![2](https://chua-n.gitee.io/figure-bed/notebook/Java/2.png)
 
 ## 3. JDK、JVM、JRE
 
@@ -133,5 +133,5 @@ JDK 9工具的一大改进就是提供了jshell工具，它是一个交互式的
 
 除了/help,/exit之外，jshell还有如下常用命令：
 
-![3](https://chua-n.gitee.io/blog-images/notebooks/Java/3.png)
+![3](https://chua-n.gitee.io/figure-bed/notebook/Java/3.png)
 

@@ -98,7 +98,7 @@ Maven仓库默认在国外，国内使用难免很慢，可以更换为阿里云
 
 ## 4. Maven概念模型
 
-![Maven概念模型](https://chua-n.gitee.io/blog-images/notebooks/Java/Maven概念模型.png)
+![Maven概念模型](https://chua-n.gitee.io/figure-bed/notebook/Java/Maven概念模型.png)
 
 项目对象模型：
 

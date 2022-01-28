@@ -10,7 +10,7 @@ Filter，过滤器：当客户端浏览器访问服务器的资源时，过滤�
 
 实际上Filter可以完成与Servlet同样的工作，甚至比Servlet使用起来更加灵活，因为它除了提供了request和response对象外，还提供了一个FilterChain对象，这个对象可以让我们更加灵活地控制请求的流转。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/30.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/30.png" style="zoom:67%;" />
 
 在Tomcat容器中，`FilterConfig`和`FilterChain`的实现类分别是`ApplicationFilterConfig`和`ApplicationFilterChain`，而Filter的实现类由用户自定义，只要实现Filter接口中定义的三个接口就行，这三个接口与在Servlet中的类似。
 
@@ -173,7 +173,7 @@ filterDemo2回来了了......
 
 执行顺序（假设有2个过滤器）：
 
-![image-20210710113931423](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/过滤器链.png)
+![image-20210710113931423](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/过滤器链.png)
 
 - 过滤器1
 - 过滤器2

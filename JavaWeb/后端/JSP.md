@@ -18,7 +18,7 @@ JSP是服务器端的技术，在后台被自动转换成Servlet。
 
 JSP本质上就是一个Servlet。
 
-![5](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/5.png)
+![5](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/5.png)
 
 如果修改了某个JSP，该JSP仅在修改后被第一次被访问时才会被转换成Servlet并进行编译，创建JSP唯一的一个实例，并调用`_jspInit`完成初始化。之后每个用户请求都会创建一个调用JSP实例的`_jspService`方法的线程，因而多个并发请求会导致多个线程同时调用`_jspService`。
 

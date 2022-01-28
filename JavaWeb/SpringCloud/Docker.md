@@ -4,24 +4,24 @@
 
 大型项目组件较多，运行环境也较为复杂，部署时会碰到一些问题，如依赖关系复杂易导致的兼容性问题，开发、测试、生产环境有差异。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0980.JPG" alt="IMG_0980" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0980.JPG" alt="IMG_0980" style="zoom:67%;" />
 
 ### Docker的原理
 
 通常而言，计算机软硬件的架构是这样的：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0983.JPG" alt="IMG_0983" style="zoom:40%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0983.JPG" alt="IMG_0983" style="zoom:40%;" />
 
 那么Docker如何解决不同系统环境的问题呢？
 
-> <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0984.JPG" alt="IMG_0984" style="zoom:50%;" />
+> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0984.JPG" alt="IMG_0984" style="zoom:50%;" />
 
 - Docker将用户程序与所需要调用的系统（如Ubuntu）函数库一起打包
 - Docker运行到不同操作系统时，直接基于打包的库函数，借助于操作系统的Linux内核来运行
 
 通过Docker可以解决依赖的兼容问题：
 
-> <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0981.JPG" alt="IMG_0981" style="zoom:50%;" />
+> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0981.JPG" alt="IMG_0981" style="zoom:50%;" />
 
 - 将应用的Libs（函数库）、Deps（依赖）、配置与应用一起打包
 - 将每个应用放到一个隔离容器去运行，避免互相干扰
@@ -30,7 +30,7 @@
 
 虚拟机是在操作系统中模拟硬件设备，然后运行另一个操作系统，比如在windows系统里运行Ubuntu系统，这样就可以运行任意的Ubuntu应用了。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0987.JPG" alt="IMG_0988" style="zoom:40%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0987.JPG" alt="IMG_0988" style="zoom:40%;" />
 
 ### Docker的解决方案总结
 
@@ -52,13 +52,13 @@ Docker如何解决开发、测试、生产环境有差异的问题？
 
 > 镜像运行起来就是容器，一个镜像可以运行多个容器。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0989.JPG" alt="IMG_0989" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0989.JPG" alt="IMG_0989" style="zoom:50%;" />
 
 ### 2.2 Docker和DockerHub
 
 `DockerHub`是一个Docker镜像的托管平台，这样的平台称为Docker Registry。国内也有类似于`DockerHub`的公开服务，如网易云镜像服务、阿里云镜像库等。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0990.JPG" alt="IMG_0990" style="zoom:40%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0990.JPG" alt="IMG_0990" style="zoom:40%;" />
 
 ### 2.3 Docker架构
 
@@ -67,7 +67,7 @@ Docker是一个CS架构的程序，由两部分组成：
 - 服务端：Docker守护进程，负责处理Docker指令，管理镜像、容器等
 - 客户端：通过命令或RestAPI向Docker服务端发送指令。可以在本地或远程向服务端发送指令。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_0991.JPG" alt="IMG_0991" style="zoom:45%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0991.JPG" alt="IMG_0991" style="zoom:45%;" />
 
 ### 2.4 Docker安装与启动
 
@@ -98,11 +98,11 @@ systemctl restart docker # 重启docker服务
 
 镜像名称一般分两部分组成：`[repository]:[tag]`，在没有指定tag时，默认是`latest`，即最新版本的镜像。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211222234533061.png" alt="image-20211222234533061" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222234533061.png" alt="image-20211222234533061" style="zoom:50%;" />
 
 镜像操作命令：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211222234637316.png" alt="image-20211222234637316" style="zoom:30%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222234637316.png" alt="image-20211222234637316" style="zoom:30%;" />
 
 - `docker images`：查看镜像
 - `docker rmi`：删除镜像
@@ -114,7 +114,7 @@ systemctl restart docker # 重启docker服务
 
 ## 4. 容器相关命令
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1003.JPG" alt="IMG_1003" style="zoom:45%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1003.JPG" alt="IMG_1003" style="zoom:45%;" />
 
 - `docker run`：运行镜像
 - `docker pause`：暂停镜像
@@ -138,7 +138,7 @@ systemctl restart docker # 重启docker服务
 
 - 示例2：进入Nginx容器，修改HTML文件的内容：
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1006.JPG" alt="IMG_1006" style="zoom:40%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1006.JPG" alt="IMG_1006" style="zoom:40%;" />
 
 ## 5. 数据卷
 
@@ -146,11 +146,11 @@ systemctl restart docker # 重启docker服务
 
 背景——容器与数据耦合导致的问题：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1007.JPG" alt="IMG_1007" style="zoom:40%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1007.JPG" alt="IMG_1007" style="zoom:40%;" />
 
 数据卷（volume）是一个虚拟目录，指向宿舍机文件系统中的某个目录：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1008.JPG" alt="IMG_1008" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1008.JPG" alt="IMG_1008" style="zoom:50%;" />
 
 数据卷的作用是将容器与数据分离，解耦合，方便操作容器内数据，保证数据安全。
 
@@ -174,21 +174,21 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
 我们在创建容器时，可以通过`-v`参数来挂载一个数据卷到某个容器目录：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211223003923310.png" alt="image-20211223003923310" style="zoom:40%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223003923310.png" alt="image-20211223003923310" style="zoom:40%;" />
 
 例如，创建并运行一个MySQL容器，将宿主机目录直接挂载到容器：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1012.JPG" alt="IMG_1012" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1012.JPG" alt="IMG_1012" style="zoom:50%;" />
 
 数据卷挂载的方式对比：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1014.JPG" alt="IMG_1014" style="zoom:45%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1014.JPG" alt="IMG_1014" style="zoom:45%;" />
 
 ## 6. 自定义镜像：Dockerfile
 
 镜像结构：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/IMG_1015.JPG" alt="IMG_1015" style="zoom:40%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1015.JPG" alt="IMG_1015" style="zoom:40%;" />
 
 镜像是分层结构，每一层称为一个layer：
 
@@ -213,13 +213,13 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
 - 示例1：基于Ubuntu镜像构建一个新镜像，运行一个java项目
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211223005014040.png" alt="image-20211223005014040" style="zoom:35%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005014040.png" alt="image-20211223005014040" style="zoom:35%;" />
 
 - 示例2：基于java:8-alpine镜像，将一个java项目构建为镜像
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211223005050347.png" alt="image-20211223005050347" style="zoom:33%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005050347.png" alt="image-20211223005050347" style="zoom:33%;" />
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211223005125668.png" alt="image-20211223005125668" style="zoom:40%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005125668.png" alt="image-20211223005125668" style="zoom:40%;" />
 
 ## 7. DockerCompose
 
@@ -227,9 +227,9 @@ Docker Compose是可以基于Compose文件帮我们快速的部署分布式应�
 
 Compose文件是一个文本文件，通过指令定义集群中每个容器如何运行，如：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211223005256604.png" alt="image-20211223005256604" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005256604.png" alt="image-20211223005256604" style="zoom:33%;" />
 
-> <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211223005331811.png" alt="image-20211223005331811" style="zoom:33%;" />
+> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005331811.png" alt="image-20211223005331811" style="zoom:33%;" />
 
 ## 8. Docker镜像服务
 

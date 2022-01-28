@@ -10,9 +10,9 @@ Java集合大致可分为Set, List, Queue, Map四种体系，集合类主要负�
 
 Java的集合类主要由两个接口派生而出：Collection和Map，Collection和Map是Java集合框架的根接口，这两个接口又包含了一些子接口或实现类。如下图所示，其中最常用的实现类以灰色背景覆盖（另外，粗线框框住的均为接口类型，其他的框可能为接口/类）。
 
-![36](https://chua-n.gitee.io/blog-images/notebooks/Java/36.png)
+![36](https://chua-n.gitee.io/figure-bed/notebook/Java/36.png)
 
-![37](https://chua-n.gitee.io/blog-images/notebooks/Java/37.png)
+![37](https://chua-n.gitee.io/figure-bed/notebook/Java/37.png)
 
 ## 2. Collection接口
 
@@ -239,7 +239,7 @@ Java8允许使用流式API来操作集合，Collection接口提供了一个strea
 
 Map用于保存具有映射关系的数据，因此Map集合里保存着两组值，一组值用于保存Map的key，另外一组值用于保存Map里的value，key和value都可以是任何引用类型的数据，但key不允许重复。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/Java/38.png" alt="38" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/Java/38.png" alt="38" style="zoom:67%;" />
 
 实际上，如果把Map里的key放在一起看，它们就组成了一个Set集合，故而所有对Set元素的要求基本就是对Map里的key的要求，Map里key集和Set里的元素集的存储形式很像。
 
@@ -265,7 +265,7 @@ hash算法中，hash表里可以存储元素的位置叫做“桶”。
 
 2. 但hash表的状态是open的：在发生“hash冲突”的情况下，单个桶会存储多个元素，这些元素以链表形式存储，必须按顺序搜索。
 
-    ![39](https://chua-n.gitee.io/blog-images/notebooks/Java/39.png)
+    ![39](https://chua-n.gitee.io/figure-bed/notebook/Java/39.png)
 
 因为使用hash算法来决定其元素的存储，HashSet和HashMap的hash表具有如下属性：
 
@@ -290,7 +290,7 @@ hash算法中，hash表里可以存储元素的位置叫做“桶”。
 
 2. 但hash表的状态是open的：在发生“hash冲突”的情况下，单个桶会存储多个元素，这些元素以链表形式存储，必须按顺序搜索。
 
-    ![39](https://chua-n.gitee.io/blog-images/notebooks/Java/39.png)
+    ![39](https://chua-n.gitee.io/figure-bed/notebook/Java/39.png)
 
 因为使用hash算法来决定其元素的存储，HashSet和HashMap的hash表具有如下属性：
 

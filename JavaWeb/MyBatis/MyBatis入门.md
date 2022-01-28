@@ -51,7 +51,7 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
 
 ### 1.4 MyBatis运行流程
 
-![41](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/MyBatis/41.png)
+![41](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/41.png)
 
 ## 2. MyBatis开发步骤
 
@@ -74,7 +74,7 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
 
 2. 创建user数据表；
 
-    ![42](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/MyBatis/42.png)
+    ![42](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/42.png)
 
 3. 创建User实体类；
 
@@ -236,5 +236,5 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
 
     - 测试结果
 
-        ![43](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/MyBatis/43.png)
+        ![43](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/43.png)
 

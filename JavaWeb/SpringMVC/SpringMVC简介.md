@@ -130,15 +130,15 @@ SpringMVC已经成为目前最主流的MVC框架之一，并且随着Spring3.0�
 
 - 手写版
 
-    ![23](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringMVC/23.png)
+    ![23](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringMVC/23.png)
 
 - 手写版+开发步骤
 
-    ![24](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringMVC/24.png)
+    ![24](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringMVC/24.png)
 
 - PPT版
 
-    ![25](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringMVC/25.png)
+    ![25](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringMVC/25.png)
 
 ### 2.2 SpringMVC快速入门
 
@@ -233,11 +233,11 @@ SpringMVC已经成为目前最主流的MVC框架之一，并且随着Spring3.0�
 
     - 访问页面
 
-        ![26](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringMVC/26.png)
+        ![26](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringMVC/26.png)
 
     - 控制台输出
 
-        ![27](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringMVC/27.png)
+        ![27](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringMVC/27.png)
 
 ### 2.3 快速入门案例详解
 
@@ -327,9 +327,9 @@ SpringMVC的注解配置：
 
 ### 2.4 SpringMVC的执行流程（理解即可）
 
-![28](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringMVC/28.png)
+![28](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringMVC/28.png)
 
 文字描述：
 
-![29](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringMVC/29.png)
+![29](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringMVC/29.png)
 

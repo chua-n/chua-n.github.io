@@ -68,11 +68,11 @@ scope的取值：
 
 对于两个类UserService和UserDao，它们都在Spring容器中，前者的代码定义中需要使用到后者。以前的做法是在容器外部获得UserService实例和UserDao实例，然后在程序中进行结合；然而，最终程序直接使用的是UserService，所以更好的方式是：在Spring容器中，将UserDao设置到UserSerivice内部。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/11.png" alt="11" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/11.png" alt="11" style="zoom:50%;" />
 
 以Spring进行依赖注入后的效果如下图：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/12.png" alt="12" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/12.png" alt="12" style="zoom:50%;" />
 
 ### 2.2 依赖注入的方式
 

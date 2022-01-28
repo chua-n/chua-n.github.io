@@ -426,7 +426,7 @@ public class QueryPlugin implements Interceptor {
 
 在DataSource中配置以JDBC标准连接数据库所需要的各项参数信息后，依据DataSource的不同，可以设置以下属性：
 
-![44](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/MyBatis/44.png)
+![44](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/44.png)
 
 当然也可以设置自己的数据源，通过实现`DataSourceFactory`接口来实现（也可以引入其他第三方数据源）。
 

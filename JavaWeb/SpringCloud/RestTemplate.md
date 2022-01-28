@@ -4,15 +4,15 @@
 - 微服务数据独立，不要访问其它微服务的数据库
 - 微服务可以将自己的业务暴露为接口，供其它微服务调用
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128174921800.png" alt="image-20211128174921800" style="zoom:25%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128174921800.png" alt="image-20211128174921800" style="zoom:25%;" />
 
 微服务远程调用：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128175731514.png" alt="image-20211128175731514" style="zoom:25%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128175731514.png" alt="image-20211128175731514" style="zoom:25%;" />
 
 远程调用方式分析——根源需要在Java代码中直接发起HTTP请求：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringCloud/image-20211128175944257.png" alt="image-20211128175944257" style="zoom:25%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128175944257.png" alt="image-20211128175944257" style="zoom:25%;" />
 
 远程调用实现——基于`RestTemplate`发起的HTTP请求实现远程调用，由于HTTP请求做远程调用是与语言无关的调用，只要知道对方的IP、端口、接口路径、请求参数即可。
 

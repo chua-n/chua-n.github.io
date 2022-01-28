@@ -12,7 +12,7 @@
 | table joins  | /                | 表连接,MongoDB不支持                |
 | primary key  | primary key      | 主键,MongoDB自动将_id字段设置为主键 |
 
-![18](https://chua-n.gitee.io/blog-images/notebooks/数据库/18.png)
+![18](https://chua-n.gitee.io/figure-bed/notebook/数据库/18.png)
 
 ## 启动mongodb服务
 

@@ -61,7 +61,7 @@ public String getCarInsuranceName(Optional<Person> person) {
 
 > 这种方式通过类型系统让你的域模型中隐藏的知识显式地体现在你的代码中，换句话说，你永远都不应该忘记语句的首要功能就是沟通，即使对程序设计语言也没有什么不同。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/Java/58.png" alt="58" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/Java/58.png" alt="58" style="zoom:50%;" />
 
 ### 3.2 示例2
 

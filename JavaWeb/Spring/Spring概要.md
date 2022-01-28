@@ -18,7 +18,7 @@ Spring的优势：
 
 ## 2. Spring体系结构
 
-![9](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/9.png)
+![9](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/9.png)
 
 ## 3. Spring开发步骤
 
@@ -32,7 +32,7 @@ Spring开发的一般步骤：
 
 ---
 
-![10](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/10.png)
+![10](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/10.png)
 
 上述Spring的开发步骤：
 

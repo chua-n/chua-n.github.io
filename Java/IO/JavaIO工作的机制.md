@@ -6,23 +6,23 @@
 
 标准访问文件的方式——当写入时，用户的应用程序调用write()接口将数据从用户地址空间复制到内核地址空间的缓存中，这时对用户程序来说写操作就已经完成，至于什么时候再写到磁盘中由操作系统决定，除非显示地调用了sync同步命令。
 
-![](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/13.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/13.png)
 
 直接I/O的方式——通常直接I/O与异步I/O结合使用，会得到比较好的性能。
 
-![](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/14.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/14.png)
 
 同步访问文件的方式——即数据的读取和写入都是同步操作的，它与标准访问文件的方式不同的是，只有当数据被成功写到磁盘时才返回给应用程序成功的标志。这种访问文件的方式性能比较差，只有在一些对数据安全性要求比较高的场景中会使用，而且通常这种操作方式的硬件都是定制的。
 
-![](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/15.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/15.png)
 
 异步访问文件的方式——即当访问数据的线程发出请求之后，线程会接着去处理其他事情，而不是阻塞等待，当请求的数据返回后 继续处理下面的操作。这种访问文件的方式可以明显地提高应用程序的效率，但是不会改变访问文件的效率。
 
-![](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/16.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/16.png)
 
 内存映射的方式——指操作系统将内存中的某一块区域与磁盘中的文件关联起来，当要访问内存中的一段数据时，转换为访问文件中的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。
 
-![](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/17.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/17.png)
 
 数据在磁盘中的唯一最小描述就是文件，也就是说上层应用程序只能通过文件来操作硬盘上的数据，文件也是操作系统和磁盘驱动器交互的最小单元。
 
@@ -48,7 +48,7 @@ Java序列化就是将一个对象转化成一串二进制表示的字节数组�
 
 搞清楚TCP连接的几种状态转换对我们调试网络程序是非常有帮助的:
 
-![](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/18.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/18.png)
 
 将一份数据从一个地方正确地传输到另一个地方所需要的时间我们称之为响应时间。
 
