@@ -21,17 +21,17 @@
 
 - 可以直接在Spring配置文件applicationContext.xml中配置DataSource的相关连接信息：
 
-    ![13](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/13.png)
+    ![13](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/13.png)
 
 - 也可以让Spring抽取另外的DataSource的properties配置文件：
 
     > 其不再在`<bean>`标签内了，而需引入`<context>`标签
 
-    ![14](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/14.png)
+    ![14](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/14.png)
 
-    ![15](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/15.png)
+    ![15](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/15.png)
 
     示例：
 
-    ![16](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/16.png)
+    ![16](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/16.png)
 

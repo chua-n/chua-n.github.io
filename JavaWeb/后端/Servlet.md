@@ -192,7 +192,7 @@ destroy方法一般用于：
 
 ### 5.2 Servlet顶层类关联图
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/23.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/23.png" style="zoom:67%;" />
 
 - 与Servlet主要关联的是三个类，分别是`ServletConfig`, `ServletRequest`, `ServletResponse`，它们都是通过容器传递给Servlet的，其中`ServletConfig`在Servlet初始化时就传给Servlet了，后两个是在请求达到时调用Servlet传递过来的。
 - Servlet的运行模式是一个典型的“握手型的交互式”运行模式，即两个模块为了交换数据通常都会准备一个交易场景，这个场景一直跟随这个交易过程直到这个交易完成为止。
@@ -202,11 +202,11 @@ ServletConfig对象包含Servlet初始化所需的很多参数，如计数器、
 
 与Request相关的类结构图：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/24.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/24.png" style="zoom:67%;" />
 
 Request和Response的转变过程：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/25.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/25.png" style="zoom:67%;" />
 
 ### 5.3 一个Servlet的基本结构
 
@@ -275,7 +275,7 @@ Applet与Servlet也可以通信，比如使用Socket技术。
 
 Tomcat的容器模型分为4个等级：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/20.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/20.png" style="zoom:67%;" />
 
 真正管理Servlet的容器是Context容器，一个Context对应一个web工程，在Tomcat的配置文件中可以很容易地发现这一点，如`<Context path="/projectOne" docBase="D:\projects\projectOne" reloadable="true" />`。
 
@@ -283,7 +283,7 @@ Tomcat的容器模型分为4个等级：
 
 <font size=5>**Tomcat的启动逻辑**</font>是基于观察者模式设计的，所有的容器都会继承Lifecycle接口，它管理着容器的整个生命周期，所有容器的修改和状态的改变都会由它去通知已经注册的观察者(Listener)。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/21.png" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/21.png" style="zoom:50%;" />
 
 ContextConfig的init方法将会主要完成以下工作：
 
@@ -319,7 +319,7 @@ Web应用的初始化工作：
 
 创建Servlet对象的相关类结构：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/22.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/22.png" style="zoom:67%;" />
 
 事实上Servlet从被web.xml解析到完成初始化，这个过程非常复杂，中间有很多过程，包括各种容器状态的转化引起的监听事件的触发、各种访问权限的控制和一些不可预料的错误发生的判断行为等。
 
@@ -329,7 +329,7 @@ Web应用的初始化工作：
 
 Request在容器中的路由图：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/26.png" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/26.png" style="zoom:50%;" />
 
 > Servlet的确已经能够帮我们完成所有的工作了，但是现在的Web应用很少直接将交互的全部页面用Servlet来实现，而是采用更加高效的MVC框架来实现。这些MVC框架的基本原理是将所有的请求都映射到一个Servlet，然后去实现service方法，这个方法也就是MVC框架的入口。
 

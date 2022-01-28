@@ -51,7 +51,7 @@ ES中支持两种地理坐标数据类型：
 
 ES中通过Restful请求操作索引库、文档，请求内容用DSL语句来表示。创建索引库和mapping的DSL语法如下：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20211231221313220.png" alt="image-20211231221313220" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231221313220.png" alt="image-20211231221313220" style="zoom:50%;" />
 
 小提示：字段拷贝可以使用copu_to属性将当前字段拷贝到指定字段，如：
 
@@ -116,7 +116,7 @@ PUT /heima/_mapping
 
 新增文档的DSL语法如下：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20211231222158358.png" alt="image-20211231222158358" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231222158358.png" alt="image-20211231222158358" style="zoom:50%;" />
 
 ### 查看文档
 
@@ -142,11 +142,11 @@ DELETE /索引库名/_doc/文档id
 
 - 全量修改：会删除旧文档，添加新文档
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/IMG_1115.JPG" alt="IMG_1115" style="zoom:40%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/IMG_1115.JPG" alt="IMG_1115" style="zoom:40%;" />
 
 - 增量修改：修改指定字段值
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20211231222832555.png" alt="image-20211231222832555" style="zoom:40%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231222832555.png" alt="image-20211231222832555" style="zoom:40%;" />
 
 ## 3. 搜索文档
 
@@ -198,9 +198,9 @@ GET /indexName/_search
 
 全文检索查询会对用户输入内容分词，常用于搜索框搜索：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101105237678.png" alt="image-20220101105542696" style="zoom:33%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101105237678.png" alt="image-20220101105542696" style="zoom:33%;" />
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101105622383.png" alt="image-20220101105622383" style="zoom:36%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101105622383.png" alt="image-20220101105622383" style="zoom:36%;" />
 
 全文检索查询使用match与multi_match，两者的区别是，后者允许同时查询多个字段，参与查询的字段越多，查询性能越差。
 
@@ -266,7 +266,7 @@ GET /indexName/_search
     }
     ```
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101110220484.png" alt="image-20220101110220484" style="zoom:45%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101110220484.png" alt="image-20220101110220484" style="zoom:45%;" />
 
 ### 地理坐标查询
 
@@ -294,7 +294,7 @@ GET /indexName/_search
     }
     ```
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101110952283.png" alt="image-20220101110952283" style="zoom:50%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101110952283.png" alt="image-20220101110952283" style="zoom:50%;" />
 
 - geo_distance：查询到指定中心点小于某个距离值的所有文档
 
@@ -310,7 +310,7 @@ GET /indexName/_search
     }
     ```
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101111120419.png" alt="image-20220101111120419" style="zoom:50%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101111120419.png" alt="image-20220101111120419" style="zoom:50%;" />
 
 地理坐标查询常见的使用场景包括：
 
@@ -329,31 +329,31 @@ GET /indexName/_search
     - must_not：必须不匹配，不参与算法，类似“非”
     - filter：必须匹配，不参与算法
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101113140561.png" alt="image-20220101113140561" style="zoom:80%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101113140561.png" alt="image-20220101113140561" style="zoom:80%;" />
 
 - function_score：算分函数查询，可以控制文档**相关性算分**，根据新得到的算分控制文档排序
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101112830872.png" alt="image-20220101112830872" style="zoom:50%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101112830872.png" alt="image-20220101112830872" style="zoom:50%;" />
 
     > function_score的例子比如百度竞价：
     >
-    > <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101112011862.png" alt="image-20220101112011862" style="zoom:45%;" />
+    > <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101112011862.png" alt="image-20220101112011862" style="zoom:45%;" />
 
 案例：
 
 - 搜索名字包含如家、价格不高于400、在坐标31.21, 121.5周围10km内的酒店：
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101113428776.png" alt="image-20220101113428776" style="zoom:50%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101113428776.png" alt="image-20220101113428776" style="zoom:50%;" />
 
 - 给如家品牌的酒店排名靠前一些：
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101113413130.png" alt="image-20220101113413130" style="zoom:50%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101113413130.png" alt="image-20220101113413130" style="zoom:50%;" />
 
 #### 相关性算法
 
 对于相关性算分，当我们使用match查询时，文档结果会根据与搜索词条的关联度打分（_score），返回结果时按照分值降序排列。如，搜索“虹桥如家”的结果如下：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101112210234.png" alt="image-20220101112210234" style="zoom:45%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101112210234.png" alt="image-20220101112210234" style="zoom:45%;" />
 
 Elasticsearch中的相关性打分算法：
 
@@ -416,7 +416,7 @@ GET /hotel/_search
 }
 ```
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101124909562.png" alt="image-20220101124909562" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101124909562.png" alt="image-20220101124909562" style="zoom:50%;" />
 
 #### 深度分页问题
 
@@ -426,7 +426,7 @@ ES是分布式的，所以会面临深度分页问题。例如按price排序后�
 2. 然后将所有节点的结果聚合，在内存中重新排序选出前1000条文档；
 3. 最后从这1000条中，选取从990开始的10条文档。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101125200756.png" alt="image-20220101125200756" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101125200756.png" alt="image-20220101125200756" style="zoom:50%;" />
 
 如果搜索页数过多，或者结果集（from + size）越大，对内存和CPU的消耗也越高，因此ES设定结果集查询的上限是10000。
 
@@ -445,7 +445,7 @@ ES是分布式的，所以会面临深度分页问题。例如按price排序后�
 
 高亮就是在搜索结果中把搜索关键字突出显示。其原理是将搜索结果中的关键字用标签标记出来，在页面中给标签添加CSS样式。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/Elasticsearch/image-20220101130126159.png" alt="image-20220101130126159" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101130126159.png" alt="image-20220101130126159" style="zoom:50%;" />
 
 语法：
 

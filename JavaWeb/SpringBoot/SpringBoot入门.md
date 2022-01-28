@@ -27,7 +27,7 @@ SpringBoot的主要优点：
 
 单体应用架构 v.s. 微服务架构。
 
-![52](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/SpringBoot/52.jpg)
+![52](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringBoot/52.jpg)
 
 ## 2. 快速入门案例
 

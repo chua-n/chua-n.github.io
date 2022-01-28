@@ -22,9 +22,9 @@
 
     - 例如，当我们在Python中定义一个整型，例如x=10000 时，x 并不是一个“原生”整型，而是一个指针，指向一C语言的复合结构体，结构体里包含了一些值：
 
-        ![](https://chua-n.gitee.io/blog-images/notebooks/Python/297.png)
+        ![](https://chua-n.gitee.io/figure-bed/notebook/Python/297.png)
 
-        ![](https://chua-n.gitee.io/blog-images/notebooks/Python/298.png)
+        ![](https://chua-n.gitee.io/figure-bed/notebook/Python/298.png)
 
     - 两者的异常在于，C语言整型本质上是对应某个内存位置的标签，里面存储的字节会编码成整型。而Python的整型其实是一个指针，指向包含这个Python对象所有信息的某个内存位置，其中包括可以转换成整型的字节。由于Python的整型结构体里面还包含了大量额外的信息，所以Python可以自由、动态地编码。但是，Python类型中的这些额外信息也会成为负担，在多个对象组合的结构体中尤其明显。
     
@@ -54,9 +54,9 @@ Python列表“不仅仅是一个列表”：
 
 | 示例                                                 | 说明                                               |
 | ---------------------------------------------------- | -------------------------------------------------- |
-| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/299.png) | 整型在这里被转换为浮点型                           |
-| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/300.png) | 如果希望明确设置数组的数据类型，可以用dtype 关键字 |
-| ![](https://chua-n.gitee.io/blog-images/notebooks/Python/301.png) | 内层的列表被当作二维数组的行                       |
+| ![](https://chua-n.gitee.io/figure-bed/notebook/Python/299.png) | 整型在这里被转换为浮点型                           |
+| ![](https://chua-n.gitee.io/figure-bed/notebook/Python/300.png) | 如果希望明确设置数组的数据类型，可以用dtype 关键字 |
+| ![](https://chua-n.gitee.io/figure-bed/notebook/Python/301.png) | 内层的列表被当作二维数组的行                       |
 
 ## NumPy标准数据类型
 
@@ -72,7 +72,7 @@ Python列表“不仅仅是一个列表”：
     np.zeros(10, dtype=np.int16)
     ```
 
-    ![](https://chua-n.gitee.io/blog-images/notebooks/Python/302.png)
+    ![](https://chua-n.gitee.io/figure-bed/notebook/Python/302.png)
 
 ## NumPy数组的属性
 

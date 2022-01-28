@@ -39,7 +39,7 @@ mlab 的绘图函数：
 
 gallery：
 
-![](https://chua-n.gitee.io/blog-images/notebooks/Python/569.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/Python/569.png)
 
 > [advanced mlab examples](http://docs.enthought.com/mayavi/mayavi/auto/examples.html)
 
@@ -166,4 +166,4 @@ mlab提供了一个子模块pipeline，其提供了一些能在脚本中轻松�
 
 详见[此](http://docs.enthought.com/mayavi/mayavi/mlab_pipeline_reference.html)：
 
-![](https://chua-n.gitee.io/blog-images/notebooks/Python/570.png)
+![](https://chua-n.gitee.io/figure-bed/notebook/Python/570.png)

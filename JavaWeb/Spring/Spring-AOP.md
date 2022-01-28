@@ -19,7 +19,7 @@ AOP技术在Spring中实现的内容：Spring框架监控切点方法的执行�
 > -   JDK 代理：基于接口的动态代理技术
 > -   cglib 代理 ：基于父类的动态代理技术
 >
-> <img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/17.png" alt="17" style="zoom:50%;" />
+> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/17.png" alt="17" style="zoom:50%;" />
 
 Spring 的 AOP 实现底层就是对 JDK 代理、cglib 代理的方式进行了封装，封装后我们只需要对需要关注的部分进行代码编写，并通过配置的方式完成指定目标的方法增强。
 
@@ -176,17 +176,17 @@ public class AopTest {
 
 示例：
 
-![18](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/18.png)
+![18](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/18.png)
 
 #### 4.2.2 通知
 
-![19](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/19.png)
+![19](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/19.png)
 
 #### 4.2.3 小知识点——切点表达式的抽取
 
 当有多个切点表达式相同时，可以将切点表达式进行抽取，在增强中使用pointcut-ref属性代替pointcut属性来引用抽取后的切点表达式。
 
-![20](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/20.png)
+![20](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/20.png)
 
 ## 5. Spring AOP开发——基于注解
 
@@ -205,11 +205,11 @@ public class AopTest {
 
 - 通知的注解类型：`@通知注解("切点表达式")`
 
-    ![21](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/21.png)
+    ![21](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/21.png)
 
 - 切点表达式的抽取：抽取方式是在该方法上使用@Pointcut注解定义切点表达式，然后在增强注解中进行引用。
 
-    ![22](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/Spring/22.png)
+    ![22](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/22.png)
 
 使用注解的开发步骤：
 

@@ -116,7 +116,7 @@ IDEA与tomcat的相关配置（参见 https://www.bilibili.com/video/BV1uJ411k7w
 
     | 工作空间项目                                                 | Tomcat部署的web项目                                          |
     | ------------------------------------------------------------ | ------------------------------------------------------------ |
-    | ![img](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/工作空间项目.png) | ![img](https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/Tomcat部署的Web项目.png) |
+    | ![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/工作空间项目.png) | ![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/Tomcat部署的Web项目.png) |
 
     - tomcat真正访问的是“Tomcat部署的web项目”，其对应着“工作空间项目”的webapp目录下的所有资源；
     - WEB-INF目录下的资源不能被浏览器直接访问。
@@ -129,7 +129,7 @@ IDEA与tomcat的相关配置（参见 https://www.bilibili.com/video/BV1uJ411k7w
 
 Tomcat的结构很复杂，但Tomcat也非常模块化，找到了Tomcat最核心的模块，便抓住了Tomcat的七寸。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/38.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/38.png" style="zoom:67%;" />
 
 - 心脏组件：Connector和Container。
 - Connector组件可以被替换，这给服务器设计者提供更多的选择。
@@ -140,7 +140,7 @@ Tomcat的结构很复杂，但Tomcat也非常模块化，找到了Tomcat最核�
 
 从Service接口中定义的方法可以看出，它主要是为了关联Connector和Container，同时会初始化它下面的其他组件：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/39.png" style="zoom:80%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/39.png" style="zoom:80%;" />
 
 - 尽管在接口中并没有规定一定要控制它下面的组件的生命周期，实际上Tomcat所有组件的生命周期在一个Lifecycle的接口中控制，这里用到了一个重要的设计模式。
 - Service接口的标准实现类是StandarService，它不仅实现了Service接口，同时还实现了LifeCycle接口，这样它就可以控制下面组件的生命周期了。
@@ -149,7 +149,7 @@ Tomcat的结构很复杂，但Tomcat也非常模块化，找到了Tomcat最核�
 
 Server要完成的任务很简单，就是提供一个接口让其他程序能够访问到这个Service集合，同时要维护它所包含的所有Service的生命周期，包括如何初始化、如何结束服务、如何找到别人要访问的Service等等。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/40.png" style="zoom:80%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/40.png" style="zoom:80%;" />
 
 > Server的标准实现类`StandardServer`同时实现了`Lifecycle`、`MbeanRegistration`两个接口的所有方法。
 
@@ -163,17 +163,17 @@ Server要完成的任务很简单，就是提供一个接口让其他程序能�
 
 上述即为：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/41.png" style="zoom:80%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/41.png" style="zoom:80%;" />
 
 ### 2.5 Connector
 
 Connector的主要任务是负责接收浏览器发过来的TCP连接请求，创建一个Request和Response对象分别用于和请求端交换数据，然后会产生一个线程来处理这个请求并把产生的Request和Response对象传给处理这个请求的线程，处理这个请求的线程就是Container组件的任务了。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/42.png" style="zoom:80%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/42.png" style="zoom:80%;" />
 
 Connector的主要类图：
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/43.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/43.png" style="zoom:67%;" />
 
 当Connector将Socket连接封装成Request和Response对象后，接下来的事情就交给Container来处理了。
 
@@ -183,13 +183,13 @@ Container是容器的父接口，所有子容器都必须实现这个接口。
 
 Container容器的设计用的是典型的责任链的设计模式，它由4个子容器组件构成，分别是Engine、Host、Context、Wrapper，这4个组件并不平行，而是父子关系，Engine包含Host，Host包含Context，Context包含Wrapper。
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/44.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/44.png" style="zoom:67%;" />
 
 要运行war程序，就必须要用Host，因为在war中必有web.xml文件，这个文件的解析就需要Host。
 
 当Connector接收一个连接请求时，会将请求交给Container，Container具体是如何处理的呢？
 
-<img src="https://chua-n.gitee.io/blog-images/notebooks/JavaWeb/后端/45.png" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/45.png" style="zoom:67%;" />
 
 Context容器代表Servlet的Context，它具备了Servlet运行的基本环境，理论上只要有Context就能运行Servlet了，简单的Tomcat可以没有Engine和Host。
 

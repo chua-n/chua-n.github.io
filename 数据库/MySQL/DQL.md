@@ -235,19 +235,19 @@ SELECT ... FROM tableA ??? JOIN tableB ON tableA.column1 = tableB.column2;
 
 - INNER JOIN是选出两张表都存在的记录：
 
-    ![inner-join](https://chua-n.gitee.io/blog-images/notebooks/数据库/1.png)
+    ![inner-join](https://chua-n.gitee.io/figure-bed/notebook/数据库/1.png)
 
 - LEFT OUTER JOIN是选出左表存在的记录：
 
-    ![left-outer-join](https://chua-n.gitee.io/blog-images/notebooks/数据库/2.png)
+    ![left-outer-join](https://chua-n.gitee.io/figure-bed/notebook/数据库/2.png)
 
 - RIGHT OUTER JOIN是选出右表存在的记录：
 
-    ![right-outer-join](https://chua-n.gitee.io/blog-images/notebooks/数据库/3.png)
+    ![right-outer-join](https://chua-n.gitee.io/figure-bed/notebook/数据库/3.png)
 
 - FULL OUTER JOIN则是选出左右表都存在的记录：
 
-    ![full-outer-join](https://chua-n.gitee.io/blog-images/notebooks/数据库/4.png)
+    ![full-outer-join](https://chua-n.gitee.io/figure-bed/notebook/数据库/4.png)
 
 要意识到连接只是一种机制，用来在一条SELECT语句中关联表，其不是物理实体，换句话说，它在实际的数据库表中不存在，仅存在于查询的执行当中。
 
@@ -504,7 +504,7 @@ MySQL允许执行多个查询，即多条SELECT语句，并将结果作为单个
     WHERE vend_id IN (1001, 1002);
     ```
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/5.png" alt="img" style="zoom:50%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/5.png" alt="img" style="zoom:50%;" />
 
 - `UNION`与`ORDER BY`子句：在使用`UNION`组合查询时，**只能使用一条`ORDER BY`子句**，它必须出现在最后一条`SELECT`语句之后。
 
@@ -521,4 +521,4 @@ MySQL允许执行多个查询，即多条SELECT语句，并将结果作为单个
     ORDER BY vend_id, prod_price;
     ```
 
-    <img src="https://chua-n.gitee.io/blog-images/notebooks/数据库/6.png" alt="6.png" style="zoom:50%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/6.png" alt="6.png" style="zoom:50%;" />
