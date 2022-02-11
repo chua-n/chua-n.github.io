@@ -133,5 +133,15 @@ JDK 9工具的一大改进就是提供了jshell工具，它是一个交互式的
 
 除了/help,/exit之外，jshell还有如下常用命令：
 
-![3](https://chua-n.gitee.io/figure-bed/notebook/Java/3.png)
+- `/help`：
+- `/exit`：
+- `/list`：列出用户输入的所有源代码
+- `/edit`：编辑用户输入的第几条源代码，jshell会启动一个文本编辑界面。
+- `/drop`：删除用户输入的第几条源代码
+- `/save`：保存用户输入的源代码
+- `/vars`：列出用户定义的所有变量
+- `/methods`：列出用户定义的全部方法
+- `/types`：列出用户定义的全部类型
+
+
 
