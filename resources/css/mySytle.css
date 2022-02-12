@@ -8,6 +8,7 @@
 /* fixbug: 放大图片后图片位置错乱得离谱 */
 .medium-zoom-image--opened {
   zoom: unset !important;
+  max-width: fit-content;
 }
 /* 设置搜索框的placehold的字体 */
 .search input {
