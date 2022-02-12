@@ -676,11 +676,11 @@ body {
 } */
 .markdown-section blockquote {
   font-style: italic;
-  border-left: 4px solid var(--theme-color, #42b983);
+  border-left: 3px solid var(--theme-color, #42b983);
   color: #858585;
   margin: 2em 0;
   margin-left: 2em;
-  padding-left: 20px;
+  padding-left: 10px;
 }
 .markdown-section blockquote p {
   font-weight: inherit;
