@@ -676,11 +676,11 @@ body {
 } */
 .markdown-section blockquote {
   font-style: italic;
-  border-left: 3px solid var(--theme-color, #42b983);
+  border-left: 4px solid #ddd;
   color: #858585;
-  margin: 2em 0;
-  margin-left: 2em;
-  padding-left: 10px;
+  margin: 0;
+  margin-left: 4px; /* 这个4px是上面border-left的4px */
+  padding-left: 15px;
 }
 .markdown-section blockquote p {
   font-weight: inherit;
