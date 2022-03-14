@@ -25,3 +25,17 @@
 16. 线程池
 
 17. 
+
+## 后端问题定位和分析
+
+> 容器篇使用基础。
+
+LBS
+
+SLB: Server(Serivce) Load Balancing
+
+从单体到微服务的时候，自然而然地引入了DDD。
+
+K8S把DOCKER容器的编排处理得很好。
+
+docker system df
