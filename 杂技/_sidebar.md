@@ -13,6 +13,7 @@
     - [磁盘管理](/杂技/Linux/磁盘管理.md)
     - [软件管理](/杂技/Linux/软件管理.md)
     - [shell脚本](/杂技/Linux/shell脚本.md)
+    - [网络操作](/杂技/Linux/网络操作.md)
 - [C++](/杂技/C++/)
 - [Git](/杂技/Git/)
     -   [一、Git起步](/杂技/Git/一、Git起步.md)

@@ -2,24 +2,22 @@
 
 ### 1.1 问题引入
 
-在SpringMVC出现以前，如果要在Spring中集成MVC，如果手动使用ApplicationContext对象从容器中获取相应的Bean：
+在SpringMVC出现以前，如果要在Spring中集成MVC，如果手动使用`ApplicationContext`对象从容器中获取相应的Bean，即：应用上下文对象是通过 `new ClassPathXmlApplicationContext("applicationContext.xml")`方式获取的，于是每次从容器中获取Bean时都要编写语句 `new ClassPathXmlApplicationContext("applicationContext.xml")`，这样的弊端是配置文件被加载多次，应用上下文对象被创建多次；
 
-- 应用上下文对象是通过 `new ClassPathXmlApplicationContext("applicationContext.xml")`方式获取的，于是每次从容器中获取Bean时都要编写语句 `new ClassPathXmlApplicationContext("applicationContext.xml")`，这样的弊端是配置文件被加载多次，应用上下文对象被创建多次；
-
-    ```java
-    public class UserServlet extends HttpServlet {
-        @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            ApplicationContext app = new ClassPathXmlApplicationContext("applicationContext.xml");
-            UserService userService = app.getBean(UserService.class);
-            userService.save();
-        }
+```java
+public class UserServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ApplicationContext app = new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserService userService = app.getBean(UserService.class);
+        userService.save();
     }
-    ```
+}
+```
 
 ### 1.2 解决方案
 
-尽管在通用情况下，解决上述问题的方案可能有多种（如使用静态？），但在Web项目中我们这样操作：可以使用ServletContextListener监听Web应用的启动，令Web项目在启动时就加载Spring的配置文件，同时创建应用上下文ApplicationContext的对象app，并将其存储到最大的域servletContext域中，这样，之后就可以在任意位置从域中获取应用上下文对象了。
+尽管在通用情况下，解决上述问题的方案可能有多种（如使用静态？），但在Web项目中我们这样操作：可以使用`ServletContextListener`监听Web应用的启动，令Web项目在启动时就加载Spring的配置文件，同时创建应用上下文`ApplicationContext`的对象app，并将其存储到最大的域`servletContext`域中，这样，之后就可以在任意位置从域中获取应用上下文对象了。
 
 - 创建监听器
 
@@ -77,15 +75,15 @@
     }
     ```
 
-上述代码可从解耦的角度进一步优化，参见 https://www.bilibili.com/video/BV1WZ4y1H7du?p=75 。
+> 上述代码可从解耦的角度进一步优化，参见 https://www.bilibili.com/video/BV1WZ4y1H7du?p=75 。
 
 ### 1.3 SpringMVC的出现
 
-对于上面手工编写的代码，现在Spring框架替我们做了：Spring提供了一个监听器ContextLoaderListener就是对上述功能的封装，该监听器内部加载Spring配置文件，创建应用上下文对象，并存储到ServletContext域中，同时提供了一个客户端工具WebApplicationContextUtils供使用者获得应用上下文对象。
+对于上面手工编写的代码，现在Spring框架替我们做了：Spring提供了一个监听器`ContextLoaderListener`就是对上述功能的封装，该监听器内部加载Spring配置文件，创建应用上下文对象，并存储到`ServletContext`域中，同时提供了一个客户端工具`WebApplicationContextUtils`供使用者获得应用上下文对象。
 
 现在我们需要做的只有两件事：
 
-1. 在web.xml中配置ContextLoaderListener监听器；
+1. 在web.xml中配置`ContextLoaderListener`监听器；
 
     - pom.xml
 
@@ -111,7 +109,7 @@
     </listener>
     ```
 
-2. 使用WebApplicationContextUtils获得应用上下文ApplicationContext对象。
+2. 使用`WebApplicationContextUtils`获得应用上下文`ApplicationContext`对象。
 
     ```java
     application = WebApplicationContextUtils.getWebApplicationContext(servletContext);
@@ -120,7 +118,7 @@
 
 ## 2. SpringMVC
 
-SpringMVC是一套基于Java的实现MVC设计模型的请求驱动类型的轻量级Web框架，属于SpringFrameWork的后续产品，已经融合在Spring     Web Flow中。
+SpringMVC是一套基于Java的实现MVC设计模型的请求驱动类型的轻量级Web框架，属于SpringFrameWork的后续产品，已经融合在Spring Web Flow中。
 
 SpringMVC已经成为目前最主流的MVC框架之一，并且随着Spring3.0的发布，全面超越Struts2，成为最优秀的MVC框架。它通过一套注解，让一个简单的Java类成为处理请求的控制器，而无须实现任何接口。同时它还支持RESTful编程风格。
 
@@ -283,11 +281,11 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd
 
 #### 2.3.3 组件扫描
 
-SpringMVC基于Spring容器，所以在进行SpringMVC操作时，需要将Controller存储到Spring容器中，如果使用`@Controller`注解标注的话，就需要使用`<context:component-scan base-package="com.itheima.controller" />`进行组件扫描。
+SpringMVC基于Spring容器，所以在进行SpringMVC操作时，需要将Controller存储到Spring容器中，如果使用`@Controller`注解标注的话，就需要使用`<context:component-scan base-package="com.itheima.controller" />`将相应的类纳入spring扫描的范围之内。
 
 #### 2.3.4 视图解析器
 
-SpringMVC有默认组件配置，默认组件都是DispatcherServlet.properties配置文件中配置的，该配置文件地址为org/springframework/web/servlet/DispatcherServlet.properties，该文件中配置了默认的视图解析器，如下：
+SpringMVC有默认组件配置，默认组件都是`DispatcherServlet.properties`配置文件中配置的，该配置文件地址为`org/springframework/web/servlet/DispatcherServlet.properties`，该文件中配置了默认的视图解析器，如下：
 
 ```properties
 org.springframework.web.servlet.ViewResolver=org.springframework.web.servlet.view.InternalResourceViewResolver
@@ -302,7 +300,7 @@ prefix = "" --视图名称前缀
 suffix = "" --视图名称后缀
 ```
 
-#### 2.3.5 知识要点
+#### 2.3.5 微总结
 
 SpringMVC的相关组件：
 
