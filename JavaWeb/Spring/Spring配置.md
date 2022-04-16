@@ -218,19 +218,19 @@ Spring“原始注解”与“新注解”主要是一种逻辑上的区分。
 <context:component-scan base-package="com.itheima"></context:component-scan>
 ```
 
-| 原始注解       | 解释                                                      |
-| -------------- | --------------------------------------------------------- |
-| @Component     | 使用在类上，用于实例化Bean                                |
-| @Controller    | @Component的衍生注解：使用在Web层上，用于实例化Bean       |
-| @Service       | @Component的衍生注解：使用在service层类上，用于实例化Bean |
-| @Repository    | @Component的衍生注解：使用在dao层类上，用于实例化Bean     |
-| @Autowired     | 使用在字段上，用于根据类型依赖注入                        |
-| @Qualifier     | 结合@Autowired一起使用用于根据名称进行依赖注入            |
-| @Resource      | 相当于@Autowired+@Qualifier，按照名称进行注入             |
-| @Value         | 注入普通属性                                              |
-| @Scope         | 标注Bean的作用范围                                        |
-| @PostConstruct | 使用在方法上，标注该方法是Bean的初始化方法                |
-| @PreDestroy    | 使用在方法上，标注该方法是Bean的销毁方法                  |
+| 原始注解         | 解释                                                      |
+| ---------------- | --------------------------------------------------------- |
+| `@Component`     | 使用在类上，用于实例化Bean                                |
+| `@Controller`    | @Component的衍生注解：使用在Web层上，用于实例化Bean       |
+| `@Service`       | @Component的衍生注解：使用在service层类上，用于实例化Bean |
+| `@Repository`    | @Component的衍生注解：使用在dao层类上，用于实例化Bean     |
+| `@Autowired`     | 通常使用在字段上，用于根据Bean的类型进行依赖注入          |
+| `@Qualifier`     | 结合@Autowired一起使用用于同时根据类型和名称进行依赖注入  |
+| `@Resource`      | 相当于@Autowired+@Qualifier，按照名称进行注入             |
+| `@Value`         | 注入普通属性                                              |
+| `@Scope`         | 标注Bean的作用范围                                        |
+| `@PostConstruct` | 使用在方法上，标注该方法是Bean的初始化方法                |
+| `@PreDestroy`    | 使用在方法上，标注该方法是Bean的销毁方法                  |
 
 ### 2.2 新注解
 
@@ -241,13 +241,108 @@ Spring“原始注解”与“新注解”主要是一种逻辑上的区分。
 - 组件扫描的配置：`<context:component-scan>`
 - 引入其他文件：`<import>`
 
-| 新注解          | 解释                                                         |
-| --------------- | ------------------------------------------------------------ |
-| @Configuration  | 用于指定当前类是一个Spring配置类，当创建容器时会从该类上加载注解 |
-| @ComponentScan  | 用于指定Spring在初始化容器时要扫描的包，作用和在Spring的xml配置文件中的<context:component-scan  base-package="com.itheima"/>一样 |
-| @Bean           | 使用在方法上，表示将该方法的返回值存储到Spring容器中，并可赋予指定名称 |
-| @PropertySource | 用于加载properties文件中的配置                               |
-| @Import         | 用于导入其他配置类                                           |
+| 新注解            | 解释                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| `@Configuration`  | 用于指定当前类是一个Spring配置类，当创建容器时会从该类上加载注解 |
+| `@ComponentScan`  | 用于指定Spring在初始化容器时要扫描的包，作用和在Spring的xml配置文件中的<context:component-scan  base-package="com.itheima"/>一样 |
+| `@Bean`           | 使用在方法上，表示将该方法的返回值存储到Spring容器中，并可赋予指定名称 |
+| `@PropertySource` | 用于加载properties文件中的配置                               |
+| `@Import`         | 用于导入其他配置类                                           |
+
+### 2.3 注解详解
+
+#### @Autowired
+
+`@Autowired`根据类型注入Bean，对应类型的Bean需要是单例的。
+
+```java
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Autowired {
+    boolean required() default true;
+}
+```
+
+如果对应的类型有多个，`@Autowired`会失败，此时有三种解决方式：
+
+- 与 `@Qualifier`（合格者、修饰词）结合，在同类型的基础上通过名称再进行取舍；
+
+- 在被注入的Bean上加入优先级，如指定某一个Bean为`@Primary`；
+
+- 另外，实际上可以将注入的字段改为集合类型：
+
+    ```java
+    @Service
+    public class UserService {
+    
+        @Autowired
+        private List<IUser> userList;
+    
+        @Autowired
+        private Set<IUser> userSet;
+    
+        @Autowired
+        private Map<String, IUser> userMap;
+    
+        public void test() {
+            // userList:[User1@2513a118, User2@2bfb583b]
+            System.out.println("userList:" + userList);
+            // userSet:[User1@2513a118, User2@2bfb583b]
+            System.out.println("userSet:" + userSet);
+            // {user1=User1@2513a118, user2=User2@2bfb583b}
+            System.out.println("userMap:" + userMap);
+        }
+    }
+    ```
+
+注意，由`@Autowired`的定义可知，其作用范围为构造器、方法、形参、字段、注解，最常见的字段注入的方式只是其中之一而已。当然了，当用在方法上时，此注解肯定不可能用在静态方法上。
+
+> 当在方法上使用`@Autowired`时，spring会在项目启动的过程中，自动调用一次加了`@Autowired`注解的方法，我们可以在该方法做一些初始化的工作（如此一来，与`@PostConstruct`的区别？）
+
+注入对象为null的可能原因：
+
+- 使用@Autowired的类不在IoC容器中（没有加@Componet, @Controller之类的注解）
+- 包未被spring扫描
+- 在listener和filter里面@Autowired某个bean：由于web应用启动的顺序是：`listener` -> `filter` -> `servlet`，而SpringMVC的启动是在`DisptachServlet`里面做的，执行在对应的bean还没有初始化，无法自动装配。此时可以通过其他途径来实现。
+- 循环依赖问题（在单例情况下多数没问题）
+
+#### @Resource
+
+- @Autowired是Spring提供的注解，@Resource是Java（JSR-250）提供的注解。
+- @Autowired只包含一个参数：required，表示是否开启自动准入，默认是true；而@Resource包含七个参数，其中最重要的两个参数是：name 和 type。
+- @Resource只能用在类、成员变量和方法上。
+- @Resource的装配顺序：
+    - 未给定任何参数：首先根据名称匹配，如果找不到再根据类型匹配
+    - 仅指定了name：根据名称装配
+    - 仅指定了type：根据类型装配
+    - 同时指定了name和type：寻找名称和类型都匹配的Bean进行装配
+
+```java
+@Target({TYPE, FIELD, METHOD})
+@Retention(RUNTIME)
+public @interface Resource {
+
+    String name() default "";
+
+    String lookup() default "";
+
+    Class<?> type() default java.lang.Object.class;
+
+    AuthenticationType authenticationType() default AuthenticationType.CONTAINER;
+
+    boolean shareable() default true;
+
+    String mappedName() default "";
+
+    String description() default "";
+    
+    enum AuthenticationType {
+            CONTAINER,
+            APPLICATION
+    }
+}
+```
 
 ## 3. 附一些特殊场景的spring配置
 
