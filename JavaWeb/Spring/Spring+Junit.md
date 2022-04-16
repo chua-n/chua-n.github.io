@@ -37,11 +37,11 @@ UserService userService = app.getBean(UserService.class);
 
     
 
-2. 使用@Runwith注解替换原来的运行器；
+2. 使用`@Runwith`注解替换原来的运行器；
 
-3. 使用@ContextConfiguration指定配置文件或配置类；
+3. 使用`@ContextConfiguration`指定配置文件或配置类；
 
-4. 使用@Autowired注入需要测试的对象；
+4. 使用`@Autowired`注入需要测试的对象；
 
 5. 创建测试方法进行测试：
 
