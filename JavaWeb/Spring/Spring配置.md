@@ -249,7 +249,7 @@ Spring“原始注解”与“新注解”主要是一种逻辑上的区分。
 | `@PropertySource` | 用于加载properties文件中的配置                               |
 | `@Import`         | 用于导入其他配置类                                           |
 
-### 2.3 注解详解
+### 2.3 杂七杂八注解详解
 
 #### @Autowired
 
@@ -341,6 +341,65 @@ public @interface Resource {
             CONTAINER,
             APPLICATION
     }
+}
+```
+
+#### @Order, @Priority, @Primary
+
+这三个注解总的来说都是用来做bean的排序。
+
+- `@Order`里面存储了一个代表顺序的值，默认为`Integer.MAX_VALUE`，值越小优先级越高。
+
+    - `@Order`只能控制组件的加载顺序，不能控制注入的优先级。
+    - `@Order`能控制 List 等有序集合里面存放的Bean的顺序，因为Spring的`DefaultListableBeanFactory`类会在注入时调用`AnnotationAwareOrderComparator.sort(listA)`，该方法根据`@Order`或者`Ordered`接口返回的值排序。
+
+    ```java
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
+    @Documented
+    public @interface Order {
+        int value() default 2147483647;
+    }
+    ```
+
+- `@Priority`与`@Order`类似，同样接收一个表示顺序的值，值越小优先级越高。
+
+    - `@Order`是Spring提供的注解，`@Priority`是 JSR 250 标准。
+    - `@Priority`能够控制组件的加载顺序，因此`@Priority`侧重于单个注入的优先级排序（句型有问题，因此此知识点存疑！！！）
+    - 此外`@Priority`优先级比`@Order`更高，两者共存时优先加载`@Priority`。
+
+    ```java
+    @Target({TYPE,PARAMETER})
+    @Retention(RUNTIME)
+    @Documented
+    public @interface Priority {
+        /**
+         * The priority value.
+         */
+        int value();
+    }
+    ```
+
+- `@Primary`同样是表达顺序的注解，它是Spring提供的注解，其表达的优先级最高的，如果同时有`@Primary`以及其他几个的话，`@Primary`注解的Bean会优先加载。
+
+    ```java
+    @Target({ElementType.TYPE, ElementType.METHOD})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    public @interface Primary {
+    }
+    ```
+
+#### @DependsOn
+
+此注解可以用来调整 Bean 的初始化顺序。比如如果一个BeanB依赖于BeanA的初始化，那么可以给BeanB加上注解`@DependsOn("beanA")`，让BeanA先于BeanB初始化。
+
+```java
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface DependsOn {
+    String[] value() default {};
 }
 ```
 
