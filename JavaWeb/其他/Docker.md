@@ -104,7 +104,8 @@ systemctl restart docker # 重启docker服务
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222234637316.png" alt="image-20211222234637316" style="zoom:30%;" />
 
-- `docker images`：查看镜像
+- `docker search`：搜索远程（Docker Hub）存在的镜像
+- `docker images`：查看本地镜像
 - `docker rmi`：删除镜像
 - `docker pull`：从服务器拉取镜像
 - `docker push`：推送镜像到服务器
