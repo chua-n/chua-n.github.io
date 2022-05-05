@@ -79,3 +79,6 @@ EnumMap有如下特征：
 
 > 需要时再看吧……
 
+## 7. Properties
+
+> 继承自`HashTable`，竟然是个map......
