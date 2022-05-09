@@ -1,3 +1,9 @@
+> The configuration metadata is represented in **XML**, **Java annotations**, or **Java code**.
+>
+> - XML: 最早的配置形式。
+> - Annotation-based configuration: Spring 2.5 开始支持。
+> - Java-based configuration: Starting with Spring 3.0 开始支持。
+
 ## 1. XML配置
 
 ### 1.1 bean标签
@@ -182,7 +188,16 @@ scope的取值：
 
 Spring的配置文件可**分模块开发**，此时在主配置文件中引用其他配置文件的方法为使用`<import>`标签加载：
 
-`<import resource="applicationContext-xxx.xml"/>`
+```xml
+<beans>
+    <import resource="services.xml"/>
+    <import resource="resources/messageSource.xml"/>
+    <import resource="/resources/themeSource.xml"/>
+    
+    <bean id="bean1" class="..."/>
+    <bean id="bean2" class="..."/>
+</beans>
+```
 
 ### 1.4 Spring的重点配置
 

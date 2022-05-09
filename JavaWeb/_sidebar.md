@@ -31,7 +31,7 @@
     -   [MVC开发模式](/JavaWeb/后端/MVC开发模式.md)
     -   [另：JDBC简介](/JavaWeb/JDBC简介.md)
 -   [Spring](/JavaWeb/Spring/)
-    -   [Spring概要](/JavaWeb/Spring/Spring概要.md)
+    -   [Spring-IoC](/JavaWeb/Spring/Spring-IoC.md)
     -   [Spring配置](/JavaWeb/Spring/Spring配置.md)
     -   [Spring-AOP](/JavaWeb/Spring/Spring-AOP.md)
     -   [Spring+Junit](/JavaWeb/Spring/Spring+Junit.md)
