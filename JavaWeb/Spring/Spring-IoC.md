@@ -57,3 +57,140 @@ Spring提供了两种类型的IoC容器：
 
 通过拿到`ApplicationContext`的`BeanFactory`（通常是`DefaultListableBeanFactory`），`ApplicationContext`的实现类也支持注册在容器外创建的对象。比如`DefaultListableBeanFactory`可以通过`registerSingleton(..)` 和 `registerBeanDefinition(..)`方法来支持注册功能。
 
+## 2. Bean
+
+### Bean的命名
+
+如果Bean在配置的时候没有给予其名称，Spring默认按照如下规则给其命名：
+
+1. 以类名为名，并将首字母小写；
+2. 如果类名的前两个字母均为大写，将会保留原始的类名。
+
+### Bean的实例化
+
+实例化Bean的三种方式：
+
+- 构造方式实例化
+
+    ```xml
+    <bean id="exampleBean" class="examples.ExampleBean"/>
+    <bean name="anotherExample" class="examples.ExampleBeanTwo"/>
+    ```
+
+- 静态工厂方法实例化
+
+    ```xml
+    <bean id="clientService"
+    class="examples.ClientService"
+    factory-method="createInstance"/>
+    ```
+
+    ```java
+    public class ClientService {
+        private static ClientService clientService = new ClientService();
+        private ClientService() {}
+        public static ClientService createInstance() {
+        return clientService;
+        }
+    }
+    ```
+
+- 实例工厂方法实例化
+
+    ```java
+    <!-- the factory bean, which contains a method called createInstance() -->
+    <bean id="serviceLocator" class="examples.DefaultServiceLocator">
+    <!-- inject any dependencies required by this locator bean -->
+    </bean>
+    <!-- the bean to be created via the factory bean -->
+    <bean id="clientService"
+    factory-bean="serviceLocator"
+    factory-method="createClientServiceInstance"/>
+    ```
+
+    ```java
+    public class DefaultServiceLocator {
+        private static ClientService clientService = new ClientServiceImpl();
+        public ClientService createClientServiceInstance() {
+        return clientService;
+        }
+    }
+    ```
+
+## 3. 依赖注入
+
+> DI exists in two major variants: **Constructor-based dependency injection** and **Setter-based**
+> **dependency injection**.
+
+### 构造方法注入
+
+```java
+package examples;
+public class ExampleBean {
+    // Number of years to calculate the Ultimate Answer
+    private final int years;
+    
+    // The Answer to Life, the Universe, and Everything
+    private final String ultimateAnswer;
+    
+    public ExampleBean(int years, String ultimateAnswer) {
+        this.years = years;
+        this.ultimateAnswer = ultimateAnswer;
+    }
+}
+```
+
+- 默认情况下，构造方法的形参匹配是通过参数的类型来进行的。
+
+    - 在无歧义的情况下，形参按照在构造方法中出现的顺序依次进行赋值以初始化Bean。
+
+    - 此时也可以选择显示地指定参数类型来进行匹配，但没有这个必要。
+
+        ```java
+        <bean id="exampleBean" class="examples.ExampleBean">
+            <constructor-arg type="int" value="7500000"/>
+            <constructor-arg type="java.lang.String" value="42"/>
+        </bean>
+        ```
+
+- 当有歧义时，可通过形参的索引顺序来匹配：
+
+    ```xml
+    <bean id="exampleBean" class="examples.ExampleBean">
+        <constructor-arg index="0" value="7500000"/>
+        <constructor-arg index="1" value="42"/>
+    </bean>
+    ```
+
+- 也可以根据形参的名称进行匹配：
+
+    ```xml
+    <bean id="exampleBean" class="examples.ExampleBean">
+        <constructor-arg name="years" value="7500000"/>
+        <constructor-arg name="ultimateAnswer" value="42"/>
+    </bean>
+    ```
+
+### setter方法注入
+
+> Setter-based DI is accomplished by the container calling setter methods on your beans after invoking a no-argument constructor or a no-argument static factory method to instantiate your bean.
+
+```java
+public class SimpleMovieLister {
+    // the SimpleMovieLister has a dependency on the MovieFinder
+    private MovieFinder movieFinder;
+    
+    // a setter method so that the Spring container can inject a MovieFinder
+    public void setMovieFinder(MovieFinder movieFinder) {
+	    this.movieFinder = movieFinder;
+    }
+    
+    // business logic that actually uses the injected MovieFinder is omitted...
+}
+```
+
+The ApplicationContext also supports setter-based DI after some dependencies have already been injected through the
+constructor approach. 
+
+### Constructor-based or setter-based DI?
+
