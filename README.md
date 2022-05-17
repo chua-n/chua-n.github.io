@@ -10,3 +10,6 @@
 
 > 注意：github pages服务中引用的子仓库必须是https协议且为public权限的！
 
+### QA
+
+- [jsDelivr大面积失效，个人站点该怎么办？ – 一只橙梓一个窝 (orangii.cn)](https://blog.orangii.cn/2022/jsdelivr-alt/)
