@@ -66,7 +66,15 @@ Spring提供了两种类型的IoC容器：
 1. 以类名为名，并将首字母小写；
 2. 如果类名的前两个字母均为大写，将会保留原始的类名。
 
-### Bean的实例化
+### Bean的实例化时机
+
+- The Spring container validates the configuration of each bean as the container is created. However, the bean properties themselves are not set until the bean is actually created.
+- You can generally trust Spring to do the right thing. It detects configuration problems, such as references to non-existent beans and circular dependencies, at container load-time. Spring sets properties and resolves dependencies as late as possible, when the bean is actually created.
+- This potentially delayed visibility of some configuration issues is why ApplicationContext implementations by default **pre-instantiate** singleton beans. 
+- ..., the bean is instantiated (if it is not a pre-instantiated singleton), its dependencies are set, and the relevant lifecycle methods (such as a configured init method or the InitializingBean callback
+    method) are invoked.
+
+### Bean的实例化方式
 
 实例化Bean的三种方式：
 
@@ -117,10 +125,15 @@ Spring提供了两种类型的IoC容器：
     }
     ```
 
+对于内部类：
+
+- An inner bean definition does not require a defined ID or name. If specified, the container does not use such a value as an identifier. 
+- The container also ignores the scope flag on creation, because inner beans are always anonymous and are always created with the outer bean. 
+- It is not possible to access inner beans independently or to inject them into collaborating beans other than into the enclosing bean.
+
 ## 3. 依赖注入
 
-> DI exists in two major variants: **Constructor-based dependency injection** and **Setter-based**
-> **dependency injection**.
+> DI exists in two major variants: **Constructor-based dependency injection** and **Setter-based dependency injection**.
 
 ### 构造方法注入
 
@@ -192,5 +205,281 @@ public class SimpleMovieLister {
 The ApplicationContext also supports setter-based DI after some dependencies have already been injected through the
 constructor approach. 
 
-### Constructor-based or setter-based DI?
+### 构造注入 or setter注入？
 
+尽管Spring既支持构造器注入和setter方法注入，但Spring更推荐使用构造器注入：
+
+- The Spring team generally advocates constructor injection, as it lets you implement application components as immutable objects and ensures that required dependencies are not null. 
+- Furthermore, constructor-injected components are always returned to the client (calling) code in a fully initialized state. 
+- As a side note, a large number of constructor arguments is a bad code smell, implying that the class likely has too many responsibilities and should be refactored to better address proper separation of concerns.
+
+setter方法注入应该作为一种备选项：
+
+- Setter injection should primarily only be used for optional dependencies that can be assigned reasonable default values within the class. Otherwise, not-null checks must be performed everywhere the code uses the dependency. 
+
+- One benefit of setter injection is that setter methods make objects of that class amenable to reconfiguration or re-injection later.
+
+    > Management through JMX MBeans is therefore a compelling use case for setter injection.
+
+### 循环依赖问题
+
+问题：
+
+> For example: Class A requires an instance of class B through constructor injection, and class B requires an instance of class A through constructor injection. If you configure beans for classes A and B to be injected into each other, the Spring IoC container detects this circular reference at runtime, and throws a `BeanCurrentlyInCreationException`.
+
+解决方案——构造器注入不支持循环依赖，setter注入支持循环依赖：
+
+> Alternatively, avoid constructor injection and use setter injection
+> only. In other words, although it is not recommended, you can configure circular dependencies with setter injection.
+
+## 4. XML配置
+
+### 空属性
+
+设置Bean的属性时，Spring将空参数视为空字符串。故而以下与`exampleBean.setEmail("");`等效：
+
+```xml
+<bean class="ExampleBean">
+    <property name="email" value=""/>
+</bean>
+```
+
+若想单独设置某个属性为null，可使用`<null/>`标签：
+
+```xml
+<bean class="ExampleBean">
+    <property name="email">
+	    <null/>
+    </property>
+</bean>
+```
+
+### p命名空间、c命名空间
+
+- The p-namespace lets you use the bean element’s attributes (instead of nested \<property/> elements) to describe your property values collaborating beans, or both.
+- Similar to the XML Shortcut with the p-namespace, the c-namespace, introduced in Spring 3.1, allows inlined attributes for configuring the constructor arguments rather then nested constructorarg elements.
+
+### depends-on
+
+通常情况下，一个bean中引用另一个bean，可以使用`<ref/>`标签。但是当两个bean有强烈的生命周期依赖时，就需要使用`depends-on`属性了。
+
+- The depends-on attribute can explicitly force one or more beans to be initialized before the bean using this element is initialized. 
+- The depends-on attribute can specify both an initialization-time dependency and, in the case of singleton beans only, a corresponding destruction-time dependency. Dependent beans that define a depends-on relationship with a given bean are destroyed first, prior to the given bean itself being destroyed. Thus, depends-on can also control shutdown order.
+
+### 懒加载
+
+所谓懒加载的Bean，其实例化的时机是该Bean第一次被使用的时候，而不是在项目启动的时候。
+
+Spring不推荐使用Bean的懒加载模式，因为这会导致一些问题可能到项目运行 了很长时间以后才会暴露出来，而不是项目启动的时候即可以被发现。
+
+懒加载的配置方式：
+
+- 单个Bean层次的控制
+
+    ```xml
+    <bean id="lazy" class="com.something.ExpensiveToCreateBean" lazy-init="true"/>
+    <bean name="not.lazy" class="com.something.AnotherBean"/>
+    ```
+
+- 容器层次的控制
+
+    ```xml
+    <beans default-lazy-init="true">
+        <!-- no beans will be pre-instantiated... -->
+    </beans>
+    ```
+
+### 自动织入
+
+> The Spring container can autowire relationships between collaborating beans. You can let Spring resolve collaborators (other beans) automatically for your bean by inspecting the contents of the ApplicationContext.
+
+在XML中，可以通过\<bean/>标签的autowire属性来配置自动织入，其有4个模式：
+
+| Mode          | Explanation                                                  |
+| :------------ | :----------------------------------------------------------- |
+| `no`          | (Default) No autowiring. Bean references must be defined by `ref` elements. Changing the default setting is not recommended for larger deployments, because specifying collaborators explicitly gives greater control and clarity. To some extent, it documents the structure of a system. |
+| `byName`      | Autowiring by property name. Spring looks for a bean with the same name as the property that needs to be autowired. For example, if a bean definition is set to autowire by name and it contains a `master` property (that is, it has a `setMaster(..)` method), Spring looks for a bean definition named `master` and uses it to set the property. |
+| `byType`      | Lets a property be autowired if exactly one bean of the property type exists in the container. If more than one exists, a fatal exception is thrown, which indicates that you may not use `byType` autowiring for that bean. If there are no matching beans, nothing happens (the property is not set). |
+| `constructor` | Analogous to `byType` but applies to constructor arguments. If there is not exactly one bean of the constructor argument type in the container, a fatal error is raised. |
+
+注意：
+
+- Explicit dependencies in property and constructor-arg settings always override autowiring. 
+- You cannot autowire simple properties such as primitives, Strings, and Classes (and arrays of such simple properties). This limitation is by-design.
+
+如果不希望某些bean参与到自动织入的体系，即不希望它们可以被自动织入到其他类：
+
+- 可以通过设置\<bean/>标签的autowire-candidate属性为false来实现。不过，这个属性只对byType类型织入的模式有效。
+- You can also limit autowire candidates based on pattern-matching against bean names.
+
+### 注入方法Method Injection
+
+#### 场景引入
+
+有时我们需要在一个bean A中调用另一个bean B的方法，通常我们会添加一个字段，然后使用依赖注入把bean B的实例注入到这个字段上。这种情况下在bean A 和 bean B都是singleton时没问题，但是在 bean A是singleton和bean B是非singleton时就可能出现问题。因为bean B为非singleton , 那么bean B是希望他的使用者在一些情况下创建一个新实例，而bean A使用字段把bean B的一个实例缓存了下来，每次都使用的是同一个实例。
+
+A solution is to forego（放弃） some inversion of control. You can make bean A aware of the container by implementing the ApplicationContextAware interface, and by making a getBean("B") call to the container ask for (a typically new) bean B instance every time bean A needs it. The following example shows this approach:
+
+```java
+// a class that uses a stateful Command-style class to perform some processing
+package fiona.apple;
+// Spring-API imports
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class CommandManager implements ApplicationContextAware {
+    private ApplicationContext applicationContext;
+
+    public Object process(Map commandState) {
+// grab a new instance of the appropriate Command
+        Command command = createCommand();
+// set the state on the (hopefully brand new) Command instance
+        command.setState(commandState);
+        return command.execute();
+    }
+
+    protected Command createCommand() {
+// notice the Spring API dependency!
+        return this.applicationContext.getBean("command", Command.class);
+    }
+
+    public void setApplicationContext(
+            ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+}
+```
+
+然而这种方式并不推荐，因为这样的代码就和Spring API强绑定了。相反，Method Injection, a somewhat advanced feature of the Spring IoC container, lets you handle this use case cleanly.
+
+> 注入方法即重写方法、替换方法？
+
+Spring提供两种机制来注入方法，分别是 Lookup Method Injection 和Arbitrary method replacement。
+
+- Lookup Method Injection只提供返回值注入
+- Arbitrary method replacement可以替换任意方法来达到注入
+
+#### Lookup Method Injection
+
+Lookup method injection is the ability of the container to override methods on container-managed beans and return the lookup result for another named bean in the container. 
+
+这种方法通常用于涉及prototype bean的场景，Spring实现这种方法注入的原理是使用CBLIB动态生成一个覆盖该方法的子类（如果该方法是抽象方法，则在子类中实现该方法；如果该方法不是抽象方法，则在子类中覆盖该方法）。基于此原理，Lookup Method Injection有如下限制：
+
+- For this dynamic subclassing to work, the class that the Spring bean container subclasses cannot be final, and the method to be overridden cannot be final, either.
+- Unit-testing a class that has an abstract method requires you to subclass the class yourself and to supply a stub implementation of the abstract method.
+- Concrete methods are also necessary for component scanning, which requires concrete classes to pick up.
+- A further key limitation is that lookup methods do not work with factory
+    methods and in particular not with @Bean methods in configuration classes, since, in that case, the container is not in charge of creating the instance and therefore cannot create a runtime-generated subclass on the fly.
+
+对于上述场景，Lookup Method Injection的解决方案是：
+
+- 代码
+
+    ```java
+    package fiona.apple;
+    
+    // no more Spring imports!
+    
+    public abstract class CommandManager {
+    
+        public Object process(Object commandState) {
+            // grab a new instance of the appropriate Command interface
+            Command command = createCommand();
+            // set the state on the (hopefully brand new) Command instance
+            command.setState(commandState);
+            return command.execute();
+        }
+    
+        // okay... but where is the implementation of this method?
+        protected abstract Command createCommand();
+    }
+    ```
+
+- XML配置方式
+
+    ```java
+    <!-- a stateful bean deployed as a prototype (non-singleton) -->
+    <bean id="myCommand" class="fiona.apple.AsyncCommand" scope="prototype">
+        <!-- inject dependencies here as required -->
+    </bean>
+    
+    <!-- commandProcessor uses statefulCommandHelper -->
+    <bean id="commandManager" class="fiona.apple.CommandManager">
+        <lookup-method name="createCommand" bean="myCommand"/>
+    </bean>
+    ```
+
+- 注解配置方式：`@Lookup`
+
+    ```java
+    public abstract class CommandManager {
+    
+        public Object process(Object commandState) {
+            Command command = createCommand();
+            command.setState(commandState);
+            return command.execute();
+        }
+    
+        @Lookup("myCommand")
+        // 直接使用 @Lookup 也可以
+        protected abstract Command createCommand();
+    }
+    ```
+
+In the client class that contains the method to be injected (the `CommandManager` in this case), the method to be injected requires a signature of the following form:
+
+```xml
+<public|protected> [abstract] <return-type> theMethodName(no-arguments);
+```
+
+#### Arbitary Method Injection
+
+A less useful form of method injection than lookup method injection is the ability to replace arbitrary methods in a managed bean with another method implementation.
+
+在XML配置中，可以通过replaced-method标签来替换一个已经存在的方法实现。
+
+例如，现在想替换一个类中的`computeValue`方法：
+
+```java
+public class MyValueCalculator {
+
+    public String computeValue(String input) {
+        // some real code...
+    }
+
+    // some other methods...
+}
+```
+
+A class that implements the `org.springframework.beans.factory.support.MethodReplacer` interface provides the new method definition, as the following example shows:
+
+```java
+/**
+ * meant to be used to override the existing computeValue(String)
+ * implementation in MyValueCalculator
+ */
+public class ReplacementComputeValue implements MethodReplacer {
+
+    public Object reimplement(Object o, Method m, Object[] args) throws Throwable {
+        // get the input value, work with it, and return a computed result
+        String input = (String) args[0];
+        ...
+        return ...;
+    }
+}
+```
+
+The bean definition to deploy the original class and specify the method override would resemble the following example:
+
+```xml
+<bean id="myValueCalculator" class="x.y.z.MyValueCalculator">
+    <!-- arbitrary method replacement -->
+    <replaced-method name="computeValue" replacer="replacementComputeValue">
+        <arg-type>String</arg-type>
+    </replaced-method>
+</bean>
+
+<bean id="replacementComputeValue" class="a.b.c.ReplacementComputeValue"/>
+```
