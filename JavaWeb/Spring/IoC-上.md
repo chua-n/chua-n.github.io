@@ -1,4 +1,4 @@
-## 1. Spring容器——IoC
+## 1. IoC释义
 
 > Spring容器指Spring的IoC容器。
 >
@@ -59,14 +59,14 @@ Spring提供了两种类型的IoC容器：
 
 ## 2. Bean
 
-### Bean的命名
+### 2.1 Bean的命名
 
 如果Bean在配置的时候没有给予其名称，Spring默认按照如下规则给其命名：
 
 1. 以类名为名，并将首字母小写；
 2. 如果类名的前两个字母均为大写，将会保留原始的类名。
 
-### Bean的实例化时机
+### 2.2 Bean的实例化时机
 
 - The Spring container validates the configuration of each bean as the container is created. However, the bean properties themselves are not set until the bean is actually created.
 - You can generally trust Spring to do the right thing. It detects configuration problems, such as references to non-existent beans and circular dependencies, at container load-time. Spring sets properties and resolves dependencies as late as possible, when the bean is actually created.
@@ -74,7 +74,7 @@ Spring提供了两种类型的IoC容器：
 - ..., the bean is instantiated (if it is not a pre-instantiated singleton), its dependencies are set, and the relevant lifecycle methods (such as a configured init method or the InitializingBean callback
     method) are invoked.
 
-### Bean的实例化方式
+### 2.3 Bean的实例化方式
 
 实例化Bean的三种方式：
 
@@ -88,39 +88,39 @@ Spring提供了两种类型的IoC容器：
 - 静态工厂方法实例化
 
     ```xml
-    <bean id="clientService"
-    class="examples.ClientService"
-    factory-method="createInstance"/>
+    <bean id="clientService" class="examples.ClientService" factory-method="createInstance"/>
     ```
-
+    
     ```java
-    public class ClientService {
+public class ClientService {
         private static ClientService clientService = new ClientService();
+        
         private ClientService() {}
+        
         public static ClientService createInstance() {
-        return clientService;
+            return clientService;
         }
     }
     ```
 
 - 实例工厂方法实例化
 
-    ```java
+    ```xml
     <!-- the factory bean, which contains a method called createInstance() -->
     <bean id="serviceLocator" class="examples.DefaultServiceLocator">
-    <!-- inject any dependencies required by this locator bean -->
+        <!-- inject any dependencies required by this locator bean -->
     </bean>
+    
     <!-- the bean to be created via the factory bean -->
-    <bean id="clientService"
-    factory-bean="serviceLocator"
-    factory-method="createClientServiceInstance"/>
+    <bean id="clientService" factory-bean="serviceLocator" factory-method="createClientServiceInstance"/>
     ```
-
+    
     ```java
     public class DefaultServiceLocator {
         private static ClientService clientService = new ClientServiceImpl();
+        
         public ClientService createClientServiceInstance() {
-        return clientService;
+            return clientService;
         }
     }
     ```
@@ -131,11 +131,120 @@ Spring提供了两种类型的IoC容器：
 - The container also ignores the scope flag on creation, because inner beans are always anonymous and are always created with the outer bean. 
 - It is not possible to access inner beans independently or to inject them into collaborating beans other than into the enclosing bean.
 
+### 2.4 Bean Scopes
+
+> 私以为将其翻译为bean的作用域不太准确。
+
+The Spring Framework supports six scopes, four of which are available only if you use a web-aware ApplicationContext. You can also create a custom scope.
+
+| Scope                                                        | Description                                                  |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [singleton](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes-singleton) | (Default) Scopes a single bean definition to a single object instance for each Spring IoC container. |
+| [prototype](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes-prototype) | Scopes a single bean definition to any number of object instances. |
+| [request](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes-request) | Scopes a single bean definition to the lifecycle of a single HTTP request. That is, each HTTP request has its own instance of a bean created off the back of a single bean definition. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+| [session](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes-session) | Scopes a single bean definition to the lifecycle of an HTTP `Session`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+| [application](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes-application) | Scopes a single bean definition to the lifecycle of a `ServletContext`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+| [websocket](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket-stomp-websocket-scope) | Scopes a single bean definition to the lifecycle of a `WebSocket`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+
+#### 2.4.1 singleton
+
+![singleton](../../resources/images/notebook/JavaWeb/Spring/singleton.png)
+
+The scope of the Spring singleton is best described as being per-container and per-bean. This means that, if you define one bean for a particular class in a single Spring container, the Spring container creates one and only one instance of the class defined by that bean definition.
+
+```xml
+<bean id="accountService" class="com.something.DefaultAccountService"/>
+
+<!-- the following is equivalent, though redundant (singleton scope is the default) -->
+<bean id="accountService" class="com.something.DefaultAccountService" scope="singleton"/>
+```
+
+#### 2.4.2 prototype
+
+![prototype](../../resources/images/notebook/JavaWeb/Spring/prototype.png)
+
+The non-singleton prototype scope of bean deployment results in the creation of a new bean instance every time a request for that specific bean is made. That is, the bean is injected into another bean or you request it through a `getBean()` method call on the container. As a rule, you should use the prototype scope for all stateful beans and the singleton scope for stateless beans.
+
+```xml
+<bean id="accountService" class="com.something.DefaultAccountService" scope="prototype"/>
+```
+
+notes:
+
+- In contrast to the other scopes, Spring does not manage the complete lifecycle of a prototype bean.
+- Thus, although initialization lifecycle callback methods are called on all objects regardless of scope, in the case of prototypes, **configured destruction lifecycle callbacks are not called**. The client code must clean up prototype-scoped objects and release expensive resources that the prototype beans hold. 
+- In some respects, the Spring container’s role in regard to a prototype-scoped bean is a replacement for the Java `new` operator. All lifecycle management past that point must be handled by the client.
+
+#### 2.4.3 Singleton Beans with Prototype-bean Dependencies
+
+> When you use singleton-scoped beans with dependencies on prototype beans, be aware that dependencies are resolved at instantiation time. 
+
+单例的Bean中注入的prototype-bean实例始终是同一个对象，不会随着调用的重复而重新获取新的prototype-bean实例。
+
+如果你需要每次获取一个全新的prototype-bean实例，参见[Method Injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-method-injection)即可。
+
+#### 2.4.4 Request, Session, Application, and WebSocket Scopes
+
+> 暂略。
+
+#### 2.4.5 Custom Scopes
+
+The bean scoping mechanism is extensible. You can define your own scopes or even redefine existing scopes, although the latter is considered bad practice and you cannot override the built-in `singleton` and `prototype` scopes.
+
+##### 2.4.5.1 Creating a Custom Scope
+
+To integrate your custom scopes into the Spring container, you need to implement the `org.springframework.beans.factory.config.Scope` interface. The `Scope` interface has four methods to get objects from the scope, remove them from the scope, and let them be destroyed.
+
+```java
+public interface Scope {
+    Object get(String var1, ObjectFactory<?> var2);
+
+    @Nullable
+    Object remove(String var1);
+
+    void registerDestructionCallback(String var1, Runnable var2);
+
+    @Nullable
+    Object resolveContextualObject(String var1);
+
+    @Nullable
+    String getConversationId();
+}
+```
+
+##### 2.4.5.2 Using a Custom Scope
+
+After you write and test one or more custom Scope implementations, you need to make the Spring container aware of your new scopes. 
+
+The `ConfigurableBeanFactory#registerScope` method is the central method to register a new Scope with the Spring container:
+
+> This method is declared on the ConfigurableBeanFactory interface, which is available through the BeanFactory property on most of the concrete ApplicationContext implementations that ship with Spring.
+
+```java
+void registerScope(String scopeName, Scope scope);
+```
+
 ## 3. 依赖注入
 
 > DI exists in two major variants: **Constructor-based dependency injection** and **Setter-based dependency injection**.
 
-### 构造方法注入
+在编写程序时，通过控制反转，把对象的创建权交给了Spring，但是代码中不可能出现没有依赖的情况，而IoC解耦只是降低他们的依赖关系，但不会消除，例如：业务层仍会调用持久层的方法。
+
+这种业务层和持久层的依赖关系，在使用Spring之后，就让Spring来维护了，简单地说，就是坐等框架把持久层对象传入业务层，而不用我们自己去获取，这些便由所谓的依赖注入去实现。
+
+**依赖注入**(Dependency Injection, DI)，是Spring框架核心IoC的具体实现，依赖注入表示组件之间的依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。
+
+### 引导案例
+
+对于两个类UserService和UserDao，它们都在Spring容器中，前者的代码定义中需要使用到后者。以前的做法是在容器外部获得UserService实例和UserDao实例，然后在程序中进行结合；然而，最终程序直接使用的是UserService，所以更好的方式是：在Spring容器中，将UserDao设置到UserSerivice内部。
+
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/11.png" alt="11" style="zoom:50%;" />
+
+以Spring进行依赖注入后的效果如下图：
+
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/12.png" alt="12" style="zoom:50%;" />
+
+### 3.1 构造方法注入
 
 ```java
 package examples;
@@ -184,7 +293,7 @@ public class ExampleBean {
     </bean>
     ```
 
-### setter方法注入
+### 3.2 setter方法注入
 
 > Setter-based DI is accomplished by the container calling setter methods on your beans after invoking a no-argument constructor or a no-argument static factory method to instantiate your bean.
 
@@ -205,7 +314,7 @@ public class SimpleMovieLister {
 The ApplicationContext also supports setter-based DI after some dependencies have already been injected through the
 constructor approach. 
 
-### 构造注入 or setter注入？
+### 3.3 构造注入 or setter注入？
 
 尽管Spring既支持构造器注入和setter方法注入，但Spring更推荐使用构造器注入：
 
@@ -221,7 +330,7 @@ setter方法注入应该作为一种备选项：
 
     > Management through JMX MBeans is therefore a compelling use case for setter injection.
 
-### 循环依赖问题
+### 3.4 循环依赖问题
 
 问题：
 
@@ -232,89 +341,9 @@ setter方法注入应该作为一种备选项：
 > Alternatively, avoid constructor injection and use setter injection
 > only. In other words, although it is not recommended, you can configure circular dependencies with setter injection.
 
-## 4. XML配置
+## 4. 注入方法（Method Injection）
 
-### 空属性
-
-设置Bean的属性时，Spring将空参数视为空字符串。故而以下与`exampleBean.setEmail("");`等效：
-
-```xml
-<bean class="ExampleBean">
-    <property name="email" value=""/>
-</bean>
-```
-
-若想单独设置某个属性为null，可使用`<null/>`标签：
-
-```xml
-<bean class="ExampleBean">
-    <property name="email">
-	    <null/>
-    </property>
-</bean>
-```
-
-### p命名空间、c命名空间
-
-- The p-namespace lets you use the bean element’s attributes (instead of nested \<property/> elements) to describe your property values collaborating beans, or both.
-- Similar to the XML Shortcut with the p-namespace, the c-namespace, introduced in Spring 3.1, allows inlined attributes for configuring the constructor arguments rather then nested constructorarg elements.
-
-### depends-on
-
-通常情况下，一个bean中引用另一个bean，可以使用`<ref/>`标签。但是当两个bean有强烈的生命周期依赖时，就需要使用`depends-on`属性了。
-
-- The depends-on attribute can explicitly force one or more beans to be initialized before the bean using this element is initialized. 
-- The depends-on attribute can specify both an initialization-time dependency and, in the case of singleton beans only, a corresponding destruction-time dependency. Dependent beans that define a depends-on relationship with a given bean are destroyed first, prior to the given bean itself being destroyed. Thus, depends-on can also control shutdown order.
-
-### 懒加载
-
-所谓懒加载的Bean，其实例化的时机是该Bean第一次被使用的时候，而不是在项目启动的时候。
-
-Spring不推荐使用Bean的懒加载模式，因为这会导致一些问题可能到项目运行 了很长时间以后才会暴露出来，而不是项目启动的时候即可以被发现。
-
-懒加载的配置方式：
-
-- 单个Bean层次的控制
-
-    ```xml
-    <bean id="lazy" class="com.something.ExpensiveToCreateBean" lazy-init="true"/>
-    <bean name="not.lazy" class="com.something.AnotherBean"/>
-    ```
-
-- 容器层次的控制
-
-    ```xml
-    <beans default-lazy-init="true">
-        <!-- no beans will be pre-instantiated... -->
-    </beans>
-    ```
-
-### 自动织入
-
-> The Spring container can autowire relationships between collaborating beans. You can let Spring resolve collaborators (other beans) automatically for your bean by inspecting the contents of the ApplicationContext.
-
-在XML中，可以通过\<bean/>标签的autowire属性来配置自动织入，其有4个模式：
-
-| Mode          | Explanation                                                  |
-| :------------ | :----------------------------------------------------------- |
-| `no`          | (Default) No autowiring. Bean references must be defined by `ref` elements. Changing the default setting is not recommended for larger deployments, because specifying collaborators explicitly gives greater control and clarity. To some extent, it documents the structure of a system. |
-| `byName`      | Autowiring by property name. Spring looks for a bean with the same name as the property that needs to be autowired. For example, if a bean definition is set to autowire by name and it contains a `master` property (that is, it has a `setMaster(..)` method), Spring looks for a bean definition named `master` and uses it to set the property. |
-| `byType`      | Lets a property be autowired if exactly one bean of the property type exists in the container. If more than one exists, a fatal exception is thrown, which indicates that you may not use `byType` autowiring for that bean. If there are no matching beans, nothing happens (the property is not set). |
-| `constructor` | Analogous to `byType` but applies to constructor arguments. If there is not exactly one bean of the constructor argument type in the container, a fatal error is raised. |
-
-注意：
-
-- Explicit dependencies in property and constructor-arg settings always override autowiring. 
-- You cannot autowire simple properties such as primitives, Strings, and Classes (and arrays of such simple properties). This limitation is by-design.
-
-如果不希望某些bean参与到自动织入的体系，即不希望它们可以被自动织入到其他类：
-
-- 可以通过设置\<bean/>标签的autowire-candidate属性为false来实现。不过，这个属性只对byType类型织入的模式有效。
-- You can also limit autowire candidates based on pattern-matching against bean names.
-
-### 注入方法Method Injection
-
-#### 场景引入
+### 4.1 场景引入
 
 有时我们需要在一个bean A中调用另一个bean B的方法，通常我们会添加一个字段，然后使用依赖注入把bean B的实例注入到这个字段上。这种情况下在bean A 和 bean B都是singleton时没问题，但是在 bean A是singleton和bean B是非singleton时就可能出现问题。因为bean B为非singleton , 那么bean B是希望他的使用者在一些情况下创建一个新实例，而bean A使用字段把bean B的一个实例缓存了下来，每次都使用的是同一个实例。
 
@@ -361,7 +390,7 @@ Spring提供两种机制来注入方法，分别是 Lookup Method Injection 和A
 - Lookup Method Injection只提供返回值注入
 - Arbitrary method replacement可以替换任意方法来达到注入
 
-#### Lookup Method Injection
+### 4.2 Lookup Method Injection
 
 Lookup method injection is the ability of the container to override methods on container-managed beans and return the lookup result for another named bean in the container. 
 
@@ -434,7 +463,7 @@ In the client class that contains the method to be injected (the `CommandManager
 <public|protected> [abstract] <return-type> theMethodName(no-arguments);
 ```
 
-#### Arbitary Method Injection
+### 4.3 Arbitary Method Injection
 
 A less useful form of method injection than lookup method injection is the ability to replace arbitrary methods in a managed bean with another method implementation.
 
@@ -483,3 +512,59 @@ The bean definition to deploy the original class and specify the method override
 
 <bean id="replacementComputeValue" class="a.b.c.ReplacementComputeValue"/>
 ```
+
+## 5. 其他
+
+### depends-on
+
+通常情况下，一个bean中引用另一个bean，可以使用`<ref/>`标签。但是当两个bean有强烈的生命周期依赖时，就需要使用`depends-on`属性了。
+
+- The depends-on attribute can explicitly force one or more beans to be initialized before the bean using this element is initialized. 
+- The depends-on attribute can specify both an initialization-time dependency and, in the case of singleton beans only, a corresponding destruction-time dependency. Dependent beans that define a depends-on relationship with a given bean are destroyed first, prior to the given bean itself being destroyed. Thus, depends-on can also control shutdown order.
+
+### 懒加载
+
+所谓懒加载的Bean，其实例化的时机是该Bean第一次被使用的时候，而不是在项目启动的时候。
+
+Spring不推荐使用Bean的懒加载模式，因为这会导致一些问题可能到项目运行 了很长时间以后才会暴露出来，而不是项目启动的时候即可以被发现。
+
+懒加载的配置方式：
+
+- 单个Bean层次的控制
+
+    ```xml
+    <bean id="lazy" class="com.something.ExpensiveToCreateBean" lazy-init="true"/>
+    <bean name="not.lazy" class="com.something.AnotherBean"/>
+    ```
+
+- 容器层次的控制
+
+    ```xml
+    <beans default-lazy-init="true">
+        <!-- no beans will be pre-instantiated... -->
+    </beans>
+    ```
+
+### 自动织入
+
+> The Spring container can autowire relationships between collaborating beans. You can let Spring resolve collaborators (other beans) automatically for your bean by inspecting the contents of the ApplicationContext.
+
+在XML中，可以通过\<bean/>标签的autowire属性来配置自动织入，其有4个模式：
+
+| Mode          | Explanation                                                  |
+| :------------ | :----------------------------------------------------------- |
+| `no`          | (Default) No autowiring. Bean references must be defined by `ref` elements. Changing the default setting is not recommended for larger deployments, because specifying collaborators explicitly gives greater control and clarity. To some extent, it documents the structure of a system. |
+| `byName`      | Autowiring by property name. Spring looks for a bean with the same name as the property that needs to be autowired. For example, if a bean definition is set to autowire by name and it contains a `master` property (that is, it has a `setMaster(..)` method), Spring looks for a bean definition named `master` and uses it to set the property. |
+| `byType`      | Lets a property be autowired if exactly one bean of the property type exists in the container. If more than one exists, a fatal exception is thrown, which indicates that you may not use `byType` autowiring for that bean. If there are no matching beans, nothing happens (the property is not set). |
+| `constructor` | Analogous to `byType` but applies to constructor arguments. If there is not exactly one bean of the constructor argument type in the container, a fatal error is raised. |
+
+注意：
+
+- Explicit dependencies in property and constructor-arg settings always override autowiring. 
+- You cannot autowire simple properties such as primitives, Strings, and Classes (and arrays of such simple properties). This limitation is by-design.
+
+如果不希望某些bean参与到自动织入的体系，即不希望它们可以被自动织入到其他类：
+
+- 可以通过设置\<bean/>标签的autowire-candidate属性为false来实现。不过，这个属性只对byType类型织入的模式有效。
+- You can also limit autowire candidates based on pattern-matching against bean names.
+
