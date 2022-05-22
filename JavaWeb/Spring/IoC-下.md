@@ -356,3 +356,224 @@ The `FactoryBean` interface is a point of pluggability into the Spring IoC conta
 > The `FactoryBean` concept and interface are used in a number of places within the Spring Framework. More than 50 implementations of the `FactoryBean` interface ship with Spring itself.
 
 When you need to ask a container for an actual `FactoryBean` instance itself instead of the bean it produces, prefix the bean’s `id` with the ampersand symbol (`&`) when calling the `getBean()` method of the `ApplicationContext`. 
+
+## 3. Environment Abstraction
+
+The [`Environment`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/core/env/Environment.html) interface is an abstraction integrated in the container that models two key aspects of the application environment: [profiles](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-definition-profiles) and [properties](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-property-source-abstraction).
+
+### 3.1 Bean Definition Profiles
+
+A profile is a named, logical group of bean definitions to be registered with the container only if the given profile is active. The role of the `Environment` object with relation to profiles is in determining which profiles (if any) are currently active, and which profiles (if any) should be active by default.
+
+The @Profile annotation lets you indicate that a component is eligible for registration when one or more specified profiles are active.
+
+```java
+@Configuration
+@Profile("development")
+public class StandaloneDataConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        return new EmbeddedDatabaseBuilder()
+            .setType(EmbeddedDatabaseType.HSQL)
+            .addScript("classpath:com/bank/config/sql/schema.sql")
+            .addScript("classpath:com/bank/config/sql/test-data.sql")
+            .build();
+    }
+}
+```
+
+```java
+@Configuration
+@Profile("production")
+public class JndiDataConfig {
+
+    @Bean(destroyMethod="")
+    public DataSource dataSource() throws Exception {
+        Context ctx = new InitialContext();
+        return (DataSource) ctx.lookup("java:comp/env/jdbc/datasource");
+    }
+}
+```
+
+The profile string may contain a simple profile name (for example, `production`) or a profile expression. A profile expression allows for more complicated profile logic to be expressed (for example, `production & us-east`). The following operators are supported in profile expressions:
+
+- `!`: A logical “not” of the profile
+- `&`: A logical “and” of the profiles
+- `|`: A logical “or” of the profiles
+
+#### Activating a Profile
+
+...
+
+#### Default Profile
+
+...
+
+### 3.2 `PropertySource` Abstraction
+
+#### 释义
+
+The role of the `Environment` object with relation to properties is to provide the user with a convenient service interface for configuring property sources and resolving properties from them. 
+
+Properties play an important role in almost all applications and may originate from a variety of sources: 
+
+- properties files
+- JVM system properties
+- system environment variables
+- JNDI
+- servlet context parameters
+- ad-hoc `Properties` objects
+- `Map` objects
+- ......
+
+A `PropertySource` is a simple abstraction over any source of key-value pairs, and Spring’s [`StandardEnvironment`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/core/env/StandardEnvironment.html) is configured with two PropertySource objects: 
+
+- one representing the set of JVM system properties (`System.getProperties()`) 
+- one representing the set of system environment variables (`System.getenv()`).
+
+#### PropertySource的搜索
+
+Spring’s `Environment` abstraction provides search operations over a configurable hierarchy of property sources. Consider the following listing:
+
+```java
+ApplicationContext ctx = new GenericApplicationContext();
+Environment env = ctx.getEnvironment();
+boolean containsMyProperty = env.containsProperty("my-property");
+System.out.println("Does my environment contain the 'my-property' property? " + containsMyProperty);
+```
+
+The search performed is hierarchical. 
+
+- By default, system properties have precedence over environment variables. 
+- So, if the `my-property` property happens to be set in both places during a call to `env.getProperty("my-property")`, the system property value “wins” and is returned. 
+- Note that property values are not merged but rather completely overridden by a preceding entry.
+
+For a common `StandardServletEnvironment`, the full hierarchy is as follows, with the highest-precedence entries at the top:
+
+1. ServletConfig parameters (if applicable — for example, in case of a `DispatcherServlet` context)
+2. ServletContext parameters (web.xml context-param entries)
+3. JNDI environment variables (`java:comp/env/` entries)
+4. JVM system properties (`-D` command-line arguments)
+5. JVM system environment (operating system environment variables)
+
+#### 自定义PropertySource
+
+Most importantly, the entire mechanism is configurable. Perhaps you have a custom source of properties that you want to integrate into this search. To do so, implement and instantiate your own `PropertySource` and add it to the set of `PropertySources` for the current `Environment`. The following example shows how to do so:
+
+```java
+ConfigurableApplicationContext ctx = new GenericApplicationContext();
+MutablePropertySources sources = ctx.getEnvironment().getPropertySources();
+sources.addFirst(new MyPropertySource());
+```
+
+> In the preceding code, `MyPropertySource` has been added with highest precedence in the search.
+
+### @PropertySource
+
+The [`@PropertySource`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/context/annotation/PropertySource.html) annotation provides a convenient and declarative mechanism for adding a `PropertySource` to Spring’s `Environment`.
+
+```java
+package org.springframework.context.annotation;
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Repeatable(PropertySources.class)
+public @interface PropertySource {
+    String name() default "";
+
+    String[] value();
+
+    boolean ignoreResourceNotFound() default false;
+
+    String encoding() default "";
+
+    Class<? extends PropertySourceFactory> factory() default PropertySourceFactory.class;
+}
+```
+
+Given a file called `app.properties` that contains the key-value pair `testbean.name=myTestBean`, the following `@Configuration` class uses `@PropertySource` in such a way that a call to `testBean.getName()` returns `myTestBean`:
+
+```java
+@Configuration
+@PropertySource("classpath:/com/myco/app.properties")
+public class AppConfig {
+
+    @Autowired
+    Environment env;
+
+    @Bean
+    public TestBean testBean() {
+        TestBean testBean = new TestBean();
+        testBean.setName(env.getProperty("testbean.name"));
+        return testBean;
+    }
+}
+```
+
+Any `${…}` placeholders present in a `@PropertySource` resource location are resolved against the set of property sources already registered against the environment, as the following example shows:
+
+```java
+@Configuration
+@PropertySource("classpath:/com/${my.placeholder:default/path}/app.properties")
+public class AppConfig {
+
+    @Autowired
+    Environment env;
+
+    @Bean
+    public TestBean testBean() {
+        TestBean testBean = new TestBean();
+        testBean.setName(env.getProperty("testbean.name"));
+        return testBean;
+    }
+}
+```
+
+## 4. LoadTimeWeaver
+
+The `LoadTimeWeaver` is used by Spring to dynamically transform classes as they are loaded into the Java virtual machine (JVM).
+
+To enable load-time weaving, you can add the `@EnableLoadTimeWeaving` to one of your `@Configuration` classes, as the following example shows:
+
+```java
+@Configuration
+@EnableLoadTimeWeaving
+public class AppConfig {
+}
+```
+
+Once configured for the `ApplicationContext`, any bean within that `ApplicationContext` may implement `LoadTimeWeaverAware`, thereby receiving a reference to the load-time weaver instance. 
+
+- This is particularly useful in combination with [Spring’s JPA support](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#orm-jpa) where load-time weaving may be necessary for JPA class transformation. 
+- Consult the [`LocalContainerEntityManagerFactoryBean`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.html) javadoc for more detail. 
+- For more on AspectJ load-time weaving, see [Load-time Weaving with AspectJ in the Spring Framework](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-aj-ltw).
+
+## 5. ApplicationContext的其他功能
+
+> 后面再跟。
+
+主要包含如下几个点：
+
+- Internationalization using `MessageSource`
+- Standard and Custom Events
+- Convenient Access to Low-level Resources
+- Application Startup Tracking
+- Convenient `ApplicationContext` Instantiation for Web Applications
+- Deploying a Spring `ApplicationContext` as a Java EE RAR File
+
+## 6. BeanFactory
+
+The `BeanFactory` API provides the underlying basis for Spring’s IoC functionality.
+
+`BeanFactory` and related interfaces (such as `BeanFactoryAware`, `InitializingBean`, `DisposableBean`) are important integration points for other framework components. By not requiring any annotations or even reflection, they allow for very efficient interaction between the container and its components. 
+
+> Note that the core `BeanFactory` API level and its `DefaultListableBeanFactory` implementation do not make assumptions about the configuration format or any component annotations to be used. 
+>
+> - All of these flavors come in through extensions (such as `XmlBeanDefinitionReader` and `AutowiredAnnotationBeanPostProcessor`) and operate on shared `BeanDefinition` objects as a core metadata representation. 
+> - This is the essence of what makes Spring’s container so flexible and extensible.
+
+### `BeanFactory` or `ApplicationContext`?
+
+You should use an ApplicationContext unless you have a good reason for not doing so.
