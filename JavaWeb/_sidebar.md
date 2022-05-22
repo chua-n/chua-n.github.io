@@ -35,6 +35,7 @@
     -   [IoC-下](/JavaWeb/Spring/IoC-下.md)
     -   [配置-XML](/JavaWeb/Spring/配置-XML.md)
     -   [配置-注解](/JavaWeb/Spring/配置-注解.md)
+    -   [配置-代码](/JavaWeb/Spring/配置-代码.md)
     -   [AOP](/JavaWeb/Spring/AOP.md)
     -   [Spring+Junit](/JavaWeb/Spring/Spring+Junit.md)
     -   [Spring-JdbcTemplate](/JavaWeb/Spring/Spring-JdbcTemplate.md)
