@@ -136,6 +136,26 @@ scope的取值：
 - 引用其他bean：`ref="…"`
 - 集合数据类型：`<list>、<map>`等子标签
 
+#### 空属性
+
+设置Bean的属性时，Spring将空参数视为空字符串。故而以下与`exampleBean.setEmail("");`等效：
+
+```xml
+<bean class="ExampleBean">
+    <property name="email" value=""/>
+</bean>
+```
+
+若想单独设置某个属性为null，可使用`<null/>`标签：
+
+```xml
+<bean class="ExampleBean">
+    <property name="email">
+	    <null/>
+    </property>
+</bean>
+```
+
 ### 构造器注入（不常用）
 
 > 需使用有参构造方式，采用`<constructor-arg>`标签。
@@ -170,7 +190,11 @@ scope的取值：
 
 <font color="red">???????</font>
 
-## 3. 分模块开发
+## 3. 组件扫描
+
+组件扫描的配置：`<context:component-scan>`。
+
+## 4. 分模块开发
 
 Spring的配置文件可**分模块开发**，此时在主配置文件中引用其他配置文件的方法为使用`<import>`标签加载：
 
@@ -183,26 +207,6 @@ Spring的配置文件可**分模块开发**，此时在主配置文件中引用�
     <bean id="bean1" class="..."/>
     <bean id="bean2" class="..."/>
 </beans>
-```
-
-4. 空属性
-
-设置Bean的属性时，Spring将空参数视为空字符串。故而以下与`exampleBean.setEmail("");`等效：
-
-```xml
-<bean class="ExampleBean">
-    <property name="email" value=""/>
-</bean>
-```
-
-若想单独设置某个属性为null，可使用`<null/>`标签：
-
-```xml
-<bean class="ExampleBean">
-    <property name="email">
-	    <null/>
-    </property>
-</bean>
 ```
 
 ## 5. p命名空间、c命名空间
