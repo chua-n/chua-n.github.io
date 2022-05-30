@@ -258,11 +258,7 @@ LoadingCache<Key, Graph> graphs = CacheBuilder.newBuilder()
 
 ### 7.2 asMap视图
 
-asMap视图提供了缓存的`ConcurrentMap`形式，但asMap视图与缓存的交互需要注意：
-
-- `cache.asMap()`包含当前所有加载到缓存的项。因此相应地，`cache.asMap().keySet()`包含当前所有已加载键;
-- `asMap().get(key)`实质上等同于`cache.getIfPresent(key)`，而且不会引起缓存项的加载。这和Map的语义约定一致。
-- 所有读写操作都会重置相关缓存项的访问时间，包括`Cache.asMap().get(Object)`方法和`Cache.asMap().put(K, V)`方法，但不包括`Cache.asMap().containsKey(Object)`方法，也不包括在`Cache.asMap()`的集合视图上的操作。比如，遍历`Cache.asMap().entrySet()`不会重置缓存项的读取时间。
+asMap视图提供了缓存的`ConcurrentMap`形式，但asMap视图与缓存的交互需要注意。
 
 ### 7.3 中断
 
