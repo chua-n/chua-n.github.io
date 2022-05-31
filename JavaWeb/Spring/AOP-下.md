@@ -1,4 +1,4 @@
-## 2.4 增强方法的执行顺序
+## 增强方法的执行顺序
 
 ### 同一 aspect、不同 advice 
 
@@ -10,7 +10,7 @@
 
 ### 不同 aspect、同一advice
 
-Spring可以支持多个切面同时运行，如果刚好多个切面的切点相同，切面的运行顺序便很重要了。默认情况下，切面的运行顺序是混乱的，如果需要指定切面的运行顺序，Spring AOP 通过指定`aspect`的优先级来控制。具体有两种方式：
+Spring可以支持多个切面同时运行，如果刚好多个切面的切点相同，切面的运行顺序便很重要了。默认情况下，切面的运行顺序是混乱的（undefined），如果需要指定切面的运行顺序，Spring AOP 通过指定`aspect`的优先级来控制。具体有两种方式：
 
 - Aspect 类添加**注解**：`org.springframework.core.annotation.Order`，使用注解`value`属性指定优先级。
 - Aspect 类实现**接口**：`org.springframework.core.Ordered`，实现 `Ordered` 接口的 `getOrder()` 方法。
@@ -41,7 +41,7 @@ public class SecondAspect {
 
 同一aspect、相同advice的执行顺序是无法确定的， `@Order` 在advice方法上也无效，因此尽量不用使用这种方式。
 
-## 2.5 AOP代理类的自调用
+## AOP代理类的自调用
 
 这里所谓的**自调用**，是指一个类的方法调用本类的其他方法。
 
