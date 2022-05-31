@@ -22,9 +22,12 @@
 
 15. 线程通信的Condition、BlockingQueue......
 
-16. 线程池
+10. 线程池
 
-17. 
+- 如果编译代码时使用了`-g:vars`选项，意味着：
+    - your code is slightly easier to understand (reverse engineer)
+    - the class file sizes are very slightly bigger (typically inconsequential)
+    - the optimization to remove unused local variables is not applied by your compiler.
 
 ## 后端问题定位和分析
 
