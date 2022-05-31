@@ -250,6 +250,31 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
 
 在SpringAOP中，切面自身不能作为目标对象被其他切面增强。因为`@Aspect`注解除了将一个类标记为切面类以外，还将这个类排除在了auto-proxying之外。
 
+#### 切面实例化模型
+
+默认情况下，每一个切面在Spring容器中都是单例的，但是也可以定义不同生命周期的切面。Spring支持AspectJ的 `perthis` 和 `pertarget` 实例化模型，但目前不支持 `percflow`, `percflowbelow`, `pertypewithin`。
+
+在@Aspect注解中声明一个`perthis` 分句就可以声明`perthis`切面了，如下所示：
+
+```java
+@Aspect("perthis(com.xyz.myapp.CommonPointcuts.businessService())")
+public class MyAspect {
+
+    private int someState;
+
+    @Before("com.xyz.myapp.CommonPointcuts.businessService()")
+    public void recordServiceUsage() {
+        // ...
+    }
+}
+```
+
+- the effect of the `perthis` clause is that one aspect instance is created for each unique service object that performs a business service (each unique object bound to `this` at join points matched by the pointcut expression). 
+- The aspect instance is created the first time that a method is invoked on the service object. The aspect goes out of scope when the service object goes out of scope. 
+- Before the aspect instance is created, none of the advice within it runs. As soon as the aspect instance has been created, the advice declared within it runs at matched join points, but only when the service object is the one with which this aspect is associated.
+
+`pertarget` 实例模型的用法同 `perthis`，只不过它为每一个不同的目标对象来创建切面对象。
+
 ### 4.2 声明切点
 
 #### @Pointcut注解抽取切点表达式
@@ -796,4 +821,32 @@ Parameter names are not available through Java reflection, so Spring AOP uses th
 - 如果上述所有策略都失败，Spring会抛出一个`IllegalArgumentException`异常。
 
 值得一提的是，如果增强方法中第一个形参是 `JoinPoint`, `ProceedingJoinPoint`,  `JoinPoint.StaticPart` 类型，这种匹配完全不需要依赖 `argNames` 属性，因此 `argNames` 中可以不申明这个参数。
+
+## 7. 引入
+
+> Introductions (known as inter-type declarations in AspectJ) enable an aspect to declare that advised objects implement a given interface, and to provide an implementation of that interface on behalf of those objects.
+
+引入使得一个切面能够宣称目标对象实现了一个给定的接口，同时为这些对象提供该接口的实现。
+
+创建引用使用 `@DeclareParents` 注解，该注解的作用是声明某一个类拥有一个新的父类。
+
+- 待实现的接口取决于该注解修饰的字段的类型
+- value属性是一个AspectJ的type pattern
+
+例如，给定一个`UsageTracked`接口及其实现类 `DefaultUsageTracked`，如下切面宣告了所有的service包下的接口的实现类同时实现了`UsageTracked`接口：
+
+```java
+@Aspect
+public class UsageTracking {
+
+    @DeclareParents(value="com.xzy.myapp.service.*+", defaultImpl=DefaultUsageTracked.class)
+    public static UsageTracked mixin;
+
+    @Before("com.xyz.myapp.CommonPointcuts.businessService() && this(usageTracked)")
+    public void recordUsage(UsageTracked usageTracked) {
+        usageTracked.incrementUseCount();
+    }
+
+}
+```
 
