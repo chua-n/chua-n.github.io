@@ -77,22 +77,129 @@ SpringAOP使用时需要结合SpringIoC容器，因此SpringAOP无法对非常�
 >
 > spring关于AOP的spring-aspects包中引用了aspectjweaver。
 
-AOP技术在Spring中实现的内容：Spring框架监控切点方法的执行，一旦监控到切入点方法被运行，即使用代理机制，动态创建目标对象的代理对象，根据通知类别在代理对象的相应位置将Advice对应的功能织入，完成完整的代码逻辑运行。
-
-通过 Spring 提供的动态代理技术实现——在运行期间，Spring 通过动态代理技术动态地生成代理对象，**代理对象**在执行相应方法时进行增强功能的注入，再去调用**目标对象**的方法，从而完成功能的增强。
-
-> 常用的动态代理技术：
->
-> -   JDK 代理：基于接口的动态代理技术
-> -   cglib 代理 ：基于父类的动态代理技术
->
-> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/17.png" alt="17" style="zoom:50%;" />
+AOP技术在Spring中实现的内容：Spring框架监控切点方法的执行，一旦监控到切入点方法被运行，即使用**动态代理**机制，动态创建目标对象的代理对象，根据增强类别在代理对象的相应位置将Advice对应的功能织入，从而完成增强后的整个代码逻辑的执行。
 
 Spring 的 AOP 实现底层就是对 JDK 代理、cglib 代理的方式进行了封装，封装后我们只需要对需要关注的部分进行代码编写，并通过配置的方式完成指定目标的方法增强。
 
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/17.png" alt="17" style="zoom:50%;" />
+
+-   JDK 代理：基于接口的动态代理技术。
+-   cglib 代理 ：基于父类的动态代理技术。
+
 默认情况下，Spring 会根据目标类是否实现了接口来决定采用哪种动态代理的方式。如果一个对象没有实现任何接口，则会使用CGLIB代理，否则使用JDK代理。
 
-> 不过，也可以强制使用CGLIB代理。
+- 当使用JDK代理的时候，所有该目标对象实现的接口都会被代理；
+
+- 如果需要，也可以强制使用CGLIB代理，方法是设置`proxy-target-class`为`true`：
+
+    ```xml
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    ```
+
+Spring使用CBLIB代理时需注意如下事项：
+
+- `final`方法无法被增强，因为它们无法被在运行时生成的子类所覆盖；
+
+- 正常情况下，CBLIB代理是通过Objenesis创建的，但当JVM不允许绕过构造函数时，SpringAOP会对构造器进行双重调用来达成目的，此时Spring会记录相应的debug日志信息。
+
+    > Objenesis是一个轻量的Java库，作用是绕过构造器创建实例。
+
+#### 理解SpringAOP的代理
+
+Spring AOP是基于代理的，牢记这一点很重要，这是本质特征！
+
+可通过如下示例来理解代理这件事情：
+
+假定有一个纯天然的POJO类：
+
+```java
+public class SimplePojo implements Pojo {
+
+    public void foo() {
+        // this next method invocation is a direct call on the 'this' reference
+        this.bar();
+    }
+
+    public void bar() {
+        // some logic...
+    }
+}
+```
+
+对于POJO类的实例pojo，调用pojo的方法时毫无疑问会直接调用该对象的相应方法：
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        Pojo pojo = new SimplePojo();
+        // this is a direct method call on the 'pojo' reference
+        pojo.foo();
+    }
+}
+```
+
+![aop proxy plain pojo call](https://docs.spring.io/spring-framework/docs/current/reference/html/images/aop-proxy-plain-pojo-call.png)
+
+然而，如果pojo引用的是代理类的代理对象时，调用方式会发生改变：
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        ProxyFactory factory = new ProxyFactory(new SimplePojo());
+        factory.addInterface(Pojo.class);
+        factory.addAdvice(new RetryAdvice());
+
+        Pojo pojo = (Pojo) factory.getProxy();
+        // this is a method call on the proxy!
+        pojo.foo();
+    }
+}
+```
+
+![aop proxy call](https://docs.spring.io/spring-framework/docs/current/reference/html/images/aop-proxy-call.png)
+
+However, once the call has finally reached the target object (the `SimplePojo` reference in this case), any method calls that it may make on itself.
+
+- Such as `this.bar()` or `this.foo()`, are going to be invoked against the `this` reference, and not the proxy. 
+- It means that self-invocation is not going to result in the advice associated with a method invocation getting a chance to run.
+
+综上，最好的方式永远是代码中不要出现有自调用的情况。其次，如果真的迫不得已，可以通过在代码中使用Spring提供的一些API来解决，如下：
+
+> 这种方案首先使得代码与Spring发生了强耦合，其次使得这个类本身知道了自己即将被代理，后者与AOP的理念背道而驰了。
+
+```java
+public class SimplePojo implements Pojo {
+
+    public void foo() {
+        // this works, but... gah!
+        ((Pojo) AopContext.currentProxy()).bar();
+    }
+
+    public void bar() {
+        // some logic...
+    }
+}
+```
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        ProxyFactory factory = new ProxyFactory(new SimplePojo());
+        factory.addInterface(Pojo.class);
+        factory.addAdvice(new RetryAdvice());
+        factory.setExposeProxy(true);
+
+        Pojo pojo = (Pojo) factory.getProxy();
+        // this is a method call on the proxy!
+        pojo.foo();
+    }
+}
+```
+
+最后需要强调的是，上述自调用问题的根源是由于Spring AOP是基于代理这一机制实现的，故而在AspectJ中不存在这一问题。
 
 ### Enabling @AspectJ Support
 
@@ -822,7 +929,50 @@ Parameter names are not available through Java reflection, so Spring AOP uses th
 
 值得一提的是，如果增强方法中第一个形参是 `JoinPoint`, `ProceedingJoinPoint`,  `JoinPoint.StaticPart` 类型，这种匹配完全不需要依赖 `argNames` 属性，因此 `argNames` 中可以不申明这个参数。
 
-## 7. 引入
+## 7. 增强方法的执行顺序
+
+### 同一 aspect、不同 advice 
+
+执行顺序如下：
+
+<img src="../../resources/images/notebook/JavaWeb/Spring/25.svg" alt="AOP增强方式" style="zoom:67%;" />
+
+需要注意的是，对于`@Around`环绕增强，如果增强方法内部没有调用 `pjp.proceed()`，那么将导致其他的增强方法失去了判断执行的入口，其他类型的增强advice将失效！
+
+### 不同 aspect、同一advice
+
+Spring可以支持多个切面同时运行，如果刚好多个切面的切点相同，切面的运行顺序便很重要了。默认情况下，切面的运行顺序是混乱的（undefined），如果需要指定切面的运行顺序，Spring AOP 通过指定`aspect`的优先级来控制。具体有两种方式：
+
+- Aspect 类添加**注解**：`org.springframework.core.annotation.Order`，使用注解`value`属性指定优先级。
+- Aspect 类实现**接口**：`org.springframework.core.Ordered`，实现 `Ordered` 接口的 `getOrder()` 方法。
+
+`@Order` 注解用来声明组件的顺序，值越小，优先级越高，即越先被执行/初始化。如果没有该注解，则优先级最低。
+
+```java
+@Order(1)
+@Aspect
+@Component
+public class FirstAspect {
+  ……
+}
+
+@Order(2)
+@Aspect
+@Component
+public class SecondAspect {
+  ……
+}
+```
+
+`@Order`注解中的值就是切面的顺序，但对于切面而言，他们不是顺序执行的先后关系而是包含关系：先入后出、后入先出。
+
+![AOP不同切面执行顺序](../../resources/images/notebook/JavaWeb/Spring/26.png)
+
+### 同一 aspect、相同 advice 的执行顺序
+
+同一aspect、相同advice的执行顺序是无法确定的， `@Order` 在advice方法上也无效，因此尽量不用使用这种方式。
+
+## 8. 引入
 
 > Introductions (known as inter-type declarations in AspectJ) enable an aspect to declare that advised objects implement a given interface, and to provide an implementation of that interface on behalf of those objects.
 
@@ -849,4 +999,85 @@ public class UsageTracking {
 
 }
 ```
+
+## 9. AOP代理类的自调用
+
+这里所谓的**自调用**，是指一个类的方法调用本类的其他方法。
+
+### 代码的粒度
+
+当一个切面对一个业务类生效时，我们使用的业务类对象实际上是Spring帮我们生成的一个代理对象，而这个代理的粒度，是**类级别**的。
+
+正因为AOP代理的粒度是类级别的，所以在自调用时不会走其切面逻辑。例如，Spring的事务管理中有个 `@Transactional` 注解可以方便的管理事务，其是基于 AOP 实现的，该注解在这样的情况下会失效：“外部类调用本类的一个没有 `@Transactional` 注解的函数，而该函数调用本类的一个有 `@Transactional` 注解的函数”，失效原因就是因为代理是类级别的。
+
+```java
+@Aspect
+@Component
+public class Aspect {
+    // 前置增强Test
+    @Before("execution(* TargetBean.hi(..))")
+    public void before(JoinPoint joinPoint){
+        System.out.println("--------我是前置通知--------");
+    }
+}
+
+@Component
+public class TargetBean {
+
+    // 一个切点方法
+    public void hi() {
+        System.out.println("hi");
+    }
+    
+    // 一个非切点方法，但调用了上面的切点方法
+    public void hello() {
+        System.out.println("hello");
+        this.hi(); // 调用上述切点方法，发现并未走其对应的增强方法
+    }
+}
+```
+
+为什么要这样设计呢？其实技术上也能实现自调用时也走切面逻辑，比如 [cglib 的 MethodInterceptor](https://www.letianbiji.com/java/java-cglib.html)。然而，有些场景自调用走代理更合适，而另外一些场景不走代理更合适，因此选择类级别的代理是权衡的结果。
+
+### 如何让自调用走代理？
+
+有两种方式，但其本质其实是一个道理，即获取本类被代理后的对象。
+
+1. 自注入
+
+    ```java
+    @Component
+    public class TargetBean {
+        @Autowired
+        private TargetBean self;  // 注入自己，此时注入的是代理后的对象
+    
+        public void hi() {
+            System.out.println("hi");
+        }
+        
+        public void hello() {
+            System.out.println("hello");
+            self.hi(); // 会调用到增强方法
+        }
+    }
+    ```
+
+2. 手动获取当前代理：`AopContext.currentProxy()`
+
+    ```java
+    @EnableAspectJAutoProxy(exposeProxy = true) // 需开启exposeProxy = true
+    @Component
+    public class TargetBean {
+    
+        public void hi() {
+            System.out.println("hi");
+        }
+        
+        public void hello() {
+            System.out.println("hello");
+            TargetBean self = (TargetBean) AopContext.currentProxy();  // 获取当前代理
+            self.hi();
+        }
+    }
+    ```
 
