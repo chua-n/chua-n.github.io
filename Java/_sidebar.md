@@ -44,6 +44,7 @@
 - [基础类库](/Java/基础类库/)
 
     - [Scanner类](/Java/基础类库/Scanner类.md)
+    - [Console类](/Java/基础类库/Console类.md)
     - [System类](/Java/基础类库/System类.md)
     - [Runtime类](/Java/基础类库/Runtime类.md)
     - [Object类](/Java/基础类库/Object类.md)

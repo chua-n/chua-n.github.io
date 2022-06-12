@@ -4,3 +4,12 @@ Objects类提供了一些工具方法来操作对象，这些工具方法大多�
 
 Java为工具类的命令习惯是添加一个字母s，如操作数组的工具类Arrays，操作集合的工具类Collections。
 
+| 方法                                                         | 说明                                       |
+| ------------------------------------------------------------ | ------------------------------------------ |
+| `static <T> void requireNonNull(T obj)`                      | 如果obj为null，抛出一个NPE异常             |
+| `static <T> void requireNonNull(T obj, String message)`      |                                            |
+| `static <T> void requireNonNull(T obj, Supplier<String> messageSupplier)` |                                            |
+| `static <T> T requireNonNullElse(T obj, T defaultObj)`       | 如果obj不为null则返回obj，否则返回默认对象 |
+| `static <T> T requireNonNullElseGet(T obj, Supplier<T> defaultSupplier)` |                                            |
+
+  
