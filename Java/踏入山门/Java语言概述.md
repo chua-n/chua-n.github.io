@@ -74,7 +74,7 @@ java -classpath dir1;dir2;dir3…;dirN Java类
 
 其中;是windows下对路径的分隔符，在linux下应该以:分隔。
 
-Java解释器规定：如需某个类被解释器直接解释执行，则这个类里必须包含main方法，且其必须使用public     static void来修饰，同时其形参必须是字符串数组类型String[] args。
+Java解释器规定：如需某个类被解释器直接解释执行，则这个类里必须包含`main`方法，且其必须使用`public static void`来修饰，同时其形参必须是字符串数组类型`String[] args`。
 
 - 这意味着main方法的写法几乎是固定的，Java虚拟机就从这个main方法开始解释执行，因此，main方法是程序的入口。
 
@@ -82,13 +82,26 @@ Java解释器规定：如需某个类被解释器直接解释执行，则这个�
 
     ![2](https://chua-n.gitee.io/figure-bed/notebook/Java/2.png)
 
-## 3. JDK、JVM、JRE
+### 效率
 
-JDK是Java开发工具包，Java     Development Kit，如果需要开发Java程序，则应该选择安装JDK；当然，安装了JDK之后，就包含了JRE，也可以运行Java程序。
+当然，解释型虚拟机指令肯定会比全速运行机器指令慢很多。不过，Java虚拟机有一个选项，可以将执行最频繁的字节码序列转换成机器码，这一过程称为即时编译。
 
-JVM是一个抽象的计算机，和实际的计算机一样，它具有指令集并使用不同的存储区域。它负责执行指令，还要管理数据、内存和寄存器。
+## 3. Java术语
 
-JRE是Java运行时环境，Java Runtime     Environment，它是运行Java程序的必需条件。简单地说，JRE包含JVM，一般而言，如果只是运行java程序，可以只安装JRE，无须安装JDK。
+| 术语名                   | 缩写 | 解释                                                         |
+| ------------------------ | :--: | ------------------------------------------------------------ |
+| Java Development Kit     | JDK  | Java开发工具包。如果需要开发Java程序，则应该选择安装JDK；当然，安装了JDK之后，就包含了JRE，也可以运行Java程序。 |
+| Java Runtime Environment | JRE  | Java运行时环境。运行Java程序的必需条件。简单地说，JRE包含JVM，一般而言，如果只是运行java程序，可以只安装JRE，无须安装JDK。 |
+| Server JRE               |  /   | 服务器JRE，在服务器上运行 Java 程序的软件                    |
+| Standard Edition         |  SE  | 标准版，用于桌面或简单服务器应用的Java平台                   |
+| Enterprise Edition       |  EE  | 企业版，用于复杂服务器应用的Java平台                         |
+| Micro Edition            |  ME  | 微型版，用于小型设备的Java平台                               |
+| Java FX                  |  /   | 用于图形化用户界面的一个备选工具包，在Java11之前的某些JavaSE发布版本中提供 |
+| OpenJDK                  |  /   | Java SE的一个免费开源实现                                    |
+| Java 2                   |  J2  | 一个过时的术语，用于描述1998~2006年之间的Java版本            |
+| Software Development Kit | SDK  | 一个过时的术语，用于描述1998~2006年之间的JDK                 |
+| Update                   |  u   | Oracle公司的术语，表示Java 8之前的bug修正版本                |
+| NetBeans                 |  /   | Oracle公司的集成开发环境                                     |
 
 ## 4. Java环境变量：JAVA_HOME、CLASSPATH
 
@@ -127,7 +140,11 @@ JRE是Java运行时环境，Java Runtime     Environment，它是运行Java程�
 
 ## 6. 关于Java9
 
+> Java9于2017年发布。
+
 模块化系统是JDK 9的重大更新，为此JDK专门引入了一种新的JMOD格式。
+
+在Java 9之前，有32位和64位两个版本的JDK，现在Oracle公司不再开发32位版本。
 
 JDK 9工具的一大改进就是提供了jshell工具，它是一个交互式的命令行界面，可用于执行java语言的变量声明、语句和表达式，且可以立即看到执行结果。
 
@@ -143,5 +160,45 @@ JDK 9工具的一大改进就是提供了jshell工具，它是一个交互式的
 - `/methods`：列出用户定义的全部方法
 - `/types`：列出用户定义的全部类型
 
+## 7. var关键字
 
+在Java10中，可以使用var来声明局部变量，此时java将从变量的初始值来推导出它们的类型。
 
+## 8. 与C++的异同
+
+Java中所有的函数都是某个类的方法（标准术语将其称为方法，而不是成员函数）。
+
+与C/C++一样，关键字`void`表示这个方法没有返回值，所不同的是main方法没有为操作系统返回“退出码”。如果main方法正常退出，那么Java应用程序的退出码为0，表示成功地运行了程序。如果希望在终止程序时返回其他的退出码，那就需要使用`System.exit`方法。
+
+在C++中，数值甚至指标可以代替boolean值。值0相当于布尔值false，非0值相当于布尔值true。而在java中则不是这样，java程序员不会遇到下述麻烦：
+
+```c++
+if (x = 0) // cops... meant x == 0
+```
+
+Java的控制流程结构与C和C++的控制流程结构一样，只有很少的例外情况。Java中没有goto语句，但break语句可以带标签，可以利用它从内层循环跳出；此外，Java还有一种变形的for循环，它有点类似于C++中基于范围的for循环和C#中的foreach循环。
+
+在C++中，可以在嵌套的块中重定义一个变量。在内层定义的变量会覆盖在外层定义的变量，这就有可能带来编程错误，因此Java中不允许这样做。
+
+Java数组与堆栈上的C++数组有很大不同，但基本上与在堆上分配的数组指标一样。
+
+在C++中，通常在类的外面定义方法，如果在类的内部定义方法，这个方法将自动成为内联方法。而在Java中，所有的方法都必须在类的内部定义，但并不表示它们是内联方法，是否将某个方法设置为内联方法是JVM的任务，JIT会监视那些简短、经常调用而且没有被覆盖的方法调用，并进行优化。
+
+```c++
+void Employee::raiseSalary(double byPercent) {
+    // ...
+}
+
+class Employee {
+    // ...
+    int getName() {
+        return name; // inline in C++
+    }
+}
+```
+
+在C++中，要使用`::`操作符访问作用域之外的静态字段和静态方法，如`Math::PI`。
+
+在C++中，经常用下划线或某个固定的字母（一般选用m或x）作为实例字段的前缀。例如，salary字段可能被命名为_salary, mSalary或xSalary。Java程序员通常不这么做。
+
+在Java中，this引用等价于C++中的this指针。但是，在C++中，一个构造器不能引用另一个构造器。在C++中，必须将抽取出的公共初始化代码编写成一个独立的方法。

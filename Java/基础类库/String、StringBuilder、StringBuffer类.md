@@ -6,6 +6,8 @@ Java 提供了 String, StringBuffer, StringBuilder 三个类来封装字符串�
 
 3. StringBuffer 类同 StringBuilder 类几乎一样，唯一的差别是，StringBuilder 是线程不安全的，而 StringBuffer 是线程安全的，因而性能略低。若不需考虑线程安全，通常会使用前者。
 
+所有字符串都实现了`CharSequence`接口。
+
 ## String 类的构造方法
 
 String 类提供了大量构造器来创建 String 对象，如：
@@ -57,6 +59,8 @@ String 类也提供了大量方法来操作字符串对象：
 | boolean equals(Object anObject)                              | 将该字符串与指定对象比较，判断二者包含的字符序列是否相等     |
 | boolean equalsIgnoreCase(String str)                         | 同上，但忽略大小写                                           |
 | void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) | 将字符串从 srcBegin 开始，到 srcEnd 结束的字符复制到 dst 字符数组从 dstBegin 开始的位置中 |
+| static String join(CharSequence delimiter, CharSequence... elements) |                                                              |
+| String repeat(int count)                                     |                                                              |
 
 ## StringBuilder/StringBuffer 的相关方法
 
@@ -69,6 +73,7 @@ String 类也提供了大量方法来操作字符串对象：
 | public StringBxxx.insert(int offset, String str)             | 将字符串 str 插入 offset 处的位置                            |
 | public StringBxxx replace(int beginIndex, int endIndex, String str) | 使用给定 String 中的字符替换此序列的[beginIndex, endIndex)中的字符 |
 | delete(int beginIndex, int endIndex)                         | 删除[beginIndex, endIndex)中的字符                           |
+| String toString()                                            | 返回一个与构造器或缓冲器内容相同的字符串                     |
 | public StringBxxx reverse()                                  | 将此字符序列以其反转形式替代                                 |
 
 ## Java 9 改动
