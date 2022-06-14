@@ -1,8 +1,8 @@
+## jar 文件
+
 <font size="5">**JAR 文件**</font>的全称为 Java Archive File，意思为 Java 档案文件。
 
-通常 jar 文件是一种压缩文件，与常见的 ZIP 压缩文件兼容，通常也被称为<font size="5"> **jar 包**</font>。jar 文件与 ZIP 文件的区别就是在 JAR 文件中默认包含了一个名为 META-INF/MANIFEST.MF 的清单文件，这个清单文件是在生成 jar 文件时由系统自动创建的。
-
-把一个 jar 文件添加到系统的 CLASSPATH 环境变量中后，JVM 就可以自动在内存中解压这个 JAR 包。Java 会把这个 jar 文件当成一个路径来处理，在其中查询所需要的类或包层次对应的路径结构。
+jar 文件使用ZIP格式组织文件和子目录，可以使用任何ZIP工具查看JAR文件，通常也称其为<font size="5"> **jar 包**</font>。jar 文件与 ZIP 文件的区别就是在 JAR 文件中默认包含了一个名为 META-INF/MANIFEST.MF 的清单文件，这个清单文件是在生成 jar 文件时由系统自动创建的。
 
 使用 JAR 文件有以下好处：
 
@@ -36,6 +36,16 @@
         - 使用 java 命令：`java -jar test.jar`
         - 使用 javaw 命令：`javaw test.jar`
 
+## 类路径
+
+类路径（class path）是所有包含类文件的路径的集合。把一个 jar 文件添加到系统的 CLASSPATH 环境变量中后，JVM 就可以自动在内存中解压这个 JAR 包。Java 会把这个 jar 文件当成一个路径来处理，在其中查询所需要的类或包层次对应的路径结构。
+
+最好使用 -classpath (-cp 或 Java9中的 --class-ath) 选项指定类路径；其次可以通过设置CLASSPATH环境变量来指定，具体细节取决于使用的shell。
+
+- `java -classpath /home/user/classdir:.:/home/user/archives/archive.jar MyProg`
+- `export CLASSPATH=/home/user/classdir:.:/home/user/archives/archive.jar`
+
+在Java9中，还可以从模块路径加载类。
 
 ## jar 命令
 
@@ -63,4 +73,54 @@ jar 命令参数
 | v    | 生成详细的输出结果                                                                                                                                                  |
 | x    | 解压文件。如果提供一个或多个文件名，只解压这些文件；否则，解压所有文件                                                                                              |
 | 0    | 存储，不进行 ZIP 压缩                                                                                                                                               |
+
+## 清单文件
+
+除了类文件、图像和其他资源外，每个JAR文件还包含一个清单文件（manifest），用于描述归档文件的特殊特性。
+
+清单文件被命名为MANIFEST.MF，位于JAR文件的一个特殊的META-INF子目录中。符合标准的最小清单文件极其简单：
+
+```text
+Manifest-Version: 1.0
+```
+
+复杂的清单文件可能包含更多条目。这些清单条目被分成多个节，节与节之间用空行分开。第一节被称为主节，它作用于整个JAR文件。随后的条目用来指定命名实体的属性，如单个文件、包或URL，它们都必须以一个Name条目开始。如：
+
+```text
+Manifest-Version: 1.0
+lines describing this archive.
+
+Name: Woozle.class
+lines describing this file
+Name: com/mycompany/mypkg
+lines describing this package
+```
+
+清单文件的最后一行必须以换行符结束。
+
+## 可执行 JAR 文件
+
+可使用jar命令当中的e选项指定程序的入口点，即通常需要在调用java程序启动器时指定的类：
+
+```cmd
+jar cvfe myProgram.jar com.mycompany.mypkg.MainAppClass files to add
+```
+
+或者，可以在清单文件中指定程序的，包括以下形式的语句（不要为主类名增加扩展名.class）：
+
+```text
+Main-Class: com.mycompany.mypkg.MainAppClass
+```
+
+不论使用哪一种方法，用户可以简单地通过下面的命令来启动程序：
+
+```cmd
+java -jar MyProgram.jar
+```
+
+## 多版本JAR
+
+Java9引入了多版本JAR，其中可以包含面向不同Java版本的类文件。
+
+> 暂略。
 

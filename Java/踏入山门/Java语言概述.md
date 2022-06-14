@@ -202,3 +202,7 @@ class Employee {
 在C++中，经常用下划线或某个固定的字母（一般选用m或x）作为实例字段的前缀。例如，salary字段可能被命名为_salary, mSalary或xSalary。Java程序员通常不这么做。
 
 在Java中，this引用等价于C++中的this指针。但是，在C++中，一个构造器不能引用另一个构造器。在C++中，必须将抽取出的公共初始化代码编写成一个独立的方法。
+
+C++程序员经常将import语句与#include弄混。实际上这两者之间没有共同之处。在C++中与包机制类似的是命名空间特性，可以认为Java中的package和import语句类似于C++中的namespace和using指令。
+
+Java与C++定义继承的方式十分相似，Java用关键字`extends`代替了C++中的冒号`:`。在Java中，所有的继承都是公共继承，而没有C++中的私有继承和保护继承。
