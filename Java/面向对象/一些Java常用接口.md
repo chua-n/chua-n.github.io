@@ -124,3 +124,14 @@ Java8 在 java.util.function 包下预定义了大量函数式接口，典型地
 | `BiPredicate<L, R>`   | `(L, R) -> boolean` | and<br />or<br />negate              |                                                              |
 
 大多数标准函数式接口都提供了非抽象方法来生成或合并函数。例如，`Predicate.isEqual(a)`等同于`a::equals`，不过如果a为null也能正常工作。再比如and, or, negate来合并谓词，如`Predicate.isEqual(a).or(Predicate.isEqual(b))`就等同于`x -> a.equal(x) || b.equals(x)`。
+
+## 3. InvocationHandler
+
+```java
+package java.lang.reflect;
+
+public interface InvocationHandler {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
+}
+```
+

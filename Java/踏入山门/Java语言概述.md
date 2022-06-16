@@ -221,3 +221,9 @@ Java中的protected成分对所有子类及同一个包中的所有其他类都�
 - 实际上，Java的接口能够提供多重继承的大多数好处，同时还能避免多重继承的复杂性和低效性。
 
 C++有嵌套类，被嵌套的类包含在外围类的作用域内。
+
+Java中的异常处理与C++或Delphi中的异常处理十分类似。
+
+C++中有两个基本的异常类，一个是runtime_error，另一个是logic_error。logic_error类相当于Java中的RuntimeException，也表示程序中的逻辑错误；runtime_error类是所有由于不可预测的原因所引发的异常的基类。
+
+在Java中，只能抛出Throwable子类的对象，而在C++中，却可以抛出任何类型的值。
