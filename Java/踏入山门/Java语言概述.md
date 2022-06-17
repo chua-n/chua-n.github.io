@@ -227,3 +227,5 @@ Java中的异常处理与C++或Delphi中的异常处理十分类似。
 C++中有两个基本的异常类，一个是runtime_error，另一个是logic_error。logic_error类相当于Java中的RuntimeException，也表示程序中的逻辑错误；runtime_error类是所有由于不可预测的原因所引发的异常的基类。
 
 在Java中，只能抛出Throwable子类的对象，而在C++中，却可以抛出任何类型的值。
+
+从表面上看，Java的泛型类似于C++的模板类，唯一明显的不同是Java没有特殊的template关键字。但实际上，这两种机制有着本质的区别。
