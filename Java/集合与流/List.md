@@ -77,3 +77,14 @@ LinkedList类是List接口的实现类，因而可以根据索引来随机访问
 
 LinkedList与ArrayList、ArrayDeque的实现机制完全不同，后两者内部以数组的形式来保存集合中的元素，而LinkedList内部以链表的形式来保存集合中的元素。因此LinkedList随机访问集合元素的性能较差，但在插入、删除元素时性能比较出色。
 
+| `LinkedList<E>`方法                            | 作用                                           |
+| ---------------------------------------------- | ---------------------------------------------- |
+| `LinkedList()`                                 | 构造一个空链表                                 |
+| `LinkedList(Collection<? extends E> elements)` | 构造一个，并将集合中所有的元素添加到这个链表中 |
+| `void addFirst(E element)`                     | 将某个元素添加到列表的头部                     |
+| `void addLast(E element)`                      | 将某个元素添加到列表的尾部                     |
+| `E getFirst()`                                 | 返回列表头部的元素                             |
+| `E getLast()`                                  | 返回列表尾部的元素                             |
+| `E removeFirst()`                              | 删除并返回列表头部的元素                       |
+| `E removeLast()`                               | 删除并返回列表尾部的元素                       |
+

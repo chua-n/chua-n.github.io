@@ -62,10 +62,12 @@
 - [集合与流](/Java/集合与流/)
 
     - [Java集合概述](/Java/集合与流/Java集合概述.md)
-    - [Set](/Java/集合与流/Set.md)
-    - [Queue](/Java/集合与流/Queue.md)
     - [List](/Java/集合与流/List.md)
+    - [Queue](/Java/集合与流/Queue.md)
+    - [Set](/Java/集合与流/Set.md)
     - [Map](/Java/集合与流/Map.md)
+    - [视图与包装器](/Java/集合与流/视图与包装器.md)
+    - [算法](/Java/集合与流/算法.md)
     - [流](/Java/集合与流/流.md)
 
 - [IO](/Java/IO/)

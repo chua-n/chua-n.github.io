@@ -96,6 +96,8 @@ Comparator接口包含很多方便的静态方法来创建比较器。
 
 - `reverseOrder`：提供自然顺序的逆序。`naturalOrder().reversed()`等同于`reverOrder()`。
 
+- `Comparator reversed()`：生成一个比较器，将逆转这个比较器提供的顺序。
+
 ## 2. java.util.function包下定义的大量函数式接口
 
 Java8 在 java.util.function 包下预定义了大量函数式接口，典型地包含如下 4 类接口：

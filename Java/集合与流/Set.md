@@ -50,9 +50,35 @@ HashSet 判断两个元素相等的标准是：
 
 LinkedHashSet 是 HashSet 的一个子类，其也根据元素的 hashCode 值也决定元素的存储位置，但同时使用链表维护元素的次序。正因如此，LinkedHashSet 的性能略低于 HashSet，但在迭代访问 Set 里的全部元素时有很好的性能。
 
-## 4. TreeSet 类
+## 4. EnumSet 类
 
-TreeSet 是 SortedSet 接口的实现类，TreeSet 可以确保集合处于有序状态。
+EnumSet 是一个专为枚举类设计的集合类，EnumSet 中的所有元素都必须是指定枚举类型的枚举值，该枚举类型是创建 EnumSet 时显式或隐式地指定。
+
+EnumSet 的集合元素也是有序的，EnumSet 以枚举值在 Enum 类内的定义顺序来决定集合元素的顺序。
+
+EnumSet 在内部以**位向量**的形式存储，这种存储形式非常紧凑、高效，因此 EnumSet 对象占用内存很小且运行效率很好。
+
+EnumSet 不允许加入 null 元素，但若只想判断 EnumSet 是否包含 null 元素或试图删除 null 元素都不会抛出异常，只是删除操作将返回 false。
+
+`EnumSet<E extends Enum<E>>` 类没有任何构造器来创建该类的实例，程序应该通过它提供的类方法来创建 EnumSet 对象，如下静态方法（均具有`static <E extends Enum<E>> EnumSet<E> `前缀）：
+
+| 方法                         | 作用                                                         |
+| ---------------------------- | ------------------------------------------------------------ |
+| `allOf(Class<E> enumType)`   | 创建一个包含指定枚举类里所有枚举值的 EnumSet 集合            |
+| `noneOf(Class<E> enumType)`  | 创建一个元素类型为指定枚举类型的空 EnumSet                   |
+| `range(E from, E to)`        | 创建一个包含从 from 枚举值到 to 枚举值范围内所有枚举值的 EnumSet 集合 |
+| `of(E first, E… rest)`       | 创建一个包含一个或多个枚举值的 EnumSet 集合，传入的多个枚举值必须属于同一个枚举类 |
+| `copyOf(Collection<E> c)`    | 使用一个普通集合来创建 EnumSet 集合                          |
+| `copyOf(EnumSet<E> s)`       | 创建一个与指定 EnumSet 具有相同元素类型、相同集合元素的 EnumSet 集合 |
+| `complementOf(EnumSet<E> s)` | 创建一个元素类型与指定 EnumSet 里元素类型相同的 EnumSet 集合，新 EnumSet 包含原 EnumSet 所不包含的、此枚举类剩下的枚举值 |
+
+## 5. TreeSet 类
+
+TreeSet 是 SortedSet 接口的实现类，TreeSet 可以确保集合处于有序状态。可以以任意顺序将元素插入到集合中，在对集合进行遍历时，值将自动地按照排序后的顺序呈现，排序的动作是用一个树数据结构完成的（当前实现使用的是红黑树）。
+
+将一个元素添加到树中要比添加到散列表中慢，参见下表。但是与检查数组或链表中的重复元素相比，使用树会快很多。如果树中包含n个元素，查找新元素的正确位置平均需要$log_2n$将比较。
+
+![image-20220618234720132](../../resources/images/notebook/Java/image-20220618234720132.png)
 
 与 HashSet 相比，TreeSet 提供了以下几个额外的方法：
 
@@ -66,8 +92,6 @@ TreeSet 是 SortedSet 接口的实现类，TreeSet 可以确保集合处于有�
 | SortedSet subSet(Object fromElement, Object toElement) |                     返回此 Set 的子集，范围为[fromEle, toEle)                     |
 |          SortedSet headSet(Object toElement)           |                    返回此 Set 的子集，由小于 toEle 的元素组成                     |
 |         SortedSet tailSet(Object fromElement)          |                 返回此 Set 的子集，大于或等于 fromEle 的元素组成                  |
-
-与 HashSet 采用 hash 算法不同，TreeSet 采用**红黑树**的数据结构来存储集合元素。
 
 ### 排序
 
@@ -87,24 +111,14 @@ TreeSet 支持两种排序方法：**自然排序**和**定制排序**，默认�
 
 定制排序：如果需要实现定制排序，则需要在创建 TreeSet 集合对象时，提供一个 `Comparator` 对象与该 TreeSet 集合关联，由该 Comparator 对象负责集合元素的排序逻辑。
 
-## 5. EnumSet 类
+## 6. NavigableSet 类
 
-EnumSet 是一个专为枚举类设计的集合类，EnumSet 中的所有元素都必须是指定枚举类型的枚举值，该枚举类型是创建 EnumSet 时显式或隐式地指定。
-
-EnumSet 的集合元素也是有序的，EnumSet 以枚举值在 Enum 类内的定义顺序来决定集合元素的顺序。
-
-EnumSet 在内部以**位向量**的形式存储，这种存储形式非常紧凑、高效，因此 EnumSet 对象占用内存很小且运行效率很好。
-
-EnumSet 不允许加入 null 元素，但若只想判断 EnumSet 是否包含 null 元素或试图删除 null 元素都不会抛出异常，只是删除操作将返回 false。
-
-EnumSet 类没有任何构造器来创建该类的实例，程序应该通过它提供的类方法来创建 EnumSet 对象，如下：
-
-| 方法                              | 作用                                                                                                                     |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| EnumSet allOf(Class elementType)  | 创建一个包含指定枚举类里所有枚举值的 EnumSet 集合                                                                        |
-| EnumSet complementOf(EnumSet s)   | 创建一个元素类型与指定 EnumSet 里元素类型相同的 EnumSet 集合，新 EnumSet 包含原 EnumSet 所不包含的、此枚举类剩下的枚举值 |
-| EnumSet copyOf(Collection c)      | 使用一个普通集合来创建 EnumSet 集合                                                                                      |
-| EnumSet copyOf(EnumSet s)         | 创建一个与指定 EnumSet 具有相同元素类型、相同集合元素的 EnumSet 集合                                                     |
-| EnumSet noneOf(Class elementType) | 创建一个元素类型为指定枚举类型的空 EnumSet                                                                               |
-| EnumSet of(E first, E… rest)      | 创建一个包含一个或多个枚举值的 EnumSet 集合，传入的多个枚举值必须属于同一个枚举类                                        |
-| EnumSet range(E from, E to)       | 创建一个包含从 from 枚举值到 to 枚举值范围内所有枚举值的 EnumSet 集合                                                    |
+| `NavigableSet<E>`的方法          | 作用 |
+| -------------------------------- | ---- |
+| `E higher(E value)`              |      |
+| `E lower(E value)`               |      |
+| `E ceiling(E value)`             |      |
+| `E floor(E value)`               |      |
+| `E pollFirst()`                  |      |
+| `E pollLast()`                   |      |
+| `Iterator<E> descendingIterator` |      |
