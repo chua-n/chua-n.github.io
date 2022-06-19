@@ -4,15 +4,37 @@ Java集合大致可分为Set, List, Queue, Map四种体系，集合类主要负�
 
 为了处理多线程环境下的并发安全问题，Java在java.util.concurrent包下也提供了一些多线程支持的集合类。
 
-集合类和数组不一样，数组元素可以是基本类型的值/对象，而集合里只能保存对象，即引用类型。
+集合类和数组不一样，数组元素可以是基本类型的值/对象，而集合里只能保存对象，即引用类型（虽然集合里不能放基本类型的值，但Java支持自动装箱）。
 
-虽然集合里不能放基本类型的值，但Java支持自动装箱。
+### 接口体系
 
-Java的集合类主要由两个接口派生而出：Collection和Map，Collection和Map是Java集合框架的根接口，这两个接口又包含了一些子接口或实现类。如下图所示，其中最常用的实现类以灰色背景覆盖（另外，粗线框框住的均为接口类型，其他的框可能为接口/类）。
+Java集合框架为不同类型的集合定义了大量接口，如下：
 
-![36](https://chua-n.gitee.io/figure-bed/notebook/Java/36.png)
+![image-20220618111636028](../../resources/images/notebook/Java/image-20220618111636028.png)
 
-![37](https://chua-n.gitee.io/figure-bed/notebook/Java/37.png)
+集合有两个基本接口：`Collection`和`Map`。
+
+实际上有两种有序集合，其性能开销有很大差异。
+
+- 由数组支持的有序集合可以快速地随机访问，因此适合使用list方法并提供一个整数索引来访问；与之不同，链表尽管也是有序的，但是随机访问很慢，所以最好使用迭代器来遍历。如果原先提供两个接口就会容易一些了，很遗憾的是，Java集合框架在这个方面设计得不好。
+
+- 为了避免对链表使用随机访问操作，Java1.4引入了一个标记接口`RandomAccess`，这个接口不包含任何方法，不过可以用它来测试一个特定的集合是否支持高效的随机访问：
+
+    ```java
+    if (c instanceof RandomAccess) {
+        // use random access algorithm
+    } else {
+        // use sequential access algorithm
+    }
+    ```
+
+`Set`接口实际上等同于`Collection`接口，不过其方法的行为有更严谨的定义，建立`Set`接口的目的也是为了从概念上严格区分这两种含义不同的集合。
+
+### 具体集合类
+
+![image-20220618113431146](../../resources/images/notebook/Java/image-20220618113431146.png)
+
+在Java程序设计语言中，所有实际上都是双向链接的，即每个链接还存放着其前驱的引用。
 
 ## 2. Collection接口
 
@@ -20,45 +42,28 @@ Collection接口是List, Set, Queue接口的父接口。
 
 ### 2.1 Collection的方法
 
-Collection接口里定义了如下操作集合元素的方法：
+`Collection<E>`接口里定义了如下操作集合元素的方法：
 
-| 方法                               | 作用                                             |
-| ---------------------------------- | ------------------------------------------------ |
-| boolean  add(Object o)             | 向集合里添加一个元素，添加成功则返回true         |
-| boolean  addAll(Collection c)      | 添加集合c里的所有元素，添加成功则返回true        |
-| void  clear()                      | 清除集合里的所有元素，将集合长度变为0            |
-| boolean  contains(Object o)        | 判断集合里是否包含指定元素                       |
-| boolean  containsAll(Collection c) | 判断集合里是否包含集合c里的所有元素              |
-| boolean  isEmpty()                 | 判断集合是否为空（集合长度为0:true，否则:false） |
-| Iterator  iterator()               | 返回一个Iterator对象，用于遍历集合里的元素       |
-| boolean  remove(Object o)          | 删除指定元素，若集合包含多个该元素，只删除第一个 |
-| boolean  removeAll(Collection c)   | 删除集合c里包含的所有元素                        |
-| boolean  retainAll(Collection c)   | 只保留集合c里包含的元素，相当于求交集            |
-| int  size()                        | 返回集合里元素的个数                             |
-| Object[]  toArray()                | 把集合转换成一个数组                             |
+| 方法                                                    | 作用                                                         |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| `int  size()`                                           | 返回集合里元素的个数                                         |
+| `Iterator<E> iterator()`                                | 返回一个Iterator对象，用于遍历集合里的元素                   |
+| `boolean isEmpty()`                                     | 判断集合是否为空（集合长度为0:true，否则:false）             |
+| `boolean contains(Object o)`                            | 判断集合里是否包含指定元素                                   |
+| `boolean containsAll(Collection<?> c)`                  | 判断集合里是否包含集合c里的所有元素                          |
+| `boolean add(Object o)`                                 | 向集合里添加一个元素，添加成功则返回true                     |
+| `boolean addAll(Collection<? extends E> c)`             | 添加集合c里的所有元素，添加成功则返回true                    |
+| `boolean remove(Object o)`                              | 删除指定元素，若集合包含多个该元素，只删除第一个             |
+| `boolean removeAll(Collection<?> c)`                    | 删除集合c里包含的所有元素                                    |
+| `default boolean removeIf(Predicate<? super E> filter)` | 删除filter返回true的所有元素。如果这个调用改变了集合，则返回true。 |
+| `void clear()`                                          | 清除集合里的所有元素，将集合长度变为0                        |
+| `boolean retainAll(Collection<?> c)`                    | 只保留集合c里包含的元素，相当于求交集                        |
+| `Object[] toArray()`                                    | 返回这个集合中的对象的数组                                   |
+| `T T[] toArray(T[] arrayToFill)`                        |                                                              |
 
 当使用System.out.println()方法来输出集合对象时，将输出[ele1,ele2,…]的形式，这是因为所有Collection实现类都重写了toString()方法，该方法一次性地输出集合中的所有元素。
 
----
-
-Collection集合接口还有一个removeIf(Predicate filter)方法，可用于批量删除符合filter条件的所有元素，其参数为一个Predicate（谓词）对象，Predicate也是函数式接口，故可用Lambda表达式作为参数。详细以后再说吧……
-
-```java
-import java.util.*;
-
-public class PredicateTest {
-    public static void main(String[] args) {
-        Collection books = new HashSet();
-        books.add(new String("轻量级Java EE企业应用实战"));
-        books.add(new String("疯狂Java讲义"));
-        books.add(new String("疯狂iOS讲义"));
-        books.add(new String("疯狂Ajax讲义"));
-        books.add(new String("疯狂Android讲义"));
-        books.removeIf(ele -> ((String) ele).length() < 10);
-        System.out.println(books);
-    }
-}
-```
+为避免实现Collection接口的每一个类都要提供如此多的例行方法，Java类库提供了一类`AbstractCollection`，它保持基础方法`size`和`iterator`仍为抽象方法，但是为实现者实现了其他例行方法。
 
 ### 2.2 Collection的遍历
 
@@ -235,6 +240,8 @@ Java8允许使用流式API来操作集合，Collection接口提供了一个strea
 
 ## 3. Map接口
 
+Java集合框架不认为映射本身是一个集合，而其他语言的数据结构框架通常认为映射是一个键/值对的集合。
+
 ### 3.1 Map含义
 
 Map用于保存具有映射关系的数据，因此Map集合里保存着两组值，一组值用于保存Map的key，另外一组值用于保存Map里的value，key和value都可以是任何引用类型的数据，但key不允许重复。
@@ -257,121 +264,66 @@ Map子类和Set子类在名字上也惊人地相似，如下对比：
 
 所有的Map实现类都重写了toString()方法，调用Map对象的toString()方法总是返回如下格式的字符串：`{key1=value1, key2=value2, …}`
 
-HashSet和HashMap里用的都是hash算法。
-
-hash算法中，hash表里可以存储元素的位置叫做“桶”。
-
-1. 通常情况下单个“桶”里存储一个元素，此时具有最好的性能：hash算法根据hashCode值计算出“桶”的存储位置，然后从“桶”中取出元素。
-
-2. 但hash表的状态是open的：在发生“hash冲突”的情况下，单个桶会存储多个元素，这些元素以链表形式存储，必须按顺序搜索。
-
-    ![39](https://chua-n.gitee.io/figure-bed/notebook/Java/39.png)
-
-因为使用hash算法来决定其元素的存储，HashSet和HashMap的hash表具有如下属性：
-
-- 容量(capacity)：hash表中桶的数量。
-- 初始化容量(initial      capacity)：创建hash表时桶的数量。HashSet和HashMap都允许在构造器中指定初始化容量。
-- 尺寸(size)：当前hash表中记录的数量。
-- 负载因子(load factor)：$负载因子=size/capacity$。
-    - 负载因子为0，表示空的hash表；
-    - 0.5表示半满的hash表，依此类推。
-    - 轻负载的hash表具有冲突少、适宜插入与查询的特点，但是使用Iterator迭代元素时比较慢。
-- 负载极限：一个0-1的数值，其决定了hash表的最大填满程度。当hash表中的负载因子达到指定的“负载极限”时，hash表会自动成倍地增加容量（桶的数量），并将原有的对象重新分配，放入新的桶内，这称为rehashing。HashSet和HashMap的构造器允许指定一个负载极限，其默认值为0.75。
-
-如果开始就知道HashSet和HashMap会保存很多记录，可以在创建时就使用较大的初始化容量，如果初始化容量始终大于HashSet和HashMap所包含的最大记录数/负载极限，就不会发生rehashing。虽然这样可以更高效地增加记录，但也要注意将初始化容量设置太高可能会浪费空间。
-
 ### 3.2 哈希算法
 
-HashSet和HashMap里用的都是hash算法。
+有一种众所周知的数据结构，可以用于快速地查找对象，这就是**散列表**（hash table）。散列表为每个对象计算一个整数，称为**散列码**（hash code）。HashSet和HashMap里用的都是hash算法。
+
+#### 桶
 
 hash算法中，hash表里可以存储元素的位置叫做“桶”。
 
 1. 通常情况下单个“桶”里存储一个元素，此时具有最好的性能：hash算法根据hashCode值计算出“桶”的存储位置，然后从“桶”中取出元素。
 
-2. 但hash表的状态是open的：在发生“hash冲突”的情况下，单个桶会存储多个元素，这些元素以链表形式存储，必须按顺序搜索。
+2. 但hash表的状态是open的：在发生“hash冲突”的情况下，单个桶会存储多个元素，这些元素以**链表**形式存储，必须按顺序搜索。
 
     ![39](https://chua-n.gitee.io/figure-bed/notebook/Java/39.png)
+    
+3. 在Java8中，桶满时会从链表变为平衡二叉树。
 
 因为使用hash算法来决定其元素的存储，HashSet和HashMap的hash表具有如下属性：
 
 - 容量(capacity)：hash表中桶的数量。
-- 初始化容量(initial      capacity)：创建hash表时桶的数量。HashSet和HashMap都允许在构造器中指定初始化容量。
+- 初始化容量(initial capacity)：创建hash表时桶的数量。HashSet和HashMap都允许在构造器中指定初始化容量。
 - 尺寸(size)：当前hash表中记录的数量。
 - 负载因子(load factor)：$负载因子=size/capacity$。
     - 负载因子为0，表示空的hash表；
     - 0.5表示半满的hash表，依此类推。
     - 轻负载的hash表具有冲突少、适宜插入与查询的特点，但是使用Iterator迭代元素时比较慢。
-- 负载极限：一个0~1的数值，其决定了hash表的最大填满程度。当hash表中的负载因子达到指定的“负载极限”时，hash表会自动成倍地增加容量（桶的数量），并将原有的对象重新分配，放入新的桶内，这称为<font size=5>**rehashing**</font>。HashSet和HashMap的构造器允许指定一个负载极限，其默认值为0.75。
 
-如果开始就知道HashSet和HashMap会保存很多记录，可以在创建时就使用较大的初始化容量，如果初始化容量始终大于HashSet和HashMap所包含的最大记录数/负载极限，就不会发生rehashing。虽然这样可以更高效地增加记录，但也要注意将初始化容量设置太高可能会浪费空间。
+#### 装填因子
 
-### 3.3 Map的方法
+填填因子，即Java给哈希表设定的一个负载极限。其是一个0~1的数值，其决定了hash表的最大填满程度。当hash表中的负载因子达到指定的“负载极限”时，hash表会自动创建一个桶数成倍增加的表，并将所有元素插入到这个新表中，然后丢弃原来的表，这称为**再散列（rehashing）**。
 
-Map也被称为字典/关联数组，Map接口中定义了如下常用的方法：
+HashSet和HashMap的构造器允许指定一个负载极限，其默认值为0.75。
 
-| 方法                                      | 作用                                                         |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| void  clear()                             | 清空所有key-value对                                          |
-| boolean  containsKey(Object key)          | 查询是否包含指定的key                                        |
-| boolean  containsValue(Object value)      | 查询是否包含指定的value（可能存在多个）                      |
-| Set  entrySet()                           | 将所有key-value对打包成Set集合，每个集合元素都是Map.Entry对象 |
-| Object  get(Object key)                   | 返回指定key所对应的value。若不存在该key，返回null            |
-| boolean  isEmpty()                        | 查询是否为空                                                 |
-| Set  keySet()                             | 返回该Map中所有key组成的Set集合                              |
-| Object  put(Object key, Object value)     | 添加一个key-value对。若key已存在，会被覆盖                   |
-| void  putAll(Map m)                       | 将某Map中的key-value复制到本Map中                            |
-| Object  remove(Object key)                | 删除指定key所对应的key-value对，返回被删除key所关联的value。若key不存在，返回null |
-| boolean  remove(Object key, Object value) | 删除指定key,value所对应的key-value对。若删除失败，返回false  |
-| int  size()                               | 返回key-value对的数量                                        |
-| Collection  values()                      | 返回该Map里所有value组成的Collection                         |
+如果大致知道最终会有多少个元素要插入到散列表中，就可以设置桶数。通常，将桶数设置为预计元素个数的75%~150%。标准类库使用的桶数是2的幂，默认值为16。
 
-Java 8为Map还增加了如下的特殊方法（待续）：
-
-| 方法                                                         | 作用                                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------- |
-| Object  compute(Object key, BiFunction remappingFunction)    |                                                         |
-| Object  computeIfAbsent(Object key, Function mappingFunction) |                                                         |
-| Object  computeIfPresent(Object key, BiFunction remappingFunction) |                                                         |
-| void  forEach(BiConsumer action)                             |                                                         |
-| Object  getOrDefault(Object key, V defaultValue)             | 如果key存在，就使用获取其对应的值，否则返回defaultValue |
-| Object  merge(Object key, Object value, BiFunction remappingFunction) |                                                         |
-| Object  putIfAbsent(Object key, Object value)                |                                                         |
-| Object  replace(Object key, Object value)                    |                                                         |
-| boolean  replace(K key, V oldValue, V newValue)              |                                                         |
-| replaceAll(BiFunction  function)                             |                                                         |
-
-### 3.4 Map的内部类——Entry
-
-Map中包括一个**内部类Entry**，该类封装了一个key-value对，其包含三个方法：
-
-|        方法        |                     作用                      |
-| :----------------: | :-------------------------------------------: |
-|  Object  getKey()  |             返回该Entry里的key值              |
-| Object  getValue() |            返回该Entry里的value值             |
-| Object  setValue() | 设置该Entry里的value值，并返回新设置的value值 |
-
-### 3.5 其他
-
-类似ArrayList和Vector的关系，HashMap和Hashtable的对比几乎完全一致，还是尽量弃用老版本的Hashtable吧。
-
-Map还有两个特殊的WeakHashMap实现类与IdentityHashMap实现类，以后再看吧……
+如果开始就知道HashSet和HashMap会保存很多记录，可以在创建时就使用较大的初始化容量。
 
 ## 4. Iterator接口
 
 Iterator接口也是Java集合框架的成员，其主要用于遍历Collection集合中的元素，Iterator对象也被称为**迭代器**。
 
-Iterator必须依附于Collection对象，若有一个Iterator对象，则必然有一个与之关联的Collection对象。
+### 方法
 
-Iterator接口里定义了4个方法：
+`Iterator<E>`接口里定义了4个方法：
 
 | 方法                                    | 作用                                 |
 | --------------------------------------- | ------------------------------------ |
 | boolean  hasNext()                      | 被迭代的集合元素还未遍历完时返回true |
-| Object  next()                          | 返回集合里的下一个元素               |
+| E next()                                | 返回集合里的下一个元素               |
 | void  remove()                          | 删除集合里上一次next()方法返回的元素 |
 | void  forEachRemaining(Consumer action) | 用于使用Lambda表达式来遍历集合元素   |
 
-使用Iterator对集合元素进行迭代时，Iterator并不是把集合元素本身传给了迭代变量，而是把集合元素的值传给了迭代变量，所以修改迭代变量的值对集合元素本身没有任何影响；
+Java集合类库中的迭代器与其他语言类库中的迭代器在概念上有着重要的区别。
+
+- 如C++的标准模板库，迭代器是根据数组索引建模的，如果给定一个迭代器，可以查找存储在指定位置上的元素，就像如果知道数组索引i，就可以查找数组元素a[i]。
+- 而在Java中，迭代器与之不同，查找操作与位置变更紧密耦合，查找一个元素的唯一方法是调用next，而在执行查找操作的同时，迭代器的位置就会随之向前移动。
+- 因为，可以认为Java迭代器位于两个元素之间。当调用next时，迭代器就越过下一个元素，并返回刚刚越过的那个元素的引用。
+
+### 注意事项
+
+next方法和remove方法调用之间存在依赖性。如果调用remove之前没有调用next，将是不合法的。如果这样做，将会抛出一个IllegalStateException异常。
 
 当使用Iterator迭代访问Collection集合元素时，Collection集合里的元素不能被改变，只有通过Iterator的remove()方法删除上一次next()方法返回的集合元素才可以；否则会引发java.util.CocurrentModificationException异常。
 
@@ -400,137 +352,40 @@ public class IteratorErrorTest {
 
 Iterator迭代器采用的是**快速失败(fail-fast)机制**，一旦在迭代过程中检测到该集合已经被修改（通常是程序中的其他线程修改），程序立即引发异常，而不是显示修改后的结果，这样可以避免共享资源而引发的潜在问题。
 
+### ListIterator接口
+
+ListIterator接口是Iterator的一个子接口。它定义了一个方法用于在迭代器位置前面增加一个元素：
+
+```java
+void add(E element)
+```
+
+ListIteraotr接口还有两个方法，可以用来反向遍历链表：
+
+```java
+E previous();
+boolean hasPrevious();
+```
+
+ListIteraotr还有两个方法，可以告诉你当前位置的索引。这两个方法的效率非常高，因为有一个迭代器保持着当前位置的计数值。
+
+```java
+int nextIndex();
+int previousIndex();
+```
+
 ## 5. Collections工具类
 
 Java提供了一个操作Set、List和Map等集合的工具类：Collections，该工具类提供了大量方法对集合元素进行排序、查询和修改等操作，还提供了将集合对象设置为不可变、对集合对象实现同步控制等方法。
 
-### 5.1 对List集合的排序操作的类方法
+详见后续章节描述。
 
-| 方法                                  | 作用                                                         |
-| ------------------------------------- | ------------------------------------------------------------ |
-| void  reverse(List list)              | 反转元素顺序                                                 |
-| void  shuffle(List list)              | 随机排序                                                     |
-| void  sort(List list)                 | 根据元素的自然顺序排序                                       |
-| void  sort(List list, Comparator c)   | 根据指定Comparator产生的顺序排序                             |
-| void  swap(List list, int i, int j)   | 交换List中索引i和索引j处的元素                               |
-| void  rotate(List list, int distance) | 若distance        > 0，将后distance个元素整体移到前面    若distance <        0，将前distance个元素整体移到后面 |
+## 6. 遗留的集合
 
-### 5.2 对集合元素的查找、替换操作的类方法
+从Java第1版问世以来，在Java集合框架出现之前已经存在大量“遗留的”容器类。这些容器类已经不推荐使用了，这里仅是简单提一嘴。
 
-| 方法                                                         | 作用                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| int  binarySearch(List list, Object key)                     | 使用二分法查找指定List中的指定元素。必须保证List中的元素已经有序 |
-| Object  max(Collection coll)                                 | 根据元素的自然顺序，返回给定集合中的最大元素                 |
-| Object  max(Collection coll, Comparator comp)                | 根据Comparator指定的顺序，返回给定集合中的最大元素           |
-| Object  min(Collection coll)                                 | 根据元素的自然顺序，返回给定集合中的最小元素                 |
-| Object  min(Collection coll, Comparator comp)                | 根据Comparator指定的顺序，返回给定集合中的最小元素           |
-| void  fill(List list, Object obj)                            | 使用指定元素替换指定List集合中的所有元素                     |
-| int  frequency(Collection c, Object o)                       | 返回指定集合中指定元素的出现次数                             |
-| int  indexOfSubList(List src, List target)                   | 返回子List对象在父List对象中第一次出现的位置索引。若不存在，返回-1 |
-| int  lastIndexOfSubList(List src, List target)               | 返回子List对象在父List对象中最后一次出现的位置索引。若不存在，返回-1 |
-| boolean  replaceAll(List list, Object oldVal, Object newVal) | 使用一个新值newVal替换List对象的所有旧值oldVal               |
-
-### 5.3 同步控制
-
-Collections类中提供了多个synchronizedXxx()方法，该方法可以将指定集合包装成线程同步的集合，从而可以解决多线程并发访问集合时的线程安全问题。
-
-Java常用集合框架的实现类 HashSet, TreeSet, ArrayList, ArrayDeque, LinkedList, HashMap, TreeMap 都是线程不安全的。Collections提供了多个类方法可以把它们包装成线程同步的集合。
-
-```java
-import java.util.*;
-
-public class SynchronizedTest {
-    public static void main(String[] args) {
-        // 下面程序创建了4个线程安全的集合对象
-        Collection c = Collections.synchronizedCollection(new ArrayList());
-        List list = Collections.synchronizedList(new ArrayList());
-        Set s = Collections.synchronizedSet(new HashSet());
-        Map m = Collections.synchronizedMap(new HashMap());
-    }
-}
-```
-
-### 5.4 设置不可变集合
-
-Collections提供了如下三类方法来返回一个不可变的集合，以下方法的参数均是原有的集合对象，返回值是该集合的“只读”版本。
-
-|       方法        | 作用                                                         |
-| :---------------: | ------------------------------------------------------------ |
-|    emptyXxx()     | 返回一个空的、不可变的集合对象。这里的集合可以是List/Set/Map/SortedSet/SortedMap |
-|  singletonXxx()   | 返回一个只包含指定对象（只有一个或一项元素）的、不可变的集合对象。这里的集合可以是List/Map |
-| unmodifiableXxx() | 返回指定集合对象的不可变视图。此处的集合可以是List/Set/Map/SortedSet/SortedMap |
-
-### 5.5 Java9 改动
-
-Java 9以后，可以直接调用Set,     List, Map的of()方法创建包含N个元素的不可变集合，不可变意味着程序不能向集合中添加元素，也不能从集合中删除元素。特别地，Map集合还有一个ofEntries()方法。
-
-```java
-import java.util.*;
-
-public class Java9Collection {
-    public static void main(String[] args) {
-        Set set = Set.of("Java", "Kotlin", "Go", "Swift");
-        System.out.println(set);
-        // 不可变集合，下面代码导致运行时错误
-        // set.add("Ruby");
-        List list = List.of(34, -25, 67, 231);
-        System.out.println(list);
-        // 不可变集合，下面代码导致运行时错误
-        // list.remove(1);
-        Map map = Map.of("语文", 89, "数学", 82, "英语", 92);
-        System.out.println(map);
-        // 不可变集合，下面代码导致运行时错误
-        // map.remove("语文");
-        // 使用Map.entry()方法显式构建key-value对
-        Map map2 = Map.ofEntries(Map.entry("语文", 89), Map.entry("数学", 82), Map.entry("英语", 92));
-        System.out.println(map2);
-    }
-}
-```
-
-## 6. 泛型支持下的集合
-
-Java集合有个缺点——把一个对象“丢进”集合里之后，集合就会“忘记”这个对象的数据类型，当再次取出该对象时，其编译类型就变成了Object类型，尽管运行时类型没变。
-
-增了泛型支持后的集合，完全可以记住集合中元素的类型，并可以在编译时检查集合中元素的类型，如果试图向集合中添加不满足类型要求的对象，编译器会报错。
-
-Java的参数化类型被称为**泛型(Generic)** 。
-
-定义泛型：
-
-```java
-// Java 7以前
-List<String> strList = new ArrayList<String>();
-Map<String, Integer> scores = new HashMap<String, Integer>();
-
-// Java 7以后：菱形语法
-List<String> strList = new ArrayList<>();
-Map<String, Integer> scores = new HashMap<>();
-```
-
-示例：
-
-```java
-import java.util.*;
-
-public class DiamondTest {
-    public static void main(String[] args) {
-        // Java自动推断出ArrayList的<>里应该是String
-        List<String> books = new ArrayList<>();
-        books.add("疯狂Java讲义");
-        books.add("疯狂Android讲义");
-        // 遍历books集合，集合元素就是String类型
-        books.forEach(ele -> System.out.println(ele.length()));
-        
-        // Java自动推断出HashMap的<>里应该是String, List<String>
-        Map<String, List<String>> schoolsInfo = new HashMap<>();
-        List<String> schools = new ArrayList<>();
-        schools.add("斜月三星洞");
-        schools.add("西天取经路");
-        schoolsInfo.put("孙悟空", schools);
-        // 遍历Map时，Map的key是String类型，value是List<String>类型
-        schoolsInfo.forEach((key, value) -> System.out.println(key + "-->" + value));
-    }
-}
-```
-
+- Hashtable类
+- Enumeration接口
+- Properties类：属性映射
+- Stack类：栈
+- BitSet类

@@ -4,19 +4,19 @@ System类代表当前Java程序的运行平台，程序不能创建System类的�
 
 System类的in,out,err分别代表系统的标准输入（通常是键盘）、标准输出（通常是显示器）、错误输出流，并提供了setIn(),setOut(),setErr()方法来改变系统的标准输入、标准输出、标准错误输出流。
 
-| 方法                        | 作用                                                   |
-| --------------------------- | ------------------------------------------------------ |
-| setIn()                     | 改变系统的标准输入流                                   |
-| setOut()                    | 改变系统的标准输出流                                   |
-| setErr()                    | 改变系统的标准错误输出流                               |
-| getenv()                    | 所在平台的环境变量                                     |
-| getProperties()             | 所在平台的系统属性                                     |
-| getProperty()               | 所在平台的系统属性                                     |
-| currentTimeMillis()         | 系统当前时间，返回一个long型的整数，以毫妙为单位       |
-| nanoTime()                  | 系统当前时间，返回一个long型的整数，以纳妙为单位       |
-| identityHashCode(Object  x) | 返回指定对象的精确hashCode值，其根据对象的地址计算得到 |
-| gc()                        | 通过系统进行垃圾回收                                   |
-| runFinalization()           | 通知系统进行资源清理                                   |
+| 方法                        | 作用                                             |
+| --------------------------- | ------------------------------------------------ |
+| setIn()                     | 改变系统的标准输入流                             |
+| setOut()                    | 改变系统的标准输出流                             |
+| setErr()                    | 改变系统的标准错误输出流                         |
+| getenv()                    | 所在平台的环境变量                               |
+| getProperties()             | 所在平台的系统属性                               |
+| getProperty()               | 所在平台的系统属性                               |
+| currentTimeMillis()         | 系统当前时间，返回一个long型的整数，以毫妙为单位 |
+| nanoTime()                  | 系统当前时间，返回一个long型的整数，以纳妙为单位 |
+| identityHashCode(Object  x) | 根据对象的地址返回指定对象的精确散列码           |
+| gc()                        | 通过系统进行垃圾回收                             |
+| runFinalization()           | 通知系统进行资源清理                             |
 
 > 对于`setOut`方法，其会更改`System.out`，但如果你去查看源代码，就会惊讶地发现`out`是被`final`修饰的`public final static PrintStream out = null;`，那么为什么其仍然能修改呢？原因在于`setOut`方法是一个原生方法，它不是在java语言中实现的。原生方法可以绕过java语言的访问控制机制。这是一种特殊的解决方法，自己在写程序时不要模仿这种做法。
 
