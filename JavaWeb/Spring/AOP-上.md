@@ -615,7 +615,7 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
 
 - `@args`: Limits matching to join points (the execution of methods when using Spring AOP) where the runtime type of the actual arguments passed have annotations of the given types.
 
-    > 限制连接点匹配形参有指定注解标注的执行方法？
+    > 限制联结点匹配形参有指定注解标注的执行方法？
 
     - Any join point (method execution only in Spring AOP) which takes a single parameter, and where the runtime type of the argument passed has the `@Classified` annotation:
 
@@ -744,11 +744,11 @@ SpringAOP中有5种增强方式，其相应的注解如下，其使用语法均�
 
 对于冠以以上增强注解的增强方法：
 
-- 连接点信息：即`JoinPoint`，其包含了类名、被切面的方法名，参数等属性，可供读取使用。
+- 联结点信息：即`JoinPoint`，其包含了类名、被切面的方法名，参数等属性，可供读取使用。
 
     - 每个增强方法里都可以根据需要加上或者不加参数`JoinPoint`。
 - 如果加参数`JoinPoint`的话，应该将其声明在第一个形参的位置。
-    - 对于`@Around`方法，其连接点参数类型还可以使用类型`ProceedingJoinPoint`，该类型实际上是`JoinPoint`子接口。
+    - 对于`@Around`方法，其联结点参数类型还可以使用类型`ProceedingJoinPoint`，该类型实际上是`JoinPoint`子接口。
 
 - `@AfterReturning`方法里，可以通过注解中的`returning = “xxx”`，以`xxx`形参接收切点方法的返回值（同一个引用）。
 
@@ -818,11 +818,11 @@ SpringAOP中有5种增强方式，其相应的注解如下，其使用语法均�
     
     public interface ProceedingJoinPoint extends JoinPoint {
         /**
-         * 通过反射执行目标对象的连接点处的方法
+         * 通过反射执行目标对象的联结点处的方法
          */
         Object proceed() throws Throwable;
         /**
-         * 通过反射执行目标对象连接点处的方法，不过使用新的入参替换原来的入参
+         * 通过反射执行目标对象联结点处的方法，不过使用新的入参替换原来的入参
          */
         Object proceed(Object[] var1) throws Throwable;
         
