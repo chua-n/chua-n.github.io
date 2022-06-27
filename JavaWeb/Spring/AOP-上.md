@@ -2,7 +2,7 @@
 
 **AOP(Aspect Oriented Programming)** ，直译过来即为面向切面编程。AOP 是一种编程思想，是面向对象编程OOP的一种补充，提供了与 OOP 不同的抽象软件结构的视角。在 OOP 中，我们以类(class)作为我们的基本单元，而 AOP 中的基本单元是切面(Aspect)。好比下图，所谓切面，相当于应用对象间的横切点，我们可以将其单独抽象为单独的模块。
 
-![img](../../resources/images/notebook/JavaWeb/Spring/24.png)
+![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/24.png)
 
 ### 面向切面编程
 
@@ -935,7 +935,7 @@ Parameter names are not available through Java reflection, so Spring AOP uses th
 
 执行顺序如下：
 
-<img src="../../resources/images/notebook/JavaWeb/Spring/25.svg" alt="AOP增强方式" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/25.svg" alt="AOP增强方式" style="zoom:67%;" />
 
 需要注意的是，对于`@Around`环绕增强，如果增强方法内部没有调用 `pjp.proceed()`，那么将导致其他的增强方法失去了判断执行的入口，其他类型的增强advice将失效！
 
@@ -966,7 +966,7 @@ public class SecondAspect {
 
 `@Order`注解中的值就是切面的顺序，但对于切面而言，他们不是顺序执行的先后关系而是包含关系：先入后出、后入先出。
 
-![AOP不同切面执行顺序](../../resources/images/notebook/JavaWeb/Spring/26.png)
+![AOP不同切面执行顺序](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/26.png)
 
 ### 同一 aspect、相同 advice 的执行顺序
 

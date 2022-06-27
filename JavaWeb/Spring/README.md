@@ -26,7 +26,7 @@ The following diagram shows a high-level view of how Spring works. Your applicat
 combined with configuration metadata so that, after the ApplicationContext is created and
 initialized, you have a fully configured and executable system or application.
 
-![image-20220509232513242](../../resources/images/notebook/JavaWeb/Spring/image-20220509232513242.png)
+![image-20220509232513242](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/image-20220509232513242.png)
 
 ### Spring开发步骤
 

@@ -73,7 +73,7 @@ LinkedHashMap是HashMap的一个子类，其使用**双向链表**来维护key-v
 
 LinkedHashMap需要维护元素的插入顺序，因此性能略低于HashMap的性能；但因为它以链表来维护内部顺序，所以在迭代访问Map里的全部元素时将有较好的性能。
 
-![image-20220619101705344](../../resources/images/notebook/Java/image-20220619101705344.png)
+![image-20220619101705344](https://chua-n.gitee.io/figure-bed/notebook/Java/image-20220619101705344.png)
 
 此外，LinkedHashMap可以使用访问顺序而不是插入顺序来迭代处理映射条目。每次调用get或put时，受到影响的项将从当前的位置删除，并放到项链表的尾部（只影响项在链表中的位置，而散列表的桶不会受影响，映射条目总是在键散列码对应的桶中）。
 
