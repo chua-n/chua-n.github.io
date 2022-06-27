@@ -45,7 +45,7 @@ Spring提供了两种类型的IoC容器：
 
 `ApplicationContext`为接口，其代直接翻译为（Spring的）应用上下文，用来代表Spring的IoC容器，通过`ApplicationContext`接口的对象可获得Spring容器中的Bean对象。
 
-![image-20220416171705471](../../resources/images/notebook/JavaWeb/Spring/23.png)
+![image-20220416171705471](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/23.png)
 
 `ApplicationContext`在初始化上下文时就实例化了所有单例的 Bean。`ApplicationContext`接口的实现类常见的有：
 
@@ -148,7 +148,7 @@ The Spring Framework supports six scopes, four of which are available only if yo
 
 #### 2.4.1 singleton
 
-![singleton](../../resources/images/notebook/JavaWeb/Spring/singleton.png)
+![singleton](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/singleton.png)
 
 The scope of the Spring singleton is best described as being per-container and per-bean. This means that, if you define one bean for a particular class in a single Spring container, the Spring container creates one and only one instance of the class defined by that bean definition.
 
@@ -161,7 +161,7 @@ The scope of the Spring singleton is best described as being per-container and p
 
 #### 2.4.2 prototype
 
-![prototype](../../resources/images/notebook/JavaWeb/Spring/prototype.png)
+![prototype](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/prototype.png)
 
 The non-singleton prototype scope of bean deployment results in the creation of a new bean instance every time a request for that specific bean is made. That is, the bean is injected into another bean or you request it through a `getBean()` method call on the container. As a rule, you should use the prototype scope for all stateful beans and the singleton scope for stateless beans.
 
