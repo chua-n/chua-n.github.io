@@ -268,7 +268,7 @@ public class ExampleBean {
 
     - 此时也可以选择显示地指定参数类型来进行匹配，但没有这个必要。
 
-        ```java
+        ```xml
         <bean id="exampleBean" class="examples.ExampleBean">
             <constructor-arg type="int" value="7500000"/>
             <constructor-arg type="java.lang.String" value="42"/>
@@ -340,6 +340,29 @@ setter方法注入应该作为一种备选项：
 
 > Alternatively, avoid constructor injection and use setter injection
 > only. In other words, although it is not recommended, you can configure circular dependencies with setter injection.
+
+### 3.5 自动织入
+
+> The Spring container can autowire relationships between collaborating beans. You can let Spring resolve collaborators (other beans) automatically for your bean by inspecting the contents of the ApplicationContext.
+
+在XML中，可以通过\<bean/>标签的autowire属性来配置自动织入，其有4个模式：
+
+| Mode          | Explanation                                                  |
+| :------------ | :----------------------------------------------------------- |
+| `no`          | (Default) No autowiring. Bean references must be defined by `ref` elements. Changing the default setting is not recommended for larger deployments, because specifying collaborators explicitly gives greater control and clarity. To some extent, it documents the structure of a system. |
+| `byName`      | Autowiring by property name. Spring looks for a bean with the same name as the property that needs to be autowired. For example, if a bean definition is set to autowire by name and it contains a `master` property (that is, it has a `setMaster(..)` method), Spring looks for a bean definition named `master` and uses it to set the property. |
+| `byType`      | Lets a property be autowired if exactly one bean of the property type exists in the container. If more than one exists, a fatal exception is thrown, which indicates that you may not use `byType` autowiring for that bean. If there are no matching beans, nothing happens (the property is not set). |
+| `constructor` | Analogous to `byType` but applies to constructor arguments. If there is not exactly one bean of the constructor argument type in the container, a fatal error is raised. |
+
+注意：
+
+- Explicit dependencies in property and constructor-arg settings always override autowiring. 
+- You cannot autowire simple properties such as primitives, Strings, and Classes (and arrays of such simple properties). This limitation is by-design.
+
+如果不希望某些bean参与到自动织入的体系，即不希望它们可以被自动织入到其他类：
+
+- 可以通过设置\<bean/>标签的autowire-candidate属性为false来实现。不过，这个属性只对byType类型织入的模式有效。
+- You can also limit autowire candidates based on pattern-matching against bean names.
 
 ## 4. 注入方法（Method Injection）
 
@@ -544,27 +567,3 @@ Spring不推荐使用Bean的懒加载模式，因为这会导致一些问题可�
         <!-- no beans will be pre-instantiated... -->
     </beans>
     ```
-
-### 自动织入
-
-> The Spring container can autowire relationships between collaborating beans. You can let Spring resolve collaborators (other beans) automatically for your bean by inspecting the contents of the ApplicationContext.
-
-在XML中，可以通过\<bean/>标签的autowire属性来配置自动织入，其有4个模式：
-
-| Mode          | Explanation                                                  |
-| :------------ | :----------------------------------------------------------- |
-| `no`          | (Default) No autowiring. Bean references must be defined by `ref` elements. Changing the default setting is not recommended for larger deployments, because specifying collaborators explicitly gives greater control and clarity. To some extent, it documents the structure of a system. |
-| `byName`      | Autowiring by property name. Spring looks for a bean with the same name as the property that needs to be autowired. For example, if a bean definition is set to autowire by name and it contains a `master` property (that is, it has a `setMaster(..)` method), Spring looks for a bean definition named `master` and uses it to set the property. |
-| `byType`      | Lets a property be autowired if exactly one bean of the property type exists in the container. If more than one exists, a fatal exception is thrown, which indicates that you may not use `byType` autowiring for that bean. If there are no matching beans, nothing happens (the property is not set). |
-| `constructor` | Analogous to `byType` but applies to constructor arguments. If there is not exactly one bean of the constructor argument type in the container, a fatal error is raised. |
-
-注意：
-
-- Explicit dependencies in property and constructor-arg settings always override autowiring. 
-- You cannot autowire simple properties such as primitives, Strings, and Classes (and arrays of such simple properties). This limitation is by-design.
-
-如果不希望某些bean参与到自动织入的体系，即不希望它们可以被自动织入到其他类：
-
-- 可以通过设置\<bean/>标签的autowire-candidate属性为false来实现。不过，这个属性只对byType类型织入的模式有效。
-- You can also limit autowire candidates based on pattern-matching against bean names.
-
