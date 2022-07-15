@@ -133,7 +133,7 @@ systemctl restart docker # 重启docker服务
 
     - `docker run` 创建并运行一个容器
     - `--name` 给容器起一个名字，比如叫做mn
-    - `-p` 将宿舍主端口与容器端口映射，冒号左侧是宿舍机端口，右侧是容器端口
+    - `-p` 将宿主端口与容器端口映射，冒号左侧是宿主机端口，右侧是容器端口
     - `-d` 后台运行容器
     - `nginx` 镜像名称，如nginx
 
@@ -149,7 +149,7 @@ systemctl restart docker # 重启docker服务
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1007.JPG" alt="IMG_1007" style="zoom:40%;" />
 
-数据卷（volume）是一个虚拟目录，指向宿舍机文件系统中的某个目录：
+数据卷（volume）是一个虚拟目录，指向宿主机文件系统中的某个目录：
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1008.JPG" alt="IMG_1008" style="zoom:50%;" />
 
