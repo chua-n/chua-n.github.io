@@ -2,6 +2,7 @@
 
 -   [Java](/Java/)
 -   [JavaWeb](/JavaWeb/)
+-   [JavaScript](/JavaScript/)
 -   [Python](/Python/)
 -   [数据库](/数据库/)
 -   [杂技](/杂技/)

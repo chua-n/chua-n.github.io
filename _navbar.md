@@ -2,6 +2,8 @@
 -   Java
     -   [Java](/Java/)
     -   [JavaWeb](/JavaWeb/)
+-   [JavaScript](/JavaScript/)
+    
 -   [Python](/Python/)
 -   [数学](/数学/)
     -   [离散数学](/数学/离散数学/)
