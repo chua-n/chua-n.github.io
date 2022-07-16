@@ -345,7 +345,9 @@ setter方法注入应该作为一种备选项：
 
 > The Spring container can autowire relationships between collaborating beans. You can let Spring resolve collaborators (other beans) automatically for your bean by inspecting the contents of the ApplicationContext.
 
-在XML中，可以通过\<bean/>标签的autowire属性来配置自动织入，其有4个模式：
+在XML中，可以通过`<bean/>`标签的`autowire`属性来配置自动织入，其有4个模式：
+
+> TODO: 和注解`@Autowired`的区别？`@Autowired`也不需要构造方法啊
 
 | Mode          | Explanation                                                  |
 | :------------ | :----------------------------------------------------------- |
@@ -356,6 +358,7 @@ setter方法注入应该作为一种备选项：
 
 注意：
 
+- `byName`或`byType`自动织入时，相应的字段必须有setter方法，否则无法注入。
 - Explicit dependencies in property and constructor-arg settings always override autowiring. 
 - You cannot autowire simple properties such as primitives, Strings, and Classes (and arrays of such simple properties). This limitation is by-design.
 
