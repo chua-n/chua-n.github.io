@@ -1,5 +1,26 @@
 > 本章介绍Spring框架。
 
+### TODO
+
+- 自动织入和注解`@Autowired`的区别？`@Autowired`也不需要构造方法啊
+
+    [Field injection is not recommended（Spring团队不推荐使用Field注入）](https://blog.csdn.net/Li_Ya_Fei/article/details/104448398)
+
+- Arbitary Method Injection
+
+    - 实现原理？
+    - 实现`MethodReplacer`接口时，方法体中不能调用`m.invoke(o, args)`，会产生递归而导致栈溢出。
+    - 无法通过反射获取一些字段？
+    - 无法通过注解配置来实现？
+
+- Lifecycle与生命周期回调的关系及执行先后顺序？
+
+- Environment Abstraction 具体理解
+
+- ScopeMetadataResolver 作用是？
+
+- InjectionPoint是个啥？
+
 ### Spring简介
 
 Spring是分层的Jave  SE/EE应用的全栈的轻量级开源框架，以<font size=5>**IoC**(Inverse of Control，控制反转 )</font>和<font size=5>**AOP**(Aspect Oriented Programming，面向切面编程)</font>为内核。

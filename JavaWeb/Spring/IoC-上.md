@@ -347,8 +347,6 @@ setter方法注入应该作为一种备选项：
 
 在XML中，可以通过`<bean/>`标签的`autowire`属性来配置自动织入，其有4个模式：
 
-> TODO: 和注解`@Autowired`的区别？`@Autowired`也不需要构造方法啊
-
 | Mode          | Explanation                                                  |
 | :------------ | :----------------------------------------------------------- |
 | `no`          | (Default) No autowiring. Bean references must be defined by `ref` elements. Changing the default setting is not recommended for larger deployments, because specifying collaborators explicitly gives greater control and clarity. To some extent, it documents the structure of a system. |
@@ -413,20 +411,20 @@ public class CommandManager implements ApplicationContextAware {
 
 Spring提供两种机制来注入方法，分别是 Lookup Method Injection 和Arbitrary method replacement。
 
-- Lookup Method Injection只提供返回值注入
-- Arbitrary method replacement可以替换任意方法来达到注入
+- Lookup Method Injection 只提供返回值注入
+- Arbitrary method replacement 可以替换任意方法来达到注入
 
 ### 4.2 Lookup Method Injection
 
-Lookup method injection is the ability of the container to override methods on container-managed beans and return the lookup result for another named bean in the container. 
+Lookup method injection is the ability of the container to override methods on container-managed beans and **return the lookup result** for another named bean in the container. 
 
 这种方法通常用于涉及prototype bean的场景，Spring实现这种方法注入的原理是使用CBLIB动态生成一个覆盖该方法的子类（如果该方法是抽象方法，则在子类中实现该方法；如果该方法不是抽象方法，则在子类中覆盖该方法）。基于此原理，Lookup Method Injection有如下限制：
 
 - For this dynamic subclassing to work, the class that the Spring bean container subclasses cannot be final, and the method to be overridden cannot be final, either.
 - Unit-testing a class that has an abstract method requires you to subclass the class yourself and to supply a stub implementation of the abstract method.
-- Concrete methods are also necessary for component scanning, which requires concrete classes to pick up.
+- Concrete methods are also necessary for component scanning, which requires **concrete classes** to pick up.
 - A further key limitation is that lookup methods do not work with factory
-    methods and in particular not with @Bean methods in configuration classes, since, in that case, the container is not in charge of creating the instance and therefore cannot create a runtime-generated subclass on the fly.
+    methods and in particular not with `@Bean` methods in configuration classes, since, in that case, the container is not in charge of creating the instance and therefore cannot create a runtime-generated subclass on the fly.
 
 对于上述场景，Lookup Method Injection的解决方案是：
 
@@ -483,7 +481,7 @@ Lookup method injection is the ability of the container to override methods on c
     }
     ```
 
-In the client class that contains the method to be injected (the `CommandManager` in this case), the method to be injected requires a signature of the following form:
+In the client class that contains the method to be injected (the `CommandManager` in this case), the method to be injected requires a signature of the following form (???对的错的???):
 
 ```xml
 <public|protected> [abstract] <return-type> theMethodName(no-arguments);
@@ -517,6 +515,12 @@ A class that implements the `org.springframework.beans.factory.support.MethodRep
  */
 public class ReplacementComputeValue implements MethodReplacer {
 
+    /**
+     * 重新实现某个Bean的某个方法。
+     * @param o 某Bean对象
+     * @param m 被替换的方法
+     * @param args 方法的实参列表
+     */
     public Object reimplement(Object o, Method m, Object[] args) throws Throwable {
         // get the input value, work with it, and return a computed result
         String input = (String) args[0];
