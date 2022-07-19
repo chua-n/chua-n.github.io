@@ -194,7 +194,7 @@ scope的取值：
 
 组件扫描的配置：`<context:component-scan>`。
 
-The use of `<context:component-scan>` implicitly enables the functionality of `<context:annotation-config>`. There is usually no need to include the `<context:annotation-config>` element when using `<context:component-scan>`.
+当使用 `<context:component-scan>` 时，会隐式地包含 `<context:annotation-config>`，因此没有必要再单独对后者进行设置了。
 
 You can disable the registration of `AutowiredAnnotationBeanPostProcessor` and `CommonAnnotationBeanPostProcessor` by including the `annotation-config` attribute with a value of `false`.
 

@@ -53,7 +53,7 @@ The Spring Framework provides a number of interfaces you can use to customize th
 
 - 初始化
     - Methods annotated with `@PostConstruct`
-    - ``afterPropertiesSet()` as defined by the `InitializingBean` callback interface
+    - `afterPropertiesSet()` as defined by the `InitializingBean` callback interface
     - A custom configured `init()` method
 - 销毁（同初始化）
     - Methods annotated with `@PreDestroy`
@@ -79,6 +79,8 @@ A target bean is fully created first and then an AOP proxy (for example) with it
 #### Lifecycle接口
 
 The Lifecycle interface defines the essential methods for any object that has its own lifecycle requirements (such as starting and stopping some background process):
+
+> start/stop 方法在执行前，会调用 isRunning 方法返回的状态来决定是否执行 start/stop 方法。
 
 ```java
 package org.springframework.context;
@@ -108,7 +110,7 @@ public interface LifecycleProcessor extends Lifecycle {
 
 Note：
 
-- Note that the regular `org.springframework.context.Lifecycle` interface is a plain contract for explicit start and stop notifications and does not imply auto-startup at context refresh time. For fine-grained control over auto-startup of a specific bean (including startup phases), consider implementing `org.springframework.context.SmartLifecycle` instead.
+- The regular `org.springframework.context.Lifecycle` interface is a plain contract for explicit start and stop notifications and does not imply auto-startup at context refresh time. For fine-grained control over auto-startup of a specific bean (including startup phases), consider implementing `org.springframework.context.SmartLifecycle` instead.
 - Also, please note that stop notifications are not guaranteed to come before destruction. On regular shutdown, all `Lifecycle` beans first receive a stop notification before the general destruction callbacks are being propagated. However, on hot refresh during a context’s lifetime or on stopped refresh attempts, only destroy methods are called.
 
 ##### 相互依赖的Bean
@@ -154,7 +156,7 @@ public interface Phased {
 
 >  This section applies only to non-web applications. Spring’s web-based `ApplicationContext` implementations already have code in place to gracefully shut down the Spring IoC container when the relevant web application is shut down.
 
-To register a shutdown hook, call the registerShutdownHook() method that is declared on the `ConfigurableApplicationContext` interface, as the following example shows:
+To register a shutdown hook, call the `registerShutdownHook()` method that is declared on the `ConfigurableApplicationContext` interface, as the following example shows:
 
 ```java
 import org.springframework.context.ConfigurableApplicationContext;
@@ -177,7 +179,7 @@ public final class Boot {
 
 ### 1.2 ApplicationContextAware
 
-如果一个Bean实现了`org.springframework.context.ApplicationContextAware`接口，该Bean的实例会被提供一个指向`ApplicationContext`的引用。因此，一个Bean可以借此操作创造它们的（母体）`ApplicationContext`。
+如果一个Bean（注意前提它得是一个Spring的Bean）实现了`org.springframework.context.ApplicationContextAware`接口，该Bean的实例会被提供一个指向`ApplicationContext`的引用。因此，一个Bean可以借此操作创造它们的（母体）`ApplicationContext`。
 
 `ApplicationContextAware`接口的定义如下：
 
@@ -188,6 +190,8 @@ public interface ApplicationContextAware extends Aware {
 ```
 
 ### 1.3 BeanNameAware
+
+> 获取Bean在IoC容器中的名字。
 
 When an `ApplicationContext` creates a class that implements the `org.springframework.beans.factory.BeanNameAware` interface, the class is provided with a reference to the name defined in its associated object definition.
 
@@ -223,21 +227,41 @@ Besides `ApplicationContextAware` and `BeanNameAware`, Spring offers a wide rang
 
 通常情况下，程序开发者不需要去继承`ApplicationContext`接口的实现类，而可以通过Spring提供的特殊集成接口来对 IoC 容器进行扩展。
 
-### 2.1 `BeanPostProcessor`: Customizing Beans
+### 2.1 `BeanFactoryPostProcessor`: Customizing Configuration Metadata
 
-#### 2.1.1 概念简介
+```java
+package org.springframework.beans.factory.config;
 
-The `BeanPostProcessor` interface defines callback methods that you can implement to provide your own (or override the container’s default) instantiation logic, dependency resolution logic, and so forth. 
+import org.springframework.beans.BeansException;
 
-> Note: To change the actual bean definition (that is, the blueprint that defines the bean), you instead need to use a `BeanFactoryPostProcessor`.
+@FunctionalInterface
+public interface BeanFactoryPostProcessor {
+    void postProcessBeanFactory(ConfigurableListableBeanFactory var1) throws BeansException;
+}
+```
 
-If you want to implement some custom logic after the Spring container finishes instantiating, configuring, and initializing a bean, you can plug in one or more custom `BeanPostProcessor` implementations.
+`BeanFactoryPostProcessor` 的语义与 `BeanPostProcessor` 类似，区别在于 `BeanFactoryPostProcessor` 操作的是 Bean 的配置数据。也就是说，在Spring的 IoC 容器实例化所有 Bean 对象（不包含`BeanFactoryPostProcessor` 对象，因为显然它们需要事先被实例化）之前，会让 `BeanFactoryPostProcessor` 读取配置数据，并允许对配置进行改变，从而改变 Bean 的一些特性。
 
-`BeanPostProcessor` instances operate on bean (or object) instances. That is, the Spring IoC container instantiates a bean instance and then `BeanPostProcessor` instances do their work.
+从 `BeanFactoryPostProcessor` 接口的定义可以看出，尽管在技术上一个 `BeanFactoryPostProcessor` 也是可以直接操作 Bean 对象本身的——使用 `BeanFactory.getBean()` 即可获取相应的 bean ——然而并不推荐这样做！因为这实际上造成了 Bean 被提前创建，与标准的 IoC 容器赋予的生命周期相脱离，很可能导致一些负面效果。
 
-#### 2.1.2 详解
+Spring 框架预定义了一些 `BeanFactoryPostProcessor`，比如 `PropertyOverrideConfigurer` 和`PropertySourcesPlaceholderConfigurer`。
 
-The `org.springframework.beans.factory.config.BeanPostProcessor` interface consists of exactly two callback methods. 
+As with `BeanPostProcessor`s , you typically do not want to configure `BeanFactoryPostProcessor`s for lazy initialization:
+
+- If no other bean references a `Bean(Factory)PostProcessor`, that post-processor will not get instantiated at all. Thus, marking it for lazy initialization will be ignored.
+- The `Bean(Factory)PostProcessor` will be instantiated eagerly even if you set the `default-lazy-init` attribute to `true` on the declaration of your `<beans />` element.
+
+### 2.2 `BeanPostProcessor`: Customizing Beans
+
+#### 2.2.1 概念
+
+> The `BeanPostProcessor` interface defines callback methods that you can implement to provide your own (or override the container’s default) instantiation logic, dependency resolution logic, and so forth. 
+>
+> If you want to implement some custom logic after the Spring container finishes instantiating, configuring, and initializing a bean, you can plug in one or more custom `BeanPostProcessor` implementations.
+
+`BeanPostProcessor` 对象操作的是被实例化了 Bean 对象，也就是说，首先由 Spring IoC 容器创建 Bean 实例，然后`BeanPostProcessor` 开始干它们的活儿。
+
+`BeanPostProcessor` 接口包含两个回调方法，当在 Spring 容器中注册了一个 `BeanPostProcessor` 后，每当Spring 容器创建一个 Bean 对象，注册的 `BeanPostProcessor` 对象在 Bean 对象的初始化方法 (container initialization methods, such as `InitializingBean.afterPropertiesSet()` or any declared `init` method) 执行前后都会收到一个回调：
 
 ```java
 package org.springframework.beans.factory.config;
@@ -258,25 +282,24 @@ public interface BeanPostProcessor {
 }
 ```
 
-When such a class is registered as a post-processor with the container, for each bean instance that is created by the container, the post-processor gets a callback from the container both before container initialization methods (such as `InitializingBean.afterPropertiesSet()` or any declared `init` method) are called, and after any bean initialization callbacks. 
-
 The post-processor can take any action with the bean instance, including ignoring the callback completely. 
 
 - A bean post-processor typically checks for callback interfaces, or it may wrap a bean with a proxy. 
 - Some Spring AOP infrastructure classes are implemented as bean post-processors in order to provide proxy-wrapping logic.
 
-#### 2.1.3 配置`BeanPostProcessor`
+#### 2.2.2 配置`BeanPostProcessor`
 
 由于`BeanPostProcessor`的实现类是一种特殊的Bean，Spring容器在扫描配置的时候会自动检测`BeanPostProcessor`的存在。由此引发的一个特殊点在于，当使用`@Bean`工厂方法来配置`BeanPostProcessor`的时候，该方法的返回类型一定要显示声明为属于`BeanPostProcessor`类型，否则Spring容器无法根据类型判断出它是一个`BeanPostProcessor`，这会影响后续的工作。
 
 尽管更推荐通过自动扫描的方式配置`BeanPostProcessor`，但也可以编程式地注册`BeanPostProcessor`的实例：
 
-- you can register them programmatically against a `ConfigurableBeanFactory` by using the `addBeanPostProcessor` method. 
-- This can be useful when you need to evaluate conditional logic before registration or even for copying bean post processors across contexts in a hierarchy. 
+> This can be useful when you need to evaluate conditional logic before registration or even for copying bean post processors across contexts in a hierarchy. 
+
+- You can register them programmatically against a `ConfigurableBeanFactory` by using the `addBeanPostProcessor` method. 
 - Note, however, that `BeanPostProcessor` instances added programmatically do not respect the `Ordered` interface. Here, it is the order of registration that dictates the order of execution. 
 - Note also that `BeanPostProcessor` instances registered programmatically are always processed before those registered through auto-detection, regardless of any explicit ordering.
 
-#### 2.1.4 `BeanPostProcessor` instances and AOP auto-proxying
+#### 2.2.3 `BeanPostProcessor` instances and AOP auto-proxying
 
 `BeanPostProcessor` instances and AOP auto-proxyingClasses that implement the `BeanPostProcessor` interface are special and are treated differently by the container. 
 
@@ -292,35 +315,9 @@ The post-processor can take any action with the bean instance, including ignorin
 
     > For example, if you have a dependency annotated with `@Resource` where the field or setter name does not directly correspond to the declared name of a bean and no name attribute is used, Spring accesses other beans for matching them by type.
 
-### 2.2 `BeanFactoryPostProcessor`: Customizing Configuration Metadata
-
-```java
-package org.springframework.beans.factory.config;
-
-import org.springframework.beans.BeansException;
-
-@FunctionalInterface
-public interface BeanFactoryPostProcessor {
-    void postProcessBeanFactory(ConfigurableListableBeanFactory var1) throws BeansException;
-}
-```
-
-The semantics of `org.springframework.beans.factory.config.BeanFactoryPostProcessor` are similar to those of the `BeanPostProcessor`, with one major difference: `BeanFactoryPostProcessor` operates on the bean configuration metadata. That is, the Spring IoC container lets a `BeanFactoryPostProcessor` read the configuration metadata and potentially change it *before* the container instantiates any beans other than `BeanFactoryPostProcessor` instances.
-
-> If you want to change the actual bean instances (that is, the objects that are created from the configuration metadata), then you instead need to use a `BeanPostProcessor`. 
->
-> While it is technically possible to work with bean instances within a `BeanFactoryPostProcessor` (for example, by using `BeanFactory.getBean()`), doing so causes premature bean instantiation, violating the standard container lifecycle. This may cause negative side effects, such as bypassing bean post processing.
-
-Spring includes a number of predefined bean factory post-processors, such as `PropertyOverrideConfigurer` and `PropertySourcesPlaceholderConfigurer`.
-
-An `ApplicationContext` automatically detects any beans that are deployed into it that implement the `BeanFactoryPostProcessor` interface. 
-
-As with `BeanPostProcessor`s , you typically do not want to configure `BeanFactoryPostProcessor`s for lazy initialization. 
-
-- If no other bean references a `Bean(Factory)PostProcessor`, that post-processor will not get instantiated at all. Thus, marking it for lazy initialization will be ignored.
-- The `Bean(Factory)PostProcessor` will be instantiated eagerly even if you set the `default-lazy-init` attribute to `true` on the declaration of your `<beans />` element.
-
 ### 2.3 `FactoryBean`: Customizing Instantiation Logic
+
+> 注意这可不是`BeanFactory`。
 
 ```java
 package org.springframework.beans.factory;
@@ -351,11 +348,11 @@ public interface FactoryBean<T> {
 }
 ```
 
-The `FactoryBean` interface is a point of pluggability into the Spring IoC container’s instantiation logic. If you have complex initialization code that is better expressed in Java as opposed to a (potentially) verbose amount of XML, you can create your own `FactoryBean`, write the complex initialization inside that class, and then plug your custom `FactoryBean` into the container.
+`FactoryBean` 接口表示一个工厂 Bean，即它可以生成某一个类型的 Bean 实例，`FactoryBean` 最大的作用即是可以让我们自定义 Bean 的创建过程。如果一些情况下使用XML/注解等配置的手段来创建 Bean 显得太复杂了，那么可以选择使用 `FactoryBean` 来通过代码定义创建 Bean 的过程，只要最后将 `FactoryBean` 纳入 Spring 容器即可（即`FactoryBean`本身需要是一个容器中的 Bean）。
 
-> The `FactoryBean` concept and interface are used in a number of places within the Spring Framework. More than 50 implementations of the `FactoryBean` interface ship with Spring itself.
+Spring框架本身也定义和使用了大量的 `FactoryBean`，差不多有50多个。
 
-When you need to ask a container for an actual `FactoryBean` instance itself instead of the bean it produces, prefix the bean’s `id` with the ampersand symbol (`&`) when calling the `getBean()` method of the `ApplicationContext`. 
+当你需要从容器中获取一个`FactoryBean`本身，而非该`FactoryBean`创建的 Bean 时，只需要在调用`ApplicationContext`的 `getBean()` 方法时，传入（由该`FactoryBean`创建的）Bean的`id`然后加上一个`&`前缀。
 
 ## 3. Environment Abstraction
 
@@ -365,7 +362,7 @@ The [`Environment`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-
 
 A profile is a named, logical group of bean definitions to be registered with the container only if the given profile is active. The role of the `Environment` object with relation to profiles is in determining which profiles (if any) are currently active, and which profiles (if any) should be active by default.
 
-The @Profile annotation lets you indicate that a component is eligible for registration when one or more specified profiles are active.
+The `@Profile` annotation lets you indicate that a component is eligible for registration when one or more specified profiles are active.
 
 ```java
 @Configuration
@@ -469,7 +466,7 @@ sources.addFirst(new MyPropertySource());
 
 > In the preceding code, `MyPropertySource` has been added with highest precedence in the search.
 
-### @PropertySource
+### 3.3 @PropertySource
 
 The [`@PropertySource`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/context/annotation/PropertySource.html) annotation provides a convenient and declarative mechanism for adding a `PropertySource` to Spring’s `Environment`.
 
@@ -532,6 +529,8 @@ public class AppConfig {
 ```
 
 ## 4. LoadTimeWeaver
+
+> Load Time Weaver，简称LTW。
 
 The `LoadTimeWeaver` is used by Spring to dynamically transform classes as they are loaded into the Java virtual machine (JVM).
 
