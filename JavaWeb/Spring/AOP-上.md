@@ -537,116 +537,126 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
 
         - The execution of any public method:
 
-            ```
+            ```java
                 execution(public * *(..))
             ```
 
         - The execution of any method with a name that begins with `set`:
 
-            ```
+            ```java
                 execution(* set*(..))
             ```
 
         - The execution of any method defined by the `AccountService` interface:
 
-            ```
+            ```java
                 execution(* com.xyz.service.AccountService.*(..))
             ```
 
         - The execution of any method defined in the `service` package:
 
-            ```
+            ```java
                 execution(* com.xyz.service.*.*(..))
             ```
 
         - The execution of any method defined in the service package or one of its sub-packages:
 
-            ```
+            ```java
                 execution(* com.xyz.service..*.*(..))
             ```
 
-- `within`: 限制联结点必须出现在某些特定的类中。
+- `within`: 匹配目标类。限制联结点必须出现在某些特定的类中，这些类中所有的方法均会成为联结点。
 
     - Any join point (method execution only in Spring AOP) within the service package:
 
-        ```
+        ```java
             within(com.xyz.service.*)
         ```
 
     - Any join point (method execution only in Spring AOP) within the service package or one of its sub-packages:
 
-        ```
+        ```java
             within(com.xyz.service..*)
         ```
 
-- `this`: Limits matching to join points (the execution of methods when using Spring AOP) where the bean reference (Spring AOP proxy) is an instance of the given type.
+- `this`: 通过代理类的类型来匹配。如果某个Bean的代理类属于该类型，则拦截该Bean的方法。
+
+    > Limits matching to join points (the execution of methods when using Spring AOP) where the bean reference (Spring AOP proxy) is an instance of the given type.
 
     - Any join point (method execution only in Spring AOP) where the proxy implements the `AccountService` interface:
 
-        ```
+        ```java
             this(com.xyz.service.AccountService)
         ```
 
-- `target`: Limits matching to join points (the execution of methods when using Spring AOP) where the target object (application object being proxied) is an instance of the given type.
+- `target`: 通过目标类的类型来匹配。如果某个Bean（即被代理的类）属于该类型，则拦截该Bean的方法。
+
+    > Limits matching to join points (the execution of methods when using Spring AOP) where the target object (application object being proxied) is an instance of the given type.
 
     - Any join point (method execution only in Spring AOP) where the target object implements the `AccountService` interface:
 
-        ```
+        ```java
             target(com.xyz.service.AccountService)
         ```
 
-- `args`: 限制联结点方法的形参必须为指定的类型。
+- `args`: 通过联结点的形参来匹配。
 
     - Any join point (method execution only in Spring AOP) that takes a single parameter and where the argument passed at runtime is `Serializable`:
 
-        ```
+        ```java
             args(java.io.Serializable)
         ```
 
-        > Note that the pointcut given in this example is different from `execution(* *(java.io.Serializable))`. The args version matches if the argument passed at runtime is `Serializable`, and the execution version matches if the method signature declares a single parameter of type `Serializable`.
+    - 注意，通过`args`来匹配联结点与通过在`execution`中指定形参来匹配联结点的两种方式有所不同。`args` 是以运时行类型作为匹配条件，而相应的`execution`则以声明方法时的方法签名作为匹配条件。
 
-- `@annotation`: Limits matching to join points where the subject of the join point (the method being run in Spring AOP) has the given annotation.
+- `@annotation`: 通过联结点是否被相应的注解所修饰来进行匹配。
 
-    > 限制匹配带有指定注解的联结点？
+    > Limits matching to join points where the subject of the join point (the method being run in Spring AOP) has the given annotation.
 
     - Any join point (method execution only in Spring AOP) where the executing method has an `@Transactional` annotation:
 
-        ```
+        ```java
             @annotation(org.springframework.transaction.annotation.Transactional)
         ```
 
-- `@within`: Limits matching to join points within types that have the given annotation (the execution of methods **declared** in types with the given annotation when using Spring AOP).
+- `@within`: 指定一个修饰类型的注解，通过目标对象的类型是否属于被该注解修饰的（子）类型来进行匹配。
+
+    > Limits matching to join points within types that have the given annotation (the execution of methods **declared** in types with the given annotation when using Spring AOP).
 
     - Any join point (method execution only in Spring AOP) where the declared type of the target object has an `@Transactional` annotation:
 
-        ```
+        ```java
             @within(org.springframework.transaction.annotation.Transactional)
         ```
 
-- `@target`: Limits matching to join points (the execution of methods when using Spring AOP) where the class of the executing object has an annotation of the given type.
+- `@target`: 指定一个修饰类型的注解，通过目标对象是否被该注解所修饰来进行匹配。
+
+    > Limits matching to join points (the execution of methods when using Spring AOP) where the class of the executing object has an annotation of the given type.
 
     - Any join point (method execution only in Spring AOP) where the target object has a `@Transactional` annotation:
 
-        ```
+        ```java
             @target(org.springframework.transaction.annotation.Transactional)
         ```
 
-- `@args`: Limits matching to join points (the execution of methods when using Spring AOP) where the runtime type of the actual arguments passed have annotations of the given types.
+- `@args`: 指定一个修饰类型的注解，通过传入联结点的实参的运行时类型是否被该注解所修饰来进行匹配。
 
-    > 限制联结点匹配形参有指定注解标注的执行方法？
+    > Limits matching to join points (the execution of methods when using Spring AOP) where the runtime type of the actual arguments passed have annotations of the given types.
 
     - Any join point (method execution only in Spring AOP) which takes a single parameter, and where the runtime type of the argument passed has the `@Classified` annotation:
 
-        ```
+        ```java
             @args(com.xyz.security.Classified)
         ```
 
 Spring还支持一个额外的PCD：
 
-- `bean`: This PCD lets you limit the matching of join points to a particular named Spring bean or to a set of named Spring beans (when using wildcards). 
+- `bean`: 通过 Bean 的ID或名称来进行匹配。可使用通配符来匹配多个Bean。
+
+    > This PCD lets you limit the matching of join points to a particular named Spring bean or to a set of named Spring beans (when using wildcards). 
 
     - The `bean` PCD has the following form:
-
+    
         ```java
         bean(idOrNameOfBean)
         ```
@@ -658,14 +668,14 @@ Spring还支持一个额外的PCD：
     - 示例：
 
         - Any join point (method execution only in Spring AOP) on a Spring bean named `tradeService`:
-
-            ```
+    
+            ```java
                 bean(tradeService)
             ```
 
         - Any join point (method execution only in Spring AOP) on Spring beans having names that match the wildcard expression `*Service`:
-
-            ```
+    
+            ```java
                 bean(*Service)
             ```
 
@@ -835,11 +845,13 @@ SpringAOP中有5种增强方式，其相应的注解如下，其使用语法均�
     }
     ```
 
-#### 传递参数
+#### 传递实参
 
 > To make argument values available to the advice body, you can use the binding form of `args`.
 
 If you use a parameter name in place of a type name in an `args` expression, the value of the corresponding argument is passed as the parameter value when the advice is invoked.
+
+对于PCD里的`args`表达式（`this`, `target`, `@within`, `@target`, `@annotation`, `@args`同理），如果传入的不再是一个类型的全限定名，而是一个普通形参名，同时将原类型名与新的形参名对应着写到增强方法的参数列表中，则可将目标方法执行时的实参传入增强方法中。例如：
 
 ```java
 @Before("com.xyz.myapp.CommonPointcuts.dataAccessOperation() && args(account,..)")
@@ -848,7 +860,7 @@ public void validateAccount(Account account) {
 }
 ```
 
-上例中切点表达式中的 `args(account,..)` 有两个作用：
+此时，上例中切点表达式中的 `args(account,..)` 有两个作用：
 
 - 限制切点表达式匹配的联结点必须至少含有一个参数且为`Account`类型；
 - 使得切点方法 `Account` 类型的参数值通过`account`变量传递给了增强方法。
@@ -865,9 +877,7 @@ public void validateAccount(Account account) {
 }
 ```
 
-除了`args`，PCD里的`this`, `target`, `@within`, `@target`, `@annotation`, `@args`也有类似的用法。
-
-##### 含泛型的参数
+#### 传递实参：泛型
 
 SpringAOP也能处理在类声明或方法形参里的泛型。对于如下的接口：
 
@@ -898,7 +908,7 @@ public void beforeSampleMethod(Collection<MyType> param) {
 
 > To make this work, we would have to inspect every element of the collection, which is not reasonable, as we also cannot decide how to treat `null` values in general. To achieve something similar to this, you have to type the parameter to `Collection<?>` and manually check the type of the elements.
 
-#### 参数绑定
+#### 参数绑定关系
 
 > 指的是注解中的变量与增强方法中形参的绑定？
 
@@ -974,14 +984,15 @@ public class SecondAspect {
 
 ## 8. 引入
 
+**引入**指一个切面能够为目标对象实现（引入）一个指定的接口。
+
 > Introductions (known as inter-type declarations in AspectJ) enable an aspect to declare that advised objects implement a given interface, and to provide an implementation of that interface on behalf of those objects.
 
-引入使得一个切面能够宣称目标对象实现了一个给定的接口，同时为这些对象提供该接口的实现。
+创建引入使用 `@DeclareParents` 注解，该注解的作用为某一个类（目标对象）声明一个新的父接口：
 
-创建引用使用 `@DeclareParents` 注解，该注解的作用是声明某一个类拥有一个新的父类。
-
-- 待实现的接口取决于该注解修饰的字段的类型
-- value属性是一个AspectJ的type pattern
+- 此注解修饰的字段的类型，即是待实现的父接口的类型；
+- `value`属性是一个AspectJ的type pattern，用以匹配目标对象；
+- `defaultImpl`是为指定的父接口提供一个默认的实现类；
 
 例如，给定一个`UsageTracked`接口及其实现类 `DefaultUsageTracked`，如下切面宣告了所有的service包下的接口的实现类同时实现了`UsageTracked`接口：
 
