@@ -49,8 +49,8 @@ AOP 要达到的效果是，保证开发者不修改源代码的前提下，去�
 |    Advice     |   增强   | 在某个联结点上，某个切面执行的具体动作（这里对advice译为增强，为意译）。<br /><blockquote>很多AOP框架（包括Spring）都把增强建模为一个拦截器，并且相应地围绕联结点维护了一个拦截器链。</blockquote> |
 |   Pointcut    |   切点   | 一个用来匹配联结点的谓词。<br /><blockquote>Advice is associated with a pointcut expression and runs at any join point matched by the pointcut. For example, you could use an introduction to make a bean implement an `IsModified` interface, to simplify caching.</blockquote> |
 | Introduction  |   引入   | 引入是为一个类声明额外的方法或字段。<br /><blockquote>Spring AOP lets you introduce new interfaces (and a corresponding implementation) to any advised object. </blockquote> |
-| Target object | 目标对象 | 要被切面增强的（原始）对象，也常称作advised object（增强对象，这种称呼并不好，有歧义）。<br /><blockquote>由于Spring是基本运行时代理的机制实现AOP的，因此目标对象总是一个proxied object（代理对象）。</blockquote> |
-|   AOP Proxy   | AOP代理  | AOP为实现切面功能而创建的对象，故名之代理对象。<br /><blockquote>在Spring中，代码对象总是一个JDK代理或CBLIB代理对象。</blockquote> |
+| Target object | 目标对象 | 要被切面增强的（原始）对象，也常称作advised object（增强对象，这种称呼并不好，有歧义）。<br /><blockquote>由于Spring是基于运行时代理的机制实现AOP的，因此目标对象总是一个proxied object（被代理的对象）。</blockquote> |
+|   AOP Proxy   | AOP代理  | AOP为实现切面功能而创建的对象，故名之代理对象。<br /><blockquote>在Spring中，代理对象总是一个JDK代理或CBLIB代理对象。</blockquote> |
 |    Weaving    |   织入   | 描述了把增强处理添加到目标对象、并创建一个被增强的对象（代理）这一过程，不对应一份实体。<br /><blockquote>1) 织入可以发生在编译时、加载时、运行时<br />2) SpringAOP的织入总是发生在运行时。</blockquote> |
 
 增强的类型：
@@ -77,7 +77,7 @@ SpringAOP使用时需要结合SpringIoC容器，因此SpringAOP无法对非常�
 >
 > spring关于AOP的spring-aspects包中引用了aspectjweaver。
 
-AOP技术在Spring中实现的内容：Spring框架监控切点方法的执行，一旦监控到切入点方法被运行，即使用**动态代理**机制，动态创建目标对象的代理对象，根据增强类别在代理对象的相应位置将Advice对应的功能织入，从而完成增强后的整个代码逻辑的执行。
+AOP技术在Spring中实现的内容：Spring框架监控切点方法的执行，一旦监控到切入点方法被运行，即使用**动态代理**机制，动态创建目标对象的代理对象，根据增强类别在代理对象的相应位置将Advice对应的功能织入，从而完成增强后的整个代码逻辑的执行（TODO 代理发生的时机对吗？）。
 
 Spring 的 AOP 实现底层就是对 JDK 代理、cglib 代理的方式进行了封装，封装后我们只需要对需要关注的部分进行代码编写，并通过配置的方式完成指定目标的方法增强。
 
@@ -359,7 +359,7 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
 
 #### 切面实例化模型
 
-默认情况下，每一个切面在Spring容器中都是单例的，但是也可以定义不同生命周期的切面。Spring支持AspectJ的 `perthis` 和 `pertarget` 实例化模型，但目前不支持 `percflow`, `percflowbelow`, `pertypewithin`。
+默认情况下，每一个切面在Spring容器中都是单例的，但是也可以定义不同生命周期的切面。Spring支持AspectJ的 `singleton`（默认情况）、`perthis` 和 `pertarget` 实例化模型，但目前不支持 `percflow`, `percflowbelow`, `pertypewithin`。
 
 在@Aspect注解中声明一个`perthis` 分句就可以声明`perthis`切面了，如下所示：
 
@@ -605,6 +605,24 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
 
         > Note that the pointcut given in this example is different from `execution(* *(java.io.Serializable))`. The args version matches if the argument passed at runtime is `Serializable`, and the execution version matches if the method signature declares a single parameter of type `Serializable`.
 
+- `@annotation`: Limits matching to join points where the subject of the join point (the method being run in Spring AOP) has the given annotation.
+
+    > 限制匹配带有指定注解的联结点？
+
+    - Any join point (method execution only in Spring AOP) where the executing method has an `@Transactional` annotation:
+
+        ```
+            @annotation(org.springframework.transaction.annotation.Transactional)
+        ```
+
+- `@within`: Limits matching to join points within types that have the given annotation (the execution of methods **declared** in types with the given annotation when using Spring AOP).
+
+    - Any join point (method execution only in Spring AOP) where the declared type of the target object has an `@Transactional` annotation:
+
+        ```
+            @within(org.springframework.transaction.annotation.Transactional)
+        ```
+
 - `@target`: Limits matching to join points (the execution of methods when using Spring AOP) where the class of the executing object has an annotation of the given type.
 
     - Any join point (method execution only in Spring AOP) where the target object has a `@Transactional` annotation:
@@ -621,24 +639,6 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
 
         ```
             @args(com.xyz.security.Classified)
-        ```
-
-- `@within`: Limits matching to join points within types that have the given annotation (the execution of methods declared in types with the given annotation when using Spring AOP).
-
-    - Any join point (method execution only in Spring AOP) where the declared type of the target object has an `@Transactional` annotation:
-
-        ```
-            @within(org.springframework.transaction.annotation.Transactional)
-        ```
-
-- `@annotation`: Limits matching to join points where the subject of the join point (the method being run in Spring AOP) has the given annotation.
-
-    > 限制匹配带有指定注解的联结点？
-
-    - Any join point (method execution only in Spring AOP) where the executing method has an `@Transactional` annotation:
-
-        ```
-            @annotation(org.springframework.transaction.annotation.Transactional)
         ```
 
 Spring还支持一个额外的PCD：
