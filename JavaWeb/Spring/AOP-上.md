@@ -50,7 +50,7 @@ AOP 要达到的效果是，保证开发者不修改源代码的前提下，去�
 |   Pointcut    |   切点   | 一个用来匹配联结点的谓词。<br /><blockquote>Advice is associated with a pointcut expression and runs at any join point matched by the pointcut. For example, you could use an introduction to make a bean implement an `IsModified` interface, to simplify caching.</blockquote> |
 | Introduction  |   引入   | 引入是为一个类声明额外的方法或字段。<br /><blockquote>Spring AOP lets you introduce new interfaces (and a corresponding implementation) to any advised object. </blockquote> |
 | Target object | 目标对象 | 要被切面增强的（原始）对象，也常称作advised object（增强对象，这种称呼并不好，有歧义）。<br /><blockquote>由于Spring是基于运行时代理的机制实现AOP的，因此目标对象总是一个proxied object（被代理的对象）。</blockquote> |
-|   AOP Proxy   | AOP代理  | AOP为实现切面功能而创建的对象，故名之代理对象。<br /><blockquote>在Spring中，代理对象总是一个JDK代理或CBLIB代理对象。</blockquote> |
+|   AOP Proxy   | AOP代理  | AOP为实现切面功能而创建的对象，故名之代理对象。<br /><blockquote>在Spring中，代理对象总是一个JDK代理或CGLIB代理对象。</blockquote> |
 |    Weaving    |   织入   | 描述了把增强处理添加到目标对象、并创建一个被增强的对象（代理）这一过程，不对应一份实体。<br /><blockquote>1) 织入可以发生在编译时、加载时、运行时<br />2) SpringAOP的织入总是发生在运行时。</blockquote> |
 
 增强的类型：
@@ -96,11 +96,11 @@ Spring 的 AOP 实现底层就是对 JDK 代理、cglib 代理的方式进行了
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     ```
 
-Spring使用CBLIB代理时需注意如下事项：
+Spring使用CGLIB代理时需注意如下事项：
 
 - `final`方法无法被增强，因为它们无法被在运行时生成的子类所覆盖；
 
-- 正常情况下，CBLIB代理是通过Objenesis创建的，但当JVM不允许绕过构造函数时，SpringAOP会对构造器进行双重调用来达成目的，此时Spring会记录相应的debug日志信息。
+- 正常情况下，CGLIB代理是通过Objenesis创建的，但当JVM不允许绕过构造函数时，SpringAOP会对构造器进行双重调用来达成目的，此时Spring会记录相应的debug日志信息。
 
     > Objenesis是一个轻量的Java库，作用是绕过构造器创建实例。
 
