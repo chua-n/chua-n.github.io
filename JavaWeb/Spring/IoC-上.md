@@ -418,7 +418,7 @@ Spring提供两种机制来注入方法，分别是 Lookup Method Injection 和A
 
 Lookup method injection is the ability of the container to override methods on container-managed beans and **return the lookup result** for another named bean in the container. 
 
-这种方法通常用于涉及prototype bean的场景，Spring实现这种方法注入的原理是使用CBLIB动态生成一个覆盖该方法的子类（如果该方法是抽象方法，则在子类中实现该方法；如果该方法不是抽象方法，则在子类中覆盖该方法）。基于此原理，Lookup Method Injection有如下限制：
+这种方法通常用于涉及prototype bean的场景，Spring实现这种方法注入的原理是使用CGLIB动态生成一个覆盖该方法的子类（如果该方法是抽象方法，则在子类中实现该方法；如果该方法不是抽象方法，则在子类中覆盖该方法）。基于此原理，Lookup Method Injection有如下限制：
 
 - For this dynamic subclassing to work, the class that the Spring bean container subclasses cannot be final, and the method to be overridden cannot be final, either.
 - Unit-testing a class that has an abstract method requires you to subclass the class yourself and to supply a stub implementation of the abstract method.
