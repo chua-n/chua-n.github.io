@@ -43,3 +43,8 @@
   background: #6a005f;
   color: #eee;
 }
+/* katex数学公式的脚标再缩小一点 */
+.katex .fontsize-ensurer.reset-size6.size3, 
+.katex .sizing.reset-size6.size3 {
+  font-size: .6em !important;
+}
