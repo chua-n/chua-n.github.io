@@ -1,4 +1,6 @@
 > 本篇笔记写得不好，但似乎也没有必要......
+>
+> 一个比较好的介绍参考：[Swagger 入门教程-慕课网 (imooc.com)](https://www.imooc.com/wiki/swaggerlesson/apioperation.html)
 
 ## 1. 背景：前后端分离
 
