@@ -205,7 +205,7 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 |    `ENV`     |        设置环境变量，可在后面指令使用        |        `ENV key value`        |
 |    `COPY`    |         拷贝本地文件到镜像的指定目录         |  `COPY ./mysql-5.7.rpm /tmp`  |
 |    `RUN`     |  执行Linux的shell命令，一般是安装过程的命令  |     `RUN yum install gcc`     |
-|   `EXPOSE`   | 指定容器运行时监听的商品，是给镜像使用者看的 |         `EXPOSE 8080`         |
+|   `EXPOSE`   | 指定容器运行时监听的端口，是给镜像使用者看的 |         `EXPOSE 8080`         |
 | `EXTRYPOINT` |     镜像中应用的启动命令，容器运行时调用     | `EXTRYPOINT java -jar xx.jar` |
 
 > 更多详细语法说明，参考官方文档：https://docs.docker.com/engine/reference/builder 。
