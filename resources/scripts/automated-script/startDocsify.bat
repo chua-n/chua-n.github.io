@@ -2,5 +2,5 @@
 chcp 65001
 @REM cd /d D:\code\notebooks
 call activate nn
-python -m http.server 3000
+python -m http.server 7777
 pause
