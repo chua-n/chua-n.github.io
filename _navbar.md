@@ -3,7 +3,6 @@
     -   [Java](/Java/)
     -   [JavaWeb](/JavaWeb/)
 -   [JavaScript](/JavaScript/)
-    
 -   [Python](/Python/)
 -   [数学](/数学/)
     -   [离散数学](/数学/离散数学/)
@@ -15,9 +14,9 @@
     -   [mongoDB](/数据库/mongoDB/)
     -   [Redis](/数据库/Redis/)
     -   [Elasticsearch](/数据库/Elasticsearch/)
+-   [Linux](/Linux/)
 -   [杂技](/杂技/)
     -   [CS](/杂技/CS/)
-    -   [Linux](/杂技/Linux/)
     -   [C++](/C++/)
     -   [Git](/杂技/Git/)
     -   [CV](/杂技/CV/)

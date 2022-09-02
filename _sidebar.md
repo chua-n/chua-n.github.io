@@ -5,6 +5,7 @@
 -   [JavaScript](/JavaScript/)
 -   [Python](/Python/)
 -   [数据库](/数据库/)
+-   [Linux](/Linux/)
 -   [杂技](/杂技/)
 -   [glodon](/glodon/)
 
