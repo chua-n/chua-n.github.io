@@ -12,10 +12,9 @@
     -   [流程控制](/Java/踏入山门/流程控制.md)
     -   [数组](/Java/踏入山门/数组.md)
     -   [jar包](/Java/踏入山门/jar包.md)
-    -   [Junit测试](/Java/踏入山门/Junit测试.md)
     -   [异常](/Java/踏入山门/异常.md)
     -   [注解](/Java/踏入山门/注解.md)
-
+    
 - [面向对象](/Java/面向对象/)
 
     - [类与对象](/Java/面向对象/类与对象.md)
@@ -146,6 +145,7 @@
 - [第三方工具](/Java/第三方工具/)
 
     - [lombok](/Java/第三方工具/lombok.md)
+    - [Junit测试](/Java/第三方工具/Junit测试.md)
     - [Guava](/Java/第三方工具/Guava/)
         - [Cache](/Java/第三方工具/Guava/Cache.md)
         - [EventBus](/Java/第三方工具/Guava/EventBus.md)
