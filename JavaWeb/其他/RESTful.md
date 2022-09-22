@@ -1,3 +1,5 @@
+> 一个比较好的介绍网站：[RESTful API 一种流行的 API 设计风格](https://restfulapi.cn/)
+
 ## 为什么要使用RESTful架构？
 
 REST 是 Representational State Transfer的缩写，如果一个架构符合REST原则，就称它为RESTful架构
