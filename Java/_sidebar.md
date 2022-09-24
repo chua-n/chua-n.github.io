@@ -11,7 +11,7 @@
     -   [Java注释](/Java/踏入山门/Java注释.md)
     -   [流程控制](/Java/踏入山门/流程控制.md)
     -   [数组](/Java/踏入山门/数组.md)
-    -   [jar包](/Java/踏入山门/jar包.md)
+    -   [classpath和jar](/Java/踏入山门/classpath和jar.md)
     -   [异常](/Java/踏入山门/异常.md)
     -   [注解](/Java/踏入山门/注解.md)
     
