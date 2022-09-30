@@ -94,6 +94,14 @@
                 successText: "copied",
             },
 
+            scrollToTop: {
+                auto: true,
+                text: 'Top',
+                // right: 15,
+                // bottom: 15,
+                offset: 300
+            },
+
             plugins: [
                 EditOnGithubPlugin.create(
                     "https://github.com/chua-n/notebooks/tree/main/",
@@ -109,7 +117,7 @@
     <script src="resources/js/docsify-sidebar-collapse.js"></script>
 
     <!-- 全文搜索 -->
-    <script src="//fastly.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+    <script src="//fastly.jsdelivr.net/npm/docsify/lib/plugins/search.js"></script>
 
     <!-- 代码高亮 -->
     <script src="//unpkg.com/prismjs/components/prism-java.js"></script>
@@ -146,6 +154,8 @@
         src="https://fastly.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
     <!-- 引入鼠标点击时的烟花效果 -->
     <script src="./resources/js/fireworks.js"></script>
+    <!-- 回到顶部按钮 -->
+    <script src="//unpkg.com/docsify-scroll-to-top/dist/docsify-scroll-to-top.min.js"></script>
 </body>
 
 </html>
