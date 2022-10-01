@@ -100,7 +100,7 @@ public class GsonApi implements JsonApi<GsonBean> {
 }
 ```
 
-## Faskjson
+## Fastjson
 
 由阿里巴巴开发：[GitHub - alibaba/fastjson](https://github.com/alibaba/fastjson)
 
@@ -138,3 +138,14 @@ public class FastjsonApi implements JsonApi<FastjsonBean> {
     }
 }
 ```
+
+### fastjson出现`$ref: "$."`
+
+fastjson作为一款序列化引擎，不可避免的会遇到循环引用的问题，为了避免`StackOverflowError`异常，fastjson会对引用进行检测。
+
+如果检测到存在重复/循环引用的情况，fastjson默认会以“引用标识”来代替同一对象，而非继续循环解析，从而防止`StackOverflowError`。
+
+因此，当fastjson转换出的json字符串中出现了`$ref: "$."`，有如下两种解决思路：
+
+1. 创建新对象，不循环引用
+2. 关闭检查，即`JSON.toJSONString(bean, SerializerFeature.DisableCircularReferenceDetect);`
