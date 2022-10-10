@@ -48,3 +48,10 @@
 .katex .sizing.reset-size6.size3 {
   font-size: .6em !important;
 }
+/* markdown中粗体和斜体的样式 */
+.markdown-section strong {
+  color: var(--theme-color, #2c3e50);
+}
+.markdown-section em {
+  color: var(--theme-color, #555555c7);
+}
