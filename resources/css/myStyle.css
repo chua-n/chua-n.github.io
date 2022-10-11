@@ -55,3 +55,16 @@
 .markdown-section em {
   color: var(--theme-color, #555555c7);
 }
+/* markdown中有序列表中序号表示符，第1~4级依次设定为阿拉伯数字、小写英文字母、小写罗马字母、小写希腊字母 */
+ol {
+  list-style-type: decimal;
+}
+ol ol {
+  list-style-type: lower-alpha;
+}
+ol ol ol {
+  list-style-type: lower-roman;
+}
+ol ol ol ol {
+  list-style-type: lower-greek;
+}
