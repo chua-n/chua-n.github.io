@@ -21,7 +21,9 @@
   - [概念解析](/数据库/mongoDB/概念解析.md)
 - [Redis](/数据库/Redis/)
   - [踏入山门](/数据库/Redis/踏入山门.md)
-
+  - [数据结构](/数据库/Redis/数据结构.md)
+  - [Redis命令](/数据库/Redis/Redis命令.md)
+  
 - [Elasticsearch](/数据库/Elasticsearch/)
   - [概述](/数据库/Elasticsearch/概述.md)
   - [DSL](/数据库/Elasticsearch/DSL.md)
