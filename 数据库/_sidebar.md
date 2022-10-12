@@ -23,6 +23,8 @@
   - [踏入山门](/数据库/Redis/踏入山门.md)
   - [数据结构](/数据库/Redis/数据结构.md)
   - [Redis命令](/数据库/Redis/Redis命令.md)
+  - [发布-订阅](/数据库/Redis/发布-订阅.md)
+  - [Stream消息队列](/数据库/Redis/Stream消息队列.md)
   
 - [Elasticsearch](/数据库/Elasticsearch/)
   - [概述](/数据库/Elasticsearch/概述.md)
