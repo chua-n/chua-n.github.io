@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="author" content="chuan" />
     <meta name="description" content="基于docsify把自己的笔记生成为web页面，并挂载在GitHub Pages形成静态网站，便于自己同时在桌面端及移动端进行阅读。" />
-    <meta name="keywords" content="notes, notebook, markdown, docsify, html, js, github pages">
+    <meta name="keywords" content="notes, notebook, markdown, docsify, html, js, github pages" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-    
+
     <!-- 在浏览器的tab页签上显示一个logo -->
     <link rel="shortcut icon" href="resources/figs/川-1.ico" />
 
@@ -21,7 +21,7 @@
 
     <!-- 引入自定义css -->
     <link rel="stylesheet"
-        href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+        href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext" />
     <link rel="stylesheet" href="resources/css/myStyle.css" />
     <link rel="stylesheet" href="resources/css/codeColor.css" />
 
@@ -39,7 +39,6 @@
 
     <!-- gitalk评论系统 -->
     <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
-
 </head>
 
 <body>
@@ -97,10 +96,10 @@
 
             scrollToTop: {
                 auto: true,
-                text: 'Top',
+                text: "Top",
                 // right: 15,
                 // bottom: 15,
-                offset: 300
+                offset: 300,
             },
 
             plugins: [
@@ -148,7 +147,8 @@
     <!-- 支持数学公式 -->
     <script src="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/marked@4"></script>
-    <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script> <!-- CDN files for docsify-katex -->
+    <!-- CDN files for docsify-katex -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" />
     <!-- 分页导航插件（上/下章节按钮）：https://github.com/imyelo/docsify-pagination#readme -->
     <script src="//fastly.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
@@ -163,10 +163,22 @@
     <script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
     <script>
         L2Dwidget.init({
-            "model": { "jsonPath": "https://unpkg.com/live2d-widget-model-shizuku@latest/assets/shizuku.model.json", "scale": 1, "hHeadPos": 0.5, "vHeadPos": 0.618 },
-            "display": { "position": "right", "width": 100, "height": 200, "hOffset": 82, "vOffset": 0 },
-            "mobile": { "show": true, "scale": 1 },
-            "react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 }
+            model: {
+                jsonPath:
+                    "https://unpkg.com/live2d-widget-model-shizuku@latest/assets/shizuku.model.json",
+                scale: 1,
+                hHeadPos: 0.5,
+                vHeadPos: 0.618,
+            },
+            display: {
+                position: "right",
+                width: 100,
+                height: 200,
+                hOffset: 82,
+                vOffset: 0,
+            },
+            mobile: { show: true, scale: 1 },
+            react: { opacityDefault: 0.7, opacityOnHover: 0.2 },
         });
         // 一些其他可选的模型：
         // 小帅哥： https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json
