@@ -18,8 +18,10 @@
   - [数据库维护](/数据库/MySQL/数据库维护.md)
   - [MySQL调优](/数据库/MySQL/MySQL调优.md)
 - [mongoDB](/数据库/mongoDB/)
-    - [mongoDB的概念解析](/数据库/mongoDB/mongoDB的概念解析.md)
+    - [概念解析](/数据库/mongoDB/概念解析.md)
 - [Redis](/数据库/Redis/)
+    - [踏入山门](/数据库/Redis/踏入山门.md)
+
 - [Elasticsearch](/数据库/Elasticsearch/)
     - [概述](/数据库/Elasticsearch/概述.md)
     - [DSL](/数据库/Elasticsearch/DSL.md)
