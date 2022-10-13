@@ -23,6 +23,7 @@
   - [踏入山门](/数据库/Redis/踏入山门.md)
   - [数据类型](/数据库/Redis/数据类型.md)
   - [Redis命令](/数据库/Redis/Redis命令.md)
+  - [配置文件](/数据库/Redis/配置文件.md)
   - [发布-订阅](/数据库/Redis/发布-订阅.md)
   - [Stream消息队列](/数据库/Redis/Stream消息队列.md)
   - [Redis事务](/数据库/Redis/Redis事务.md)
