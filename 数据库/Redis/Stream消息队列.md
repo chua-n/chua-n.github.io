@@ -25,7 +25,7 @@ Redis Stream 消息队列结构程如下图所示：
 
 - pending_ids ：Redis 官方称为 PEL，表示消费者的状态变量，它记录了当前已经被客户端读取的消息 ID，但是这些消息没有被 ACK(确认字符)。如果客户端没有 ACK，那么这个变量中的消息 ID 会越来越多，一旦被某个消息被 ACK，它就开始减少。
 
-    > ACK（Acknowledge character）即确认字符。、
+    > ACK（Acknowledge character）即确认字符。
 
 常用命令汇总：
 
