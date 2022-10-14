@@ -20,6 +20,7 @@
     -   [C++](/C++/)
     -   [Git](/杂技/Git/)
     -   [Docker](/杂技/Docker.md)
+    -   [Nginx](/杂技/Nginx.md)
     -   [CV](/杂技/CV/)
 -   [glodon](/glodon/)
 
