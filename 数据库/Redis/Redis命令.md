@@ -388,3 +388,10 @@ Redis GEO 的底层通过 Redis 有序集合（zset）实现，不过 Redis GEO 
 | GEORADIUSBYMEMBER | 根据给定地理位置(具体的位置元素)获取指定范围内的地理位置集合。 |
 | GEOHASH           | 获取一个或者多个的地理位置的 GEOHASH 值。                    |
 | ZREM              | 通过有序集合的 zrem 命令实现对地理位置信息的删除。           |
+
+## ACL
+
+Redis ACL 是 Access Control List（访问控制列表）的缩写，该功能允许根据可以执行的命令和可以访问的键来限制某些连接。
+
+......
+
