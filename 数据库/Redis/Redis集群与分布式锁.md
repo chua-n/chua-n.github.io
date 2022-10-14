@@ -1,12 +1,26 @@
 ## 主从模式
 
-### 概述
+### Redis 主从模式概述
 
 在软件的架构中，主从模式（Master-Slave）是使用较多的一种架构。主（Master）和从（Slave）分别部署在不同的服务器上，当主节点服务器写入数据时，同时也会将数据同步至从节点服务器，*通常情况下*，主节点负责写入数据，而从节点负责读取数据。
 
 Redis 主从模式的结构图如下。其中，Redis 主机会一直将自己的数据复制给 Redis 从机，从而实现主从同步。在这个过程中，只有 master 主机可执行写命令，其他 salve 从机只能只能执行读命令，这种读写分离的模式可以大大减轻 Redis 主机的数据读取压力，从而提高了Redis 的效率，并同时提供了多个数据备份。主从模式是搭建 Redis 集群最简单的一种方式。
 
-![Redis主从模式](../../resources/images/notebook/数据库/Redis/16133214H-0.gif)
+|                         “主从直连”式                         |                         “薪火相传”式                         |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![Redis主从模式](../../resources/images/notebook/数据库/Redis/16133214H-0.gif) | ![image-20221014111727994](../../resources/images/notebook/数据库/Redis/image-20221014111727994.png) |
+
+当一个主机挂掉之后，如果没有手动进行任何更改，不会有任何一个从机跃升为主机，它们的相对关系不会发生变化，当主机恢复之后仍将成为主机。
+
+### 复制过程
+
+![image-20221014111538664](../../resources/images/notebook/数据库/Redis/image-20221014111538664.png)
+
+1. slave 启动成功连接到 master 后会发送一个 sync 命令；
+2. master 接到 sync 命令后会启动后台的存盘进程，同时收集所有接收到的用于修改数据集的命令，在后台进程执行完毕之后，master 将传送整个数据文件到 slave，以完成一次完全同步；
+3. 全量复制：slave 服务在接收到数据库文件数据后，将其存盘并加载到内存中；
+4. 增量复制：在主从连接完成之后的过程中，master 会持续将新的修改命令依次传给 slave，完成同步；
+5. 需要注意的是，slave 只要重新连接一次 master，就会做一次全量复制。
 
 ### 搭建：命令行方式
 
@@ -78,9 +92,7 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 
 ### 搭建
 
-以下以 ubuntu 为例：
-
-- 安装sentinel：Sentinel 需要作为插件单独安装，安装方式如 `sudo apt install redis-sentinel`
+搭建步骤如下：
 
 - 搭建主从模式：按搭建一般的主从模式的方式搭建即可。例如，在本地环境使用主从模式搭建一个拥有三台服务器的 Redis 集群：
 
@@ -155,9 +167,26 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
   sentinel current-epoch 2
   ```
 
+## 无中心化集群
+
+TODO...
+
 ## 分布式锁
 
 在分布式系统中，当不同进程或线程一起访问共享资源时，会造成资源争抢，如果不加以控制的话，就会引发程序错乱。此时使用分布式锁能够非常有效的解决这个问题，它采用了一种互斥机制来防止线程或进程间相互干扰，从而保证了数据的一致性。
+
+分布式锁主流的实现方案：
+
+1. 基于数据库实现分布式锁
+
+2. 基于缓存，如 Redis
+
+3. 基于 Zookeeper
+
+> 每一种分布式锁解决方案都有各自的优缺点：
+>
+> - 性能：redis 最高
+> - 可靠性：zookeeper 最高
 
 ### Redis分布式锁介绍
 
@@ -187,12 +216,15 @@ Redis 分布式锁常用命令如下所示：
 还有一种特殊情况，如果在 `SETNX` 和 `EXPIRE` 之间服务器进程突然挂掉，也就是还未设置过期时间，这样就会导致 `EXPIRE` 执行不了，因此还是会造成“死锁”的问题。为了避免这个问题，可以使用 `SET` 命令同时执行 `SETNX` 和 `EXPIRE` 命令，从而解决死锁问题：
 
 - `SET key value [expiration EX seconds|PX milliseconds] [NX|XX]`  
+- EX second：设置键的过期时间为 second 秒。 SET key value EX second 效果等同于 SETEX key second value 。
+  
+- PX millisecond：设置键的过期时间为毫秒。SET key value PX millisecond 效果等同于 PSETEX key millisecondvalue 。
+  
+- NX：只在键不存在时，才对键进行设置操作。 SET key value NX 效果等同于 SETNX key value 。
+  
+- XX：只在键已经存在时，才对键进行设置操作。
 
-  - EX second：设置键的过期时间为 second 秒。 SET key value EX second 效果等同于 SETEX key second value 。
+### 优化
 
-  - PX millisecond：设置键的过期时间为毫秒。SET key value PX millisecond 效果等同于 PSETEX key millisecondvalue 。
-
-  - NX：只在键不存在时，才对键进行设置操作。 SET key value NX 效果等同于 SETNX key value 。
-
-  - XX：只在键已经存在时，才对键进行设置操作。
-
+- UUID 防止锁的误删
+- Lua 脚本保证原子性
