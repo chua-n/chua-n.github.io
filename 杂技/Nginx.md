@@ -1,45 +1,236 @@
+> 非常好的一个讲解nginx的github仓库，作者是《深入理解Nginx》一书的作者陶辉：https://github.com/russelltao/geektime-nginx 。
+
 ## nginx简介
 
-### 正向/反向代理
+nginx的优点：
 
-### 负载均衡
+- 高并发，高性能
+- 可扩展性好
+- 高可靠性
+- 热部署
+- BSD许可证
 
-### 动静分离
+nginx的应用场景：
+
+<img src="../resources/images/notebook/杂技/nginx/image-20221017153213016.png" alt="image-20221017153213016" style="zoom:50%;" />
+
+nginx的组成：
+
+<img src="../resources/images/notebook/杂技/nginx/image-20221017153449346.png" alt="image-20221017153449346" style="zoom:50%;" />
+
+nginx同redis类似都采用了io多路复用机制......
 
 ## nginx命令
 
-通常在nginx的安装目录`cd /usr/local/nginx`中执行，常用命令如下：
+通常在nginx的安装目录`cd /usr/local/nginx`中执行，命令的格式如：`nginx [param] [command]`
+
+| 参数  | 格式                                                         |
+| :---: | :----------------------------------------------------------- |
+| -? -h | 帮助                                                         |
+|  -c   | 使用指定的配置文件                                           |
+|  -g   | 指定配置指令                                                 |
+|  -p   | 指定运行目录                                                 |
+|  -s   | 发送信号<ul><li>`stop`: 立刻停止服务</li><li>`quit`: 优雅地停止服务</li><li>`reload`: 重载配置文件</li><li>`reopen`: 重新开始记录日志文件</li></ul> |
+| -t -T | 测试配置文件是否有语法错误                                   |
+| -v -V | 打印nginx的版本信息、编译信息等                              |
+
+举例而言，命令如下：
 
 | 命令                | 说明              |
 | ------------------- | ----------------- |
-| `./nginx -v`        | 查看 nginx 版本号 |
 | `./nginx`           | 启动 nginx        |
+| `./nginx -v`        | 查看 nginx 版本号 |
 | `./nginx -s stop`   | 关闭 nginx        |
 | `./nginx -s reload` | 重新加载 nginx    |
 
 ## nginx配置文件
 
-配置文件的路径：`/usr/local/nginx/conf/nginx.conf`
+### 路径及内容
+
+配置文件的路径：`/usr/local/nginx/conf/nginx.conf`，其默认的配置如下：
+
+```nginx
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+```
+
+上述配置中引用的`/etc/nginx/conf.d/*.conf`主要是如下的`/etc/nginx/conf.d/default.conf`：
+
+```nginx
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  localhost;
+
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #
+    #location ~ \.php$ {
+    #    proxy_pass   http://127.0.0.1;
+    #}
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    #location ~ \.php$ {
+    #    root           html;
+    #    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    include        fastcgi_params;
+    #}
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    #location ~ /\.ht {
+    #    deny  all;
+    #}
+}
+```
+
+### 结构划分
+
+```nginx
+...                       # 全局块
+events {}                 # events块
+http {                    # http块
+    ...                   # http全局块
+        server {          # server块
+        ...               # server全局块
+            location [/]{ # location块
+            ...
+        }
+    }
+}
+...
+```
 
 nginx配置文件由三大块组成：
 
-- 全局块
-- events块
-- http块
-    - http全局块
-    - server块
+- 全局块：配置影响nginx服务器全局的指令。例如运行nginx服务器的用户组、nginx进程pid存放路径、日志存放路径、配置文件引入、允许生成的worker process数等
+- events块：主要影响nginx服务器与用户的网络连接。例如每个进程的最大连接数、选取哪种事件驱动模型处理连接请求、是否允许同时接受多个网路连接、开启多个网络连接序列化等
+- http块：可以嵌套多个server，配置代理、缓存、日志等绝大多数功能，以及第三方模块的配置。例如文件引入、mime-type定义、日志自定义、是否使用sendfile传输文件、连接超时时间、单连接请求数等
+    - http全局块：顾名思义
+    - server块：一个server相当于一台虚拟主机，nginx可以有多台虚拟主机联合对外提供服务，这里配置虚拟主机的相关参数，一个http中可以有多个server
+      - server全局块：顾名思义
+      - location块：匹配请求的路由uri，以及各种页面的处理情况
+    - upstream块：
 
+<img src="../resources/images/notebook/杂技/nginx/image-20221017173158576.png" alt="image-20221017173158576" style="zoom:50%;" />
 
-## 反射代理
+### 语法格式
+
+> 参考 [从通用规则中学习Nginx模块的定制指令 - NGINX开源社区](https://www.nginx.org.cn/article/detail/274) 。
+
+nginx配置语法：
+
+- 配置文件由**指令**与**指令块**构成；
+- 每条指令以`;`分号结尾，指令与参数间以空格符号` `分隔；
+- 指令块以`{}`大括号将多条指令组织在一起；
+- 部分指令的参数支持正则表达式；
+- `include`语句允许组合多个配置文件以提升可维护性；
+- 使用`$`符号使用变量；
+- 使用`#`符号可添加注释，提高可读性。
+
+Nginx是由少量框架代码、大量模块构成的，其中，Nginx框架会按照特定的语法，将配置指令读取出来，再交由模块处理。因此，Nginx框架定义了通用的语法规则，而Nginx模块则定义了每条指令的语法规则，作为初学者，如果将学习目标定为掌握所有的配置指令，方向就完全错了，而且这是不可能完成的任务。
+
+比如，`ngx_http_lua_module`模块定义了`content_by_lua_block`指令，只要它符合框架定义的{}块语法规则，哪怕大括号内是一大串Lua语言代码，框架也会把它交由`ngx_http_lua_module`模块处理。因此，下面这行指令就是合法的：
+
+```nginx
+content_by_lua_block {ngx.say("Hello World ")}
+```
+
+示例：
+
+<img src="../resources/images/notebook/杂技/nginx/image-20221017172946874.png" alt="image-20221017172946874" style="zoom:50%;" />
+
+### 全局变量
+
+nginx 有一些常用的全局变量，你可以在配置的任何位置使用它们，如下表：
+
+| 全局变量名         | 功能                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| $args              | 请求中的参数                                                 |
+| $content_length    | HTTP请求信息里的Content-Length                               |
+| $content_type      | HTTP请求信息里的Content-Type                                 |
+| $document_root     | nginx虚拟主机配置文件中的root参数对应的值                    |
+| $document_uri      | 当前请求中不包含请求参数的URI                                |
+| $host              | 主机头，也就是域名                                           |
+| $http_user_agent   | 客户端的详细信息，也就是浏览器的标识，用curl -A可以指定      |
+| $http_cookie       | 客户端的cookie信息                                           |
+| $limit_rate        | 如果nginx服务器使用limit_rate配置了显示网络速率，则会显示，如果没有设置， 则显示0 |
+| $remote_addr       | 客户端的公网ip                                               |
+| $remote_port       | 客户端的port                                                 |
+| $remote_user       | 如果nginx有配置认证，该变量代表客户端认证的用户名            |
+| $request_body_file | 做反向代理时发给后端服务器的本地资源的名称                   |
+| $request_method    | 请求资源的方式，GET/POST/PUT/DELETE等                        |
+| $request_filename  | 当前请求的资源文件的路径名称，相当于是`$document_root/$document_uri`的组合 |
+| $request_uri       | 请求的链接，包括`$document_uri`和`$args`                     |
+| $scheme            | 请求的协议，如 ftp, http, https                              |
+| $server_protocol   | 客户端请求资源使用的协议的版本，如HTTP/1.0，HTTP/1.1，HTTP/2.0等 |
+| $server_addr       | 服务器IP地址                                                 |
+| $server_name       | 服务器的主机名                                               |
+| $server_port       | 服务器的端口号                                               |
+| $uri               | 和$document_uri相同                                          |
+| $http_referer      | 客户端请求时的referer，通俗讲就是该请求是通过哪个链接跳过来的，用curl -e可以指定 |
+
+## 反向代理
 
 ## 负载均衡
 
-nginx 分配服务器策略：
+nginx 分配服务器的策略有两大类——内置策略和扩展策略：
 
-- 轮询（默认选项）
-- 权重：默认权重为1
-- IP哈希
-- fair（第三方）
+- 内置策略：
+  - 轮询（默认选项）
+  - 加权轮询（默认权重为1）
+  - IP哈希
+- 扩展策略（天马行空，取决于第三方实现）：
+  - fair
+  - ......
 
 ## 动静分离
 
@@ -48,8 +239,3 @@ nginx 分配服务器策略：
 - 一种是纯粹把静态文件独立成单独的域名，放在独立的服务器上，也是目前主流推崇的方案；
 - 另一种是动态跟静态文件混合在一起发布，通过nginx来分开
 
-## nginx高可用（集群？）
-
-## nginx原理解析
-
-> nginx同redis类似都采用了io多路复用机制......
