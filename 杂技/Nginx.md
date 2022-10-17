@@ -1,6 +1,6 @@
 > 非常好的一个讲解nginx的github仓库，作者是《深入理解Nginx》一书的作者陶辉：https://github.com/russelltao/geektime-nginx 。
 
-## nginx简介
+## 1. nginx简介
 
 nginx的优点：
 
@@ -20,7 +20,7 @@ nginx的组成：
 
 nginx同redis类似都采用了io多路复用机制......
 
-## nginx命令
+## 2. nginx命令
 
 通常在nginx的安装目录`cd /usr/local/nginx`中执行，命令的格式如：`nginx [param] [command]`
 
@@ -43,9 +43,9 @@ nginx同redis类似都采用了io多路复用机制......
 | `./nginx -s stop`   | 关闭 nginx        |
 | `./nginx -s reload` | 重新加载 nginx    |
 
-## nginx配置文件
+## 3. nginx配置文件
 
-### 路径及内容
+### 3.1 路径及内容
 
 配置文件的路径：`/usr/local/nginx/conf/nginx.conf`，其默认的配置如下：
 
@@ -132,7 +132,7 @@ server {
 }
 ```
 
-### 结构划分
+### 3.2 结构划分
 
 ```nginx
 ...                       # 全局块
@@ -162,7 +162,7 @@ nginx配置文件由三大块组成：
 
 <img src="../resources/images/notebook/杂技/nginx/image-20221017173158576.png" alt="image-20221017173158576" style="zoom:50%;" />
 
-### 语法格式
+### 3.3 语法格式
 
 > 参考 [从通用规则中学习Nginx模块的定制指令 - NGINX开源社区](https://www.nginx.org.cn/article/detail/274) 。
 
@@ -188,7 +188,7 @@ content_by_lua_block {ngx.say("Hello World ")}
 
 <img src="../resources/images/notebook/杂技/nginx/image-20221017172946874.png" alt="image-20221017172946874" style="zoom:50%;" />
 
-### 全局变量
+### 3.4 全局变量
 
 nginx 有一些常用的全局变量，你可以在配置的任何位置使用它们，如下表：
 
@@ -218,9 +218,133 @@ nginx 有一些常用的全局变量，你可以在配置的任何位置使用�
 | $uri               | 和$document_uri相同                                          |
 | $http_referer      | 客户端请求时的referer，通俗讲就是该请求是通过哪个链接跳过来的，用curl -e可以指定 |
 
-## 反向代理
+## 4. 反向代理
 
-## 负载均衡
+### 4.1 传递请求
+
+当nginx代理请求时，它将请求发送到指定的代理服务器，获取响应，并将其发送回客户端。可以使用指定的协议将请求代理到http服务器或非http服务器。
+
+#### 转发到http服务器
+
+要将请求传递给http代理服务器，则在一个location块内指定proxy_pass指令。 例如：
+
+```nginx
+location /some/path/ {
+    proxy_pass http://www.example.com/link/;
+}
+```
+
+实际使用中，可以将请求转发到本机另一个服务器上，也可以根据访问的路径跳转到不同端口的服务中。例如，我们监听 9001 端口，然后把访问不同路径的请求进行反向代理：
+
+- 把访问 http://127.0.0.1:9001/edu 的请求转发到 http://127.0.0.1:8080
+- 把访问 http://127.0.0.1:9001/vod 的请求转发到 http://127.0.0.1:8081
+
+实现方式如下，后在 http 模块下增加一个 server 块：
+
+```nginx
+server {
+  listen 9001;
+  server_name *.sherlocked93.club;
+
+  location ~ /edu/ {
+    proxy_pass http://127.0.0.1:8080;
+  }
+
+  location ~ /vod/ {
+    proxy_pass http://127.0.0.1:8081;
+  }
+}
+```
+
+#### 转发到非http服务器
+
+要将请求传递给非HTTP代理服务器，应使用相应的`xxx_pass`指令：
+
+- `fastcgi_pass`: 将请求传递给FastCGI服务器
+- `uwsgi_pass`: 将请求传递给uwsgi服务器
+- `scgi_pass`: 将请求传递给SCGI服务器
+- `memcached_pass`: 将请求传递给memcached服务器
+
+### 4.2 传递请求标头
+
+默认情况下，nginx在代理请求的`Host`和`Connection`中重新定义了两个头字段，并消除了其值为空字符串的头字段。`Host`设置为`$proxy_host`变量，`Connection`设置为`close`。
+
+要更改这些设置，以及修改其他头字段，请使用`proxy_set_header`指令。 该指令可以在一个或多个位置(`location`)指定。 它也可以在特定的`server`上下文或`http`块中指定。 例如：
+
+```nginx
+location /some/path/ {
+    proxy_set_header Host $host; # 设置Host字段为$host变量
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass http://localhost:8000;
+}
+```
+
+### 4.3 配置缓冲区
+
+默认情况下，nginx缓存来自代理服务器的响应，响应存储在内部缓冲区中，负责启用和禁用缓冲的指令是`proxy_buffering`，其默认为开启。
+
+`proxy_buffers`指令控制分配给请求的缓冲区的大小和数量。来自代理服务器的响应的第一部分存储在单独的缓冲区中，其大小由`proxy_buffer_size`指令设置。这部分通常包含一个比较小的响应头，并且可以比其余的响应的缓冲区小。
+
+在以下示例中，缓冲区的默认数量增加，并且响应的第一部分的缓冲区的大小小于默认值：
+
+```nginx
+location /some/path/ {
+    proxy_buffers 16 4k;
+    proxy_buffer_size 2k;
+    proxy_pass http://localhost:8000;
+}
+```
+
+如果缓存被禁用，则在从代理服务器接收缓冲时，响应将同步发送到客户端。对于需要尽快开始接收响应的快速交互式客户端，此行为可能是可取的。
+
+要禁用特定位置的缓冲，需要在`location`块中将`proxy_buffering`指令设置为`off`，如下所示：
+
+```nginx
+location /some/path/ {
+    proxy_buffering off;
+    proxy_pass http://localhost:8000;
+}
+```
+
+在这种情况下，nginx只使用由`proxy_buffer_size`配置的缓冲区来存储响应的当前部分。
+
+### 4.4 选择传出IP地址
+
+如果你的代理服务器有多个网络接口，有时你可能需要选择特定的源IP地址才能连接到代理服务器或上游。如果nginx后端的代理服务器只配置为接受来自特定IP网络或IP地址范围的连接，在这种情况下，这个配置选项就很有用。
+
+指定`proxy_bind`指令和必要网络接口的IP地址：
+
+```nginx
+location /app1/ {
+    proxy_bind 127.0.0.1;
+    proxy_pass http://example.com/app1/;
+}
+
+location /app2/ {
+    proxy_bind 127.0.0.2;
+    proxy_pass http://example.com/app2/;
+}
+```
+
+IP地址也可以用变量指定。 例如`$server_addr`变量传递接受请求的网络接口的IP地址：
+
+```nginx
+location /app3/ {
+    proxy_bind $server_addr;
+    proxy_pass http://example.com/app3/;
+}
+```
+
+### 4.5 其他指令
+
+反向代理时还可以使用一些其他的指令，几个例子如下：
+
+- `proxy_connect_timeout`：配置 Nginx 与后端代理服务器尝试建立连接的超时时间；
+- `proxy_read_timeout`：配置 Nginx 向后端服务器组发出 read 请求后，等待相应的超时时间；
+- `proxy_send_timeout`：配置 Nginx 向后端服务器组发出 write 请求后，等待相应的超时时间；
+- `proxy_redirect`：用于修改后端服务器返回的响应头中的 Location 和 Refresh。
+
+## 5. 负载均衡
 
 nginx 分配服务器的策略有两大类——内置策略和扩展策略：
 
@@ -232,10 +356,43 @@ nginx 分配服务器的策略有两大类——内置策略和扩展策略：
   - fair
   - ......
 
-## 动静分离
+示例配置如下：
 
-严格来说，nginx的动静分离指的是将动态请求和静态请求分开。动静分离从目前实现角度来讲大致分为两种：
+```nginx
+http {
+    upstream myserver {
+        # ip_hash;  # ip_hash 方式
+        # fair;   # fair 方式
+        server 127.0.0.1:8081;
+        server 127.0.0.1:8080;
+        server 127.0.0.1:8082 weight=10;  # weight方式，不写默认为1
+    }
+    
+    server {
+        location / {
+            proxy_pass http://myserver;
+            proxy_connect_timeout 10;
+        }
+    }
+}
+```
 
-- 一种是纯粹把静态文件独立成单独的域名，放在独立的服务器上，也是目前主流推崇的方案；
-- 另一种是动态跟静态文件混合在一起发布，通过nginx来分开
+## 6. 静态资源服务器
+
+nginx本身也是一个静态资源的服务器，当只有静态资源的时候，就可以使用nginx来做服务器，同时现在也很流行动静分离，也可以通过结合nginx的这部分功能来实现：
+
+```nginx
+server {
+    listen       80;                                                        
+    server_name  localhost;                                              
+    client_max_body_size 1024M;
+
+    location / {
+        root   E:/wwwRoot;
+        index  index.html;
+    }
+}
+```
+
+这样如果访问 http://localhost 就会访问到 E 盘 wwwRoot 目录下面的`index.html`，如果一个网站只是静态页面的话，那么就可以通过这种方式来实现部署。
 
