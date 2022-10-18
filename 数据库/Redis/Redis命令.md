@@ -20,11 +20,11 @@ Redis 命令用于在 redis 服务上执行操作。要在 redis 服务上执行
   redis 192.168.31.1:6379>
   ```
 
-## 查看/修改配置
+## 1. 查看/修改配置
 
 Redis 的配置文件位于 Redis 安装目录下，文件名为 **redis.conf** (Windows 名为 redis.windows.conf)。
 
-### 查看配置项
+### 1.1 查看配置项
 
 使用`CONFIG GET 配置名称`命令，例如获取日志级别：
 
@@ -75,7 +75,7 @@ redis 127.0.0.1:6379> CONFIG GET *
 .....
 ```
 
-### 修改配置项
+### 1.2 修改配置项
 
 使用命令：`CONFIG SET 配置项名称 配置项参数值`
 
@@ -98,7 +98,7 @@ Redis 的日志级别有以下四种：
 
 Redis 默认设置为 verbose，开发测试阶段可以用 debug，生产模式一般选用 notice。
 
-## 连接命令
+## 2. 连接命令
 
 Redis 连接命令是主要用于验证 Redis 服务器的连接状态，比如验证客户端与 Redis 服务器是否连接成功，以及检查服务器运行状态，以及是否断开当前连接等。
 
@@ -148,7 +148,7 @@ OK
 chuan@redmibook-2021:~$
 ```
 
-## key
+## 3. key
 
 Redis 是一种键值（key-value）型的缓存型数据库，它将数据全部以键值对的形式存储在内存中，并且 key 与 value 一一对应。这里的 key 被形象的称之为密钥，Redis 提供了诸多操作这把“密钥”的命令，从而实现了对存储数据的管理。
 
@@ -172,7 +172,7 @@ Redis 是一种键值（key-value）型的缓存型数据库，它将数据全�
 | SCAN cursor         | 基于游标的迭代器，用于迭代数据库中存在的所有键，cursor 指的是迭代游标。 |
 | TYPE key            | 该命令用于获取 value 的数据类型。                            |
 
-## string
+## 4. string
 
 Redis 操作字符串命令的语法格式为`COMMAND KEY_NAME`（COMMAND表示字符串的命令，KEY_NAME表示键的名称）。
 
@@ -201,7 +201,7 @@ Redis 操作字符串命令的语法格式为`COMMAND KEY_NAME`（COMMAND表示�
 | DECR key                         | 将 key 所存储的整数值减 1。                                  |
 | DECRBY key decrement             | 将 key 所储存的值减去给定的递减值（decrement）。             |
 
-## list
+## 5. list
 
 常用命令：
 
@@ -225,7 +225,7 @@ Redis 操作字符串命令的语法格式为`COMMAND KEY_NAME`（COMMAND表示�
 | BRPOP key1 [key2 ] timeout            | 用于删除并返回列表中的最后一个元素（尾部操作），如果列表中没有元素，就会发生阻塞， 直到列表等待超时或发现可弹出元素为止。 |
 | BRPOPLPUSH source destination timeout | 从列表中取出最后一个元素，并插入到另一个列表的头部。如果列表中没有元素，就会发生 阻塞，直到等待超时或发现可弹出元素时为止。 |
 
-## hash
+## 6. hash
 
 hash常用命令汇总：
 
@@ -246,7 +246,7 @@ hash常用命令汇总：
 | HVALS key                                | 用于获取哈希表中的所有值。                            |
 | HSCAN key cursor                         | 迭代哈希表中的所有键值对，cursor 表示游标，默认为 0。 |
 
-## set
+## 7. set
 
 Redis set 向集合中添加一个成员的语法格式为 `SADD key member [member ...]`。常用命令如下：
 
@@ -268,7 +268,7 @@ Redis set 向集合中添加一个成员的语法格式为 `SADD key member [mem
 | SUNIONSTORE destination key1 [key2]            | 求两个或者多个集合的并集，并将结果保存到指定的集合中。   |
 | SSCAN key cursor [match pattern] [count count] | 该命令用来迭代的集合中的元素。                           |
 
-## zset
+## 8. zset
 
 常用命令集合：
 
@@ -295,7 +295,7 @@ Redis set 向集合中添加一个成员的语法格式为 `SADD key member [mem
 | ZUNIONSTORE destination numkeys key [key ...]   | 求两个或多个有序集合的并集，并将返回结果存储在新的 key 中。  |
 | ZSCAN key cursor [MATCH pattern] [COUNT count]  | 迭代有序集合中的元素（包括元素成员和元素分值）。             |
 
-## 客户端命令
+## 9. 客户端命令
 
 Redis 提供了一些操作客户端（client）的命令，比如查询所有已连接到服务器的客户端数量，控制客户端的连接状态（关闭或者挂起）等。通过客户端命令我们可以轻松的实现对客户端的管理、控制。
 
@@ -323,7 +323,7 @@ Redis 服务器通过监听 TCP 端口的方式来接受客户端的连接。当
 | CLIENT ID      | 返回当前客户端 ID。                                          |
 | CLIENT REPLY   | 控制发送到当前连接的回复，可选值包括 on\|off\|skip。         |
 
-## 服务器命令
+## 10. 服务器命令
 
 Redis 提供了诸多操作服务器的命令，这些命令都有着各自重要的作用。比如`BGSAVE`命令，用异步的方式将 Redis 数据库的数据同步到本地磁盘中，实现数据的持久化存储，这对服务器的数据安全有着重要的作用。
 
@@ -363,7 +363,7 @@ Redis 服务器的常用命令：
 | SWAPDB index index                           | 用于交换同一 Redis 服务器上的两个数据库，可以实现访问其中一个数据库的客户端连接，也可以立即访问另外一个数据库的数据。 |
 | TIME                                         | 此命令用于返回当前服务器时间。                               |
 
-## HyperLogLog
+## 11. HyperLogLog
 
 常用命令：
 
@@ -373,7 +373,7 @@ Redis 服务器的常用命令：
 | PFCOUNT key [key ...]                     | 返回指定 HyperLogLog key 的基数估算值。 |
 | PFMERGE destkey sourcekey [sourcekey ...] | 将多个 HyperLogLog key 合并为一个 key。 |
 
-## GEO地理位置
+## 12. GEO地理位置
 
 在 Redis 3.2 版本中，新增了存储地理位置信息的功能，即 GEO（英文全称 geographic）。Redis GEO 有很多应用场景，举一个简单的例子，你一定点过外卖，或者用过打车软件，在这种 APP上会显示“店家距离你有多少米”或者“司机师傅距离你有多远”，类似这种功能就可以使用 Redis GEO 实现。数据库中存放着商家所处的经纬度，你的位置则由手机定位获取，这样 APP 就计算出了最终的距离。再比如微信中附近的人、摇一摇、实时定位等功能都依赖地理位置实现。
 
@@ -389,7 +389,7 @@ Redis GEO 的底层通过 Redis 有序集合（zset）实现，不过 Redis GEO 
 | GEOHASH           | 获取一个或者多个的地理位置的 GEOHASH 值。                    |
 | ZREM              | 通过有序集合的 zrem 命令实现对地理位置信息的删除。           |
 
-## ACL
+## 13. ACL
 
 Redis ACL 是 Access Control List（访问控制列表）的缩写，该功能允许根据可以执行的命令和可以访问的键来限制某些连接。
 
