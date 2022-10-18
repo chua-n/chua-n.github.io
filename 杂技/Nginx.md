@@ -195,32 +195,106 @@ nginx 有一些常用的全局变量，你可以在配置的任何位置使用�
 | 全局变量名         | 功能                                                         |
 | ------------------ | ------------------------------------------------------------ |
 | $args              | 请求中的参数                                                 |
+| $arg_参数名        | URL中某个具体参数的值                                        |
 | $content_length    | HTTP请求信息里的Content-Length                               |
 | $content_type      | HTTP请求信息里的Content-Type                                 |
 | $document_root     | nginx虚拟主机配置文件中的root参数对应的值                    |
-| $document_uri      | 当前请求中不包含请求参数的URI                                |
-| $host              | 主机头，也就是域名                                           |
+| $document_uri      | 与`$uri`完全相同                                             |
+| $host              | 主机头，也就是域名（先从请求行中获取；如果含有Host头部，则用其值替换掉请求行中的主机名；如果前两者都取不到，则使用匹配上的server_name） |
+| $http_头部名字     | 返回一个具体请求头部的值。大部是通用写法，几个写法特殊的为http_host, http_user_agent, http_referer, http_via, http_x_forwarded_for, http_cookie |
 | $http_user_agent   | 客户端的详细信息，也就是浏览器的标识，用curl -A可以指定      |
 | $http_cookie       | 客户端的cookie信息                                           |
 | $limit_rate        | 如果nginx服务器使用limit_rate配置了显示网络速率，则会显示，如果没有设置， 则显示0 |
+| $query_string      | 与`$args`完全相同                                            |
 | $remote_addr       | 客户端的公网ip                                               |
 | $remote_port       | 客户端的port                                                 |
-| $remote_user       | 如果nginx有配置认证，该变量代表客户端认证的用户名            |
-| $request_body_file | 做反向代理时发给后端服务器的本地资源的名称                   |
+| $remote_user       | 由 HTTP Basic Authentication 协议传入的用户名                |
+| $request           | 原始的url请求，含有方法与协议版本，例如 GET /?a=1&b=22 HTTP/1.1 |
+| $request_body_file | 临时存放请求包体的文件（如果包体非常小则不会存文件；client_body_in_file_only强制所有包体存入文件，且可决定是否删除） |
+| $request_body      | 请求中的包体，这个变量当且仅当使用反向代理，且设定用内存暂存包体时才有效 |
 | $request_method    | 请求资源的方式，GET/POST/PUT/DELETE等                        |
 | $request_filename  | 当前请求的资源文件的路径名称，相当于是`$document_root/$document_uri`的组合 |
 | $request_uri       | 请求的链接，包括`$document_uri`和`$args`                     |
-| $scheme            | 请求的协议，如 ftp, http, https                              |
+| $scheme            | 请求的协议名，如 ftp, http, https                            |
 | $server_protocol   | 客户端请求资源使用的协议的版本，如HTTP/1.0，HTTP/1.1，HTTP/2.0等 |
 | $server_addr       | 服务器IP地址                                                 |
 | $server_name       | 服务器的主机名                                               |
 | $server_port       | 服务器的端口号                                               |
-| $uri               | 和$document_uri相同                                          |
+| $uri               | 请求的URI（不同于URL，不包括?后面的请求参数）                |
 | $http_referer      | 客户端请求时的referer，通俗讲就是该请求是通过哪个链接跳过来的，用curl -e可以指定 |
 
 ## 4. 反向代理
 
-### 4.1 传递请求
+### 4.1 localtion的URI匹配规则
+
+location 的语法形式有两种：
+
+- `location [=|~|~*|^~] uri { ... }`：其中`[=|~|~*|^~]`部分为 location 修饰符（Modifier），修饰符定义了与 URI 的匹配方式；uri 为URI的模式，可以是字符串或正则表达式。
+- `location @name { ... }`
+
+各修饰符的作用如下：
+
+> 显而易见的是，location匹配URI时不包含URI中的请求参数。
+
+- 字符串匹配：
+
+  - `=`：精准字符串匹配，只有请求的url路径与后面的字符串完全相等时，才会命中
+
+    ```nginx
+    location = /images {
+      root /data/web;
+    }
+    ```
+
+  - `^~`：前缀字符串匹配，匹配上后直接返回，不再向下查找
+
+    ```nginx
+    location ^~ /images {
+      root /data/web;
+    }
+    ```
+
+  - 无修饰符：前缀字符串匹配，匹配上后继续向下查找
+
+    ```nginx
+    location /images {
+      root /data/web;
+    }
+    ```
+
+- 正则表达式匹配：
+
+  - `~`：正则匹配，区分大小写
+
+    ```nginx
+    location ~ /images/.*\.(gif|jpg|png)$ {
+      root /data/web;
+    }
+    ```
+
+  - `~*`：正则匹配，忽略大小写
+
+    ```nginx
+    location ~* \.(gif|jpg|png)$ {
+      root /data/web;
+    }
+    ```
+
+- 用于内部跳转的命名location
+
+  - `@`：
+
+    ```nginx
+    location @images { 
+      proxy_pass http://images; 
+    }
+    ```
+
+location的匹配顺序：
+
+<img src="../resources/images/notebook/杂技/nginx/nginx_location.png" alt="image-20221018102708228" style="zoom:67%;" />
+
+### 4.2 传递请求
 
 当nginx代理请求时，它将请求发送到指定的代理服务器，获取响应，并将其发送回客户端。可以使用指定的协议将请求代理到http服务器或非http服务器。
 
@@ -239,7 +313,7 @@ location /some/path/ {
 - 把访问 http://127.0.0.1:9001/edu 的请求转发到 http://127.0.0.1:8080
 - 把访问 http://127.0.0.1:9001/vod 的请求转发到 http://127.0.0.1:8081
 
-实现方式如下，后在 http 模块下增加一个 server 块：
+实现方式如下，在 http 模块下增加一个 server 块：
 
 ```nginx
 server {
@@ -265,7 +339,7 @@ server {
 - `scgi_pass`: 将请求传递给SCGI服务器
 - `memcached_pass`: 将请求传递给memcached服务器
 
-### 4.2 传递请求标头
+### 4.3 传递请求标头
 
 默认情况下，nginx在代理请求的`Host`和`Connection`中重新定义了两个头字段，并消除了其值为空字符串的头字段。`Host`设置为`$proxy_host`变量，`Connection`设置为`close`。
 
@@ -279,7 +353,7 @@ location /some/path/ {
 }
 ```
 
-### 4.3 配置缓冲区
+### 4.4 配置缓冲区
 
 默认情况下，nginx缓存来自代理服务器的响应，响应存储在内部缓冲区中，负责启用和禁用缓冲的指令是`proxy_buffering`，其默认为开启。
 
@@ -308,7 +382,7 @@ location /some/path/ {
 
 在这种情况下，nginx只使用由`proxy_buffer_size`配置的缓冲区来存储响应的当前部分。
 
-### 4.4 选择传出IP地址
+### 4.5 选择传出IP地址
 
 如果你的代理服务器有多个网络接口，有时你可能需要选择特定的源IP地址才能连接到代理服务器或上游。如果nginx后端的代理服务器只配置为接受来自特定IP网络或IP地址范围的连接，在这种情况下，这个配置选项就很有用。
 
@@ -335,7 +409,7 @@ location /app3/ {
 }
 ```
 
-### 4.5 其他指令
+### 4.6 其他指令
 
 反向代理时还可以使用一些其他的指令，几个例子如下：
 
