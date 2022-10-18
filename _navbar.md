@@ -16,7 +16,7 @@
     -   [Elasticsearch](/数据库/Elasticsearch/)
 -   [Linux](/Linux/)
 -   [杂技](/杂技/)
-    -   [CS](/杂技/CS/)
+    -   [计算机网络](/杂技/计算机网络/)
     -   [C++](/C++/)
     -   [Git](/杂技/Git/)
     -   [Docker](/杂技/Docker.md)
