@@ -23,6 +23,56 @@ Maven是一个基于Java的工具，所以Maven的使用必须安装有JDK。
 - compile, test, package, install, deploy：默认生命周期，这5个命令每个在执行的时候都会把其前面的命令挨个执行一遍。
 - …：站点生命周期（不常用）。
 
+### Maven概念模型
+
+![Maven概念模型](https://chua-n.gitee.io/figure-bed/notebook/Java/Maven概念模型.png)
+
+项目对象模型：
+
+- 项目自身信息
+- 项目运行所依赖的jar包信息
+- 项目运行环境信息，如jdk, tomcat信息
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.example</groupId>
+    <artifactId>mybatisFirstDemo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+```
+
+---
+
+依赖管理模型：
+
+- 公司/组织的名称：groupId
+- 项目名称：artifactId
+- 版本号：version
+
+```xml
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.5.5</version>
+</dependency>
+```
+
+---
+
+默认生命周期：
+
+- compile
+- test
+- package
+- install
+- deploy
+
+> 每一个构建项目的命令都对应了Maven底层的一个插件。
+
 ## 2. Maven项目结构
 
 对于一个项目，其构成一般分为4个部分：
@@ -81,7 +131,7 @@ Maven仓库有三种类型：
 <localRepository>D:\maven\repository</localRepository>
 ```
 
-### 3.2 添加并使用阿里云的中央仓库源：
+### 3.2 添加并使用阿里云的中央仓库源
 
 Maven仓库默认在国外，国内使用难免很慢，可以更换为阿里云的仓库。
 
@@ -95,56 +145,6 @@ Maven仓库默认在国外，国内使用难免很慢，可以更换为阿里云
     <mirrorOf>central</mirrorOf>
 </mirror>
 ```
-
-## 4. Maven概念模型
-
-![Maven概念模型](https://chua-n.gitee.io/figure-bed/notebook/Java/Maven概念模型.png)
-
-项目对象模型：
-
-- 项目自身信息
-- 项目运行所依赖的jar包信息
-- 项目运行环境信息，如jdk, tomcat信息
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.example</groupId>
-    <artifactId>mybatisFirstDemo</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-```
-
----
-
-依赖管理模型：
-
-- 公司/组织的名称：groupId
-- 项目名称：artifactId
-- 版本号：version
-
-```xml
-<dependency>
-    <groupId>org.mybatis</groupId>
-    <artifactId>mybatis</artifactId>
-    <version>3.5.5</version>
-</dependency>
-```
-
----
-
-默认生命周期：
-
-- compile
-- test
-- package
-- install
-- deploy
-
-> 每一个构建项目的命令都对应了Maven底层的一个插件。
 
 ## 5. pom.xml
 
