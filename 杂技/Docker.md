@@ -94,7 +94,18 @@ systemctl stop docker # 停止docker服务
 systemctl restart docker # 重启docker服务
 ```
 
-## 3. 镜像相关命令
+## 3. Docker命令
+
+> 以下各命令的具体参数可通过`docker COMMAND --help`来查阅官方说明，不一一列举。
+
+### 3.1 基本信息
+
+- `docker info [OPTIONS]`：显示 Docker 系统信息，包括镜像和容器数等
+- `docker version [OPTIONS]`：显示 Docker 版本信息
+- `docker inspect [OPTIONS] NAME|ID [NAME|ID...]`：获取容器/镜像的元数据
+- `docker events [OPTIONS]`：从服务器获取实时事件
+
+### 3.2 镜像
 
 镜像名称一般分两部分组成：`[repository]:[tag]`，在没有指定tag时，默认是`latest`，即最新版本的镜像。
 
@@ -104,30 +115,62 @@ systemctl restart docker # 重启docker服务
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222234637316.png" alt="image-20211222234637316" style="zoom:30%;" />
 
-- `docker search`：搜索远程（Docker Hub）存在的镜像
-- `docker images`：查看本地镜像
-- `docker rmi`：删除镜像
-- `docker pull`：从服务器拉取镜像
-- `docker push`：推送镜像到服务器
-- `docker build`：构建镜像
-- `docker save`：保存镜像为一个压缩包
-- `docker load`：加载压缩包为镜像
+#### 镜像仓库
 
-## 4. 容器相关命令
+- `docker login [OPTIONS] [SERVER]`：登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+- `docker logout [OPTIONS] [SERVER]`：登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+- `docker pull [OPTIONS] NAME[:TAG|@DIGEST]`：从镜像仓库中拉取或者更新指定镜像
+- `docker push [OPTIONS] NAME[:TAG]`：将本地的镜像上传到镜像仓库，需要先登陆到镜像仓库
+- `docker search [OPTIONS] TERM`：从 Docker Hub 查找镜像
+
+#### 本地镜像管理
+
+- `docker images [OPTIONS] [REPOSITORY[:TAG]]`：列出本地镜像
+- `docker rmi [OPTIONS] IMAGE [IMAGE...]`：删除本地一个或多个镜像
+- `docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]`：标记本地镜像，将其归入某一仓库
+- `docker build [OPTIONS] PATH | URL | -`：使用 Dockerfile 创建镜像
+- `docker history [OPTIONS] IMAGE`：查看指定镜像的创建历史
+- `docker save [OPTIONS] IMAGE [IMAGE...]`：将指定镜像保存成 tar 压缩包
+- `docker load [OPTIONS]`：从压缩包或标准输入中加载一个镜像
+- `docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]`：类似`docker load`，但
+
+### 3.3 容器
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1003.JPG" alt="IMG_1003" style="zoom:45%;" />
 
-- `docker run`：运行镜像
-- `docker pause`：暂停镜像
-- `docker unpause`：从暂停状态恢复镜像的运行
-- `docker start`：
-- `docker stop`：
-- `docker exec`：进入容器执行命令
-- `docker logs`：查看容器运行日志
-- `docker ps`：查看所有运行的容器及状态
-- `docker rm`：删除指定容器
+#### 容器生命周期管理
 
-### 示例
+- `docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`：创建一个新的容器，并在其中运行一个命令
+- `docker start [OPTIONS] CONTAINER [CONTAINER...]`：启动一个或多个已经被停止的容器
+- `docker stop [OPTIONS] CONTAINER [CONTAINER...]`：停止一个或多个正在运行的容器
+- `docker restart [OPTIONS] CONTAINER [CONTAINER...]`：重启一个或多个容器
+- `docker kill [OPTIONS] CONTAINER [CONTAINER...]`：杀掉一个或多个运行中的容器
+- `docker rm [OPTIONS] CONTAINER [CONTAINER...]`：删除一个或多个容器
+- `docker pause CONTAINER [CONTAINER...]`：暂停容器中所有的进程
+- `docker unpause CONTAINER [CONTAINER...]`：恢复容器中所有的进程
+- `docker create [OPTIONS] IMAGE [COMMAND] [ARG...]`：创建一个新的容器但不启动它，各种参数同`docker run`
+
+#### 容器操作
+
+- `docker ps [OPTIONS]`：列出容器（默认不加参数时只会列出正在执行的容器）
+- `docker top [OPTIONS] CONTAINER [ps OPTIONS]`：查看容器中运行的进程信息，支持 ps 命令参数
+- `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`：在运行的容器中执行命令
+- `docker attach [OPTIONS] CONTAINER`：连接到正在运行中的容器
+- `docker logs [OPTIONS] CONTAINER`：获取容器的日志
+- `docker wait [OPTIONS] CONTAINER [CONTAINER...]`：阻塞运行直到容器停止，然后打印出它的退出代码
+- `docker export [OPTIONS] CONTAINER`：将一个容器的文件系统导出为一个tar包，默认输出到STDOUT
+- `docker port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]]`：列出某个容器的端口映射
+- `docker stats [OPTIONS] [CONTAINER...]`：统计容器的资源使用情况，包括：CPU、内存、网络 I/O 等
+
+#### rootfs命令
+
+- `docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]`：从容器创建一个新的镜像
+- `docker cp`：用于容器与主机之间的数据拷贝
+  - `docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-`
+  - `docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH`
+- `docker diff [OPTIONS] CONTAINER`：检查容器里文件的更改
+
+#### 示例
 
 - 示例1：创建并运行一个Nginx容器：`docker run --name containerName -p 80:80 -d nginx`
 
@@ -141,9 +184,103 @@ systemctl restart docker # 重启docker服务
 
     <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1006.JPG" alt="IMG_1006" style="zoom:40%;" />
 
-## 5. 数据卷
+### 3.4 附：Management Commands
 
-### 5.1 整体介绍
+docker 1.13 之后，为了方便命令的管理，分为了 Management Commands 和 Commands，两者其实是互通的，例如`docker system info`等价于`docker info`。通过在命令行直接输入 docker 可直观看出：
+
+```shell
+chuan@RedmiBook-2021:~$ docker
+
+Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default "/home/chuan/.docker")
+  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and
+                           default context set with "docker context use")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/home/chuan/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/home/chuan/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/home/chuan/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  app*        Docker App (Docker Inc., v0.9.1-beta3)
+  builder     Manage builds
+  buildx*     Docker Buildx (Docker Inc., v0.8.2-docker)
+  compose*    Docker Compose (Docker Inc., v2.6.0)
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  scan*       Docker Scan (Docker Inc., v0.17.0)
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run 'docker COMMAND --help' for more information on a command.
+
+To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
+```
+
+## 4. 数据卷
+
+### 4.1 整体介绍
 
 背景——容器与数据耦合导致的问题：
 
@@ -155,7 +292,7 @@ systemctl restart docker # 重启docker服务
 
 数据卷的作用是将容器与数据分离，解耦合，方便操作容器内数据，保证数据安全。
 
-### 5.2 操作数据卷
+### 4.2 操作数据卷
 
 数据卷操作的基本语法如下：
 
@@ -171,7 +308,7 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 - `prune`：删除未使用的volume
 - `rm`：删除一个或多个指定的volume
 
-### 5.3 挂载数据卷
+### 4.3 挂载数据卷
 
 我们在创建容器时，可以通过`-v`参数来挂载一个数据卷到某个容器目录：
 
@@ -185,7 +322,7 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1014.JPG" alt="IMG_1014" style="zoom:45%;" />
 
-## 6. 自定义镜像：Dockerfile
+## 5. 自定义镜像：Dockerfile
 
 镜像结构：
 
@@ -222,7 +359,7 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
     <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005125668.png" alt="image-20211223005125668" style="zoom:40%;" />
 
-## 7. DockerCompose
+## 6. DockerCompose
 
 Docker Compose是可以基于Compose文件帮我们快速的部署分布式应用，而无需手动一个个创建和运行容器。
 
@@ -232,7 +369,7 @@ Compose文件是一个文本文件，通过指令定义集群中每个容器如�
 
 > <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005331811.png" alt="image-20211223005331811" style="zoom:33%;" />
 
-## 8. Docker镜像服务
+## 7. Docker镜像服务
 
 镜像仓库（Docker Registry）有公共的和私有的两种形式：
 
