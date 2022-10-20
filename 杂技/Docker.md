@@ -1,12 +1,34 @@
+## 0. 容器技术
+
+> 此节可详见[容器技术概念详解_Docker 入门教程-慕课网 (imooc.com)](https://www.imooc.com/wiki/dockerlesson/containertechnology.html)。
+
+### 容器技术的实质
+
+假定我们编写了一个批量运算加法的程序，这个程序的输入需要从一个文件 A 中读取，处理结果保存到另一个文件 B 中。当操作系统执行这个加法程序时，操作系统会根据程序的指引，从文件 A 中读取数据，保存到内存里，然后执行加法指令，CPU 与内存协作，完成了运算，将结果保存到 B 中。
+
+在程序的运行过程中，计算机内存的数据，CPU 寄存器里的数据，内存堆栈中的指令，读取写入的文件，以及运行过程中计算机的状态，这些信息的集合，就是进程。
+
+对于进程来说，它的静止态就是一个二进制可执行文件，它的运行态就是与它相关的计算机数据和状态的总和。而子进程的所有资源都继承父进程，只要控制住父进程的资源，通过父进程衍生的子进程也会被控制。
+
+所以，简单来说容器技术的实质就是：**通过各种手段，修改、约束一个“容器”进程的运行状态，按照用户的意图“误导”它能看到的资源，控制它的边界，从而达到环境隔离，或者说虚拟化的目的**。
+
+### Namespace与CGroupf
+
+> 容器技术的核心有两个：Namespace 和 Cgroup，详见 [Namespace_Docker 入门教程](https://www.imooc.com/wiki/dockerlesson/namespace.html) 与 [CGroup_Docker 入门教程](https://www.imooc.com/wiki/dockerlesson/cgroup.html)。
+
+### rootfs
+
+> 参见 [rootfs 与容器技术_Docker 入门教程-慕课网 (imooc.com)](https://www.imooc.com/wiki/dockerlesson/rootfs.html) 。
+
 ## 1. Docker出现的背景
 
-### 项目部署的问题
+### 1.1 项目部署的问题
 
 大型项目组件较多，运行环境也较为复杂，部署时会碰到一些问题，如依赖关系复杂易导致的兼容性问题，开发、测试、生产环境有差异。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0980.JPG" alt="IMG_0980" style="zoom:67%;" />
 
-### Docker的原理
+### 1.2 Docker的原理
 
 通常而言，计算机软硬件的架构是这样的：
 
@@ -26,13 +48,13 @@
 - 将应用的Libs（函数库）、Deps（依赖）、配置与应用一起打包
 - 将每个应用放到一个隔离容器去运行，避免互相干扰
 
-### Docker v.s. 虚拟机
+### 1.3 Docker v.s. 虚拟机
 
 虚拟机是在操作系统中模拟硬件设备，然后运行另一个操作系统，比如在windows系统里运行Ubuntu系统，这样就可以运行任意的Ubuntu应用了。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0987.JPG" alt="IMG_0988" style="zoom:40%;" />
 
-### Docker的解决方案总结
+### 1.4 Docker的解决方案总结
 
 Docker如何解决大型项目依赖关系复杂，不同组件依赖的兼容性问题？
 
