@@ -470,3 +470,30 @@ server {
 
 这样如果访问 http://localhost 就会访问到 E 盘 wwwRoot 目录下面的`index.html`，如果一个网站只是静态页面的话，那么就可以通过这种方式来实现部署。
 
+配置静态服务资源时，location 块常用`root`指令和`alias`指令，两者的区别顾名思义即可，叙述如下：
+
+- `root` 指令指定的是资源的根路径，因此最终会用`[root路径 + location路径]`的规则映射静态资源请求；
+- `alias` 指定指定资源路径的别名，因此会使用 alias 的路径替换 location 路径，即`[location路径 -> alias路径]`
+
+下面举例说明`root`与`alias`的区别:
+
+```nginx
+location ^~ /test1 {
+	root /root/html/;
+}
+
+location ^~ /test2/ {
+	alias /root/html/;
+}
+```
+
+- 对于 http 请求`http://ip:port/test1/web1.html`，其访问的是主机上全路径为 `/root/html/test1/web1.html`的静态资源；
+- 而对于请求`http://ip:port/test2/web1.html` 访问的是全路径为`/root/html/web1.html`的静态资源，其中`/test2/`已经被替换掉了。
+
+此外，有如下几点注意事项：
+
+- 使用`alias`时：
+    - 如果 location 匹配的 path 路径后面不带`/`，那么访问的 url 地址中这个 path 后面加不加`/`都不影响访问，实际访问 nginx 会为它自动加上`/`；
+    - 如果 location 匹配的 path 路径后面带了`/`，那么访问的 url 地址中这个 path 后面必须加上`/`才能正常访问。
+- 使用`root`时，location 匹配的 path 路径后面带不带`/`都不会影响 url 的访问；
+- 此外，alias 指令本身指定的路径必须要用`/`结束，否则会找不到文件的，而 root 则可有可无。
