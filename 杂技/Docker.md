@@ -47,7 +47,7 @@ Docker如何解决开发、测试、生产环境有差异的问题？
 
 ### 2.1 镜像和容器
 
-- 镜像（Image）：Docker将应用程序及其所需的依赖、函数库、环境、配置等文件打包在一起，称为镜像。
+- 镜像（Image）：Docker将应用程序及其所需的依赖、函数库、环境、配置等文件打包在一起，称为镜像，镜像是容器的只读模板。
 - 容器（Container）：镜像中的应用程序运行后形成的进程就是容器，只是Docker会给容器做隔离，对外不可见。
 
 > 镜像运行起来就是容器，一个镜像可以运行多个容器。
@@ -130,9 +130,9 @@ systemctl restart docker # 重启docker服务
 - `docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]`：标记本地镜像，将其归入某一仓库
 - `docker build [OPTIONS] PATH | URL | -`：使用 Dockerfile 创建镜像
 - `docker history [OPTIONS] IMAGE`：查看指定镜像的创建历史
-- `docker save [OPTIONS] IMAGE [IMAGE...]`：将指定镜像保存成 tar 压缩包
-- `docker load [OPTIONS]`：从压缩包或标准输入中加载一个镜像
-- `docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]`：类似`docker load`，但
+- `docker save [OPTIONS] IMAGE [IMAGE...]`：将指定镜像保存成 tar 压缩包，会保留该镜像所有的元信息及历史记录
+- `docker load [OPTIONS]`：从压缩包或标准输入中加载一个镜像，会保留该镜像所有的元信息及历史记录
+- `docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]`：类似`docker load`，但丢失所有元数据及历史记录
 
 ### 3.3 容器
 
@@ -158,9 +158,15 @@ systemctl restart docker # 重启docker服务
 - `docker attach [OPTIONS] CONTAINER`：连接到正在运行中的容器
 - `docker logs [OPTIONS] CONTAINER`：获取容器的日志
 - `docker wait [OPTIONS] CONTAINER [CONTAINER...]`：阻塞运行直到容器停止，然后打印出它的退出代码
-- `docker export [OPTIONS] CONTAINER`：将一个容器的文件系统导出为一个tar包，默认输出到STDOUT
+- `docker export [OPTIONS] CONTAINER`：将一个容器的文件系统导出为一个tar包，默认输出到STDOUT，舍弃所有元信息及历史记录
 - `docker port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]]`：列出某个容器的端口映射
 - `docker stats [OPTIONS] [CONTAINER...]`：统计容器的资源使用情况，包括：CPU、内存、网络 I/O 等
+
+一条命令快速实现停用并删除所有容器：
+
+```shell
+docker stop $(docker ps -q) & docker rm $(docker ps -aq)
+```
 
 #### rootfs命令
 
