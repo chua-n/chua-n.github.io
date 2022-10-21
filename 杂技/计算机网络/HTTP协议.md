@@ -481,6 +481,11 @@ HTTP 首部字段根据实际用途被分为以下 4 种类型，同时 HTTP/1.1
 
 这些非正式的首部字段统一归纳在 RFC4229 HTTP Header Field Registrations 中。
 
+- Content-disposition：服务器告诉客户端以什么格式打开响应数据。
+
+  - inline：默认值，在当前页面内打开
+  - attachment; filename=xxx：以附件形式打开响应体，即文件下载
+
 ### 5.3 首部字段作用详情
 
 > 参考《图解HTTP》等资料吧。
