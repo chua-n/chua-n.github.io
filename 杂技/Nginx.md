@@ -225,7 +225,22 @@ nginx 有一些常用的全局变量，你可以在配置的任何位置使用�
 
 ## 4. 反向代理
 
-### 4.1 localtion的URI匹配规则
+### 4.1 相关语法
+
+#### server_name的作用
+
+`server_name`代表虚拟主机的域名。因为一个http块可以配置多个server块，即多个虚拟主机，这些虚拟主机选择兼听的端口可能相同可能不同。当端口不同时，显然通过端口即可匹配到对应的虚拟主机；当存在多个虚拟主机兼听同一端口时，则需通过`server_name`来匹配对应的虚拟主机了。
+
+具体而言，`server_name`会与http请求中的`Host`头部字段作比较，当`server_name`与某个`Host`指定的域名相匹配时，则进入对应的虚拟主机中。
+
+当一个请求进入nginx时，如果匹配到多个`server_name`，比如通配符和正则表达式匹配，则将按以下优先级顺序：
+
+- 完全相等的域名
+- 以`*`通配符开头的字符串，如果存在多个匹配最长的那一个
+- 以`*`通配符结尾的字符串，如果存在多个匹配最长的那一个
+- 第一个匹配到的正则表达式（即按配置文件中配置的先后顺序）
+
+#### localtion的URI匹配规则
 
 location 的语法形式有两种：
 
@@ -294,6 +309,14 @@ location的匹配顺序：
 
 <img src="../resources/images/notebook/杂技/nginx/nginx_location.png" alt="image-20221018102708228" style="zoom:67%;" />
 
+#### proxy_pass
+
+在nginx中配置`proxy_pass`时，其后面的目标 url 后是否加有`/`，意义是有不同的。
+
+TODO 
+
+
+
 ### 4.2 传递请求
 
 当nginx代理请求时，它将请求发送到指定的代理服务器，获取响应，并将其发送回客户端。可以使用指定的协议将请求代理到http服务器或非http服务器。
@@ -318,7 +341,6 @@ location /some/path/ {
 ```nginx
 server {
   listen 9001;
-  server_name *.sherlocked93.club;
 
   location ~ /edu/ {
     proxy_pass http://127.0.0.1:8080;
@@ -453,6 +475,8 @@ http {
 
 ## 6. 静态资源服务器
 
+### 配置示例
+
 nginx本身也是一个静态资源的服务器，当只有静态资源的时候，就可以使用nginx来做服务器，同时现在也很流行动静分离，也可以通过结合nginx的这部分功能来实现：
 
 ```nginx
@@ -469,6 +493,8 @@ server {
 ```
 
 这样如果访问 http://localhost 就会访问到 E 盘 wwwRoot 目录下面的`index.html`，如果一个网站只是静态页面的话，那么就可以通过这种方式来实现部署。
+
+### root 与 alias
 
 配置静态服务资源时，location 块常用`root`指令和`alias`指令，两者的区别顾名思义即可，叙述如下：
 
