@@ -63,5 +63,4 @@
   - [Swagger](/JavaWeb/其他/Swagger.md)
   - [WebSocket](/JavaWeb/其他/WebSocket.md)
   - [前后端交互](/JavaWeb/其他/前后端交互.md)
-  - [计算机网络](/JavaWeb/其他/计算机网络.md)
   - [RESTful](/JavaWeb/其他/RESTful.md)
