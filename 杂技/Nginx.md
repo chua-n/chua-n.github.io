@@ -313,9 +313,33 @@ location的匹配顺序：
 
 在nginx中配置`proxy_pass`时，其后面的目标 url 后是否加有`/`，意义是有不同的。
 
-TODO 
+以请求 http://localhost/play/hello 为例：
 
+- `proxy_pass`不带`/`时，源请求的URI后缀会被完整保留，直接拼接到目标URL的后面：
 
+    ```nginx
+    server {
+        listen       80;
+        
+        location ^~ /play/ {
+            proxy_pass  http://192.168.1.8:8081; # 转发为 http://192.168.1.8:8081/play/hello
+        }
+    }
+    ```
+
+- `proxy_pass`带有`/`时，源请求的URI后缀会抹去 `localtion` 路径中匹配到的部分，然后将剩余的部分拼接到目标URL的后面：
+
+    ```nginx
+    server {
+        listen       80;
+        
+        location ^~ /play/ {
+            proxy_pass  http://192.168.1.8:8081/; # 转发为 http://192.168.1.8:8081/hello
+            # proxy_pass  http://192.168.1.8:8081/api/; # 转发为 http://192.168.1.8:8081/api/hello
+            # proxy_pass  http://192.168.1.8:8081/api; # 转发为 http://192.168.1.8:8081/apihello
+        }
+    }
+    ```
 
 ### 4.2 传递请求
 
@@ -475,7 +499,7 @@ http {
 
 ## 6. 静态资源服务器
 
-### 配置示例
+### 6.1 配置示例
 
 nginx本身也是一个静态资源的服务器，当只有静态资源的时候，就可以使用nginx来做服务器，同时现在也很流行动静分离，也可以通过结合nginx的这部分功能来实现：
 
@@ -494,7 +518,7 @@ server {
 
 这样如果访问 http://localhost 就会访问到 E 盘 wwwRoot 目录下面的`index.html`，如果一个网站只是静态页面的话，那么就可以通过这种方式来实现部署。
 
-### root 与 alias
+### 6.2 root 与 alias
 
 配置静态服务资源时，location 块常用`root`指令和`alias`指令，两者的区别顾名思义即可，叙述如下：
 
@@ -508,7 +532,7 @@ location ^~ /test1 {
 	root /root/html/;
 }
 
-location ^~ /test2/ {
+location ^~ /test2 {
 	alias /root/html/;
 }
 ```
@@ -516,10 +540,65 @@ location ^~ /test2/ {
 - 对于 http 请求`http://ip:port/test1/web1.html`，其访问的是主机上全路径为 `/root/html/test1/web1.html`的静态资源；
 - 而对于请求`http://ip:port/test2/web1.html` 访问的是全路径为`/root/html/web1.html`的静态资源，其中`/test2/`已经被替换掉了。
 
-此外，有如下几点注意事项：
+### 6.3 结合 index 指令
 
-- 使用`alias`时：
-    - 如果 location 匹配的 path 路径后面不带`/`，那么访问的 url 地址中这个 path 后面加不加`/`都不影响访问，实际访问 nginx 会为它自动加上`/`；
-    - 如果 location 匹配的 path 路径后面带了`/`，那么访问的 url 地址中这个 path 后面必须加上`/`才能正常访问。
-- 使用`root`时，location 匹配的 path 路径后面带不带`/`都不会影响 url 的访问；
-- 此外，alias 指令本身指定的路径必须要用`/`结束，否则会找不到文件的，而 root 则可有可无。
+使用 root 与 alias 指令 时，可搭配使用 index 指令，用来表明当 URL 中未指定具体的资源名称（xxx.html, xxx.php, xxx.xx等）时，即 URL 只定位到了文件夹的层级，该 URL 默认指向的资源名称。index 指令的默认值为 index.html index.htm。
+
+比如，如下配置时，访问 `http://ip:port` 会实际到 `http://ip:port/html/haha.html`
+
+```nginx
+    location ^~ / {
+        root   /html;
+        # alias /html;
+        index haha.html;
+    }
+```
+
+### 6.4 js语言描述root与alias的解析过程
+
+细扣起来，个人疏理 root 和 alias 的生效过程，其实分别是直接的字符串拼接与直接的字符串替换，下面我们尝试用编程语言来描述这一具体过程。
+
+首先假设有如下配置块：
+
+```nginx
+location ^~ rootLocationPath {
+	root rootTargetPath;
+}
+
+location ^~ aliasLocationPath {
+	alias aliasTargetPath;
+}
+```
+
+我们用 js 语言来描述该配置块：
+
+```js
+// 请求的 uri 部分
+const uri = "/uri"; // 注意完整的 uri 是带了 / 的
+
+// root 指令的配置
+const rootLocationPath = "rootLocationPath";
+const rootTargetPath = "rootTargetPath";
+
+// alias 指令的配置
+const aliasLocationPath = "aliasLocationPath";
+const aliasTargetPath = "aliasTargetPath";
+
+// 要求解的 root 指令的最终结果
+let rootFinalPath = null;
+// 要求解的 alias 指令的最终结果
+let aliasFinalPath = null;
+```
+
+当一个 `http://ip:port/uri` 进入 nginx 之后，其解析结果为：
+
+```js
+// root 指令的最终结果其实就是两个字符串的直接拼接
+rootFinalPath = `${rootTargetPath}${uri}`;
+
+// alias 指令的最终结果是将 uri 中的 aliasLocationPath 子串替换为 aliasTargetPath 后得到的结果
+aliasFinalPath = uri.replace(aliasLocationPath, aliasTargetPath);
+```
+
+网上有很多人纠结来纠结去前前后后的`/`的问题，实在是走错了方向。当拼接得到最终的`rootFinalPath`和`aliasFinalPath`后，无外乎该字符串**中间部分**可能会少了或多了一个`/`。当缺少了`/`，路径显然是不对的；当多了`/`，其实最终的结果不影响，因为操作系统在解析路径时对这种冗余的斜杠`/`是兼容的。
+
