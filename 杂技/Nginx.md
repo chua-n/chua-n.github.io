@@ -540,21 +540,7 @@ location ^~ /test2 {
 - 对于 http 请求`http://ip:port/test1/web1.html`，其访问的是主机上全路径为 `/root/html/test1/web1.html`的静态资源；
 - 而对于请求`http://ip:port/test2/web1.html` 访问的是全路径为`/root/html/web1.html`的静态资源，其中`/test2/`已经被替换掉了。
 
-### 6.3 结合 index 指令
-
-使用 root 与 alias 指令 时，可搭配使用 index 指令，用来表明当 URL 中未指定具体的资源名称（xxx.html, xxx.php, xxx.xx等）时，即 URL 只定位到了文件夹的层级，该 URL 默认指向的资源名称。index 指令的默认值为 index.html index.htm。
-
-比如，如下配置时，访问 `http://ip:port` 会实际到 `http://ip:port/html/haha.html`
-
-```nginx
-    location ^~ / {
-        root   /html;
-        # alias /html;
-        index haha.html;
-    }
-```
-
-### 6.4 js语言描述root与alias的解析过程
+### 6.3 js语言描述root与alias的解析过程
 
 细扣起来，个人疏理 root 和 alias 的生效过程，其实分别是直接的字符串拼接与直接的字符串替换，下面我们尝试用编程语言来描述这一具体过程。
 
@@ -601,4 +587,18 @@ aliasFinalPath = uri.replace(aliasLocationPath, aliasTargetPath);
 ```
 
 网上有很多人纠结来纠结去前前后后的`/`的问题，实在是走错了方向。当拼接得到最终的`rootFinalPath`和`aliasFinalPath`后，无外乎该字符串**中间部分**可能会少了或多了一个`/`。当缺少了`/`，路径显然是不对的；当多了`/`，其实最终的结果不影响，因为操作系统在解析路径时对这种冗余的斜杠`/`是兼容的。
+
+### 6.4 结合 index 指令
+
+使用 root 与 alias 指令 时，可搭配使用 index 指令，用来表明当 URL 中未指定具体的资源名称（xxx.html, xxx.php, xxx.xx等）时，即 URL 只定位到了文件夹的层级，该 URL 默认指向的资源名称。index 指令的默认值为 index.html index.htm。
+
+比如，如下配置时，访问 `http://ip:port` 会实际到 `http://ip:port/html/haha.html`
+
+```nginx
+location ^~ / {
+    root   /html;
+    # alias /html;
+    index haha.html;
+}
+```
 
