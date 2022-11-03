@@ -66,7 +66,7 @@ javac编译后生成的字节码文件有默认的文件名：文件名总是以
 
 运行java程序的命令是：`java Java类名`。
 
-如果想在运行Java程序时临时指定JRE搜索Java类的路径，则可以使用**-classpath选项**（或用-cp选项，-cp是简写，作用完全相同），即格式为：
+如果想在运行Java程序时临时指定JRE搜索Java类的路径，则可以使用`-classpath`选项 （或用`-cp`选项，`-cp`是简写，作用完全相同），即格式为：
 
 ```cmd
 java -classpath dir1;dir2;dir3…;dirN Java类
