@@ -518,7 +518,7 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
 
         > 其中各个部分，支持使用通配符`*`。
         >
-        > `modifiers-pattern`, `ret-type-pattern`, `declaring-type-pattern`是可选的，非必填项。
+        > `modifiers-pattern`, `declaring-type-pattern`, `throws-pattern`是可选的，非必填项。
 
         - `modifiers-pattern`：修饰符
         - `ret-type-pattern`：返回值类型
