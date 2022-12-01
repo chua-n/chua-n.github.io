@@ -65,7 +65,7 @@ Eureka的作用：
           defaultZone: http://localhost:10086/eureka/
     ```
 
-## 2. 服务注册
+## 3. 服务注册
 
 将user-service服务注册到EurekaServer步骤如下：
 
@@ -98,7 +98,7 @@ Eureka的作用：
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128183951686.png" alt="image-20211128183951686" style="zoom:33%;" />
 
-## 3. 服务发现
+## 4. 服务发现
 
 服务拉取是基于服务名称获取服务列表，然后再对服务列表做负载均衡。
 
