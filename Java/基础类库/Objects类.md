@@ -11,7 +11,5 @@ Java为工具类的命令习惯是添加一个字母s，如操作数组的工具
 | `static <T> void requireNonNull(T obj, Supplier<String> messageSupplier)` |                                                    |
 | `static <T> T requireNonNullElse(T obj, T defaultObj)`       | 如果obj不为null则返回obj，否则返回默认对象         |
 | `static <T> T requireNonNullElseGet(T obj, Supplier<T> defaultSupplier)` |                                                    |
-| s`tatic int hash(Object... objects)`                         | 返回一个散列码，由提供的所有对象的散列码组合而得到 |
+| `static int hash(Object... objects)`                         | 返回一个散列码，由提供的所有对象的散列码组合而得到 |
 | `static int hashCode(Object a)`                              | 如果a为null返回0，否则返回a.hashCode()             |
-
-  
