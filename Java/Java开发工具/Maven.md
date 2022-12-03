@@ -246,7 +246,9 @@ Maven仓库默认在国外，国内使用难免很慢，可以更换为阿里云
 
 以上配置中，mirrorOf 的取值为 central，表示该配置为中央仓库的镜像，所有对于中央仓库的请求都会转到该镜像。当然，我们也可以使用以上方式配置其他仓库的镜像。另外三个元素 id、name 和 url 分别表示镜像的唯一标识、名称和地址。
 
-为了满足一些较为复杂的需求，Maven 还支持一些更为高级的配置。
+#### mirrorOf标签
+
+为了满足一些较为复杂的需求，Maven 还支持一些更为高级的配置：
 
 - `<mirrorOf>*</mirrorOf>`：匹配所有远程仓库，所有对于远程仓库的请求都会被拦截，并跳转到 url 元素指定的地址
 - `<mirrorOf>external:*</mirrorOf>`：匹配所有远程仓库，使用 localhost 和 file:// 协议的除外。即，匹配所有不在本机上的远程仓库。
@@ -1055,9 +1057,9 @@ pluginManagement 同样是可继承的。当项目中的多个模块存在相同
 
 ### profile
 
-一个项目通常都会有多个不同的运行环境，例如开发环境，测试环境、生产环境等。而不同环境的构建过程很可能是不同的，例如数据源配置、插件、以及依赖的版本等。每次将项目部署到不同的环境时，都需要修改相应的配置，这样重复的工作，不仅浪费劳动力，还容易出错。为了解决这一问题，Maven 引入了 Profile 的概念，通过它可以为不同的环境定制不同的构建过程。
+一个项目通常都会有多个不同的运行环境，例如开发环境，测试环境、生产环境等。而不同环境的构建过程很可能是不同的，例如数据源配置、插件、以及依赖的版本等。每次将项目部署到不同的环境时，都需要修改相应的配置，这样重复的工作，不仅浪费劳动力，还容易出错。为了解决这一问题，Maven 引入了 profile 的概念，通过它可以为不同的环境定制不同的构建过程。
 
-Profile 可以分为 3 个类型，它们的作用范围也各不相同：
+profile 可以分为 3 个类型，它们的作用范围也各不相同：
 
 |    类型     |                        位置                         |             有效范围              |
 | :---------: | :-------------------------------------------------: | :-------------------------------: |
@@ -1067,9 +1069,9 @@ Profile 可以分为 3 个类型，它们的作用范围也各不相同：
 
 #### 声明profile
 
-Maven 通过 profiles 元素来声明一组 Profile 配置，该元素下可以包含多个 profile 子元素，每个 profile 元素表示一个 Profile 配置。每个 profile 元素中通常都要包含一个 id 子元素，该元素是调用当前 Profile 的标识。
+Maven 通过 profiles 元素来声明一组 profile 配置，该元素下可以包含多个 profile 子元素，每个 profile 元素表示一个 profile 配置。每个 profile 元素中通常都要包含一个 id 子元素，该元素是调用当前 profile 的标识。
 
-定义 Profile 的一般形式如下：
+定义 profile 的一般形式如下：
 
 ```xml
 <profiles>
@@ -1084,7 +1086,7 @@ Maven 通过 profiles 元素来声明一组 Profile 配置，该元素下可以�
 </profiles>
 ```
 
-除此之外，profile 中还可以声明一些其他的 POM 元素，但不同位置的 Profile 所能声明的 POM 元素是不同的：
+除此之外，profile 中还可以声明一些其他的 POM 元素，但不同位置的 profile 所能声明的 POM 元素是不同的：
 
 - 在 pom.xml 中声明的 profile，由于其能够随着 pom.xml 一起存在，它被提交到代码仓库中，被 Maven 安装到本地仓库或远程仓库中，所以它能够修改或增加很多 POM 元素，其中其常操作的元素如下表：
 
@@ -1108,13 +1110,13 @@ profile 可以通过以下 6 种方式激活：
   </activation>
   ```
 
-- 命令行激活：在 mvn 命令中使用参数 -P 加上 profile 的 id 来激活 Profile，多个 id 之间使用逗号隔开。例如，激活 test1 和 test2 两个 profile, 命令如下：
+- 命令行激活：在 mvn 命令中使用参数 -P 加上 profile 的 id 来激活 profile，多个 id 之间使用逗号隔开。例如，激活 test1 和 test2 两个 profile, 命令如下：
 
   ```bash
   mvn clean install -Ptest1,test2
   ```
 
-- 系统属性激活：用户可以配置当某个系统属性存在且为特定的值时，激活指定的 Profile。
+- 系统属性激活：用户可以配置当某个系统属性存在且为特定的值时，激活指定的 profile。
 
   - 例如，我们在 id 为 prod 的 profile 元素中添加以下配置，表示当系统属性 user 存在，且值等于 prod 时，自动激活该 profile：
 
@@ -1171,7 +1173,7 @@ profile 可以通过以下 6 种方式激活：
 
 #### 示例demo
 
-在 pom.xml 中定义三个不同的 profile，将 maven-antrun-plugin:run 目标绑定到 default 生命周期的 test 阶段上，以实现在不同的 Profile 中进行不同的操作。
+在 pom.xml 中定义三个不同的 profile，将 maven-antrun-plugin:run 目标绑定到 default 生命周期的 test 阶段上，以实现在不同的 profile 中进行不同的操作。
 
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0"
