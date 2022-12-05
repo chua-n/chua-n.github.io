@@ -800,7 +800,9 @@ Maven 在设计时，借鉴了 Java 面向对象中的继承思想，提出了 P
 
 无论 POM 文件中是否显示的声明，所有的 POM 均会继承自一个父 POM，这个继承体系中根节点的 POM 被称为 Super POM，它包含了一些可以被继承的默认设置。
 
-Maven 最终执行相关任务时，会使用当前项目的POM加上父级POM的配置来执行相关任务，这个实际发生作用的POM称之为 effective pom。
+### 7.3 effective POM
+
+Maven 最终执行相关任务时，会将继承关系中的所有POM叠加到一起形成一个最终生效的POM，在Maven实际运行过程中，执行构建操作就是按照这个有效POM来运行的，这个实际发生作用的POM称之为 effective pom。
 
 在一个maven项目下执行以下命令 ，就可以查看当前的 effective pom：
 
@@ -808,7 +810,7 @@ Maven 最终执行相关任务时，会使用当前项目的POM加上父级POM�
 mvn help:effective-pom
 ```
 
-### 7.3 可继承的POM元素
+### 7.4 可继承的POM元素
 
 由上已知 groupId、version 以及项目的依赖配置 dependencies 是可以被继承的，除了这 3 个元素之外，还有哪些元素可以被继承呢？
 
