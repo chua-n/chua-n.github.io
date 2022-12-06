@@ -54,6 +54,7 @@
 }
 .markdown-section em {
   color: var(--theme-color, #555555c7);
+  padding-right: 0.25em;
 }
 /* markdown中有序列表中序号表示符，第1~4级依次设定为阿拉伯数字、小写英文字母、小写罗马字母、小写希腊字母 */
 ol {
