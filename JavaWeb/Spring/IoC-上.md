@@ -90,9 +90,9 @@ Spring提供了两种类型的IoC容器：
     ```xml
     <bean id="clientService" class="examples.ClientService" factory-method="createInstance"/>
     ```
-    
+
     ```java
-public class ClientService {
+    public class ClientService {
         private static ClientService clientService = new ClientService();
         
         private ClientService() {}
