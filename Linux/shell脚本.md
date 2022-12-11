@@ -142,7 +142,7 @@ echo ${#string} # 输出 4
 
 ## 3. 流程控制
 
-### if-then
+### 3.1 if-then
 
 #### 基本使用
 
@@ -378,7 +378,7 @@ $
 
 在上面的脚本中，我们使用了双等号`==`。双等号将右边的字符串（`r*`）视为一个模式，并应用模式匹配规则。
 
-### case
+### 3.2 case
 
 有了`case`命令，就不需要再写出烦琐的`elif`语句来不停地检查同一个变量的值了，`case`命令会采用列表格式来检查单个变量的多个值：
 
@@ -448,7 +448,7 @@ esac
   $
   ```
 
-### 循环命令
+### 3.3 循环命令
 
 #### for 循环
 
@@ -1360,26 +1360,425 @@ Finished processing the file
 $
 ```
 
-## 计划任务
+## 5. 处理信号
 
-计划任务分为**一次性计划任务**与**长期性计划任务**
+shell将shell中运行的每个进程称为**作业**，并为每个作业分配唯一的**作业号**。它会给第一个作业分配作业号1，第二个作业号2，以此类推。
 
-1. 一次性：今晚 11 点 30 分开启网站服务
+Linux利用信号与运行在系统中的进程进行通信，Linux系统和应用程序可以生成超过30个信号。下表列出了最常见的Linux系统信号：
 
-2. 长期性：每周一的凌晨 3 点 25 分把/home/wwwroot 目录打包备份为 backup.tar.gz
+| 信号 |    值     |              描述              |
+| :--: | :-------: | :----------------------------: |
+|  1   | `SIGHUP`  |            挂起进程            |
+|  2   | `SIGINT`  |            终止进程            |
+|  3   | `SIGQUIT` |            停止进程            |
+|  9   | `SIGKILL` |         无条件终止进程         |
+|  15  | `SIGTERM` |         尽可能终止进程         |
+|  17  | `SIGSTOP` | 无条件停止进程，但不是终止进程 |
+|  18  | `SIGTSTP` |  停止或暂停进程，但不终止进程  |
+|  19  | `SIGCONT` |       继续运行停止的进程       |
 
-at 命令与 crond 服务：
+默认情况下，bash shell会忽略收到的任何`SIGQUIT (3)`和`SIGTERM (5)`信号，正因为这样，交互式shell才不会被意外终止。但是bash shell会处理收到的`SIGHUP (1)`和`SIGINT (2)`信号：
 
-|    命令    |                作用                |     用户      |
-| :--------: | :--------------------------------: | :-----------: |
-|     at     |         设置一次性计划任务         |    at 时间    |
-|   at -l    | 查看已设置好但还未执行的一次性任务 |               |
-|    atrm    |        删除某一次性计划任务        | atrm 任务序号 |
-| crontab -e |       创建、编辑长期计划任务       |               |
-| crontab -l |          删除某条计划任务          |               |
+- 如果bash shell收到了`SIGHUP`信号，比如当你要离开一个交互式shell，它就会退出，但在退出之前，它会将`SIGHUP`信号传给所有由该shell所启动的进程（包括正在运行的shell脚本）。
+- 通过`SIGINT`信号，可以中断shell，Linux内核会停止为shell分配CPU处理时间。这种情况发生时，shell会将`SIGINT`信号传给所有由它所启动的进程，以此告知出现的状况。
 
-部署计划任务的时间格式为“分、时、日、月、星期 命令”，若某些字段没有设置，使用星号`*`占位：
+### 5.1 生成信号
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/Linux/34.png" style="zoom:50%;" />
+bash shell允许用键盘上的组合键生成两种基本的Linux信号，这个特性在需要停止或暂停失控程序时非常方便。
 
-计划任务中的“分”字段必须有数值，绝对不能为空或为`*`号，而“日”和“星期”字段不能同时使用，否则就会发生冲突。
+- 中断进程：$Ctrl+C$组合键会生成`SIGINT`信号，并将其发送给当前在shell中运行的所有进程。
+
+- 暂停进程：$Ctrl+Z$​组合键会生成`SIGTSTP`信号，停止shell中运行的任何进程。
+
+  > - 停止（stopping）进程跟终止（terminating）进程不同：停止进程会让程序继续保留在内存中，并能从上次停止的位置继续运行。
+  > - 你可以在进程运行期间暂停进程，而无需终止它，尽管有时这可能会比较危险（比如，脚本打开了一个关键的系统文件的文件锁），但通常它可以在不终止进程的情况下使你能够深入脚本内部一窥究竟。
+
+### 5.2 捕获信号
+
+`trap`命令允许你来指定shell脚本要监看并从shell中拦截的Linux信号，如果脚本收到了trap命令中列出的信号，该信号不再由shell处理，而是交由本地处理。
+
+`trap`命令的格式如下，在`trap`命令行上，你只要列出想要shell执行的命令，以及一组用空格分开的待捕获的信号（你可以用数值或Linux信号名来指定信号）：
+
+```shell
+trap commands signals
+```
+
+这里有个简单例子，展示了如何使用`trap`命令来忽略`SIGINT`信号，并控制脚本的行为：
+
+```bash
+$ cat test1.sh
+#!/bin/bash
+# Testing signal trapping
+#
+trap "echo ' Sorry! I have trapped Ctrl-C'" SIGINT
+#
+echo This is a test script
+#
+count=1
+while [ $count -le 10 ]
+do
+	echo "Loop #$count"
+	sleep 1
+	count=$[ $count + 1 ]
+done
+#
+echo "This is the end of the test script"
+#
+$
+$ ./test1.sh
+This is a test script
+Loop #1
+Loop #2
+Loop #3
+Loop #4
+Loop #5
+^C Sorry! I have trapped Ctrl-C
+Loop #6
+Loop #7
+Loop #8
+^C Sorry! I have trapped Ctrl-C
+Loop #9
+Loop #10
+This is the end of the test script
+$
+```
+
+如果想要捕获shell脚本退出时的信号，可以通过如下设置：
+
+```bash
+$ cat test2.sh
+#!/bin/bash
+# Trapping the script exit
+#
+trap "echo Goodbye..." EXIT
+#
+count=1
+while [ $count -le 5 ]
+do
+	echo "Loop #$count"
+	sleep 1
+	count=$[ $count + 1 ]
+done
+#
+$
+$ ./test2.sh
+Loop #1
+Loop #2
+Loop #3
+Loop #4
+Loop #5
+Goodbye...
+$
+$ ./test2.sh
+Loop #1
+Loop #2
+Loop #3
+^CGoodbye...
+$
+```
+
+### 5.3 修改/移除信号捕获
+
+要想在脚本中的不同位置进行不同的捕获处理，只需重新使用`trap`命令：
+
+```bash
+$ cat test3.sh
+#!/bin/bash
+# Modifying a set trap
+#
+trap "echo ' Sorry... Ctrl-C is trapped.'" SIGINT
+#
+count=1
+while [ $count -le 5 ]
+do
+	echo "Loop #$count"
+	sleep 1
+	count=$[ $count + 1 ]
+done
+#
+trap "echo ' I modified the trap!'" SIGINT
+#
+count=1
+while [ $count -le 5 ]
+do
+	echo "Second Loop #$count"
+	sleep 1
+	count=$[ $count + 1 ]
+done
+#
+$
+```
+
+修改了信号捕获之后，脚本处理信号的方式就会发生变化。但如果一个信号是在捕获被修改前接收到的，那么脚本仍然会根据最初的trap命令进行处理：
+
+```bash
+$ ./test3.sh
+Loop #1
+Loop #2
+Loop #3
+^C Sorry... Ctrl-C is trapped.
+Loop #4
+Loop #5
+Second Loop #1
+Second Loop #2
+^C I modified the trap!
+Second Loop #3
+Second Loop #4
+Second Loop #5
+$
+```
+
+也可以删除已设置好的捕获，只需要在`trap`命令与希望恢复默认行为的信号列表之间加上破折号`--`就行了：
+
+```bash
+$ cat test3b.sh
+#!/bin/bash
+# Removing a set trap
+#
+trap "echo ' Sorry... Ctrl-C is trapped.'" SIGINT
+#
+count=1
+while [ $count -le 5 ]
+do
+	echo "Loop #$count"
+	sleep 1
+	count=$[ $count + 1 ]
+done
+#
+# Remove the trap
+trap -- SIGINT
+echo "I just removed the trap"
+#
+count=1
+while [ $count -le 5 ]
+do
+	echo "Second Loop #$count"
+	sleep 1
+	count=$[ $count + 1 ]
+done
+#
+$ ./test3b.sh
+Loop #1
+Loop #2
+Loop #3
+Loop #4
+Loop #5
+I just removed the trap
+Second Loop #1
+Second Loop #2
+Second Loop #3
+^C
+$
+```
+
+## 6. 调整优先级
+
+在多任务操作系统中（Linux就是），内核负责将CPU时间分配给系统上运行的每个进程，**调度优先级**（scheduling priority）决定了内核分配给进程的CPU时间（相对于其他进程）。在Linux系统中，由shell启动的所有进程的调度优先级默认都是相同的。
+
+调度优先级是个整数值，从-20（最高优先级）到+19（最低优先级）。默认情况下，bash shell以优先级0来启动所有进程。
+
+### 6.1 nice 命令
+
+`nice`命令允许你设置命令*启动时*的调度优先级，可以使用`ps`命令的NI列验证：
+
+```bash
+$ nice -n 10 ./test4.sh > test4.out &
+[1] 4973
+$
+$ ps -p 4973 -o pid,ppid,ni,cmd
+	PID PPID NI CMD
+   4973 4721 10 /bin/bash ./test4.sh
+$
+```
+
+`nice`命令阻止普通系统用户来*提高*命令的优先级，如下，注意指定的作业的确运行了，但是试图使用nice命令提高其优先级的操作却失败了：
+
+```bash
+$ nice -n -10 ./test4.sh > test4.out &
+[1] 4985
+$ nice: cannot set niceness: Permission denied
+ [1]+ Done nice -n -10 ./test4.sh > test4.out
+$
+```
+
+### 6.2 renice 命令
+
+`renice` 命令允许你改变系统上*已运行*命令的优先级：
+
+```bash
+$ ./test11.sh &
+[1] 5055
+$
+$ ps -p 5055 -o pid,ppid,ni,cmd
+	PID PPID NI CMD
+   5055 4721 0 /bin/bash ./test11.sh
+$
+$ renice -n 10 -p 5055
+5055: old priority 0, new priority 10
+$
+$ ps -p 5055 -o pid,ppid,ni,cmd
+	PID PPID NI CMD
+   5055 4721 10 /bin/bash ./test11.sh
+$
+```
+
+和`nice`命令一样，`renice`命令也有一些限制：
+
+- 只能对属于你的进程执行`renice`；
+- 只能通过`renice`降低进程的优先级；
+- `root`用户可以通过`renice`来任意调整进程的优先级。
+
+如果想完全控制运行进程，必须以`root`账户身份登录或使用`sudo`命令。
+
+## 7. 定时任务
+
+### 7.1 at 命令：一次性执行
+
+`at`命令允许指定Linux系统何时运行脚本，其会将作业提交到队列中，指定shell何时运行该作业。`at`的守护进程`atd`会以后台模式运行，检查作业队列来运行作业，大多数Linux发行版会在启动时运行此守护进程。
+
+`atd`守护进程会检查系统上的一个特殊目录（通常位于`/var/spool/at`）来获取用`at`命令提交的作业。默认情况下，`atd`守护进程会每60秒检查一下这个目录，有作业时，`atd`守护进程会检查作业设置运行的时间，如果时间跟当前时间匹配，`atd`守护进程就会运行此作业。
+
+#### 基本使用
+
+`at`命令的基本格式非常简单：
+
+```shell
+at [-f filename] time
+```
+
+- 默认情况下，`at`命令会将`STDIN`的输入放到队列中，你可以用`-f`参数来指定用于读取命令（脚本文件）的文件名。
+- `time`参数指定了Linux系统何时运行该作业。如果你指定的时间已经错过，`at`命令会在第二天的那个时间运行指定的作业。
+
+如下为一个简单示例：
+
+```bash
+$ cat test13.sh
+#!/bin/bash
+# Test using at command
+#
+echo "This script ran at $(date +%B%d,%T)"
+echo
+sleep 5
+echo "This is the script's end..."
+#
+$ at -f test13.sh now
+job 7 at 2015-07-14 12:38
+$
+```
+
+- `at`命令会显示分配给作业的作业号以及为作业安排的运行时间；
+- `-f`选项指明使用哪个脚本文件；
+- `now`指示`at`命令立刻执行该脚本。
+
+#### 作业队列与优先级
+
+在你使用`at`命令时，该作业会被提交到**作业队列**（job queue），作业队列会保存通过`at`命令提交的待处理的作业。针对不同优先级，存在26种不同的作业队列。作业队列通常用小写字母a~z和大写字母A~Z来指代。作业队列的字母排序越高，作业运行的优先级就越低（更高的nice值），默认情况下，`at`的作业会被提交到a作业队列，如果想以更高优先级运行作业，可以用-q参数指定不同的队列字母。
+
+`atq`命令可以查看系统中有哪些作业在等待：
+
+```bash
+$ at -M -f test13b.sh teatime
+job 17 at 2015-07-14 16:00
+$
+$ at -M -f test13b.sh tomorrow
+job 18 at 2015-07-15 13:03
+$
+$ at -M -f test13b.sh 13:30
+job 19 at 2015-07-14 13:30
+$
+$ at -M -f test13b.sh now
+job 20 at 2015-07-14 13:03
+$
+$ atq
+20 2015-07-14 13:03 = Christine
+18 2015-07-15 13:03 a Christine
+17 2015-07-14 16:00 a Christine
+19 2015-07-14 13:30 a Christine
+$
+```
+
+#### 删除等待作业
+
+一旦知道了哪些作业在作业队列中等待，就能用`atrm`命令来删除等待中的作业，只要指定想要删除的作业号就行了。不过只能删除你提交的作业，不能删除其他人的。如下：
+
+```bash
+$ atq
+18 2015-07-15 13:03 a Christine
+17 2015-07-14 16:00 a Christine
+19 2015-07-14 13:30 a Christine
+$
+$ atrm 18
+$
+$ atq
+17 2015-07-14 16:00 a Christine
+19 2015-07-14 13:30 a Christine
+$
+```
+
+#### at 作业的输出
+
+当作业在Linux系统上运行时，显示器并不会关联到该作业。取而代之的是，Linux系统会将提交该作业的用户的电子邮件地址作为`STDOUT`和`STDERR`。任何发到`STDOUT`或`STDERR`的输出都会通过邮件系统发送给该用户。然而，使用e-mail作为`at`命令的输出极其不便。`at`命令利用sendmail应用程序来发送邮件。如果你的系统中没有安装sendmail，那就无法获得任何输出！因此在使用at命令时，最好在脚本中对`STDOUT`和`STDERR`进行重定向。
+
+### 7.2 crontab 命令：定期执行
+
+Linux系统使用cron程序来安排要定期执行的作业。
+
+#### cron 时间表
+
+cron程序会在后台运行并检查一个特殊的表（被称作cron时间表），以获知已安排执行的作业。
+
+cron时间表采用一种特别的格式来指定作业何时运行，其格式如下：
+
+```shell
+min hour dayofmonth month dayofweek command
+```
+
+- cron时间表允许你用特定值、取值范围（比如1~5）或者是通配符（星号）来指定条目，如`15 10 * * * command`；
+
+- cron程序会用提交作业的用户账户运行该脚本，因此，需要注意相关的用户权限；
+
+- cron时间表的图解：
+
+  <img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/Linux/34.png" style="zoom:50%;" />
+
+#### crontab 命令
+
+每个系统用户（包括root用户）都可以用自己的cron时间表来运行安排好的任务。Linux提供了`crontab`命令来处理cron时间表。要列出已有的cron时间表，可以用-l选项。
+
+|     命令     |         作用         |
+| :----------: | :------------------: |
+| `crontab -l` | 列出已有的cron时间表 |
+| `crontab -e` |  创建/编辑定期任务   |
+
+#### 预置的 cron 脚本目录
+
+如果你创建的脚本对精确的执行时间要求不高，用预配置的cron脚本目录会更方便。有4个基本目录：hourly、daily、monthly和weekly：
+
+```bash
+$ ls /etc/cron.*ly
+/etc/cron.daily:
+cups makewhatis.cron prelink tmpwatch
+logrotate mlocate.cron readahead.cron
+
+/etc/cron.hourly:
+0anacron
+
+/etc/cron.monthly:
+readahead-monthly.cron
+
+/etc/cron.weekly:
+$
+```
+
+比如，如果脚本需要每天运行一次，只要将脚本复制到daily目录，cron就会每天执行它。
+
+#### anacron 程序
+
+cron程序的唯一问题是它假定Linux系统是7×24小时运行的，除非将Linux当成服务器环境来运行，否则此假设未必成立。
+
+如果某个作业在cron时间表中安排运行的时间已到，但这时候Linux系统处于关机状态，那么这个作业就不会被运行。当系统开机时，cron程序不会再去运行那些错过的作业。要解决这个问题，许多Linux发行版还包含了anacron程序。
+
+如果anacron知道某个作业错过了执行时间，它会尽快运行该作业。这意味着如果Linux系统关机了几天，当它再次开机时，原定在关机期间运行的作业会自动运行。
+
+> 以后再说吧......
+
