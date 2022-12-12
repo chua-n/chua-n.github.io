@@ -109,10 +109,11 @@ $
     -   双引号里可以有变量
     -   双引号里可以出现转义字符
 
-不被引号包围的字符串：
+-   不被引号包围的字符串：
 
-1. 不被引号包围的字符串中出现变量时也会被解析，这一点和双引号" "包围的字符串一样；
-2. 字符串中不能出现空格，否则空格后边的内容会被解析为其他变量或命令。
+    -   不被引号包围的字符串中出现变量时也会被解析，这一点和双引号`" "`包围的字符串一样；
+    -   字符串中不能出现空格，否则空格后边的内容会被解析为其他变量或命令。
+
 
 多个字符串直接放在一起时表示字符串拼接（类似 python 的语法）:
 
@@ -1362,7 +1363,440 @@ $
 
 ## 5. 脚本函数
 
+函数是一个脚本代码块，你可以为其命名并在代码中任何位置重用。要在脚本中使用该代码块时，只要使用所起的函数名就行了，这个过程称为调用函数。
 
+### 5.1 创建函数
+
+有两种格式可以用来在bash shell脚本中创建函数：
+
+- 采用关键字`function`：
+
+  ```shell
+  function name {
+  	commands
+  }
+  ```
+
+- 圆括号方式：
+
+  ```shell
+  name() {
+  	commands
+  }
+  ```
+
+上述定义中：
+
+- `name`属性定义了赋予函数的唯一名称，脚本中定义的每个函数都必须有一个唯一的名称；如果你在后续行中重定义了该函数，新定义会覆盖原来函数的定义，这一切不会产生任何错误消息。
+- `commands`是构成函数的一条或多条bash shell命令，在调用该函数时，bash shell会按命令在函数中出现的顺序依次执行，就像在普通脚本中一样。
+
+### 5.2 使用函数
+
+#### 基本使用
+
+要在脚本中使用函数，只需要像其他shell命令一样，在行中指定函数名就行了：
+
+```bash
+$ cat test1
+#!/bin/bash
+# using a function in a script
+function func1 {
+	echo "This is an example of a function"
+}
+count=1
+while [ $count -le 5 ]
+do
+	func1
+	count=$[ $count + 1 ]
+done
+
+echo "This is the end of the loop"
+func1
+echo "Now this is the end of the script"
+$
+$ ./test1
+This is an example of a function
+This is an example of a function
+This is an example of a function
+This is an example of a function
+This is an example of a function
+This is the end of the loop
+This is an example of a function
+Now this is the end of the script
+$
+```
+
+#### 处理变量
+
+函数使用两种类型的变量：
+
+- 全局变量：在shell脚本中任何地方都有效的变量。默认情况下，你在脚本中任何地方定义的变量都是全局变量，也就是说：在函数外定义的变量在函数内可以正常访问，在函数内定义的变量在函数外也可以正常访问。
+
+  ```bash
+  $ cat test8.sh
+  function fun1 {
+          var2="I'm a global variable defined in function func1."
+          var1="var1别逼逼，本函数要动你了"
+  }
+  var1="I'm a globale variable defined in script directly."
+  echo "var1: $var1"
+  fun1
+  echo "var2: $var2"
+  echo "var1: $var1"
+  $
+  $ ./test8.sh
+  var1: I'm a globale variable defined in script directly.
+  var2: I'm a global variable defined in function func1.
+  var1: var1别逼逼，本函数要动你了
+  ```
+
+- 局部变量：函数内部使用的任何变量可以被声明成局部变量，只要在变量声明的前面加上`local`关键字就可以了。`local`关键字保证了变量只局限在该函数中，如果脚本中在该函数之外有同样名字的变量，那么shell将会保持这两个变量的值是分离的。
+
+  ```bash
+  $ cat test9
+  #!/bin/bash
+  # demonstrating the local keyword
+  
+  function func1 {
+  	local temp=$[ $value + 5 ]
+  	result=$[ $temp * 2 ]
+  }
+  
+  temp=4
+  value=6
+  
+  func1
+  echo "The result is $result"
+  if [ $temp -gt $value ]
+  then
+  	echo "temp is larger"
+  else
+  	echo "temp is smaller"
+  fi
+  $
+  $ ./test9
+  The result is 22
+  temp is smaller
+  $
+  ```
+
+#### 递归函数
+
+shell 函数也支持递归。如下示意了一个阶乘函数用它自己来计算阶乘的值：
+
+```bash
+$ cat test13
+#!/bin/bash
+# using recursion
+
+function factorial {
+	if [ $1 -eq 1 ]
+	then
+		echo 1
+	else
+		local temp=$[ $1 - 1 ]
+		local result=$(factorial $temp)
+		echo $[ $result * $1 ]
+	fi
+}
+
+read -p "Enter value: " value
+result=$(factorial $value)
+echo "The factorial of $value is: $result"
+$
+$ ./test13
+Enter value: 5
+The factorial of 5 is: 120
+$
+```
+
+### 5.3 函数返回值
+
+bash shell会把函数当作一个小型脚本，运行结束时会返回一个退出状态码，有3种不同的方法来为函数生成退出状态码。
+
+#### 默认退出状态码
+
+默认情况下，函数的退出状态码是函数中最后一条命令返回的退出状态码。在函数执行结束后，可以用标准变量`$?`来确定函数的退出状态码。如下：
+
+```bash
+$ cat test4
+#!/bin/bash
+# testing the exit status of a function
+
+func1() {
+	echo "trying to display a non-existent file"
+	ls -l badfile
+}
+
+echo "testing the function: "
+func1
+echo "The exit status is: $?"
+$
+$ ./test4
+testing the function:
+trying to display a non-existent file
+ls: badfile: No such file or directory
+The exit status is: 1
+$
+```
+
+> 函数的退出状态码是1，这是因为函数中的最后一条命令没有成功运行。
+
+这种方式的缺点是，你无法知道函数中其他命令中是否成功运行。看下面的例子，由于函数最后一条语句echo运行成功，该函数的退出状态码就是0，但是其中有一条命令并没有正常运行：
+
+```bash
+cat test4b
+#!/bin/bash
+# testing the exit status of a function
+
+func1() {
+	ls -l badfile
+	echo "This was a test of a bad command"
+}
+
+echo "testing the function:"
+func1
+echo "The exit status is: $?"
+$
+$ ./test4b
+testing the function:
+ls: badfile: No such file or directory
+This was a test of a bad command
+The exit status is: 0
+$
+```
+
+#### 使用 return 命令
+
+bash shell使用`return`命令来退出函数并返回特定的退出状态码，`return`命令允许指定一个整数值来定义函数的退出状态码，从而提供了一种简单的途径来编程设定函数退出状态码。
+
+当用这种方法从函数中返回值时，需要记住下面两条技巧来避免问题：
+
+- 一定要函数一结束就取返回值：如果在用`$?`变量提取函数返回值之前执行了其他命令，函数的返回值就会丢失。
+- 退出状态码必须是0~255：由于退出状态码必须小于256，函数的结果必须生成一个小于256的整数值，任何大于256的值都会产生一个错误值。
+- 要返回较大的整数值或者字符串值的话，你就不能用这种`return`返回值的方法了。
+
+```bash
+$ cat test5
+#!/bin/bash
+# using the return command in a function
+
+function dbl {
+	read -p "Enter a value: " value
+	echo "doubling the value"
+	return $[ $value * 2 ]
+}
+
+dbl
+echo "The new value is $?"
+$
+$ ./test5
+Enter a value: 200
+doubling the value
+The new value is 1
+$
+```
+
+#### 使用函数输出
+
+正如可以将命令的输出保存到shell变量中一样，你也可以对函数的输出采用同样的处理办法。可以用这种技术来获得任何类型的函数输出，并将其保存到变量中。
+
+下面示例将`dbl`函数的输出赋给`$result`变量，在函数中会用`echo`语句来显示计算的结果，同时该脚本会获取`dbl`函数的输出，而不是查看退出状态码：
+
+```bash
+$ cat test5b
+#!/bin/bash
+# using the echo to return a value
+
+function dbl {
+	read -p "Enter a value: " value
+	echo $[ $value * 2 ]
+}
+
+result=$(dbl)
+echo "The new value is $result"
+$
+$ ./test5b
+Enter a value: 200
+The new value is 400
+$
+$ ./test5b
+Enter a value: 1000
+The new value is 2000
+$
+```
+
+### 5.4 向函数传参
+
+函数可以使用标准的参数环境变量来表示命令行上传给函数的参数。例如，函数名会在`$0`变量中定义，函数命令行上的任何参数都会通过`$1`、`$2`等定义，当然也可以用特殊变量`$#`来判断传给函数的参数数目。
+
+在脚本中指定函数时，必须将参数和函数放在同一行，像这样，然后函数才可以用参数环境变量来获得参数值：
+
+```shell
+func1 $value1 10
+```
+
+下面是一个使用示例：
+
+```bash
+$ cat test6
+#!/bin/bash
+# passing parameters to a function
+
+function addem {
+	if [ $# -eq 0 ] || [ $# -gt 2 ]
+	then
+		echo -1
+	elif [ $# -eq 1 ]
+	then
+		echo $[ $1 + $1 ]
+	else
+		echo $[ $1 + $2 ]
+	fi
+}
+
+echo -n "Adding 10 and 15: "
+value=$(addem 10 15)
+echo $value
+echo -n "Let's try adding just one number: "
+value=$(addem 10)
+echo $value
+echo -n "Now trying adding no numbers: "
+value=$(addem)
+echo $value
+echo -n "Finally, try adding three numbers: "
+value=$(addem 10 15 20)
+echo $value
+$
+$ ./test6
+Adding 10 and 15: 25
+Let's try adding just one number: 20
+Now trying adding no numbers: -1
+Finally, try adding three numbers: -1
+$
+```
+
+需要额外提醒一下的是，由于函数使用特殊参数环境变量作为自己的参数值，显然它是无法直接获取脚本在命令行中的参数值的。
+
+### 5.5 数组变量与函数
+
+#### 向函数传递数组
+
+向脚本函数传递数组变量的方法会有点不好理解——将数组变量当作单个参数传递的话，它不会起作用。必须将该数组变量的值分解成单个的值，然后将这些值作为函数参数使用；在函数内部，可以将所有的参数重新组合成一个新的变量，然后才能正常使用，如下：
+
+```bash
+$ cat test10
+#!/bin/bash
+# array variable to function test
+
+function testit {
+	local newarray
+	newarray=(;'echo "$@"')
+	echo "The new array value is: ${newarray[*]}"
+}
+
+myarray=(1 2 3 4 5)
+echo "The original array is ${myarray[*]}"
+testit ${myarray[*]}
+$
+$ ./test10
+The original array is 1 2 3 4 5
+The new array value is: 1 2 3 4 5
+$
+```
+
+#### 从函数返回数组
+
+从函数里向shell脚本传回数组变量也需要用类似的方法。函数用echo语句来按正确顺序输出单个数组值，然后脚本再将它们重新放进一个新的数组变量中，如下：
+
+```bash
+$ cat test12
+#!/bin/bash
+# returning an array value
+
+function arraydblr {
+	local origarray
+	local newarray
+	local elements
+	local i
+	origarray=($(echo "$@"))
+	newarray=($(echo "$@"))
+	elements=$[ $# - 1 ]
+	for (( i = 0; i <= $elements; i++ )) {
+		newarray[$i]=$[ ${origarray[$i]} * 2 ]
+    }
+	echo ${newarray[*]}
+}
+
+myarray=(1 2 3 4 5)
+echo "The original array is: ${myarray[*]}"
+arg1=$(echo ${myarray[*]})
+result=($(arraydblr $arg1))
+echo "The new array is: ${result[*]}"
+$
+$ ./test12
+The original array is: 1 2 3 4 5
+The new array is: 2 4 6 8 10
+```
+
+### 5.6 source命令与函数库
+
+和环境变量一样，shell函数仅在定义它的shell会话内有效。如果你在shell命令行界面的提示符下运行某个定义了若干函数的shell脚本，shell会创建一个新的shell并在其中运行这个脚本，它会为那个新shell定义那些函数，但当你运行另外一个要用到这些函数的脚本时，它们是无法使用的。
+
+为了在多个shell会话中复用函数，bash shell 允许创建函数库文件，然后在多个脚本中引用该库文件，引用的关键是`source`命令，`source`命令会在当前shell上下文中执行命令，而不是创建一个新shell，故而可以用`source`命令来在shell脚本中运行库文件脚本，这样脚本就可以使用库中的函数了。`source`命令的语法是：
+
+- `source filename [arguments]`
+- `. filename [arguments]`（`source`命令的快捷别名，点操作符）
+
+如下为一个使用示例：
+
+- 创建一个包含脚本中所需函数的公用库文件：
+
+  ```bash
+  $ cat myfuncs
+  # my script functions
+  function addem {
+  	echo $[ $1 + $2 ]
+  }
+  
+  function multem {
+  	echo $[ $1 * $2 ]
+  }
+  
+  function divem {
+  	if [ $2 -ne 0 ]
+  	then
+  		echo $[ $1 / $2 ]
+  	else
+  		echo -1
+  	fi
+  }
+  $
+  ```
+
+- 使用`source`命令：
+
+  ```bash
+  $ cat test14
+  #!/bin/bash
+  # using functions defined in a library file
+  . ./myfuncs
+  
+  value1=10
+  value2=5
+  result1=$(addem $value1 $value2)
+  result2=$(multem $value1 $value2)
+  result3=$(divem $value1 $value2)
+  echo "The result of adding them is: $result1"
+  echo "The result of multiplying them is: $result2"
+  echo "The result of dividing them is: $result3"
+  $
+  $ ./test14
+  The result of adding them is: 15
+  The result of multiplying them is: 50
+  The result of dividing them is: 2
+  $
+  ```
 
 ## 6. 处理信号
 
