@@ -9,4 +9,4 @@
 - [软件管理](/Linux/软件管理.md)
 - [shell脚本](/Linux/shell脚本.md)
 - [网络操作](/Linux/网络操作.md)
-- [其他趣令](/Linux/其他趣令.md)
+- [乌合之令](/Linux/乌合之令.md)
