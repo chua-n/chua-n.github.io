@@ -32,3 +32,11 @@ SLB: Server(Serivce) Load Balancing
 K8S把DOCKER容器的编排处理得很好。
 
 docker system df
+
+### arthas定位问题
+
+arthas 可实现热编译，可只针对一个jar包中的一个类进行更换。
+
+thread 命令：针对高并发情况很有用。
+
+- thread -b
