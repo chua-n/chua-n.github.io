@@ -1387,7 +1387,7 @@ settings.xml是maven的全局配置文件。而pom.xml文件是所在项目的�
 
 大部分远程仓库无须认证就可以访问，但是有时候处于安全方面的因素考虑，需要提供认证信息才能访问一些远程仓库，处于安全考虑，认证信息一般只放在 `settings.xml` 中，通过 server 进行配置：
 
-这里的关键是 id，这个 id 必须与需要认证的 repository 元素的 id 完全一致才行，换句话说，正是这个 id 将认证信息和仓库配置联系在了一起。
+> 这里的关键是 id，这个 id 必须与需要认证的 repository 元素的 id 完全一致才行，换句话说，正是这个 id 将认证信息和仓库配置联系在了一起。
 
 ```xml
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1402,7 +1402,7 @@ settings.xml是maven的全局配置文件。而pom.xml文件是所在项目的�
       <id>server001</id>
       <!--鉴权用户名。鉴权用户名和鉴权密码表示服务器认证所需要的登录名和密码。 -->
       <username>my_login</username>
-      <!--鉴权密码 。鉴权用户名和鉴权密码表示服务器认证所需要的登录名和密码。密码加密功能已被添加到2.1.0 +。详情请访问密码加密页面 -->
+      <!--鉴权密码 。鉴权用户名和鉴权密码表示服务器认证所需要的登录名和密码。密码加密功能已被添加到2.1.0 +。详情请访问 https://maven.apache.org/guides/mini/guide-encryption.html#How_to_encrypt_server_passwords -->
       <password>my_password</password>
       <!--鉴权时使用的私钥位置。和前两个元素类似，私钥位置和私钥密码指定了一个私钥的路径（默认是${user.home}/.ssh/id_dsa）以及如果需要的话，一个密语。将来passphrase和password元素可能会被提取到外部，但目前它们必须在settings.xml文件以纯文本的形式声明。 -->
       <privateKey>${usr.home}/.ssh/id_dsa</privateKey>
