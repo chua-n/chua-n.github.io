@@ -1,102 +1,70 @@
-## 1. 概述
+## 1. 读取配置：`@ConfigurationProperties`
 
-SpringBoot 是基于约定的，所以很多配置都有默认值，但如果想使用自己的配置替换默认配置的话，就可以使用 application.properties 或者 application.yml 进行配置。
+在程序中需要获取yml/properties配置文件中的值时，当然可以使用Spring原生的`@Value`注解（其平常主要用来修饰字段类型），此外，SpringBoot还提供了一个`@ConfigurationProperties`注解，可以用来修饰类类型，因而可以很方便地将多个配置项批量注入到一个类中：
 
-SpringBoot 默认会从 Resources 目录下加载 application.properties 或 application.yml 文件，优先级：properties > yaml > yml。
+```java
+package org.springframework.boot.context.properties;
 
-配置文件与配置类的属性映射：使用`@Value`或使用`@ConfigurationProperties`。
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Indexed
+public @interface ConfigurationProperties {
+    @AliasFor("prefix")
+    String value() default "";
 
-|                      | `@ConfigurationProperties` |    `@Value`    |
-| :------------------: | :------------------------: | :------------: |
-|         功能         |  批量注入配置文件中的属性  | 一个一个地指定 |
-| 松散绑定（松散语法） |            支持            |     不支持     |
-|         SpEL         |           不支持           |      支持      |
-|   JSR303 数据校验    |            支持            |     不支持     |
-|     复杂类型封装     |            支持            |     不支持     |
+    @AliasFor("value")
+    String prefix() default "";
 
-> 注释：
->
-> - 松散绑定：如yml中写的last-name，这个和lastName是一样的，- 后面跟着的字母默认是大写的，这就是松散绑定；
+    boolean ignoreInvalidFields() default false;
+
+    boolean ignoreUnknownFields() default true;
+}
+```
+
+|                      |    `@Value`    | `@ConfigurationProperties` |
+| :------------------: | :------------: | :------------------------: |
+|         功能         | 一个一个地指定 |  批量注入配置文件中的属性  |
+| 松散绑定（松散语法） |     不支持     |            支持            |
+|         SpEL         |      支持      |           不支持           |
+|   JSR303 数据校验    |     不支持     |            支持            |
+|     复杂类型封装     |     不支持     |            支持            |
+
+> - 松散绑定：如yml中写的`last-name`，这个和`lastName`是一样的，`-`后面跟着的字母默认是大写的，这就是松散绑定；
 > - JSR303数据校验（挺简单的），即可以对字段增加一层过滤器验证，保证数据的合法性；
-> - 复杂类型：yml中可以封装对象，使用@Value就不支持。
->
-> 结论：
->
-> - 配置yml和配置properties都可以获取到值，强烈推荐yml；
-> - 如果在某个业务中只需要获取配置文件中的某个值，可以使用一下@Value；
-> - 如果专门编写了一个JavaBean来和配置文件进行映射，最好使用@ConfigurationProperties。
+> - 复杂类型：yml中可以封装对象，这种情况下使用`@Value`无法支持。
 
-yml配置文件还可以编写占位符生成随机数：
+在使用过程中，`@Value`和`@ConfigurationProperties`的应用场景可以概述如下：
 
-```yaml
-person:
-    name: qinjiang${random.uuid} # 随机uuid
-    age: ${random.int} # 随机int
-    happy: false
-    birth: 2000/01/01
-    maps: { k1: v1, k2: v2 }
-    lists:
-        - code
-        - girl
-        - music
-    dog:
-        name: ${person.hello:other}_旺财
-        age: 1
-```
+- 如果在某个业务中只需要获取配置文件中的某个值，可以使用一下`@Value`；
+- 如果专门编写了一个JavaBean来和配置文件进行映射，最好使用`@ConfigurationProperties`。
 
-## 2. 多配置文件
+## 2. @ConditionalOnXxx
 
-在编写主配置文件时，文件名可以是`application-{profile}.properties/yml`，用来指定多个环境版本，只需通过一个配置来选择需要激活的环境。
+springboot 的 `org.springframework.boot.autoconfigure.condition` 包中提供了一系列衍生自spring的`@Conditional`注解的`@ConditionalOnXxx`注解：
 
-对于properties文件：
+|               注解                |   对应的`Condition`实现类   | 作用                                                         |
+| :-------------------------------: | :-------------------------: | ------------------------------------------------------------ |
+|       `@ConditionalOnBean`        |      `OnBeanCondition`      | spring容器中包含对应的Bean时配置生效                         |
+|       `@ConditionalOnClass`       |     `OnClassCondition`      | 类加载器中存在对应的类时配置生效                             |
+|    `@ConditionalOnMissingBean`    |      `OnBeanCondition`      | spring容器中缺少对应的Bean时配置生效，与@ConditionalOnBean反义 |
+|   `@ConditionalOnMissingClass`    |     `OnClassCondition`      | 类加载器中缺少对应的类时配置生效，与@ConditionalOnClass反义  |
+|  `@ConditionalOnSingleCandidate`  |      `OnBeanCondition`      | spring容器中存在且只存在一个对应的Bean时生效                 |
+|     `@ConditionalOnResource`      |    `OnResourceCondition`    | 存在指定的资源文件时生效                                     |
+|     `@ConditionalOnProperty`      |    `OnPropertyCondition`    |                                                              |
+|  `@ConditionalOnWebApplication`   | `OnWebApplicationCondition` |                                                              |
+| `@ConditionalOnNotWebApplication` | `OnWebApplicationCondition` |                                                              |
+|                ...                |             ...             | ......                                                       |
 
-- 如，多个环境如下：
-    -  application-test.properties：代表测试环境配置  
-    -   application-dev.properties：代表开发环境配置
-- Springboot不会直接启动这些配置文件，它默认使用application.properties主配置文件，当需要使用某个环境时就直接application.properties中激活：`spring.profiles.active=dev`
+## 3. @AutoConfiguration
 
-对于yml文件，同properties，但是不需要创建多个配置文件，可以使用yaml的多文档块功能，更加方便了（不过只在配置量少的时候推荐这种使用）：
+TODO
 
-```yml
-server:
-    port: 8081
-#选择要激活的环境块
-spring:
-    profiles:
-        active: test
----
-server:
-    port: 8082
-spring:
-    profiles: dev # 配置环境的名称
----
-server:
-    port: 8083
-spring:
-    profiles: test # 配置环境的名称
-```
+## 4. @AutoConfigureBefore/After/Order
 
-> 注：如果yml和properties同时都配置了某一项内容（如端口），并且没有激活其他环境，默认会使用properties文件的配置。
-
-## 3. 配置文件的加载路径
-
-springboot配置文件的加载位置：springboot启动会扫描以下位置的application.properties/yml文件作为springboot的默认配置文件，优先级从高到低，高优先级的配置会覆盖低优先级的配置，不过springboot会从这四个位置全部加载主配置文件进行配置互补：
-
-1. 项目路径下的config/文件夹的配置；
-2. 项目路径下的配置文件；
-3. 资源路径下的config/文件夹的配置；
-4. 资源路径下的配置文件；
-
-## 4. 智能提示小插件
-
-可以添加一个依赖使编写springboot配置文件的时候，对自己的类（非springboot官方配置）也能开启智能提示：
-
-```xml
-<!--@ConfigurationProperties注解的执行器配置-->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-configuration-processor</artifactId>
-    <optional>true</optional>
-</dependency>
-```
+|          注解          | 作用                                          |
+| :--------------------: | --------------------------------------------- |
+| `@AutoConfigureBefore` | 在指定的`@AutoConfiguration`之前加载          |
+| `@AutoConfigureAfter`  | 在指定的`@AutoConfiguration`之后加载          |
+| `@AutoConfigureOrder`  | 指定该`@AutoConfiguration`的加载顺序，默认值0 |
 
