@@ -1,6 +1,6 @@
 ## 安装WSL
 
-> 略。
+> 参考[如何在 Windows 10 上安装 WSL 2 ](https://zhuanlan.zhihu.com/p/337104547)等。
 
 ## WSL与宿主机的网络映射
 
@@ -123,4 +123,19 @@
   
   ```
 
-  
+
+## Sysvinit
+
+> `Sysvinit`可参考[技术|浅析 Linux 初始化 init 系统: sysvinit](https://linux.cn/article-4422-1.html)
+
+WSL的Ubuntu，使用`Sysvinit`而不是`Systemd`，因此，当需要使用`Systemd`命令时，需要用`Sysvinit`的相应命令来代替：
+
+|         Systemd command          |        Sysvinit command        |
+| :------------------------------: | :----------------------------: |
+|  `systemctl start service_name`  |  `service service_name start`  |
+|  `systemctl stop service_name`   |  `service service_name stop`   |
+| `systemctl restart service_name` | `service service_name restart` |
+| `systemctl status service_name`  | `service service_name status`  |
+| `systemctl enable service_name`  |  `chkconfig service_name on`   |
+| `systemctl disable service_name` |  `chkconfig service_name off`  |
+
