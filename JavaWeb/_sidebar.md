@@ -57,6 +57,7 @@
   - [JPA基础](/JavaWeb/SpringData/JPA基础.md)
   - [SpringData-JPA](/JavaWeb/SpringData/SpringData-JPA.md)
   - [SpringData-MongoDB](/JavaWeb/SpringData/SpringData-MongoDB.md)
+- [SpringSecurity](/JavaWeb/SpringSecurity/)
 - [其他](/JavaWeb/其他/)
   - [YAML概述](/JavaWeb/其他/YAML概述.md)
   - [Swagger](/JavaWeb/其他/Swagger.md)
