@@ -56,6 +56,7 @@
   - [Optional类](/Java/基础类库/Optional类.md)
   - [日期与时间](/Java/基础类库/日期与时间.md)
   - [正则表达式](/Java/基础类库/正则表达式.md)
+  - [PropertyEditor类](/Java/基础类库/PropertyEditor类.md)
   - [Proxy类](/Java/基础类库/Proxy类.md)
 
 - [集合与流](/Java/集合与流/)
