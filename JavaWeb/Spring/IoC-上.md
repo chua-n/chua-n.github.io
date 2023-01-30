@@ -7,10 +7,8 @@
 在Spring读取Bean配置创建 Bean 实例之前，必须首先对Spring的IoC容器进行实例化，从而才能从 IoC 容器里获取 Bean 实例并使用。
 
 - Spring IOC容器的两个基础包是`org.springframework.beans`和`org.springframework.context`。
-- In Spring, the objects that form the backbone of your application and that are managed by the
-    Spring IoC container are called **beans**.
-- Beans, and the dependencies among them, are reflected in the configuration metadata
-    used by a container.
+- In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called **beans**.
+- Beans, and the dependencies among them, are reflected in the configuration metadata used by a container.
 
 ### 1.1 两种类型的IoC容器
 
@@ -59,14 +57,45 @@ Spring提供了两种类型的IoC容器：
 
 ## 2. Bean
 
-### 2.1 Bean的命名
+### 2.1 BeanDefinition
+
+A Spring IoC container manages one or more beans. These beans are created with the configuration metadata that you supply to the container (for example, in the form of XML `<bean/>` definitions).
+
+Within the container itself, these bean definitions are represented as `BeanDefinition` objects, which contain (among other information) the following metadata:
+
+- A package-qualified class name: typically, the actual implementation class of the bean being defined.
+- Bean behavioral configuration elements, which state how the bean should behave in the container (scope, lifecycle callbacks, and so forth).
+- References to other beans that are needed for the bean to do its work. These references are also called *collaborators* or *dependencies*.
+- Other configuration settings to set in the newly created object — for example, the size limit of the pool or the number of connections to use in a bean that manages a connection pool.
+
+This metadata translates to a set of properties that make up each bean definition. The following table describes these properties:
+
+<center><i>Table 1. The bean definition</i></center>
+
+|         Property         |                        Explained in…                         |
+| :----------------------: | :----------------------------------------------------------: |
+|          Class           | [Instantiating Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-class) |
+|           Name           | [Naming Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-beanname) |
+|          Scope           | [Bean Scopes](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes) |
+|  Constructor arguments   | [Dependency Injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-collaborators) |
+|        Properties        | [Dependency Injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-collaborators) |
+|     Autowiring mode      | [Autowiring Collaborators](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-autowire) |
+| Lazy initialization mode | [Lazy-initialized Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-lazy-init) |
+|  Initialization method   | [Initialization Callbacks](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-lifecycle-initializingbean) |
+|    Destruction method    | [Destruction Callbacks](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-lifecycle-disposablebean) |
+
+> In addition to bean definitions that contain information on how to create a specific bean, the `ApplicationContext` implementations also permit the registration of existing objects that are created outside the container (by users). This is done by accessing the ApplicationContext’s `BeanFactory` through the `getBeanFactory()` method, which returns the `DefaultListableBeanFactory` implementation. `DefaultListableBeanFactory` supports this registration through the `registerSingleton(..)` and `registerBeanDefinition(..)` methods. However, typical applications work solely with beans defined through regular bean definition metadata.
+
+A bean definition is essentially a recipe for creating one or more objects. The container looks at the recipe for a named bean when asked and uses the configuration metadata encapsulated by that bean definition to create (or acquire) an actual object.
+
+### 2.2 Bean的命名
 
 如果Bean在配置的时候没有给予其名称，Spring默认按照如下规则给其命名：
 
 1. 以类名为名，并将首字母小写；
 2. 如果类名的前两个字母均为大写，将会保留原始的类名。
 
-### 2.2 Bean的实例化时机
+### 2.3 Bean的实例化时机
 
 - The Spring container validates the configuration of each bean as the container is created. However, the bean properties themselves are not set until the bean is actually created.
 - You can generally trust Spring to do the right thing. It detects configuration problems, such as references to non-existent beans and circular dependencies, at container load-time. Spring sets properties and resolves dependencies as late as possible, when the bean is actually created.
@@ -74,7 +103,7 @@ Spring提供了两种类型的IoC容器：
 - ..., the bean is instantiated (if it is not a pre-instantiated singleton), its dependencies are set, and the relevant lifecycle methods (such as a configured init method or the InitializingBean callback
     method) are invoked.
 
-### 2.3 Bean的实例化方式
+### 2.4 Bean的实例化方式
 
 实例化Bean的三种方式：
 
@@ -131,7 +160,7 @@ Spring提供了两种类型的IoC容器：
 - The container also ignores the scope flag on creation, because inner beans are always anonymous and are always created with the outer bean. 
 - It is not possible to access inner beans independently or to inject them into collaborating beans other than into the enclosing bean.
 
-### 2.4 Bean Scopes
+### 2.5 Bean Scopes
 
 > 私以为将其翻译为bean的作用域不太准确。
 
@@ -146,7 +175,7 @@ The Spring Framework supports six scopes, four of which are available only if yo
 | [application](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes-application) | Scopes a single bean definition to the lifecycle of a `ServletContext`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
 | [websocket](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket-stomp-websocket-scope) | Scopes a single bean definition to the lifecycle of a `WebSocket`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
 
-#### 2.4.1 singleton
+#### 2.5.1 singleton
 
 ![singleton](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/singleton.png)
 
@@ -159,7 +188,7 @@ The scope of the Spring singleton is best described as being per-container and p
 <bean id="accountService" class="com.something.DefaultAccountService" scope="singleton"/>
 ```
 
-#### 2.4.2 prototype
+#### 2.5.2 prototype
 
 ![prototype](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/prototype.png)
 
@@ -175,7 +204,7 @@ notes:
 - Thus, although initialization lifecycle callback methods are called on all objects regardless of scope, in the case of prototypes, **configured destruction lifecycle callbacks are not called**. The client code must clean up prototype-scoped objects and release expensive resources that the prototype beans hold. 
 - In some respects, the Spring container’s role in regard to a prototype-scoped bean is a replacement for the Java `new` operator. All lifecycle management past that point must be handled by the client.
 
-#### 2.4.3 Singleton Beans with Prototype-bean Dependencies
+#### 2.5.3 Singleton Beans with Prototype-bean Dependencies
 
 > When you use singleton-scoped beans with dependencies on prototype beans, be aware that dependencies are resolved at instantiation time. 
 
@@ -183,15 +212,15 @@ notes:
 
 如果你需要每次获取一个全新的prototype-bean实例，参见[Method Injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-method-injection)即可。
 
-#### 2.4.4 Request, Session, Application, and WebSocket Scopes
+#### 2.5.4 Request, Session, Application, and WebSocket Scopes
 
 > 暂略。
 
-#### 2.4.5 Custom Scopes
+#### 2.5.5 Custom Scopes
 
 The bean scoping mechanism is extensible. You can define your own scopes or even redefine existing scopes, although the latter is considered bad practice and you cannot override the built-in `singleton` and `prototype` scopes.
 
-##### 2.4.5.1 Creating a Custom Scope
+##### 2.5.5.1 Creating a Custom Scope
 
 To integrate your custom scopes into the Spring container, you need to implement the `org.springframework.beans.factory.config.Scope` interface. The `Scope` interface has four methods to get objects from the scope, remove them from the scope, and let them be destroyed.
 
@@ -212,7 +241,7 @@ public interface Scope {
 }
 ```
 
-##### 2.4.5.2 Using a Custom Scope
+##### 2.5.5.2 Using a Custom Scope
 
 After you write and test one or more custom Scope implementations, you need to make the Spring container aware of your new scopes. 
 
