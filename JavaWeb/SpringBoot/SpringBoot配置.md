@@ -1,4 +1,8 @@
-## 1. 读取配置：`@ConfigurationProperties`
+## 1. 读取配置：@ConfigurationProperties
+
+### 1.1 @ConfigurationProperties
+
+> 无须多言，`@Value`和`@ConfigurationProperties`在使用的时候，相应的类必须首先是一个Spring的Bean。
 
 在程序中需要获取yml/properties配置文件中的值时，当然可以使用Spring原生的`@Value`注解（其平常主要用来修饰字段类型），此外，SpringBoot还提供了一个`@ConfigurationProperties`注解，可以用来修饰类类型，因而可以很方便地将多个配置项批量注入到一个类中：
 
@@ -38,6 +42,43 @@ public @interface ConfigurationProperties {
 
 - 如果在某个业务中只需要获取配置文件中的某个值，可以使用一下`@Value`；
 - 如果专门编写了一个JavaBean来和配置文件进行映射，最好使用`@ConfigurationProperties`。
+
+### 1.2 @EnableConfigurationProperties
+
+如上所述，在使用`@ConfigurationProperties`注解时，往往需要和`@Component`注解结合起来。而`@EnableConfigurationProperties`注解存在的意义，是避免`@Component`的使用，从而Spring在检测到某个类被`@ConfigurationProperties`修饰时，可以直接向其注入相应的配置值。
+
+也就是说，`@ConfigurationProperties`的使用有两种方式：
+
+- `@ConfigurationProperties` + `@Component`
+- `@ConfigurationProperties` + `@EnableConfigurationProperties`
+
+`@EnableConfigurationProperties`的源码定义为：
+
+```java
+package org.springframework.boot.context.properties;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import(EnableConfigurationPropertiesRegistrar.class)
+public @interface EnableConfigurationProperties {
+
+   /**
+    * The bean name of the configuration properties validator.
+    * @since 2.2.0
+    */
+   String VALIDATOR_BEAN_NAME = "configurationPropertiesValidator";
+
+   /**
+    * Convenient way to quickly register
+    * {@link ConfigurationProperties @ConfigurationProperties} annotated beans with
+    * Spring. Standard Spring Beans will also be scanned regardless of this value.
+    * @return {@code @ConfigurationProperties} annotated beans to register
+    */
+   Class<?>[] value() default {};
+
+}
+```
 
 ## 2. @ConditionalOnXxx
 
