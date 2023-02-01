@@ -1,3 +1,5 @@
+> 很好的阅读资料：[HTTP | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/HTTP)
+
 ## 1. 踏入山门
 
 ### 1.1 TCP/IP
@@ -729,13 +731,15 @@ SSL 的慢分两种：
 
 针对速度变慢这一问题，并没有根本性的解决方案，我们会使用 SSL 加速器这种（专用服务器）硬件来改善该问题。该硬件为 SSL 通信专用硬件，相对软件来讲，能够提高数倍 SSL 的计算速度。仅在 SSL 处理时发挥 SSL 加速器的功效，以分担负载。
 
-## 10. 确认用户身份的认证机制
+## 10. 用户身份认证
+
+> 参考自 [HTTP authentication - HTTP | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
 
 ### 10.1 概述
 
 计算机本身无法判断坐在显示器前的使用者的身份。进一步说，也无法确认网络的那头究竟有谁。可见，为了弄清究竟是谁在访问服务器，就得让对方的客户端自报家门。
 
-通常通过核对以下信息来核实用户信息：
+通常通过核对以下信息来核实用户信息（但是，即便对方是假冒的用户，只要能通过用户验证，那么计算机就会默认是出自本人的行为。因此，掌控机密信息的密码绝不能让他人得到，更不能轻易地就被破解出来）：
 
 - 密码：只有本人才会知道的字符串信息
 - 动态令牌：仅限本人持有的设备内显示的一次性密码
@@ -743,44 +747,78 @@ SSL 的慢分两种：
 - 生物认证：指纹和虹膜等本人的生理信息
 - IC 卡等：仅限本人持有的信息
 
-但是，即便对方是假冒的用户，只要能通过用户验证，那么计算机就会默认是出自本人的行为。因此，掌控机密信息的密码绝不能让他人得到，更不能轻易地就被破解出来。
+HTTP 有7种最常见的用来承载用户相关信息的 HTTP 请求首部：
 
-HTTP/1.1 使用的认证方式如下所示：
+|    首部名称     |   首部类型   |                 描述                 |
+| :-------------: | :----------: | :----------------------------------: |
+|      From       |     请求     |          用户的E-mail 地址           |
+|   User-Agent    |     请求     |           用户的浏览器软件           |
+|     Referer     |     请求     | 用户是从这个页面上依照链接跳转过来的 |
+|  Authorization  |     请求     |             用户名和密码             |
+|    Client-IP    | 扩展（请求） |           客户端的 IP 地址           |
+| X-Forwarded-For | 扩展（请求） |           客户端的 IP 地址           |
+|     Cookie      | 扩展（请求） |         服务器产生的 ID 标签         |
 
-- BASIC 认证（基本认证）
-- DIGEST 认证（摘要认证）
-- SSL 客户端认证
-- FormBase 认证（基于表单认证）
+不考虑使用用户IP地址、email地址等这些明显带有缺陷的方式。Web 服务器无需被动地根据用户的 IP 地址来猜测他的身份，它可以要求用户通过用户名和密码进行认证（登录）来显式地询问用户是谁。这里边主要有两种方式（哥们自己这么总结认为的）：
 
-> 由于使用上的便利性及安全性问题，HTTP 协议标准提供的 BASIC 认证和 DIGEST 认证几乎不怎么使用。另外，SSL 客户端认证虽然具有高度的安全等级，但因为导入及维持费用等问题，还尚未普及。所以，认证多半为基于表单认证。
+- 一种是 Cookie 的方式，这里不再赘述；
+- 另一种是，为了使 Web 站点的登录更加简便，HTTP 中包含了一种内建机制，可以借助 `WWW-Authenticate` 响应首部和 `Authorization` 请求首部向 Web 站点传送用户的相关信息。一旦登录，浏览器就可以不断地在每条发往这个站点的请求中发送这个登录信息了，这样，就总是有登录信息可用了。
 
-### 10.2 SSL客户端认证
+这里着重阐述使用 `Authorization` 的方式。
 
-SSL 客户端认证是借由 HTTPS 的客户端证书完成认证的方式。
+### 10.2 HTTP 的质询/响应认证框架
 
-从使用用户 ID 和密码的认证方式方面来讲，只要二者的内容正确，即可认证是本人的行为。但如果用户 ID 和密码被盗，就很有可能被第三者冒充。利用 SSL 客户端认证则可以避免该情况的发生。
+[RFC 7235](https://datatracker.ietf.org/doc/html/rfc7235) 定义了一个 HTTP 身份验证框架——质询/ 响应（challenge/response）框架。服务器可以质询（challenge）客户端的请求，客户端则可以提供身份验证凭据。
 
-### 10.3 基于表单认证
+质询与响应的工作流程整体可示意如下：
 
-> 基于表单的认证方法并不是在 HTTP 协议中定义的。
+![img](../../resources/images/notebook/杂技/计算机网络/http-auth-sequence-diagram.png)
 
-客户端会向服务器上的 Web 应用程序发送登录信息（Credential），按登录信息的验证结果认证。
+1. 客户端发起请求；
+2. 服务器端向客户端返回 [`401`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/401)（Unauthorized，未被授权的）响应状态码，并在 [`WWW-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/WWW-Authenticate) 响应标头提供如何进行验证的信息，其中至少包含有一种质询方式；
+3. 之后，想要使用服务器对自己身份进行验证的客户端，可以通过包含凭据的 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 请求标头进行验证；
+4. 通常，客户端会向用户显示密码提示，然后发送包含正确的 `Authorization` 标头的请求。
 
-根据 Web 应用程序的实际安装，提供的用户界面及认证方式也各不相同：
+与上述同样的质询/响应原理也适用于代理认证。由于资源认证和代理认证可以并存，为了在标头和响应状态码上进行区别，对于代理，质询的状态码是 [`407`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/407)（必须提供代理证书），响应标头 [`Proxy-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authenticate) 至少包含一个可用的质询，并且用请求标头 [`Proxy-Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authorization) 向代理服务器提供凭据。
 
-![image-20221011214818671](../../resources/images/notebook/杂技/计算机网络/image-20221011214818671.png)
+如果（代理）服务器收到无效的凭据，它应该响应 `401 Unauthorized` 或 `407 Proxy Authentication Required`，此时用户可以发送新的请求或替换 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 标头字段；如果（代理）服务器接受的有效凭据不足以访问给定的资源，服务器将响应 `403 Forbidden` 状态码，与 `401 Unauthorized` 或 `407 Proxy Authentication Required` 不同的是，该用户无法进行身份验证并且浏览器不会提出新的的尝试。然而，很多情况下，服务器也可能返回 `404 Not Found` 状态码，以向没有足够权限或者未正确身份验证的用户隐藏页面的存在。
 
-多数情况下，输入已事先登录的用户 ID（通常是任意字符串或邮件地址）和密码等登录信息后，发送给 Web 应用程序，基于认证结果来决定认证是否成功。
+### 10.3 首部字段
 
-基于表单认证本身是通过服务器端的 Web 应用，将客户端发送过来的用户 ID 和密码与之前登录过的信息做匹配来进行认证的。实际上，基于表单认证的标准规范尚未有定论，一般会使用 Cookie 来管理 Session（会话）：
+`WWW-Authenticate` 与 `Proxy-Authenticate` 响应标头指定了为获取资源访问权限而进行身份验证的方法。它们需要明确要进行验证的方案，这样希望进行授权的客户端就知道该如何提供凭据。
 
-![image-20221011215024274](../../resources/images/notebook/杂技/计算机网络/image-20221011215024274.png)
+这两个标头的语法形式如下：
 
-> 然而，如果 Session ID 被第三方盗走，对方就可以伪装成你的身份进行恶意操作了。因此必须防止 Session ID 被盗，或被猜出。为了做到这点，Session ID 应使用难以推测的字符串，且服务器端也需要进行有效期的管理，保证其安全性。
+```
+WWW-Authenticate: <type> realm=<realm>
+Proxy-Authenticate: <type> realm=<realm>
+```
+
+> 其中：
 >
-> 另外，为减轻跨站脚本攻击（XSS）造成的损失，建议事先在 Cookie 内加上 httponly 属性。
+> - `<type>` 指的是验证的方案（如 `Basic`）
+> - `<realm>` 用来描述进行保护的区域，或者指代保护的范围。它可以是类似于“Access to the staging site”的消息，这样用户就可以知道他们正在试图访问哪一空间。
 
-另外，不仅基于表单认证的登录信息及认证过程都无标准化的方法，服务器端应如何保存用户提交的密码等登录信息等也没有标准化。通常，一种安全的保存方法是，先利用给密码加盐（salt）的方式增加额外信息，再使用散列（hash）函数计算出散列值后保存。
+`Authorization` 与 `Proxy-Authorization` 请求标头包含有用来向（代理）服务器证明用户代理身份的凭据。这里同样需要指明验证的 `<type>`，其后跟有凭据信息，该凭据信息可以被编码或者加密，取决于采用的是哪种认证方案。
+
+```
+Authorization: <type> <credentials>
+Proxy-Authorization: <type> <credentials>
+```
+
+### 10.4 认证方案
+
+HTTP 的质询/响应身份认证框架有多种认证方案（Authentication scheme）。不同的认证方案在安全强度以及在客户端或服务器端软件中可获得的难易程度上有所不同。常见的认证方案包括：
+
+- `Basic`：参见 [RFC 7617](https://datatracker.ietf.org/doc/html/rfc7617)，base64 编码凭据，其实就是将由冒号`:`分隔的用户名和密码打包在一起，并用Base-64 编码方式对其进行编码，即：$Base64(username:password)$
+- `Digest`：参见 [RFC 7616](https://datatracker.ietf.org/doc/html/rfc7616)，Firefox 93 及更高版本支持 SHA-256 算法。以前的版本仅支持MD5散列（不建议）。
+- `Bearer`：参见 [RFC 6750](https://datatracker.ietf.org/doc/html/rfc6750)，bearer 令牌通过 OAuth 2.0 保护资源。
+- `HOBA`：参见 [RFC 7486](https://datatracker.ietf.org/doc/html/rfc7486)，阶段三，**H**TTP **O**rigin-**B**ound 认证，基于数字签名。
+- `Mutual`：参见 [RFC 8120](https://datatracker.ietf.org/doc/html/rfc8120)
+- `Negotiate / NTLM`：参见 [RFC4599](https://www.ietf.org/rfc/rfc4559.txt)
+- `VAPID`：参见 [RFC 8292](https://datatracker.ietf.org/doc/html/rfc8292)
+- `SCRAM`：参见 [RFC 7804](https://datatracker.ietf.org/doc/html/rfc7804)
+- ...
 
 ## 11. 基于HTTP的追加协议
 
