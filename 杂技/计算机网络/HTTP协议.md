@@ -492,52 +492,8 @@ HTTP 首部字段根据实际用途被分为以下 4 种类型，同时 HTTP/1.1
 
 > 参考《图解HTTP》等资料吧。
 
-## 6. 使用Cookie的状态管理
 
-不可否认，无状态协议当然也有它的优点。由于不必保存状态，自然可减少服务器的 CPU 及内存资源的消耗。从另一侧面来说，也正是因为 HTTP 协议本身是非常简单的，所以才会被应用在各种场景里：
-
-![image-20221011110408327](../../resources/images/notebook/杂技/计算机网络/image-20221011110408327.png)
-
-保留无状态协议这个特征的同时又要解决类似的矛盾问题，于是引入了 Cookie 技术。Cookie 技术通过在请求和响应报文中写入 Cookie 信息来控制客户端的状态。
-
-- 没有 Cookie 信息状态下的请求
-
-    ![image-20221011110551890](../../resources/images/notebook/杂技/计算机网络/image-20221011110551890.png)
-
-- 第 2 次以后（存有 Cookie 信息状态）的请求
-
-    ![image-20221011110600103](../../resources/images/notebook/杂技/计算机网络/image-20221011110600103.png)
-
-有了Cookie后，HTTP请求报文和响应报文的内容发生的变化如下：
-
-- 请求报文（没有 Cookie 信息的状态）
-
-    ```http
-    GET /reader/ HTTP/1.1
-    Host: hackr.js
-    * 首部字段内没有Cookie的相关信息
-    ```
-
-- 响应报文（服务器端生成 Cookie 信息）
-
-    ```http
-    HTTP/1.1 200 OK
-    Date: Thu, 12 Jul 2012 07:12:20 GMT
-    Server: Apache
-    <Set-Cookie: sid=1342077140226724; path=/; expires=Wed, 10-Oct-12 07:12:20 GMT>
-    Content-Type: text/plain; charset=UTF-8
-    ```
-
-- 请求报文（自动发送保存着的 Cookie 信息）
-
-    ```http
-    GET /image/ HTTP/1.1
-    Host: hackr.jp
-    Cookie: sid=1342077140226724
-    ```
-
-
-## 7. Web服务器的类型
+## 6. Web服务器的类型
 
 一台 Web 服务器可搭建多个独立域名的 Web 网站，也可作为通信路径上的中转服务器提升传输效率。
 
@@ -545,7 +501,7 @@ HTTP 通信时，除客户端和服务器以外，还有一些用于通信数据
 
 持有资源实体的服务器被称为**源服务器**。
 
-### 7.1 单台主机绑定多个域名
+### 6.1 单台主机绑定多个域名
 
 HTTP/1.1 规范允许一台 HTTP 服务器搭建多个 Web 站点。在技术实现上，即使物理层面只有一台服务器，但只要使用虚拟主机（Virtual Host，又称虚拟服务器）的功能，则可以假想已具有多台服务器。
 
@@ -555,7 +511,7 @@ HTTP/1.1 规范允许一台 HTTP 服务器搭建多个 Web 站点。在技术实
 
 在相同的 IP 地址下，由于物理主机可以寄存多个不同虚拟主机名和域名的 Web 网站，因此在发送 HTTP 请求时，必须在 Host 首部内完整指定主机名或域名的 URI。
 
-### 7.2 代理
+### 6.2 代理
 
 **代理**是一种有转发功能的应用程序，它扮演了位于服务器和客户端“中间人”的角色，接收由客户端发送的请求并转发给服务器，同时也接收服务器返回的响应并转发给客户端。
 
@@ -574,7 +530,7 @@ HTTP/1.1 规范允许一台 HTTP 服务器搭建多个 Web 站点。在技术实
 - 缓存/非缓存代理：代理转发响应时，缓存代理会预先将资源的副本（缓存）保存在代理服务器上。当代理再次接收到对相同资源的请求时，就可以不从源服务器那里获取资源，而是将之前缓存的资源作为响应返回。
 - 透明/非透明代理：转发请求或响应时，不对报文做任何加工的代理类型被称为透明代理；反之，对报文内容进行加工的代理被称为非透明代理。
 
-### 7.3 网关
+### 6.3 网关
 
 网关是转发其他服务器通信数据的服务器，接收从客户端发送来的请求时，它就像自己拥有资源的源服务器一样对请求进行处理。有时客户端可能都不会察觉，自己的通信目标是一个网关。
 
@@ -584,7 +540,7 @@ HTTP/1.1 规范允许一台 HTTP 服务器搭建多个 Web 站点。在技术实
 
 利用网关能提高通信的安全性，因为可以在客户端与网关之间的通信线路上加密以确保连接的安全。比如，网关可以连接数据库，使用 SQL 语句查询数据。另外，在 Web 购物网站上进行信用卡结算时，网关可以和信用卡结算系统联动。
 
-### 7.4 隧道
+### 6.4 隧道
 
 隧道是在相隔甚远的客户端和服务器两者之间进行中转，并保持双方通信连接的应用程序。
 
@@ -596,9 +552,142 @@ HTTP/1.1 规范允许一台 HTTP 服务器搭建多个 Web 站点。在技术实
 
 隧道会在通信双方断开连接时结束。
 
-## 8. HTTP的不足与应对策略
+## 7. 使用Cookie的状态管理
 
-### 8.1 不足
+不可否认，无状态协议当然也有它的优点。由于不必保存状态，自然可减少服务器的 CPU 及内存资源的消耗。从另一侧面来说，也正是因为 HTTP 协议本身是非常简单的，所以才会被应用在各种场景里：
+
+![image-20221011110408327](../../resources/images/notebook/杂技/计算机网络/image-20221011110408327.png)
+
+保留无状态协议这个特征的同时又要解决类似的矛盾问题，于是引入了 Cookie 技术。Cookie 技术通过在请求和响应报文中写入 Cookie 信息来控制客户端的状态。
+
+- 没有 Cookie 信息状态下的请求
+
+  ![image-20221011110551890](../../resources/images/notebook/杂技/计算机网络/image-20221011110551890.png)
+
+- 第 2 次以后（存有 Cookie 信息状态）的请求
+
+  ![image-20221011110600103](../../resources/images/notebook/杂技/计算机网络/image-20221011110600103.png)
+
+有了Cookie后，HTTP请求报文和响应报文的内容发生的变化如下：
+
+- 请求报文（没有 Cookie 信息的状态）
+
+  ```http
+  GET /reader/ HTTP/1.1
+  Host: hackr.js
+  * 首部字段内没有Cookie的相关信息
+  ```
+
+- 响应报文（服务器端生成 Cookie 信息）
+
+  ```http
+  HTTP/1.1 200 OK
+  Date: Thu, 12 Jul 2012 07:12:20 GMT
+  Server: Apache
+  <Set-Cookie: sid=1342077140226724; path=/; expires=Wed, 10-Oct-12 07:12:20 GMT>
+  Content-Type: text/plain; charset=UTF-8
+  ```
+
+- 请求报文（自动发送保存着的 Cookie 信息）
+
+  ```http
+  GET /image/ HTTP/1.1
+  Host: hackr.jp
+  Cookie: sid=1342077140226724
+  ```
+
+## 8. 用户身份认证
+
+> 参考自 [HTTP authentication - HTTP | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
+
+### 8.1 概述
+
+计算机本身无法判断坐在显示器前的使用者的身份。进一步说，也无法确认网络的那头究竟有谁。可见，为了弄清究竟是谁在访问服务器，就得让对方的客户端自报家门。
+
+通常通过核对以下信息来核实用户信息（但是，即便对方是假冒的用户，只要能通过用户验证，那么计算机就会默认是出自本人的行为。因此，掌控机密信息的密码绝不能让他人得到，更不能轻易地就被破解出来）：
+
+- 密码：只有本人才会知道的字符串信息
+- 动态令牌：仅限本人持有的设备内显示的一次性密码
+- 数字证书：仅限本人（终端）持有的信息
+- 生物认证：指纹和虹膜等本人的生理信息
+- IC 卡等：仅限本人持有的信息
+
+HTTP 有7种最常见的用来承载用户相关信息的 HTTP 请求首部：
+
+|    首部名称     |   首部类型   |                 描述                 |
+| :-------------: | :----------: | :----------------------------------: |
+|      From       |     请求     |          用户的E-mail 地址           |
+|   User-Agent    |     请求     |           用户的浏览器软件           |
+|     Referer     |     请求     | 用户是从这个页面上依照链接跳转过来的 |
+|  Authorization  |     请求     |             用户名和密码             |
+|    Client-IP    | 扩展（请求） |           客户端的 IP 地址           |
+| X-Forwarded-For | 扩展（请求） |           客户端的 IP 地址           |
+|     Cookie      | 扩展（请求） |         服务器产生的 ID 标签         |
+
+不考虑使用用户IP地址、email地址等这些明显带有缺陷的方式。Web 服务器无需被动地根据用户的 IP 地址来猜测他的身份，它可以要求用户通过用户名和密码进行认证（登录）来显式地询问用户是谁。这里边主要有两种方式（哥们自己这么总结认为的）：
+
+- 一种是 Cookie 的方式，这里不再赘述；
+- 另一种是，为了使 Web 站点的登录更加简便，HTTP 中包含了一种内建机制，可以借助 `WWW-Authenticate` 响应首部和 `Authorization` 请求首部向 Web 站点传送用户的相关信息。一旦登录，浏览器就可以不断地在每条发往这个站点的请求中发送这个登录信息了，这样，就总是有登录信息可用了。
+
+这里着重阐述使用 `Authorization` 的方式。
+
+### 8.2 HTTP 的质询/响应认证框架
+
+[RFC 7235](https://datatracker.ietf.org/doc/html/rfc7235) 定义了一个 HTTP 身份验证框架——质询/ 响应（challenge/response）框架。服务器可以质询（challenge）客户端的请求，客户端则可以提供身份验证凭据。
+
+质询与响应的工作流程整体可示意如下：
+
+![img](../../resources/images/notebook/杂技/计算机网络/http-auth-sequence-diagram.png)
+
+1. 客户端发起请求；
+2. 服务器端向客户端返回 [`401`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/401)（Unauthorized，未被授权的）响应状态码，并在 [`WWW-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/WWW-Authenticate) 响应标头提供如何进行验证的信息，其中至少包含有一种质询方式；
+3. 之后，想要使用服务器对自己身份进行验证的客户端，可以通过包含凭据的 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 请求标头进行验证；
+4. 通常，客户端会向用户显示密码提示，然后发送包含正确的 `Authorization` 标头的请求。
+
+与上述同样的质询/响应原理也适用于代理认证。由于资源认证和代理认证可以并存，为了在标头和响应状态码上进行区别，对于代理，质询的状态码是 [`407`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/407)（必须提供代理证书），响应标头 [`Proxy-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authenticate) 至少包含一个可用的质询，并且用请求标头 [`Proxy-Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authorization) 向代理服务器提供凭据。
+
+如果（代理）服务器收到无效的凭据，它应该响应 `401 Unauthorized` 或 `407 Proxy Authentication Required`，此时用户可以发送新的请求或替换 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 标头字段；如果（代理）服务器接受的有效凭据不足以访问给定的资源，服务器将响应 `403 Forbidden` 状态码，与 `401 Unauthorized` 或 `407 Proxy Authentication Required` 不同的是，该用户无法进行身份验证并且浏览器不会提出新的的尝试。然而，很多情况下，服务器也可能返回 `404 Not Found` 状态码，以向没有足够权限或者未正确身份验证的用户隐藏页面的存在。
+
+### 8.3 首部字段
+
+`WWW-Authenticate` 与 `Proxy-Authenticate` 响应标头指定了为获取资源访问权限而进行身份验证的方法。它们需要明确要进行验证的方案，这样希望进行授权的客户端就知道该如何提供凭据。
+
+这两个标头的语法形式如下：
+
+```
+WWW-Authenticate: <type> realm=<realm>
+Proxy-Authenticate: <type> realm=<realm>
+```
+
+> 其中：
+>
+> - `<type>` 指的是验证的方案（如 `Basic`）
+> - `<realm>` 用来描述进行保护的区域，或者指代保护的范围。它可以是类似于“Access to the staging site”的消息，这样用户就可以知道他们正在试图访问哪一空间。
+
+`Authorization` 与 `Proxy-Authorization` 请求标头包含有用来向（代理）服务器证明用户代理身份的凭据。这里同样需要指明验证的 `<type>`，其后跟有凭据信息，该凭据信息可以被编码或者加密，取决于采用的是哪种认证方案。
+
+```
+Authorization: <type> <credentials>
+Proxy-Authorization: <type> <credentials>
+```
+
+### 8.4 认证方案
+
+HTTP 的质询/响应身份认证框架有多种认证方案（Authentication scheme）。不同的认证方案在安全强度以及在客户端或服务器端软件中可获得的难易程度上有所不同。常见的认证方案包括：
+
+- `Basic`：参见 [RFC 7617](https://datatracker.ietf.org/doc/html/rfc7617)，base64 编码凭据，其实就是将由冒号`:`分隔的用户名和密码打包在一起，并用Base-64 编码方式对其进行编码，即：$Base64(username:password)$
+- `Digest`：参见 [RFC 7616](https://datatracker.ietf.org/doc/html/rfc7616)，Firefox 93 及更高版本支持 SHA-256 算法。以前的版本仅支持MD5散列（不建议）。
+- `Bearer`：参见 [RFC 6750](https://datatracker.ietf.org/doc/html/rfc6750)，bearer 令牌通过 OAuth 2.0 保护资源。
+- `HOBA`：参见 [RFC 7486](https://datatracker.ietf.org/doc/html/rfc7486)，阶段三，**H**TTP **O**rigin-**B**ound 认证，基于数字签名。
+- `Mutual`：参见 [RFC 8120](https://datatracker.ietf.org/doc/html/rfc8120)
+- `Negotiate / NTLM`：参见 [RFC4599](https://www.ietf.org/rfc/rfc4559.txt)
+- `VAPID`：参见 [RFC 8292](https://datatracker.ietf.org/doc/html/rfc8292)
+- `SCRAM`：参见 [RFC 7804](https://datatracker.ietf.org/doc/html/rfc7804)
+- ...
+
+## 9. HTTP的不足与应对策略
+
+### 9.1 不足
 
 HTTP 主要有这些不足，例举如下：
 
@@ -630,7 +719,7 @@ HTTP 主要有这些不足，例举如下：
     >
     > ![image-20221011172725360](../../resources/images/notebook/杂技/计算机网络/image-20221011172725360.png)
 
-### 8.2 应对策略之加密
+### 9.2 应对策略之加密
 
 以加密的目标对象来划分，加密可分为加密通信方式和加密通信内容两种：
 
@@ -642,7 +731,7 @@ HTTP 主要有这些不足，例举如下：
 
     ![image-20221011171415678](../../resources/images/notebook/杂技/计算机网络/image-20221011171415678.png)
 
-### 8.3 应对策略之通信方身份的认证
+### 9.3 应对策略之通信方身份的认证
 
 虽然使用 HTTP 协议无法确定通信方，但如果使用 SSL 则可以。SSL 不仅提供加密处理，而且还使用了一种被称为证书的手段，可用于确定方。
 
@@ -654,13 +743,13 @@ HTTP 主要有这些不足，例举如下：
 
 另外，客户端持有证书即可完成个人身份的确认，也可用于对 Web 网站的认证环节。
 
-### 8.4 应对策略之完整性保护
+### 9.4 应对策略之完整性保护
 
 虽然有使用 HTTP 协议确定报文完整性的方法，但事实上并不便捷、可靠。其中常用的是 MD5 和 SHA-1 等散列值校验的方法，以及用来确认文件的数字签名方法。
 
 提供文件下载服务的 Web 网站也会提供相应的以 PGP（Pretty Good Privacy，完美隐私）创建的数字签名及 MD5 算法生成的散列值。PGP 是用来证明创建文件的数字签名，MD5 是由单向函数生成的散列值。不论使用哪一种方法，都需要操纵客户端的用户本人亲自检查验证下载的文件是否就是原来服务器上的文件，浏览器无法自动帮用户检查。然而，即便如此，用这些方法也依然无法百分百保证确认结果正确。因为 PGP 和 MD5 本身被改写的话，用户是没有办法意识到的。
 
-## 9. HTTPS
+## 10. HTTPS
 
 $$
 HTTPS = HTTP + 加密 + 认证 + 完整性保护
@@ -670,7 +759,7 @@ $$
 
 ![image-20221011173848565](../../resources/images/notebook/杂技/计算机网络/image-20221011173848565.png)
 
-### 9.1 HTTPS是身披SSL外壳的HTTP
+### 10.1 HTTPS是身披SSL外壳的HTTP
 
 HTTPS 并非是应用层的一种新协议。只是 HTTP 通信接口部分用 SSL（Secure Socket Layer）和 TLS（Transport Layer Security）协议代替而已。
 
@@ -682,7 +771,7 @@ HTTPS 并非是应用层的一种新协议。只是 HTTP 通信接口部分用 S
 
 > SSL 是独立于 HTTP 的协议，所以不光是 HTTP 协议，其他运行在应用层的 SMTP 和 Telnet 等协议均可配合 SSL 协议使用。可以说 SSL 是当今世界上应用最为广泛的网络安全技术。
 
-### 9.2 加密技术
+### 10.2 加密技术
 
 HTTPS 采用共享密钥加密和公开密钥加密两者并用的混合加密机制。
 
@@ -690,7 +779,7 @@ HTTPS 采用共享密钥加密和公开密钥加密两者并用的混合加密�
 
 ![image-20221011211411788](../../resources/images/notebook/杂技/计算机网络/image-20221011211411788.png)
 
-### 9.3 证明公开密钥正确性的证书
+### 10.3 证明公开密钥正确性的证书
 
 遗憾的是，公开密钥加密方式还是存在一些问题的，那就是无法证明公开密钥本身就是货真价实的公开密钥。
 
@@ -714,13 +803,13 @@ HTTPS 中还可以使用客户端证书。以客户端证书进行客户端认�
 
 客户端证书存在的另一个问题点是，客户端证书毕竟只能用来证明客户端实际存在，而不能用来证明用户本人的真实有效性。也就是说，只要获得了安装有客户端证书的计算机的使用权限，也就意味着同时拥有了客户端证书的使用权限。
 
-### 9.4 HTTPS的安全通信机制
+### 10.4 HTTPS的安全通信机制
 
 下图中说明了从仅使用服务器端的公开密钥证书（服务器证书）建立 HTTPS 通信的整个过程：
 
 ![image-20221011213320111](../../resources/images/notebook/杂技/计算机网络/image-20221011213001531.png)
 
-### 9.5 HTTPS的缺点
+### 10.5 HTTPS的缺点
 
 HTTPS 也存在一些问题，那就是由于使用了 SSL，它的处理速度变慢了。
 
@@ -730,95 +819,6 @@ SSL 的慢分两种：
 - 处理速度慢：SSL 必须进行加密处理。在服务器和客户端都需要进行加密和解密的运算处理。因此从结果上讲，比起 HTTP 会更多地消耗服务器和客户端的硬件资源，导致负载增强。
 
 针对速度变慢这一问题，并没有根本性的解决方案，我们会使用 SSL 加速器这种（专用服务器）硬件来改善该问题。该硬件为 SSL 通信专用硬件，相对软件来讲，能够提高数倍 SSL 的计算速度。仅在 SSL 处理时发挥 SSL 加速器的功效，以分担负载。
-
-## 10. 用户身份认证
-
-> 参考自 [HTTP authentication - HTTP | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
-
-### 10.1 概述
-
-计算机本身无法判断坐在显示器前的使用者的身份。进一步说，也无法确认网络的那头究竟有谁。可见，为了弄清究竟是谁在访问服务器，就得让对方的客户端自报家门。
-
-通常通过核对以下信息来核实用户信息（但是，即便对方是假冒的用户，只要能通过用户验证，那么计算机就会默认是出自本人的行为。因此，掌控机密信息的密码绝不能让他人得到，更不能轻易地就被破解出来）：
-
-- 密码：只有本人才会知道的字符串信息
-- 动态令牌：仅限本人持有的设备内显示的一次性密码
-- 数字证书：仅限本人（终端）持有的信息
-- 生物认证：指纹和虹膜等本人的生理信息
-- IC 卡等：仅限本人持有的信息
-
-HTTP 有7种最常见的用来承载用户相关信息的 HTTP 请求首部：
-
-|    首部名称     |   首部类型   |                 描述                 |
-| :-------------: | :----------: | :----------------------------------: |
-|      From       |     请求     |          用户的E-mail 地址           |
-|   User-Agent    |     请求     |           用户的浏览器软件           |
-|     Referer     |     请求     | 用户是从这个页面上依照链接跳转过来的 |
-|  Authorization  |     请求     |             用户名和密码             |
-|    Client-IP    | 扩展（请求） |           客户端的 IP 地址           |
-| X-Forwarded-For | 扩展（请求） |           客户端的 IP 地址           |
-|     Cookie      | 扩展（请求） |         服务器产生的 ID 标签         |
-
-不考虑使用用户IP地址、email地址等这些明显带有缺陷的方式。Web 服务器无需被动地根据用户的 IP 地址来猜测他的身份，它可以要求用户通过用户名和密码进行认证（登录）来显式地询问用户是谁。这里边主要有两种方式（哥们自己这么总结认为的）：
-
-- 一种是 Cookie 的方式，这里不再赘述；
-- 另一种是，为了使 Web 站点的登录更加简便，HTTP 中包含了一种内建机制，可以借助 `WWW-Authenticate` 响应首部和 `Authorization` 请求首部向 Web 站点传送用户的相关信息。一旦登录，浏览器就可以不断地在每条发往这个站点的请求中发送这个登录信息了，这样，就总是有登录信息可用了。
-
-这里着重阐述使用 `Authorization` 的方式。
-
-### 10.2 HTTP 的质询/响应认证框架
-
-[RFC 7235](https://datatracker.ietf.org/doc/html/rfc7235) 定义了一个 HTTP 身份验证框架——质询/ 响应（challenge/response）框架。服务器可以质询（challenge）客户端的请求，客户端则可以提供身份验证凭据。
-
-质询与响应的工作流程整体可示意如下：
-
-![img](../../resources/images/notebook/杂技/计算机网络/http-auth-sequence-diagram.png)
-
-1. 客户端发起请求；
-2. 服务器端向客户端返回 [`401`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/401)（Unauthorized，未被授权的）响应状态码，并在 [`WWW-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/WWW-Authenticate) 响应标头提供如何进行验证的信息，其中至少包含有一种质询方式；
-3. 之后，想要使用服务器对自己身份进行验证的客户端，可以通过包含凭据的 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 请求标头进行验证；
-4. 通常，客户端会向用户显示密码提示，然后发送包含正确的 `Authorization` 标头的请求。
-
-与上述同样的质询/响应原理也适用于代理认证。由于资源认证和代理认证可以并存，为了在标头和响应状态码上进行区别，对于代理，质询的状态码是 [`407`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/407)（必须提供代理证书），响应标头 [`Proxy-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authenticate) 至少包含一个可用的质询，并且用请求标头 [`Proxy-Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authorization) 向代理服务器提供凭据。
-
-如果（代理）服务器收到无效的凭据，它应该响应 `401 Unauthorized` 或 `407 Proxy Authentication Required`，此时用户可以发送新的请求或替换 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 标头字段；如果（代理）服务器接受的有效凭据不足以访问给定的资源，服务器将响应 `403 Forbidden` 状态码，与 `401 Unauthorized` 或 `407 Proxy Authentication Required` 不同的是，该用户无法进行身份验证并且浏览器不会提出新的的尝试。然而，很多情况下，服务器也可能返回 `404 Not Found` 状态码，以向没有足够权限或者未正确身份验证的用户隐藏页面的存在。
-
-### 10.3 首部字段
-
-`WWW-Authenticate` 与 `Proxy-Authenticate` 响应标头指定了为获取资源访问权限而进行身份验证的方法。它们需要明确要进行验证的方案，这样希望进行授权的客户端就知道该如何提供凭据。
-
-这两个标头的语法形式如下：
-
-```
-WWW-Authenticate: <type> realm=<realm>
-Proxy-Authenticate: <type> realm=<realm>
-```
-
-> 其中：
->
-> - `<type>` 指的是验证的方案（如 `Basic`）
-> - `<realm>` 用来描述进行保护的区域，或者指代保护的范围。它可以是类似于“Access to the staging site”的消息，这样用户就可以知道他们正在试图访问哪一空间。
-
-`Authorization` 与 `Proxy-Authorization` 请求标头包含有用来向（代理）服务器证明用户代理身份的凭据。这里同样需要指明验证的 `<type>`，其后跟有凭据信息，该凭据信息可以被编码或者加密，取决于采用的是哪种认证方案。
-
-```
-Authorization: <type> <credentials>
-Proxy-Authorization: <type> <credentials>
-```
-
-### 10.4 认证方案
-
-HTTP 的质询/响应身份认证框架有多种认证方案（Authentication scheme）。不同的认证方案在安全强度以及在客户端或服务器端软件中可获得的难易程度上有所不同。常见的认证方案包括：
-
-- `Basic`：参见 [RFC 7617](https://datatracker.ietf.org/doc/html/rfc7617)，base64 编码凭据，其实就是将由冒号`:`分隔的用户名和密码打包在一起，并用Base-64 编码方式对其进行编码，即：$Base64(username:password)$
-- `Digest`：参见 [RFC 7616](https://datatracker.ietf.org/doc/html/rfc7616)，Firefox 93 及更高版本支持 SHA-256 算法。以前的版本仅支持MD5散列（不建议）。
-- `Bearer`：参见 [RFC 6750](https://datatracker.ietf.org/doc/html/rfc6750)，bearer 令牌通过 OAuth 2.0 保护资源。
-- `HOBA`：参见 [RFC 7486](https://datatracker.ietf.org/doc/html/rfc7486)，阶段三，**H**TTP **O**rigin-**B**ound 认证，基于数字签名。
-- `Mutual`：参见 [RFC 8120](https://datatracker.ietf.org/doc/html/rfc8120)
-- `Negotiate / NTLM`：参见 [RFC4599](https://www.ietf.org/rfc/rfc4559.txt)
-- `VAPID`：参见 [RFC 8292](https://datatracker.ietf.org/doc/html/rfc8292)
-- `SCRAM`：参见 [RFC 7804](https://datatracker.ietf.org/doc/html/rfc7804)
-- ...
 
 ## 11. 基于HTTP的追加协议
 
