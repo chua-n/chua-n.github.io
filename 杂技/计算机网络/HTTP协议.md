@@ -640,13 +640,13 @@ HTTP 有7种最常见的用来承载用户相关信息的 HTTP 请求首部：
 ![img](../../resources/images/notebook/杂技/计算机网络/http-auth-sequence-diagram.png)
 
 1. 客户端发起请求；
-2. 服务器端向客户端返回 [`401`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/401)（Unauthorized，未被授权的）响应状态码，并在 [`WWW-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/WWW-Authenticate) 响应标头提供如何进行验证的信息，其中至少包含有一种质询方式；
-3. 之后，想要使用服务器对自己身份进行验证的客户端，可以通过包含凭据的 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 请求标头进行验证；
+2. 服务器端向客户端返回 `401`（Unauthorized，未被授权的）响应状态码，并在 `WWW-Authenticate` 响应标头提供如何进行验证的信息，其中至少包含有一种质询方式；
+3. 之后，想要使用服务器对自己身份进行验证的客户端，可以通过包含凭据的 `Authorization` 请求标头进行验证；
 4. 通常，客户端会向用户显示密码提示，然后发送包含正确的 `Authorization` 标头的请求。
 
-与上述同样的质询/响应原理也适用于代理认证。由于资源认证和代理认证可以并存，为了在标头和响应状态码上进行区别，对于代理，质询的状态码是 [`407`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/407)（必须提供代理证书），响应标头 [`Proxy-Authenticate`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authenticate) 至少包含一个可用的质询，并且用请求标头 [`Proxy-Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Proxy-Authorization) 向代理服务器提供凭据。
+与上述同样的质询/响应原理也适用于代理认证。由于资源认证和代理认证可以并存，为了在标头和响应状态码上进行区别，对于代理，质询的状态码是 `407`（必须提供代理证书），响应标头 `Proxy-Authenticate` 至少包含一个可用的质询，并且用请求标头 `Proxy-Authorization` 向代理服务器提供凭据。
 
-如果（代理）服务器收到无效的凭据，它应该响应 `401 Unauthorized` 或 `407 Proxy Authentication Required`，此时用户可以发送新的请求或替换 [`Authorization`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Authorization) 标头字段；如果（代理）服务器接受的有效凭据不足以访问给定的资源，服务器将响应 `403 Forbidden` 状态码，与 `401 Unauthorized` 或 `407 Proxy Authentication Required` 不同的是，该用户无法进行身份验证并且浏览器不会提出新的的尝试。然而，很多情况下，服务器也可能返回 `404 Not Found` 状态码，以向没有足够权限或者未正确身份验证的用户隐藏页面的存在。
+如果（代理）服务器收到无效的凭据，它应该响应 `401 Unauthorized` 或 `407 Proxy Authentication Required`，此时用户可以发送新的请求或替换 `Authorization` 标头字段；如果（代理）服务器接受的有效凭据不足以访问给定的资源，服务器将响应 `403 Forbidden` 状态码，与 `401 Unauthorized` 或 `407 Proxy Authentication Required` 不同的是，该用户无法进行身份验证并且浏览器不会提出新的的尝试。然而，很多情况下，服务器也可能返回 `404 Not Found` 状态码，以向没有足够权限或者未正确身份验证的用户隐藏页面的存在。
 
 ### 8.3 首部字段
 
