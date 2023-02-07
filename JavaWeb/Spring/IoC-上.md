@@ -2,7 +2,7 @@
 
 > Spring容器指Spring的IoC容器。
 >
-> 以下将[Spring官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core)中的configureration metadata理解为“配置”一词。
+> 以下将[Spring官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core)中的configuration metadata理解为“配置”一词。
 
 在Spring读取Bean配置创建 Bean 实例之前，必须首先对Spring的IoC容器进行实例化，从而才能从 IoC 容器里获取 Bean 实例并使用。
 
