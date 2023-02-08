@@ -949,14 +949,12 @@ Parameter names are not available through Java reflection, so Spring AOP uses th
 
 需要注意的是，对于`@Around`环绕增强，如果增强方法内部没有调用 `pjp.proceed()`，那么将导致其他的增强方法失去了判断执行的入口，其他类型的增强advice将失效！
 
-### 不同 aspect、同一advice
+### 同一 advice、不同 aspect
 
-Spring可以支持多个切面同时运行，如果刚好多个切面的切点相同，切面的运行顺序便很重要了。默认情况下，切面的运行顺序是混乱的（undefined），如果需要指定切面的运行顺序，Spring AOP 通过指定`aspect`的优先级来控制。具体有两种方式：
+Spring可以支持多个切面同时运行，如果刚好多个切面的切点相同，切面的运行顺序便很重要了。默认情况下，切面的运行顺序是混乱的（undefined），如果需要指定切面的运行顺序，Spring AOP 通过指定`aspect`的优先级来控制。比如：
 
 - Aspect 类添加**注解**：`org.springframework.core.annotation.Order`，使用注解`value`属性指定优先级。
 - Aspect 类实现**接口**：`org.springframework.core.Ordered`，实现 `Ordered` 接口的 `getOrder()` 方法。
-
-`@Order` 注解用来声明组件的顺序，值越小，优先级越高，即越先被执行/初始化。如果没有该注解，则优先级最低。
 
 ```java
 @Order(1)
@@ -978,9 +976,9 @@ public class SecondAspect {
 
 ![AOP不同切面执行顺序](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/26.png)
 
-### 同一 aspect、相同 advice 的执行顺序
+### 同一 aspect、同一 advice
 
-同一aspect、相同advice的执行顺序是无法确定的， `@Order` 在advice方法上也无效，因此尽量不用使用这种方式。
+同一aspect、相同advice的执行顺序是无法确定的， `@Order` 在advice方法上也无效，因此尽量不要使用这种方式。
 
 ## 8. 引入
 
