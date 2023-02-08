@@ -8,9 +8,13 @@ The Spring Framework provides a number of interfaces you can use to customize th
 
 ### 1.1 Lifecycle Callbacks
 
-#### 实现方式
+#### 1.1.1 单个Bean的控制
 
-> In addition to the initialization and destruction callbacks, Spring-managed objects may also implement the `Lifecycle` interface so that those objects can participate in the startup and shutdown process, as driven by the container’s own lifecycle.
+To interact with the container’s management of the bean lifecycle, you can implement the Spring `InitializingBean` and `DisposableBean` interfaces. The container calls `afterPropertiesSet()` for the former and `destroy()` for the latter to let the bean perform certain actions upon initialization and destruction of your beans.
+
+Internally, the Spring Framework uses `BeanPostProcessor` implementations to process any callback interfaces it can find and call the appropriate methods. If you need custom features or other lifecycle behavior Spring does not by default offer, you can implement a `BeanPostProcessor` yourself.
+
+##### 实现方式
 
 使用“回调”参与到Bean的生命周期的方式有三种：
 
@@ -30,6 +34,8 @@ The Spring Framework provides a number of interfaces you can use to customize th
         }
     }
     ```
+
+    > 使用XML配置时，顶级的`<beans/>`标签中可以通过`default-init-method`、`default-destroy-method`属性配置默认的Bean初始化和销毁方法，详情不在此阐述。
 
 - 实现Spring的`InitializingBean`和`DisposableBean`接口（不推荐，与SpringAPI强耦合了）：
 
@@ -60,11 +66,7 @@ The Spring Framework provides a number of interfaces you can use to customize th
     - `destroy()` as defined by the `DisposableBean` callback interface
     - A custom configured `destroy()` method
 
-#### 设置默认方法
-
-XML配置中，顶级的`<beans/>`标签中可以通过`default-init-method`、`default-destroy-method`属性配置默认的Bean初始化和销毁方法，详情不在此阐述。
-
-#### 生命周期回调与AOP执行顺序
+##### 生命周期回调与AOP执行顺序
 
 A target bean is fully created first and then an AOP proxy (for example) with its interceptor chain is applied.
 
@@ -76,15 +78,22 @@ A target bean is fully created first and then an AOP proxy (for example) with it
 
     > Hence, it would be inconsistent to apply the interceptors to the `init` method, because doing so would couple the lifecycle of the target bean to its proxy or interceptors and leave strange semantics when your code interacts directly with the raw target bean.
 
-#### Lifecycle接口
+#### 1.1.2 容器级别的控制：Lifecycle接口
 
-The Lifecycle interface defines the essential methods for any object that has its own lifecycle requirements (such as starting and stopping some background process):
+In addition to the initialization and destruction callbacks, Spring-managed objects may also implement the `Lifecycle` interface so that those objects can participate in the startup and shutdown process, as driven by the container’s own lifecycle.
 
-> start/stop 方法在执行前，会调用 isRunning 方法返回的状态来决定是否执行 start/stop 方法。
+##### Lifecycle接口
+
+`Lifecycle` 接口属于面向生命周期的一种通用的基本接口，其中定义的方法是当任何一个Java对象想要表达生命周期这一概念时都会需要的方法，如表示启动的`start()`、表示停止的`stop()`。
+
+`Lifecycle` 接口的源码定义如下：
 
 ```java
 package org.springframework.context;
 
+/**
+ * `start/stop` 方法在执行前，会调用 `isRunning` 方法返回的状态来决定是否执行 `start/stop` 方法。
+ */
 public interface Lifecycle {
     void start();
 
@@ -94,7 +103,7 @@ public interface Lifecycle {
 }
 ```
 
-Any Spring-managed object may implement the `Lifecycle` interface. Then, when the `ApplicationContext` itself receives start and stop signals (for example, for a stop/restart scenario at runtime), it cascades those calls to all `Lifecycle` implementations defined within that context. It does this by delegating to a `LifecycleProcessor`, shown in the following listing:
+凡是被 Spring 管理的对象都可以选择实现 `Lifecycle` 接口。当 Spring 容器 `ApplicationContext` 接收到 `start/stop` 信号时，Spring 会将该信号传递给容器内所有实现了 `Lifecycle` 接口的对象，从而触发相应的生命周期方法。Spring 的这一机制是委托给 `LifecycleProcessor` 来实现的，其源码如下：
 
 ```java
 package org.springframework.context;
@@ -108,16 +117,20 @@ public interface LifecycleProcessor extends Lifecycle {
 
 > Notice that the `LifecycleProcessor` is itself an extension of the `Lifecycle` interface. It also adds two other methods for reacting to the context being refreshed and closed.
 
-Note：
+注意：
 
-- The regular `org.springframework.context.Lifecycle` interface is a plain contract for explicit start and stop notifications and does not imply auto-startup at context refresh time. For fine-grained control over auto-startup of a specific bean (including startup phases), consider implementing `org.springframework.context.SmartLifecycle` instead.
+- 对于常规的 `org.springframework.context.Lifecycle` 接口，spring 容器在启动/关闭的时候并不会自动通知`Lifecycle`的实现类去执行相应回调方法，若想执行`Lifecycle`的`start/stop`方法，需要手动触发 spring 容器（`ConfigurableApplicationContext`）的`start/stop`方法来发出信号；
+- 如果想要在 spring 容器启动/关闭/刷新的时候自动触发 `Lifecycle` 的 `start/stop` 方法，可以选择实现 `SmartLifecycle` 接口；
 - Also, please note that stop notifications are not guaranteed to come before destruction. On regular shutdown, all `Lifecycle` beans first receive a stop notification before the general destruction callbacks are being propagated. However, on hot refresh during a context’s lifetime or on stopped refresh attempts, only destroy methods are called.
 
-##### 相互依赖的Bean
+##### SmartLifecycle接口
 
-当Bean之间存在依赖关系时，它们触发`startup`和`shutdown`方法的时机需要明确：如果A depends-on B，则是B先于A触发`startup`，同时B滞后于A触发`shutdown`。
+> TODO: `ApplicationContext` 的 `refresh` 是一种怎样的操作？
 
-然而，有时候Bean之间的依赖关系不是那么明确，此时可以通过`SmartLifecycle`接口的`getPhase()`方法（继承自`Phased`接口）来定义一个绝对的顺序：
+`SmartLifecycle` is an extension of the `Lifecycle` interface for those objects that require to be started upon `ApplicationContext` refresh and/or shutdown in a particular order.
+
+- The `isAutoStartup()` return value indicates whether this object should be started at the time of a context refresh. 
+- The callback-accepting `stop(Runnable)` method is useful for objects that have an asynchronous shutdown process. Any implementation of this interface must invoke the callback's `run()` method upon shutdown completion to avoid unnecessary delays in the overall `ApplicationContext` shutdown.
 
 ```java
 package org.springframework.context;
@@ -140,6 +153,12 @@ public interface SmartLifecycle extends Lifecycle, Phased {
 }
 ```
 
+##### SmartLifecycle实现类的执行顺序
+
+当Bean之间存在依赖关系时，它们触发`startup`和`shutdown`方法的时机需要明确：如果A depends-on B，则是B先于A触发`startup`，同时B滞后于A触发`shutdown`。
+
+然而，有时候Bean之间的依赖关系不是那么明确，此时可以通过`SmartLifecycle`接口的`getPhase()`方法（继承自`Phased`接口）来定义一个绝对的顺序：
+
 ```java
 package org.springframework.context;
 
@@ -152,11 +171,24 @@ public interface Phased {
 
 实际上，对于未实现`SmartLifecycle`接口的`Lifecycle`对象，其对应的phase值默认被设定为0。
 
-#### Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
+##### SmartLifecycle与InitializingBean、DisposableBean的相对执行顺序
+
+对于一个同时实现了`SmartLifecycle`、`InitializingBean`、`DisposableBean`的bean而言，我们知道，在bean完成初始化后会执行`InitializingBean`的回调，而容器初始化完成后会执行`SmartLifecycle`的`start`回调，那么它们的顺序是如何的呢？
+
+这实际上是bean初始化完成与容器初始化完成的标准定义问题。对于spring容器，其会在其中所有的bean初始化完成之后才认为自己步入了初始化完成的阶段，因此，一个 bean 的 `InitializingBean` 回调会早于其`SmartLifecycle`的`start`回调；而对于销毁方法，过程正好相反。顺序如下所示：
+
+```
+smart postConstruct
+smart start
+smart stop
+smart preDestroy
+```
+
+#### 1.1.3 关停非Web的IoC容器
 
 >  This section applies only to non-web applications. Spring’s web-based `ApplicationContext` implementations already have code in place to gracefully shut down the Spring IoC container when the relevant web application is shut down.
 
-To register a shutdown hook, call the `registerShutdownHook()` method that is declared on the `ConfigurableApplicationContext` interface, as the following example shows:
+如果在 non-web application 的环境下使用IoC容器，需要通过 JVM 的钩子来注册关停回调，这样才能保证相关联的 singleton bean 的生命周期回调能够正常被执行。要注册这样一个回调钩子，可以通过 Spring 的 `ConfigurableApplicationContext#registerShutdownHook` 方法，如下所示：
 
 ```java
 import org.springframework.context.ConfigurableApplicationContext;
