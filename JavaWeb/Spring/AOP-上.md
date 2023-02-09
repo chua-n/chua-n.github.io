@@ -988,7 +988,7 @@ public class SecondAspect {
 
 创建引入使用 `@DeclareParents` 注解，该注解的作用为某一个类（目标对象）声明一个新的父接口：
 
-- 此注解修饰的字段的类型，即是待实现的父接口的类型；
+- 此注解修饰的是字段类型，即是待实现的父接口的类型；
 - `value`属性是一个AspectJ的type pattern，用以匹配目标对象；
 - `defaultImpl`是为指定的父接口提供一个默认的实现类；
 
