@@ -67,22 +67,65 @@ Docker如何解决开发、测试、生产环境有差异的问题？
 
 ## 2. Docker相关概念
 
-### 2.1 镜像和容器
+### 2.1 镜像
 
-- 镜像（Image）：Docker将应用程序及其所需的依赖、函数库、环境、配置等文件打包在一起，称为镜像，镜像是容器的只读模板。
-- 容器（Container）：镜像中的应用程序运行后形成的进程就是容器，只是Docker会给容器做隔离，对外不可见。
+镜像（Image）：Docker将应用程序及其所需的依赖、函数库、环境、配置等文件打包在一起，称为镜像，镜像是容器的只读模板，其不包含任何动态数据，其内容在构建之后也不会被改变。
+
+- 镜像是一个分层存储的架构，由多层（Layer）文件系统联合组成；
+
+- 镜像构建时，会一层层构建，前一层是后一层的基础；
+
+  > 从下载过程中的命令行输出也可以看出，镜像是由多层存储所构成，下载也是一层层的去下载，并非单一文件。下载过程中给出了每一层的 ID 的前 12 位，并且下载结束后，给出该镜像完整的 sha256 的摘要，以确保下载一致性；
+
+- 镜像层依赖于一系列的底层技术，比如文件系统、写时复制（copy-on-write）、联合挂载（union mounts）等。
+
+  | <img src="../resources/images/notebook/JavaWeb/SpringCloud/v2-d5c06c456761b5a27090e3328b1f6882_r.jpg" alt="img" style="zoom:67%;" /> | <img src="../resources/images/notebook/JavaWeb/SpringCloud/image-20230213222923702.png" alt="image-20230213222923702" style="zoom:67%;" /> |
+  | ------------------------------------------------------------ | ------------------------------------------------------------ |
+
+通过 `docker history IMAGE` 命令可以查看到镜像中各层的内容及大小，每层会对应 `Dockerfile` 中的一条指令。例如，
+
+```bash
+chuan@RedmiBook-2021:~$ docker history redis
+IMAGE          CREATED         CREATED BY                                      SIZE      COMMENT
+7614ae9453d1   13 months ago   /bin/sh -c #(nop)  CMD ["redis-server"]         0B
+<missing>      13 months ago   /bin/sh -c #(nop)  EXPOSE 6379                  0B
+<missing>      13 months ago   /bin/sh -c #(nop)  ENTRYPOINT ["docker-entry…   0B
+<missing>      13 months ago   /bin/sh -c #(nop) COPY file:df205a0ef6e6df89…   374B
+<missing>      13 months ago   /bin/sh -c #(nop) WORKDIR /data                 0B
+<missing>      13 months ago   /bin/sh -c #(nop)  VOLUME [/data]               0B
+<missing>      13 months ago   /bin/sh -c mkdir /data && chown redis:redis …   0B
+<missing>      13 months ago   /bin/sh -c set -eux;   savedAptMark="$(apt-m…   27.8MB
+<missing>      13 months ago   /bin/sh -c #(nop)  ENV REDIS_DOWNLOAD_SHA=5b…   0B
+<missing>      13 months ago   /bin/sh -c #(nop)  ENV REDIS_DOWNLOAD_URL=ht…   0B
+<missing>      13 months ago   /bin/sh -c #(nop)  ENV REDIS_VERSION=6.2.6      0B
+<missing>      13 months ago   /bin/sh -c set -eux;  savedAptMark="$(apt-ma…   4.24MB
+<missing>      13 months ago   /bin/sh -c #(nop)  ENV GOSU_VERSION=1.12        0B
+<missing>      13 months ago   /bin/sh -c groupadd -r -g 999 redis && usera…   329kB
+<missing>      13 months ago   /bin/sh -c #(nop)  CMD ["bash"]                 0B
+<missing>      13 months ago   /bin/sh -c #(nop) ADD file:09675d11695f65c55…   80.4MB
+```
+
+由于 Docker 镜像是多层存储结构，并且可以继承、复用，因此不同镜像可能会因为使用相同的基础镜像，从而拥有共同的层。由于 Docker 使用 Union FS，相同的层只需要保存一份即可，因此实际镜像硬盘占用空间很可能要比这个镜像层列表大小的总和要小的多。
+
+在删除镜像时，对于镜像中的多个镜像层，也是从上层向基础层方向依次进行删除判断。由于镜像的多层结构让镜像复用变得非常容易，因此在删除镜像时很有可能某个其它镜像正依赖于当前镜像的某一层，这种情况下不会触发删除该层的行为。直到没有任何层依赖当前层时，才会真实的删除当前层。
+
+### 2.2 容器
+
+容器（Container）：镜像中的应用程序运行后形成的进程就是容器，只是Docker会给容器做隔离，对外不可见。
 
 > 镜像运行起来就是容器，一个镜像可以运行多个容器。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0989.JPG" alt="IMG_0989" style="zoom:50%;" />
 
-### 2.2 Docker和DockerHub
+
+
+### 2.3 Docker和DockerHub
 
 `DockerHub`是一个Docker镜像的托管平台，这样的平台称为Docker Registry。国内也有类似于`DockerHub`的公开服务，如网易云镜像服务、阿里云镜像库等。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0990.JPG" alt="IMG_0990" style="zoom:40%;" />
 
-### 2.3 Docker架构
+### 2.4 Docker架构
 
 Docker是一个CS架构的程序，由两部分组成：
 
@@ -91,7 +134,7 @@ Docker是一个CS架构的程序，由两部分组成：
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0991.JPG" alt="IMG_0991" style="zoom:45%;" />
 
-### 2.4 Docker安装与启动
+### 2.5 Docker安装与启动
 
 Docker分为CE（社区版）和EE（企业版）两大版本，CE版免费，支持周期7个月，EE强调安全，付费使用，支持周期24个月。
 
@@ -119,6 +162,8 @@ systemctl restart docker # 重启docker服务
 ## 3. Docker命令
 
 > 以下各命令的具体参数可通过`docker COMMAND --help`来查阅官方说明，不一一列举。
+
+<img src="../resources/images/notebook/JavaWeb/SpringCloud/v2-820aee2a33654099d87cdd2b7a1ce741_r.jpg" alt="img" style="zoom:67%;" />
 
 ### 3.1 基本信息
 
@@ -171,6 +216,10 @@ systemctl restart docker # 重启docker服务
 - `docker pause CONTAINER [CONTAINER...]`：暂停容器中所有的进程
 - `docker unpause CONTAINER [CONTAINER...]`：恢复容器中所有的进程
 - `docker create [OPTIONS] IMAGE [COMMAND] [ARG...]`：创建一个新的容器但不启动它，各种参数同`docker run`
+
+容器是否会长久运行，是和 `docker run` 指定的命令有关，即容器内是否有前台进程在运行，和 `-d` 参数无关。例如通过 `-d` 参数后台运行 `centos` 镜像，容器创建完成后将退出。而通过 `-it` 分配一个伪终端后，容器内将有一个 bash 终端守护容器，容器便不会退出：
+
+<img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20190923233721960-1995535823.png" alt="img" style="zoom:50%;" />
 
 #### 容器操作
 
@@ -350,7 +399,112 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1014.JPG" alt="IMG_1014" style="zoom:45%;" />
 
-## 5. 自定义镜像：Dockerfile
+## 5. 容器网络
+
+### 5.1 网络模式
+
+docker 容器在启动时可以通过`--net`参数指定五种网络模式：
+
+- `bridge`：默认情况，docker 启动后会创建一个 `docker0` 网桥，docker 默认创建的容器会添加到这个网桥中。通过`ifconfig`命令可以看出这一效果：
+
+  - 启动 docker 前后：
+
+    ```bash
+    chuan@RedmiBook-2021:~$ ifconfig
+    eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+            inet 172.31.165.213  netmask 255.255.240.0  broadcast 172.31.175.255
+            inet6 fe80::215:5dff:feec:e946  prefixlen 64  scopeid 0x20<link>
+            ether 00:15:5d:ec:e9:46  txqueuelen 1000  (Ethernet)
+            RX packets 1  bytes 217 (217.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 7  bytes 586 (586.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    
+    lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+            inet 127.0.0.1  netmask 255.0.0.0
+            inet6 ::1  prefixlen 128  scopeid 0x10<host>
+            loop  txqueuelen 1000  (Local Loopback)
+            RX packets 0  bytes 0 (0.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 0  bytes 0 (0.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    
+    chuan@RedmiBook-2021:~$ sudo service docker start
+    [sudo] password for chuan:
+     * Starting Docker: docker                                                                                       [ OK ]
+    chuan@RedmiBook-2021:~$ ifconfig
+    docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+            inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+            ether 02:42:99:30:65:41  txqueuelen 0  (Ethernet)
+            RX packets 0  bytes 0 (0.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 0  bytes 0 (0.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    
+    eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+            inet 172.31.165.213  netmask 255.255.240.0  broadcast 172.31.175.255
+            inet6 fe80::215:5dff:feec:e946  prefixlen 64  scopeid 0x20<link>
+            ether 00:15:5d:ec:e9:46  txqueuelen 1000  (Ethernet)
+            RX packets 4  bytes 868 (868.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 8  bytes 656 (656.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    
+    lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+            inet 127.0.0.1  netmask 255.0.0.0
+            inet6 ::1  prefixlen 128  scopeid 0x10<host>
+            loop  txqueuelen 1000  (Local Loopback)
+            RX packets 0  bytes 0 (0.0 B)
+            RX errors 0  dropped 0  overruns 0  frame 0
+            TX packets 0  bytes 0 (0.0 B)
+            TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    
+    chuan@RedmiBook-2021:~$
+    ```
+
+  - 容器内查看网络配置，可以看到会默认分配一个 `docker0` 的内网IP：
+
+    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006221712371-558945729.png" alt="img" style="zoom:67%;" />
+
+- `host`：容器不会获得一个独立的 network namespace，而是与主机共用一个。这就意味着容器不会有自己的网卡信息，而是使用宿主机的，容器除了网络，其它都是隔离的。
+
+  - 可以看到 host 网络模式下，容器网络配置与宿主机是一样的，那么容器内应用的端口将占用宿主机的端口：
+
+    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006222034377-323969518.png" alt="img" style="zoom:67%;" />
+
+- `none`：获取独立的 network namespace，但不为容器进行任何网络配置，需要我们手动配置。这种模式应用场景比较少。
+
+  <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006222522643-1364582786.png" alt="img" style="zoom:67%;" />
+
+- `container:<CONTAINER NAME/ID>`：与指定的容器使用同一个 network namespace，具有同样的网络配置信息，两个容器除了网络，其它都是隔离的。
+
+  - 创建容器，并映射 9090 端口到容器的 80 端口，进入容器内，通过 `netstat -antp` 可以看到没有端口连接信息：
+
+    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006223802000-1773597709.png" alt="img" style="zoom:67%;" />
+
+  - 创建 `nginx` 容器，并使用 `net_container` 容器的网络。可以看到 `net_container` 容器内已经在监听 `nginx` 的80端口了，而且通过映射的 9090 端口可以访问到 `nginx` 服务：
+
+    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006224235577-1982026757.png" alt="img" style="zoom:67%;" />
+
+- 自定义网络：与默认的bridge原理一样，但自定义网络具备内部DNS发现，可以通过容器名或者主机名进行容器之间网络通信。
+
+  - 首先创建一个自定义网络
+
+  - 创建两个容器并加入到自定义网络，在容器中就可以互相连通
+
+    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007123036413-300458064.png" alt="img" style="zoom:67%;" />
+
+### 5.2 容器网络访问原理
+
+当 Docker 启动时，会自动在主机上创建一个 docker0 虚拟网桥（其上有一个 docker0 内部接口），实际上是Linux 的一个 bridge，可以理解为一个软件交换机。它在内核层连通了其他的物理或虚拟网卡，这就将所有容器和本地主机都放到同一个物理网络。
+
+- 每次创建一个新容器的时候，Docker 从可用的地址段中选择一个空闲的 IP 地址分配给容器的 eth0 端口，使用本地主机上 docker0 接口的 IP 作为所有容器的默认网关。
+- 当创建一个 Docker 容器的时候，同时会创建一对 veth pair 接口（当数据包发送到一个接口时，另外一个接口也可以收到相同的数据包）。这对接口一端在容器内，即 eth0 ；另一端在本地并被挂载到 docker0 网桥，名称以 veth 开头。通过这种方式，主机可以跟容器通信，容器之间也可以相互通信。Docker 就创建了在主机和所有容器之间的一个虚拟共享网络。
+
+| <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007124456783-38819526.png" alt="img" style="zoom:80%;" /> | <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007125216709-1729870172.png" alt="img" style="zoom:80%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+
+## 6. 自定义镜像：Dockerfile
 
 镜像结构：
 
@@ -362,16 +516,21 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 - Entrypoint：入口，是镜像中应用启动的命令
 - 其他：在BaseImage基础上添加依赖、安装程序、完成整个应用的安装和配置
 
-`Dockerfile`就是一个文本文件，其他包含一个个的指令（Instruction），用指令来说明要执行什么操作来构建镜像，每一个指令都会形成一层Layer：
+`Dockerfile`就是一个文本文件，其他包含一个个的指令（Instruction），用指令来说明要执行什么操作来构建镜像，每一个指令都会形成一层Layer，因此每一条指令的内容，就是描述该层应当如何构建。
 
-|     指令     |                     说明                     |             示例              |
-| :----------: | :------------------------------------------: | :---------------------------: |
-|    `FROM`    |                 指定基础镜像                 |        `FROM centos:6`        |
-|    `ENV`     |        设置环境变量，可在后面指令使用        |        `ENV key value`        |
-|    `COPY`    |         拷贝本地文件到镜像的指定目录         |  `COPY ./mysql-5.7.rpm /tmp`  |
-|    `RUN`     |  执行Linux的shell命令，一般是安装过程的命令  |     `RUN yum install gcc`     |
-|   `EXPOSE`   | 指定容器运行时监听的端口，是给镜像使用者看的 |         `EXPOSE 8080`         |
-| `EXTRYPOINT` |     镜像中应用的启动命令，容器运行时调用     | `EXTRYPOINT java -jar xx.jar` |
+|     指令      |                           说明                           |             示例              |
+| :-----------: | :------------------------------------------------------: | :---------------------------: |
+|    `FROM`     |      指定基础镜像，必须是 `Dockerfile` 的第一条指令      |        `FROM centos:6`        |
+|     `ENV`     |              设置环境变量，可在后面指令使用              |        `ENV key value`        |
+|    `COPY`     |               拷贝本地文件到镜像的指定目录               |  `COPY ./mysql-5.7.rpm /tmp`  |
+|     `RUN`     |        执行Linux的shell命令，一般是安装过程的命令        |     `RUN yum install gcc`     |
+|   `EXPOSE`    |       指定容器运行时监听的端口，是给镜像使用者看的       |         `EXPOSE 8080`         |
+| `EXTRYPOINT`  |           镜像中应用的启动命令，容器运行时调用           | `EXTRYPOINT java -jar xx.jar` |
+|    `USER`     | 切换到指定用户，这个用户必须是事先建立好的，否则无法切换 |                               |
+| `HEALTHCHECK` |                                                          |                               |
+|   `WORKDIR`   |                                                          |                               |
+|   `VOLUME`    |                                                          |                               |
+|     `CMD`     |              指定默认的容器主进程的启动命令              |                               |
 
 > 更多详细语法说明，参考官方文档：https://docs.docker.com/engine/reference/builder 。
 
@@ -387,7 +546,7 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
     <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005125668.png" alt="image-20211223005125668" style="zoom:40%;" />
 
-## 6. DockerCompose
+## 7. DockerCompose
 
 Docker Compose是可以基于Compose文件帮我们快速的部署分布式应用，而无需手动一个个创建和运行容器。
 
@@ -397,7 +556,7 @@ Compose文件是一个文本文件，通过指令定义集群中每个容器如�
 
 > <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005331811.png" alt="image-20211223005331811" style="zoom:33%;" />
 
-## 7. Docker镜像服务
+## 8. Docker镜像服务
 
 镜像仓库（Docker Registry）有公共的和私有的两种形式：
 
