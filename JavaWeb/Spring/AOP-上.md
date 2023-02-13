@@ -619,7 +619,7 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
             @annotation(org.springframework.transaction.annotation.Transactional)
         ```
 
-- `@within`: 指定一个修饰类型的注解，通过目标对象的类型是否属于被该注解修饰的（子）类型来进行匹配。
+- `@within`: 指定一个作用于类型的注解，通过目标对象的类型是否属于被该注解修饰的（子）类型来进行匹配。
 
     > Limits matching to join points within types that have the given annotation (the execution of methods **declared** in types with the given annotation when using Spring AOP).
 
@@ -629,7 +629,7 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
             @within(org.springframework.transaction.annotation.Transactional)
         ```
 
-- `@target`: 指定一个修饰类型的注解，通过目标对象是否被该注解所修饰来进行匹配。
+- `@target`: 指定一个作用于类型的注解，通过目标对象是否被该注解所修饰来进行匹配。
 
     > Limits matching to join points (the execution of methods when using Spring AOP) where the class of the executing object has an annotation of the given type.
 
@@ -639,7 +639,7 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
             @target(org.springframework.transaction.annotation.Transactional)
         ```
 
-- `@args`: 指定一个修饰类型的注解，通过传入联结点的实参的运行时类型是否被该注解所修饰来进行匹配。
+- `@args`: 指定一个作用于类型的注解，通过传入联结点的实参的运行时类型是否被该注解所修饰来进行匹配。
 
     > Limits matching to join points (the execution of methods when using Spring AOP) where the runtime type of the actual arguments passed have annotations of the given types.
 
