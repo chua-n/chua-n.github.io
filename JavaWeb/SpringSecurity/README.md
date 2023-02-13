@@ -10,3 +10,65 @@ Spring Security 是spring 家庭中的一个安全管理框架，相比于另外
 认证和授权也是SpringSecurity作为安全框架的核心功能。
 
 ![image-20230131134649111](../../resources/images/notebook/JavaWeb/SpringSecurity/image-20230131134649111.png)
+
+## Spring Security Oauth 项目已废弃
+
+### 项目文档和代码仓库被移除
+
+Spring Security 团队已停止维护 Spring Security OAuth。旧的Spring Security OAuth项目终止到**2.5.2.RELEASE**版本，该项目将不会再进行任何的迭代。目前该项目的官方文档已经正式从spring.io移除，文档已经指向404，这是连文档也没有了。新增了OAuth2授权服务器Spring Authorization Server的文档。不仅仅文档被移除，连项目的仓库也被迁移到Spring的过期项目仓库`spring-attic`并被标记为read-only。Spring Security OAuth的Spring Boot自动配置代码仓库也一并被迁移，也就是说Spring Boot相关的自动配置也被移除。
+
+### 废弃的依赖项
+
+以下清单中的依赖，其任何版本都是过期的，都需要迁移：
+
+```xml
+        <dependency>		
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth-parent</artifactId>
+        </dependency>
+        <dependency>		
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth</artifactId>
+        </dependency>
+        <dependency>		
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+		 	<groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-jwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+        </dependency>
+```
+
+### 新的OAuth2替代方案
+
+Spring Security 5中集成了OAuth2 Client和Resource Server两个模块。如果有迁移的需要，建议迁移至最新的Spring Security 5.7.x，方便向Spring 6过渡。以Spring Boot为例，首先要集成Spring Security：
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+```
+
+集成OAuth2 Client依赖（OAuth2 Client 依赖于Spring Security，不能单独使用）：
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+```
+
+集成Resource Server依赖（Resource Server同样也依赖于Spring Security，不能单独使用）：
+
+```xml
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+```
