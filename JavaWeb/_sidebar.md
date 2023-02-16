@@ -61,6 +61,8 @@
 - [SpringSecurity](/JavaWeb/SpringSecurity/)
   - [踏入山门](/JavaWeb/SpringSecurity/踏入山门.md)
   - [认证](/JavaWeb/SpringSecurity/认证.md)
+  - [授权](/JavaWeb/SpringSecurity/授权.md)
+  - [自定义异常处理](/JavaWeb/SpringSecurity/自定义异常处理.md)
 - [Web安全](/JavaWeb/Web安全/)
   - [认证与授权](/JavaWeb/Web安全/认证与授权.md)
   - [JWT](/JavaWeb/Web安全/JWT.md)
