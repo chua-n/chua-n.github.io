@@ -48,6 +48,7 @@
   - [远程调试](/JavaWeb/SpringBoot/远程调试.md)
 - [SpringCloud](/JavaWeb/SpringCloud/)
   - [RestTemplate](/JavaWeb/SpringCloud/RestTemplate.md)
+  - [SpringCloudConfig](/JavaWeb/SpringCloud/SpringCloudConfig.md)
   - [Eureka](/JavaWeb/SpringCloud/Eureka.md)
   - [Ribbon](/JavaWeb/SpringCloud/Ribbon.md)
   - [Nacos](/JavaWeb/SpringCloud/Nacos.md)
