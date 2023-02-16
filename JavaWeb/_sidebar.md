@@ -59,6 +59,8 @@
   - [SpringData-JPA](/JavaWeb/SpringData/SpringData-JPA.md)
   - [SpringData-MongoDB](/JavaWeb/SpringData/SpringData-MongoDB.md)
 - [SpringSecurity](/JavaWeb/SpringSecurity/)
+  - [踏入山门](/JavaWeb/SpringSecurity/踏入山门.md)
+  - [认证](/JavaWeb/SpringSecurity/认证.md)
 - [Web安全](/JavaWeb/Web安全/)
   - [认证与授权](/JavaWeb/Web安全/认证与授权.md)
   - [JWT](/JavaWeb/Web安全/JWT.md)
