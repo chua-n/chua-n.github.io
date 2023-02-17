@@ -915,7 +915,126 @@ HTML DOM模型：
 
 [AJAX 教程 (w3school.com.cn)](https://www.w3school.com.cn/ajax/index.asp)
 
-## 10. 其他
+## 10. Web Storage
+
+### 10.1 简介
+
+Web Storage 是一种可以简单地将 JavaScript 所处理的数据永久保存的接口。在过去，必须通过服务器才能进行数据的读写操作，当出现了 Web Storage 等多种客户端存储技术后，就可以直接在客户端存储一些数据了。由于这些技术很好地去除了与服务器的通信部分，因此人们可以享受到性能的提高、开发手续的削减、离线操作的实现等各个方面的优点。
+
+Web Storage 具有以下这些特征：
+
+- Key-Value型的简单的存储方式；
+- 能够以与普通的 JavaScript 对象相同的方式来进行读写操作；
+- 与Cookie相比，能够保存大容量的数据。
+
+虽然 Web Storage 的标准中没有限制其可能的保存容量，但大部分的浏览器都是以5MB 为上限对该功能进行实现的。尽管在一些浏览器中也可以根据用户设定来更改这一上限，不过对于面向一般用户公开的 Web 应用程序，还是应该意识到这一限制。此外，在 Web Storage 中，为每个源（同源策略的源）准备了共享的存储空间。即使是不同的服务，只要它们的源是相同的，就能够共享存储。因此，有时 1 个服务可以使用的容量将不足5MB，对此请加以注意。在不同的源中执行的程序之间不能相互引用其 Web Storage。
+
+Web Storage 的实体是在全局对象中定义的 `localStorage` 与 `sessionStorage` 这两种对象。只要像通常的对象那样对其属性进行读写，就能使所保存的数据在页面跳转时也不会丢失。
+
+### 10.2 localStorage 与 sessionStorage
+
+`localStorage` 与 `sessionStorage` 的区别在于数据的生存周期。
+
+对于在 `localStorage` 中保存的数据来说，只要没有被显式地删除，即使浏览器或计算机执行了重启，这些数据也不会丢失；而另一方面，在 `sessionStorage` 中，数据仅能在同一个会话内得以保留，当页面会话结束——也就是说，当页面被关闭时，存储在 `sessionStorage` 的数据会被清除。
+
+下面简单总结了`sessionStorage` 的生存周期，参考自[MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)：
+
+- Whenever a document is loaded in a particular tab in the browser, a unique page session gets created and assigned to that particular tab. That page session is valid only for that particular tab.
+- A page session lasts as long as the tab or the browser is open, and survives over page reloads and restores.
+- **Opening a page in a new tab or window creates a new session with the value of the top-level browsing context, which differs from how session cookies work.**
+- Opening multiple tabs/windows with the same URL creates `sessionStorage` for each tab/window.
+- Duplicating a tab copies the tab's `sessionStorage` into the new tab.
+- Closing a tab/window ends the session and clears objects in `sessionStorage`.
+
+> Data stored in `sessionStorage` **is specific to the protocol of the page**. In particular, data stored by a script on a site accessed with HTTP (e.g., [http://example.com](https://example.com/)) is put in a different `sessionStorage` object from the same site accessed with HTTPS (e.g., [https://example.com](https://example.com/)).
+
+只要没有显式地删除 `localStorage` 中的数据，这些数据就不会被重置。因此，如果把它们当作本地变量来使用，而胡乱地添加了过多属性，就将会使今后的管理变得十分困难。对于通过 `sessionStorage` 就能够实现功能的情况，则最好使用`sessionStorage`，这样就能省去对数据进行删除管理的麻烦。
+
+### 10.3 基本操作
+
+Web Storage 的方法与属性：
+
+- `setItem(key, value)`：保存数据至 Web Storage。Web Storage 只支持对字符串进行读写，因此存储的key-value都必须是字符串。如果需要存储对象，需要使用 `JSON.stringify` 与 `JSON.parse` 方法。
+- `getItem(key)`：引用对应 key 的数据。需要注意的是，如果指定了一个不存在的键并试图引用，则会返回`null` 值。而对于通常的对象来说，如果指定了一个不存在的键并试图引用，返回的将是`undefined` 值。
+- `removeItem(key)`：删除对应的 key-value 数据
+- `clear()`：清空所有数据
+- `key(index)`：根据下标获取数据。不过需要注意的是，通过 key 方法返回的键并不一定是保序的。在进行值的添加或删除操作时，浏览器可能会改变 key 的顺序。不过，只要没有进行值的添加或删除操作，则将一定会保持原有的顺序。
+- `length`：属性，Web Storage 中存储的键的数据
+
+可以通过 `setItem` 方法将数据保存至 `localStorage`，并通过调用 `getItem` 方法来引用数据。此外，Web Storage 也提供了可以对值进行读写的语法糖，其操作方法与通常的对象相同。
+
+```js
+// 数据的保存。以下3 行是等价的
+localStorage.setItem('foo', 'bar');
+localStorage.foo = 'bar';
+localStorage['foo'] = 'bar';
+
+// 数据的引用。以下3 行是等价的
+var data = localStorage.getItem('foo');
+var data = localStorage.foo;
+var data = localStorage['foo'];
+
+// 枚举所有被保存的数据
+for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i),
+    value = localStorage[key];
+    /* 进行一些处理 */
+}
+```
+
+### 10.4 storage事件
+
+在某个窗口中更改了Web Storage 中的数据之后，将会在除了更改数据的窗口之外所有的窗口中触发storage事件。通过捕捉该 storage 事件并加以适当的处理，就能够在多个同时打开的窗口之间确保数据的一致性。例如，通过在新标签页中打开的某个页面来更新存储时，可以通过捕捉并处理storage 事件以使其他所有标签页都能获知设定的更改并执行UI 的更新处理，从而避免与存储数据之间产生不一致。
+
+storage 事件对象的属性有：
+
+- `key`：被更新的键名
+- `oldValue`：更新前的值
+- `newValue`：更新后的值
+- `url`：被更新的页面的URL
+- `storageArea`：`localStorage` 或 `sessionStorage`
+
+代码示例：
+
+```js
+window.addEventListener('storage', function(event) {
+    if (event.key === 'userid') {
+        var msg = ' 你好，' + event.newValue + ' 先生/ 女士';
+        document.getElementById('msg').textContent = msg;
+    }
+}, false);
+```
+
+### 10.5 对比cookie
+
+一直以来，说起在浏览器中保存数据的方法，我们通常都会想到利用 Cookie 来实现的方法。在不支持Web Storage 的浏览器中，则可以通过 Cookie 来实现数据的永久保存。不过由于Cookie 有以下特点，因此在实际上很少能够被用作Web Storage 的替代品：
+
+- 容量上限非常小，只有4KB，因此无法保存较大的数据
+- 向服务器发送请求时Cookie将被一起发送
+- 常用于保存会话信息等重要的信息
+
+Cookie 的使用方法：
+
+```js
+// 值的保存
+document.cookie = 'foo=1';
+console.log(document.cookie); // ->'foo=1'
+
+// 值的保存（具有1 小时的期限）
+document.cookie = 'bar=2; expires=' + new Date(Date.now()+3600000).toGMTString();
+console.log(document.cookie); // ->'foo=1; bar=2'
+
+// 值的删除
+document.cookie = 'foo=; expires=' + new Date().toGMTString();
+console.log(document.cookie); // ->'bar=2'
+
+// 1 小时之后
+setTimeout(function() {
+    console.log(document.cookie); // ->"
+}, 3600000);
+```
+
+## 11. 其他
 
 把脚本置于`<body>`元素的底部，可改善显示速度，因为脚本编译会拖慢显示。
 
