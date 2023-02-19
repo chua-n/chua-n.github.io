@@ -388,13 +388,181 @@ Spring框架本身也定义和使用了大量的 `FactoryBean`，差不多有50�
 
 ## 3. Environment Abstraction
 
+### 3.1 概述
+
 The [`Environment`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/core/env/Environment.html) interface is an abstraction integrated in the container that models two key aspects of the application environment: [profiles](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-definition-profiles) and [properties](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-property-source-abstraction).
 
-### 3.1 Bean Definition Profiles
+```java
+package org.springframework.core.env;
 
-A profile is a named, logical group of bean definitions to be registered with the container only if the given profile is active. The role of the `Environment` object with relation to profiles is in determining which profiles (if any) are currently active, and which profiles (if any) should be active by default.
+public interface Environment extends PropertyResolver {
+    String[] getActiveProfiles();
 
-The `@Profile` annotation lets you indicate that a component is eligible for registration when one or more specified profiles are active.
+    String[] getDefaultProfiles();
+
+    boolean acceptsProfiles(Profiles profiles);
+}
+```
+
+```java
+package org.springframework.core.env;
+
+import org.springframework.lang.Nullable;
+
+public interface PropertyResolver {
+    boolean containsProperty(String key);
+
+    @Nullable
+    String getProperty(String key);
+
+    String getProperty(String key, String defaultValue);
+
+    @Nullable
+    <T> T getProperty(String key, Class<T> targetType);
+
+    <T> T getProperty(String key, Class<T> targetType, T defaultValue);
+
+    String getRequiredProperty(String key) throws IllegalStateException;
+
+    <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException;
+
+    String resolvePlaceholders(String text);
+
+    String resolveRequiredPlaceholders(String text) throws IllegalArgumentException;
+}
+```
+
+- 一个`profile`是指对一系列bean definitions进行的一个逻辑分组，不同的 profile（即分组）通过名称区分。只有激活`profile`，其关联的这组bean definitions才会被注册到Spring容器中。`Environment`会决定当前激活的是哪个`profile`，以及在默认情况下会激活哪个`profile`。
+
+  > A profile is a named, logical group of bean definitions to be registered with the container only if the given profile is active.
+
+  ```java
+  package org.springframework.core.env;
+  
+  import java.util.function.Predicate;
+  
+  @FunctionalInterface
+  public interface Profiles {
+      boolean matches(Predicate<String> activeProfiles);
+  
+      static Profiles of(String... profiles) {
+          return ProfilesParser.parse(profiles);
+      }
+  }
+  ```
+
+- `Properties` 可以取自很多地方，如 JVM 参数、系统环境变量、JNDK、servlet context 参数、ad-hoc Properties 对象、Map 对象等等。`Environment` 的作用是给用户提供方便的配置 property sources 以及从中读取 properties 的接口。
+
+  ```java
+  public interface PropertySources extends Iterable<PropertySource<?>> {
+      default Stream<PropertySource<?>> stream() {
+          return StreamSupport.stream(this.spliterator(), false);
+      }
+  
+      boolean contains(String name);
+  
+      @Nullable
+      PropertySource<?> get(String name);
+  }
+  ```
+
+  ```java
+  package org.springframework.core.env;
+  
+  import org.apache.commons.logging.Log;
+  import org.apache.commons.logging.LogFactory;
+  import org.springframework.lang.Nullable;
+  import org.springframework.util.Assert;
+  import org.springframework.util.ObjectUtils;
+  
+  public abstract class PropertySource<T> {
+      protected final Log logger;
+      protected final String name;
+      protected final T source;
+  
+      public PropertySource(String name, T source) {
+          this.logger = LogFactory.getLog(this.getClass());
+          Assert.hasText(name, "Property source name must contain at least one character");
+          Assert.notNull(source, "Property source must not be null");
+          this.name = name;
+          this.source = source;
+      }
+  
+      public PropertySource(String name) {
+          this(name, new Object());
+      }
+  
+      public String getName() {
+          return this.name;
+      }
+  
+      public T getSource() {
+          return this.source;
+      }
+  
+      public boolean containsProperty(String name) {
+          return this.getProperty(name) != null;
+      }
+  
+      @Nullable
+      public abstract Object getProperty(String name);
+  
+      public boolean equals(@Nullable Object other) {
+          return this == other || other instanceof PropertySource && ObjectUtils.nullSafeEquals(this.getName(), ((PropertySource)other).getName());
+      }
+  
+      public int hashCode() {
+          return ObjectUtils.nullSafeHashCode(this.getName());
+      }
+  
+      public String toString() {
+          return this.logger.isDebugEnabled() ? this.getClass().getSimpleName() + "@" + System.identityHashCode(this) + " {name='" + this.getName() + "', properties=" + this.getSource() + "}" : this.getClass().getSimpleName() + " {name='" + this.getName() + "'}";
+      }
+  
+      public static PropertySource<?> named(String name) {
+          return new ComparisonPropertySource(name);
+      }
+  
+      static class ComparisonPropertySource extends StubPropertySource {
+          private static final String USAGE_ERROR = "ComparisonPropertySource instances are for use with collection comparison only";
+  
+          public ComparisonPropertySource(String name) {
+              super(name);
+          }
+  
+          public Object getSource() {
+              throw new UnsupportedOperationException("ComparisonPropertySource instances are for use with collection comparison only");
+          }
+  
+          public boolean containsProperty(String name) {
+              throw new UnsupportedOperationException("ComparisonPropertySource instances are for use with collection comparison only");
+          }
+  
+          @Nullable
+          public String getProperty(String name) {
+              throw new UnsupportedOperationException("ComparisonPropertySource instances are for use with collection comparison only");
+          }
+      }
+  
+      public static class StubPropertySource extends PropertySource<Object> {
+          public StubPropertySource(String name) {
+              super(name, new Object());
+          }
+  
+          @Nullable
+          public String getProperty(String name) {
+              return null;
+          }
+      }
+  }
+  
+  ```
+
+### 3.2 Bean Definition Profiles
+
+Bean definition profiles 提供了一种在不同环境可以注册不同的bean的机制。这里的环境比如开发环境、测试环境、生产环境，其中连接的SQL数据库可能不同，因此属于不同条件下需要激活的profile。
+
+`@Profile`注解可以修饰类/方法，其作用是指明一个Bean只有在某个/某些profile被激活时，才能被注册到Spring容器（未设置`@Profile`的bean，不受激活的profile的限制），比如：
 
 ```java
 @Configuration
@@ -425,45 +593,104 @@ public class JndiDataConfig {
 }
 ```
 
+```java
+@Configuration
+public class AppConfig {
+
+    @Bean("dataSource")
+    @Profile("development")
+    public DataSource standaloneDataSource() {
+        return new EmbeddedDatabaseBuilder()
+            .setType(EmbeddedDatabaseType.HSQL)
+            .addScript("classpath:com/bank/config/sql/schema.sql")
+            .addScript("classpath:com/bank/config/sql/test-data.sql")
+            .build();
+    }
+
+    @Bean("dataSource")
+    @Profile("production")
+    public DataSource jndiDataSource() throws Exception {
+        Context ctx = new InitialContext();
+        return (DataSource) ctx.lookup("java:comp/env/jdbc/datasource");
+    }
+}
+```
+
 The profile string may contain a simple profile name (for example, `production`) or a profile expression. A profile expression allows for more complicated profile logic to be expressed (for example, `production & us-east`). The following operators are supported in profile expressions:
 
 - `!`: A logical “not” of the profile
 - `&`: A logical “and” of the profiles
 - `|`: A logical “or” of the profiles
 
-#### Activating a Profile
+#### 激活profile
 
-...
+激活一个profile的方式可分为两种：
 
-#### Default Profile
+- 编程式激活：调用`Environment`的 api：
 
-...
+  ```java
+  AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+  ctx.getEnvironment().setActiveProfiles("development");
+  ctx.register(SomeConfig.class, StandaloneDataConfig.class, JndiDataConfig.class);
+  ctx.refresh();
+  ```
 
-### 3.2 `PropertySource` Abstraction
+- 声明式激活：设置 `spring.profiles.active` 属性，它可以通过以下途径进行设置：
+
+  > 通过普通的`xxx.properties`文件来设置这个属性，似乎是不生效的。
+
+  - JVM 参数
+
+  - 系统环境变量
+
+  - web.xml中的servlet context参数
+
+  - JNDI
+
+
+  ```java
+  -Dspring.profiles.active="profile1,profile2"
+  ```
+
+- In integration tests, active profiles can be declared by using the `@ActiveProfiles` annotation in the `spring-test` module (see [context configuration with environment profiles](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-ctx-management-env-profiles)).
+
+需要强调的是，激活的 profile 不是一种 *eithor-or* 的关系，可以同时激活多个 profile 的。
+
+#### 默认Profile
+
+如果没有在程序中显式指定一个被激活的`profile`，Spring会激活名称为`default`的默认`profile`。即，默认情况下如下 bean 会被激活：
+
+```java
+@Configuration
+@Profile("default")
+public class DefaultDataConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        return new EmbeddedDatabaseBuilder()
+            .setType(EmbeddedDatabaseType.HSQL)
+            .addScript("classpath:com/bank/config/sql/schema.sql")
+            .build();
+    }
+}
+```
+
+如果想修改默认激活的`profile`的名称，可以通过编程式调用`Envirionment`的`setDefaultProfiles()`接口，或声明式地修改`spring.profiles.default`属性。
+
+### 3.3 `PropertySource` Abstraction
 
 #### 释义
 
-The role of the `Environment` object with relation to properties is to provide the user with a convenient service interface for configuring property sources and resolving properties from them. 
+`PropertySource` 是对任何形式表达的key-value键值对的一种抽象。
 
-Properties play an important role in almost all applications and may originate from a variety of sources: 
+Spring 的 [`StandardEnvironment`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/core/env/StandardEnvironment.html) 源自两个 `PropertySource` 对象： 
 
-- properties files
-- JVM system properties
-- system environment variables
-- JNDI
-- servlet context parameters
-- ad-hoc `Properties` objects
-- `Map` objects
-- ......
+- 一个代表 JVM 系统参数 (`System.getProperties()`) 的 `PropertySource` 对象
+- 一个代表系统环境变量 (`System.getenv()`)的 `PropertySource` 对象
 
-A `PropertySource` is a simple abstraction over any source of key-value pairs, and Spring’s [`StandardEnvironment`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/core/env/StandardEnvironment.html) is configured with two PropertySource objects: 
+#### `PropertySource`的搜索
 
-- one representing the set of JVM system properties (`System.getProperties()`) 
-- one representing the set of system environment variables (`System.getenv()`).
-
-#### PropertySource的搜索
-
-Spring’s `Environment` abstraction provides search operations over a configurable hierarchy of property sources. Consider the following listing:
+对于如下代码：
 
 ```java
 ApplicationContext ctx = new GenericApplicationContext();
@@ -472,7 +699,7 @@ boolean containsMyProperty = env.containsProperty("my-property");
 System.out.println("Does my environment contain the 'my-property' property? " + containsMyProperty);
 ```
 
-The search performed is hierarchical. 
+`Environment` 在查找对应的property的时候，有如下规则：
 
 - By default, system properties have precedence over environment variables. 
 - So, if the `my-property` property happens to be set in both places during a call to `env.getProperty("my-property")`, the system property value “wins” and is returned. 
@@ -486,21 +713,65 @@ For a common `StandardServletEnvironment`, the full hierarchy is as follows, wit
 4. JVM system properties (`-D` command-line arguments)
 5. JVM system environment (operating system environment variables)
 
-#### 自定义PropertySource
+#### 自定义`PropertySource`
 
-Most importantly, the entire mechanism is configurable. Perhaps you have a custom source of properties that you want to integrate into this search. To do so, implement and instantiate your own `PropertySource` and add it to the set of `PropertySources` for the current `Environment`. The following example shows how to do so:
+如果你自定义了一个 properties 的 source，想把它集成到 Spring 的 `Environment` 中。假设这个 source 的形式是一个名为 `app.properties` 的 `properties` 文件，依然有两种形式来集成它：
 
-```java
-ConfigurableApplicationContext ctx = new GenericApplicationContext();
-MutablePropertySources sources = ctx.getEnvironment().getPropertySources();
-sources.addFirst(new MyPropertySource());
-```
+- 编程式：实现`PropertySource`然后将对应实例塞入 `Environment` 的 `PropertySources` 中去即可：
 
-> In the preceding code, `MyPropertySource` has been added with highest precedence in the search.
+  ```java
+  ConfigurableApplicationContext ctx = new GenericApplicationContext();
+  MutablePropertySources sources = ctx.getEnvironment().getPropertySources();
+  sources.addFirst(new MyPropertySource());
+  ```
 
-### 3.3 @PropertySource
+  > 此外，如果你想设置你自定义的`PropertySource`的搜索优先级，只需要设置其在 `Environment` 的 `PropertySources` 这个list中的顺序即可。如上将`MyPropertySource` 加到了 list 中的第一个元素，因而其将拥有最高优先级。
 
-The [`@PropertySource`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/context/annotation/PropertySource.html) annotation provides a convenient and declarative mechanism for adding a `PropertySource` to Spring’s `Environment`.
+- 声明式：使用`@PropertySource`注解
+
+  - 示例1：
+
+    ```java
+    @Configuration
+    @PropertySource("classpath:/com/myco/app.properties")
+    public class AppConfig {
+    
+        @Autowired
+        Environment env;
+    
+        @Bean
+        public TestBean testBean() {
+            TestBean testBean = new TestBean();
+            testBean.setName(env.getProperty("testbean.name"));
+            return testBean;
+        }
+    }
+    ```
+
+  - 示例2：在路径参数中的 `${prop:defaultValue}` 占位符代表一个变量`prop`，`prop`的值将从之前已经载入 `Environment` 中的 `PropertySource` （如JVM系统参数、环境变量）中取，如果取不到，`prop`将使用默认值`defaultValue`。
+
+    > 当然，也可以选择不设置默认值，此时解析不到变量`prop`，程序将抛出一个 `IllegalArgumentException` 异常。
+
+    ```java
+    @Configuration
+    @PropertySource("classpath:/com/${my.placeholder:default/path}/app.properties")
+    public class AppConfig {
+    
+        @Autowired
+        Environment env;
+    
+        @Bean
+        public TestBean testBean() {
+            TestBean testBean = new TestBean();
+            testBean.setName(env.getProperty("testbean.name"));
+            return testBean;
+        }
+    }
+    ```
+
+#### @PropertySource
+
+[`@PropertySource`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/context/annotation/PropertySource.html) 注解的定义如下：
 
 ```java
 package org.springframework.context.annotation;
@@ -522,43 +793,7 @@ public @interface PropertySource {
 }
 ```
 
-Given a file called `app.properties` that contains the key-value pair `testbean.name=myTestBean`, the following `@Configuration` class uses `@PropertySource` in such a way that a call to `testBean.getName()` returns `myTestBean`:
-
-```java
-@Configuration
-@PropertySource("classpath:/com/myco/app.properties")
-public class AppConfig {
-
-    @Autowired
-    Environment env;
-
-    @Bean
-    public TestBean testBean() {
-        TestBean testBean = new TestBean();
-        testBean.setName(env.getProperty("testbean.name"));
-        return testBean;
-    }
-}
-```
-
-Any `${…}` placeholders present in a `@PropertySource` resource location are resolved against the set of property sources already registered against the environment, as the following example shows:
-
-```java
-@Configuration
-@PropertySource("classpath:/com/${my.placeholder:default/path}/app.properties")
-public class AppConfig {
-
-    @Autowired
-    Environment env;
-
-    @Bean
-    public TestBean testBean() {
-        TestBean testBean = new TestBean();
-        testBean.setName(env.getProperty("testbean.name"));
-        return testBean;
-    }
-}
-```
+The `@PropertySource` annotation is repeatable, according to Java 8 conventions. However, all such `@PropertySource` annotations need to be declared at the same level, either directly on the configuration class or as meta-annotations within the same custom annotation. Mixing direct annotations and meta-annotations is not recommended, since direct annotations effectively override meta-annotations.
 
 ## 4. LoadTimeWeaver
 
