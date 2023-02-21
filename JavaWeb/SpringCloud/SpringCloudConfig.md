@@ -26,7 +26,7 @@ Spring Cloud Config 包含以下两个部分：
 
 Spring Cloud Config 默认使用 Git 存储配置信息，因此使用 Spirng Cloud Config 构建的配置服务器天然就支持对微服务配置的版本管理。我们可以使用 Git 客户端工具方便地对配置内容进行管理和访问。除了 Git 外，Spring Cloud Config 还提供了对其他存储方式的支持，例如 SVN、本地化文件系统等。
 
-Spring Cloud Config 工作流程如下：
+Spring Cloud Config 默认工作流程如下：
 
 1. 开发或运维人员提交配置文件到远程的 Git 仓库；
 2. Config 服务端（分布式配置中心）负责连接配置仓库 Git，并对 Config 客户端暴露获取配置的接口；
