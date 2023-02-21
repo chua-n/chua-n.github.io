@@ -521,6 +521,8 @@ The Config Service serves property sources from `/{application}/{profile}/{label
 
     > This behavior can be useful when working on a feature branch. For instance, you might want to align the config label with your branch but make it optional (in that case, use `spring.cloud.config.label=myfeature,develop`).
 
+客户端程序是通过 `org.springframework.cloud.config.client.ConfigServicePropertySourceLocator` 的 `getRemoteEnvironment` 方法来发送配置文件的获取请求的。
+
 ### 7.3 安全问题
 
 略，详见官方文档 [Security](https://docs.spring.io/spring-cloud-config/docs/3.1.4-SNAPSHOT/reference/html/#_security_2)。
