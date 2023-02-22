@@ -59,3 +59,17 @@ SpringCloud是目前国内使用最广泛的微服务框架，其集成了各种
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128174503807.png" alt="image-20211128174503807" style="zoom:33%;" />
 
 SpringCloud与SpringBoot的版本存在兼容关系。
+
+Spring Cloud模块体系：
+
+|               | Spring Cloud Netflix |    Spring Cloud 官方    | Spring Cloud Zookeeper | Spring Cloud Consul | Spring  Cloud Kubernetes | Spring Cloud Alibaba |
+| :-----------: | :------------------: | :---------------------: | :--------------------: | :-----------------: | :----------------------: | :------------------: |
+|  分布式配置   |       Archaius       |   Spring Cloud Config   |       Zookeeper        |       Consul        |        ConfigMap         |        Nacos         |
+| 服务注册/发现 |        Eureka        |            /            |       Zookeeper        |       Consul        |        Api Server        |        Nacos         |
+|   服务熔断    |       Hystrix        |            /            |           /            |          /          |            /             |       Sentinel       |
+|   服务调用    |        Feign         | OpenFeign, RestTemplate |           /            |          /          |            /             |      Dubbo RPC       |
+|   服务路由    |         Zuul         |  Spring Cloud Gateway   |           /            |          /          |            /             |     Dubbo PROXY      |
+|  分布式消息   |          /           |      SCS RabbitMQ       |           /            |          /          |            /             |     SCS RocketMQ     |
+|   负载均衡    |        Ribbon        |            /            |           /            |          /          |            /             |       Dubbo LB       |
+|  分布式事务   |          /           |            /            |           /            |          /          |            /             |        Seata         |
+
