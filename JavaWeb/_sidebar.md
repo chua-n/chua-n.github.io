@@ -50,6 +50,7 @@
   - [RestTemplate](/JavaWeb/SpringCloud/RestTemplate.md)
   - [OpenFeign](/JavaWeb/SpringCloud/OpenFeign.md)
   - [Config](/JavaWeb/SpringCloud/Config.md)
+  - [Zookeeper](/JavaWeb/SpringCloud/Zookeeper.md)
   - [Gateway](/JavaWeb/SpringCloud/Gateway.md)
   - [RabbitMQ](/JavaWeb/SpringCloud/RabbitMQ.md)
   - [Netflix](/JavaWeb/SpringCloud/Netflix/)
