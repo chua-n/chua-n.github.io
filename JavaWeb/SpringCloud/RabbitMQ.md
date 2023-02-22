@@ -116,7 +116,7 @@ HelloWorld案例：基于最基础的消息队列模型来实现，只包括三�
 
 **AMQP**：Advanced Message Queuing Protocol，是用于在应用程序之间传递业务消息的开放标准。该协议与语言和平台无关，更符合微服务中独立性的要求。
 
-**Spring AMQP**：是基于AMQP协议定义的一套API规范，提供了模板来发送和接收消息。其包含两部分，其中spring-amqp是基础抽象，spring-rabbit是底层的默认实现。
+**Spring AMQP**：是基于AMQP协议定义的一套API规范，提供了模板来发送和接收消息。其包含两部分，其中spring-amqp是基础抽象，spring-rabbit是底层的默认实现。RabbitMQ是应用最广泛的AMQP的实现。
 
 ### 3.1 Basic Queue 简单队列模型
 

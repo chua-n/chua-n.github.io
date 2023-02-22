@@ -49,7 +49,7 @@
 - [SpringCloud](/JavaWeb/SpringCloud/)
   - [RestTemplate](/JavaWeb/SpringCloud/RestTemplate.md)
   - [OpenFeign](/JavaWeb/SpringCloud/OpenFeign.md)
-  - [SpringCloudConfig](/JavaWeb/SpringCloud/SpringCloudConfig.md)
+  - [Config](/JavaWeb/SpringCloud/Config.md)
   - [Gateway](/JavaWeb/SpringCloud/Gateway.md)
   - [RabbitMQ](/JavaWeb/SpringCloud/RabbitMQ.md)
   - [Netflix](/JavaWeb/SpringCloud/Netflix/)
