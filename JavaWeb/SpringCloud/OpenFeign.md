@@ -1,4 +1,8 @@
-> HTTP客户端`Feign`。
+> HTTP客户端`Feign`，本文说的`Feign`是指`OpenFeign`。
+>
+> - Feign 来自 Netflix，OpenFeign 基于 Feign 做了改进。
+> - Feign 与 OpenFeign 最大的区别是：前者不支持对 SpringMVC 的注解，而后者支持。
+> - Feign 的坐标是`spring-cloud-starter-feign`，OpenFeign 的坐标是 `spring-cloud-starter-openfeign`。
 
 ## 1. 前言
 
@@ -21,6 +25,8 @@ User user = restTemplate.getForObject(url, User.class);
 Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/OpenFeign/feign ，其作用就是帮助我们优雅的实现HTTP请求的发送，解决上述问题。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0931.JPG" alt="IMG_0931" style="zoom:33%;" />
+
+
 
 ## 2. 定义和使用Feign客户端
 

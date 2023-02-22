@@ -42,25 +42,21 @@
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128174200051.png" alt="image-20211128174200051" style="zoom:66%;" />
 
-## 2. 微服务技术
+## 2. Spring Cloud
 
-微服务技术对比：
+提起微服务，不得不提 Spring Cloud 全家桶系列，SpringCloud 是若干个框架的集合，包括 spring-cloud-config、spring-cloud-bus 等近 20 个子项目，提供了服务治理、服务网关、智能路由、负载均衡、断路器、监控跟踪、分布式消息队列、配置管理等领域的解决方案。Spring Cloud 通过 Spring Boot 风格的封装，屏蔽掉了复杂的配置和实现原理，最终给开发者留出了一套简单易懂、容易部署的分布式系统开发工具包。
 
-![image-20211128172440203](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128172440203.png)
+需要强调的是，SpringCloud 与 SpringBoot 的版本存在兼容关系。
 
-企业常用技术选型组合：
+Spring Cloud 本身并不是一个拿来即可用的框架，它是一套微服务规范，这套规范可以认为目前有两代实现：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128172746094.png" alt="image-20211128172746094" style="zoom:28%;" />
+- 第一代实现： Spring Cloud Netflix
 
-## 3. SpringCloud
+  > 2018 年 12 月12 日，Netflix 公司宣布 Spring Cloud Netflix 系列大部分组件都进入维护模式，不再添加新特性。
 
-SpringCloud是目前国内使用最广泛的微服务框架，其集成了各种微服务功能组件，并基于SpringBoot实现了这些组件的自动装配，从而提供了良好的开箱即用体验：
+- 第二代实现： Spring Cloud Alibaba
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128174503807.png" alt="image-20211128174503807" style="zoom:33%;" />
-
-SpringCloud与SpringBoot的版本存在兼容关系。
-
-Spring Cloud模块体系：
+Spring Cloud 组件体系：
 
 |               | Spring Cloud Netflix |    Spring Cloud 官方    | Spring Cloud Zookeeper | Spring Cloud Consul | Spring  Cloud Kubernetes | Spring Cloud Alibaba |
 | :-----------: | :------------------: | :---------------------: | :--------------------: | :-----------------: | :----------------------: | :------------------: |
@@ -73,3 +69,33 @@ Spring Cloud模块体系：
 |   负载均衡    |        Ribbon        |            /            |           /            |          /          |            /             |       Dubbo LB       |
 |  分布式事务   |          /           |            /            |           /            |          /          |            /             |        Seata         |
 
+## 3. Spring Cloud Alibaba
+
+Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件，阿里云商业化组件，以及集成Spring Cloud 组件。
+
+![img](../../resources/images/notebook/JavaWeb/SpringCloud/v2-46c0b9e0d41c441d222390c79a4cd53b_720w.webp)
+
+- 阿里开源组件
+
+  - Nacos：一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。
+  - Sentinel：把流量作为切入点，从流量控制、熔断降级、系统负载保护等多个维度保护服务的稳定性。
+  - RocketMQ：开源的分布式消息系统，基于高可用分布式集群技术，提供低延时的、高可靠的消息发布与订阅服务。
+  - Dubbo：这个就不用多说了，在国内应用非常广泛的一款高性能 Java RPC 框架。
+  - Seata：阿里巴巴开源产品，一个易于使用的高性能微服务分布式事务解决方案。
+  - Arthas：开源的Java动态追踪工具，基于字节码增强技术，功能非常强大。
+
+- 阿里商业化组件
+
+  > 作为一家商业公司，阿里巴巴推出 Spring Cloud Alibaba，很大程度上市希望通过抢占开发者生态，来帮助推广自家的云产品。所以在开源社区，夹带了不少私货，
+
+  - Alibaba Cloud ACM：一款在分布式架构环境中对应用配置进行集中管理和推送的应用配置中心产品。
+  - Alibaba Cloud OSS：阿里云对象存储服务（Object Storage Service，简称 OSS），是阿里云提供的云存储服务。
+  - Alibaba Cloud SchedulerX：阿里中间件团队开发的一款分布式任务调度产品，提供秒级、精准的定时（基于 Cron 表达式）任务调度服务。
+
+- 集成 Spring Cloud 组件：Spring Cloud Alibaba 作为整套的微服务解决组件，只依靠目前阿里的开源组件是不够的，更多的是集成当前的社区组件，所以 Spring Cloud Alibaba 可以集成 Zuul，OpenFeign等网关，也支持 Spring Cloud Stream 消息组件。
+
+## 4. 企业常用技术选型组合
+
+企业常用技术选型组合：
+
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128172746094.png" alt="image-20211128172746094" style="zoom:28%;" />
