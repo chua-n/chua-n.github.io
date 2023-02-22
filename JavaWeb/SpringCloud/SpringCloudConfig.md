@@ -435,7 +435,7 @@ spring.config.import=optional:configserver:
 
 #### Bootstrap的方式
 
-客户端如果要使用传统的`bootstrap`方式来连接config server，必须通过以下两种方式：
+客户端如果要使用传统的`bootstrap`方式来连接config server，必须通过以下两种方式之一：
 
 - 引入 `spring-cloud-starter-bootstrap` starter 依赖；
 - 设置属性`spring.cloud.bootstrap.enabled=true`，必须通过系统属性或者环境变量来设置。
