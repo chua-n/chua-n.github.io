@@ -372,7 +372,7 @@ Spring Cloud Config也支持从本地的`classpath`或者文件系统来管理�
 
   > In this way, you can segregate the directories in the path and choose a strategy that makes sense for you (such as subdirectory per application or subdirectory per profile).
 
-- If you do not use placeholders in the search locations, this repository also appends the `{label}` parameter of the HTTP resource to a suffix on the search path, so properties files are loaded from each search location **and** a subdirectory with the same name as the label (the labelled properties take precedence in the Spring Environment). 
+- 如果你没有在搜索路径上放置占位符，`NativeEnvironmentRepository`也依然会在搜索路径的末尾加上客户端请求传过来的`{label}`参数，最终而言，会在每一个（原始的）搜索路径以及该路径中加了`/{label}/`后缀的子文件夹中进行配置文件的搜索（the labelled properties take precedence in the Spring Environment）。
 
   - Thus, the default behaviour with no placeholders is the same as adding a search location ending with `/{label}/`. 
   - For example, `file:/tmp/config` is the same as `file:/tmp/config,file:/tmp/config/{label}`. 
