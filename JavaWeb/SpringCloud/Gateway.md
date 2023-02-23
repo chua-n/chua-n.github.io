@@ -92,7 +92,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0966.JPG" alt="IMG_0966" style="zoom:33%;" />
 
-#### 案例
+### 案例
 
 假设我们需要给所有进入`userservice`的请求添加一个请求头：`Truth=itcast is freaking awesome!`，其实现方式是，在`gateway`中修改`application.yml`文件，给`userservice`的路由添加过滤器：
 
@@ -148,7 +148,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0974.JPG" alt="IMG_0974" style="zoom:40%;" />
 
-## 6. 跨域问题
+## 5. 跨域问题
 
 跨域：域名不一致就是跨域，主要包括：
 
