@@ -1,19 +1,19 @@
 ## 1. 前言
 
-为什么需要网关？
+对于微服务集群内部而言，服务注册与发现机制已经解决了服务之间的相互调用问题。而对于微服务集群外部呢？比如终端的用户，其到目前为止，要向一个微服务发起请求，仍然需要直接面向该服务的 `ip:port` 信息，面对千千万万个微服务，这无疑又对用户造成了巨大的困扰。因此，有必要为外部的客户端提供一个统一的访问入口，避免客户端直接与庞大的后台微服务进行接触，从而让客户端的访问更简单。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0953.JPG" alt="IMG_0953" style="zoom:40%;" />
 
+概括而言，网关发挥了如下作用：
+
+- 将客户端请求路由到微服务，并实现负载均衡
 - 对用户请求做身份认证、权限校验
-- 将用户请求路由到微服务，并实现负载均衡
 - 对用户请求做限流
 
-在SpringCloud中网关的实现包括两种：
+在 Spring Cloud 中网关的实现包括两种：
 
-- gateway
-- zuul
-
-> `Zuul`是基于Servlet的实现，属于阻塞式编程，而`SpringCloudGateway`是基于Spring5中提供的WebFlux，属性于响应式编程，具备更好的性能。
+- gateway：基于 Spring5 中提供的 WebFlux，属性于响应式编程，具备更好的性能。
+- zuul：由 Netflix 提供，是基于 Servlet 的实现，属于阻塞式编程
 
 ## 2. gateway快速入门
 
