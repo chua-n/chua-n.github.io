@@ -1,6 +1,6 @@
 > HTTP客户端`Feign`，本文说的`Feign`是指`OpenFeign`。
 >
-> - Feign 来自 Netflix，OpenFeign 基于 Feign 做了改进。
+> - Feign 来自 Netflix，OpenFeign 来自Spring Cloud 官方，其基于 Feign 做了改进。
 > - Feign 与 OpenFeign 最大的区别是：前者不支持对 SpringMVC 的注解，而后者支持。
 > - Feign 的坐标是`spring-cloud-starter-feign`，OpenFeign 的坐标是 `spring-cloud-starter-openfeign`。
 
