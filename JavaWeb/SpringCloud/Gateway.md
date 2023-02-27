@@ -92,19 +92,19 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0966.JPG" alt="IMG_0966" style="zoom:33%;" />
 
-### 案例
+### 4.1 案例
 
 假设我们需要给所有进入`userservice`的请求添加一个请求头：`Truth=itcast is freaking awesome!`，其实现方式是，在`gateway`中修改`application.yml`文件，给`userservice`的路由添加过滤器：
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0967.JPG" alt="IMG_0967" style="zoom:50%;" />
 
-### 默认过滤器
+### 4.2 默认过滤器
 
 如果要对所有的路由都生效，可以将过滤器工厂写到default下，如：
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0968.JPG" alt="IMG_0968" style="zoom:45%;" />
 
-### 全局过滤器
+### 4.3 全局过滤器
 
 全局过滤器（`GlobalFilter`）的作用也是处理一切进入网关的请求和微服务响应，与`GatewayFilter`的作用一样。
 
@@ -135,7 +135,7 @@ Spring提供了31种不同的路由过滤器工厂`GatewayFilterFactory`，例�
 
 2. ...
 
-### 过滤器执行顺序
+### 4.4 过滤器执行顺序
 
 - 每一个过滤器都必须指定一个int类型的order值，order值越小，优行级越高，执行顺序越靠前
 
