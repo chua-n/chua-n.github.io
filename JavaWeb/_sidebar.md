@@ -56,6 +56,7 @@
   - [Netflix](/JavaWeb/SpringCloud/Netflix/)
     - [Eureka](/JavaWeb/SpringCloud/Netflix/Eureka.md)
     - [Ribbon](/JavaWeb/SpringCloud/Netflix/Ribbon.md)
+    - [Zuul](/JavaWeb/SpringCloud/Netflix/Zuul.md)
   - [Alibaba](/JavaWeb/SpringCloud/Alibaba/)
     - [Nacos](/JavaWeb/SpringCloud/Alibaba/Nacos.md)
 - [SpringData](/JavaWeb/SpringData/)
