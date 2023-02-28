@@ -1,10 +1,27 @@
-## 1. Nacos注册中心
+## 1. Nacos简介
 
-Nacos是阿里巴巴的产品，现在是SpringCloud中的一个组件，相比Eureka功能更加丰富，在国内受欢迎程度较高。
+Nacos 是阿里巴巴的产品，现在是 SpringCloud 中的一个组件，相比 Eureka 功能更加丰富与强大，集服务注册/发现、配置管理于一身，在国内受欢迎程度较高。
 
-### Nacos的安装
+Nacos 的关键特性包括（详见[什么是 Nacos](https://nacos.io/zh-cn/docs/what-is-nacos.html)）：
 
-安装个这竟然还比较特殊......
+- 服务发现和服务健康监测
+- 动态配置服务
+- 动态 DNS 服务
+- 服务及其元数据管理
+
+### Nacos 地图与生态图
+
+Nacos 地图：
+
+<img src="../../../resources/images/notebook/JavaWeb/SpringCloud/nacosMap.jpg" alt="img" style="zoom:50%;" />
+
+Nacos 生态图：
+
+<img src="../../../resources/images/notebook/JavaWeb/SpringCloud/1533045871534-e64b8031-008c-4dfc-b6e8-12a597a003fb.png" alt="img" style="zoom:50%;" />
+
+### 安装
+
+类似于 zookeeper，nacos 运行也需要下载安装一个 server 端，系统中的微服务仅作为 client 端，nacos 安装的部分参考[官网](https://nacos.io/zh-cn/index.html)吧。
 
 ## 2. 服务注册
 
