@@ -364,6 +364,8 @@ Spring Cloud Config也支持从本地的`classpath`或者文件系统来管理�
 
 - `searchLocations`的默认值与一个单体Spring Boot项目的配置文件搜索路径相同，即 `[classpath:/, classpath:/config, file:./, file:./config]`。需要强调的一点是，这并不会将 config server 本身的 `application.properties` 配置文件暴露给 config client，因为 server 端在向 client 端发送 property sources 前会移除掉 server 自身的配置文件。
 
+- 对于某一个名称的配置文件，当其位于多个搜索路径中时，`searchLocations`中后出现的搜索路径的优先级更高。
+
 - 在指定搜索路径时记得加上`file:`前缀，因为如果不加的话默认会从`classpath`找；此外，在使用`file:`时，注意Windows系统下需要一个额外的`/`来指定根路径，例如`file:///${user.home}/config-repo`。
 
 - 就像任何Spring Boot应用一样，搜索路径中可以使用`${}`形式的变量。
