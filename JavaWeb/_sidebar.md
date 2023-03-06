@@ -52,6 +52,7 @@
   - [Config](/JavaWeb/SpringCloud/Config.md)
   - [Zookeeper](/JavaWeb/SpringCloud/Zookeeper.md)
   - [Gateway](/JavaWeb/SpringCloud/Gateway.md)
+  - [Stream](/JavaWeb/SpringCloud/Stream.md)
   - [RabbitMQ](/JavaWeb/SpringCloud/RabbitMQ.md)
   - [Netflix](/JavaWeb/SpringCloud/Netflix/)
     - [Eureka](/JavaWeb/SpringCloud/Netflix/Eureka.md)
