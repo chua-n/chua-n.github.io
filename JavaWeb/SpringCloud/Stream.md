@@ -128,3 +128,154 @@ To understand the programming model, you should be familiar with the following c
 
 ![SCSt overview](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-overview.png)
 
+### Destination Binders
+
+Destination Binders are extension components of Spring Cloud Stream responsible for providing the necessary configuration and implementation to facilitate integration with external messaging systems. This integration is responsible for connectivity, delegation, and routing of messages to and from producers and consumers, data type conversion, invocation of the user code, and more.
+
+Binders handle a lot of the boiler plate responsibilities that would otherwise fall on your shoulders. However, to accomplish that, the binder still needs some help in the form of minimalistic yet required set of instructions from the user, which typically come in the form of some type of *binding* configuration.
+
+### Bindings
+
+The following example shows a fully configured and functioning Spring Cloud Stream application that receives the payload of the message as a `String` type (see [Content Type Negotiation](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#content-type-management) section), logs it to the console and sends it down stream after converting it to upper case.
+
+```java
+@SpringBootApplication
+public class SampleApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SampleApplication.class, args);
+	}
+
+	@Bean
+	public Function<String, String> uppercase() {
+	    return value -> {
+	        System.out.println("Received: " + value);
+	        return value.toUpperCase();
+	    };
+	}
+}
+```
+
+The above example looks no different then any vanilla spring-boot application. It defines a single bean of type `Function` and that it is. So, how does it became spring-cloud-stream application? It becomes spring-cloud-stream application simply based on the presence of spring-cloud-stream and binder dependencies and auto-configuration classes on the classpath effectively setting the context for your boot application as spring-cloud-stream application. And in this context beans of type `Supplier`, `Function` or `Consumer` are treated as defacto message handlers triggering binding of to destinations exposed by the provided binder following certain naming conventions and rules to avoid extra configuration.
+
+Binding is an abstraction that represents a bridge between sources and targets exposed by the binder and user code. This abstraction has a name and such name(s) is necessary for cases where additional per-binding configuration is required.
+
+Throughout this manual you will see examples of configuration properties such as `spring.cloud.stream.bindings.input.destination=myQueue`. The `input` segment in this property name is what we refer to as *binding name* and it could derive via several mechanisms. The following sub-sections will describe the naming conventions and configuration elements used by spring-cloud-stream to control binding names.
+
+#### Functional binding names
+
+Unlike the explicit naming required by annotation-based support (legacy) used in the previous versions of spring-cloud-stream, the functional programming model defaults to a simple convention when it comes to binding names, thus greatly simplifying application configuration. Let’s look at the first example:
+
+```java
+@SpringBootApplication
+public class SampleApplication {
+
+	@Bean
+	public Function<String, String> uppercase() {
+	    return value -> value.toUpperCase();
+	}
+}
+```
+
+In the preceding example we have an application with a single function which acts as message handler. As a `Function` it has an input and output. The naming convention used to name input and output bindings is as follows:
+
+- input - `<functionName> + -in- + <index>`
+- output - `<functionName> + -out- + <index>`
+
+The `in` and `out` corresponds to the type of binding (such as *input* or *output*). The `index` is the index of the input or output binding. It is always 0 for typical single input/output function, so it’s only relevant for [Functions with multiple input and output arguments](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_functions_with_multiple_input_and_output_arguments).
+
+So if for example you would want to map the input of this function to a remote destination (e.g., topic, queue etc) called "my-topic" you would do so with the following property:
+
+```properties
+--spring.cloud.stream.bindings.uppercase-in-0.destination=my-topic
+```
+
+Note how `uppercase-in-0` is used as a segment in property name. The same goes for `uppercase-out-0`.
+
+##### Descriptive Binding Names
+
+Some times to improve readability you may want to give your binding a more descriptive name (such as 'account', 'orders' etc). Another way of looking at it is you can map an *implicit binding name* to an *explicit binding name*. And you can do it with `spring.cloud.stream.function.bindings.<binding-name>` property. This property also provides a migration path for existing applications that rely on custom interface-based bindings that require explicit names.
+
+For example,
+
+```properties
+--spring.cloud.stream.function.bindings.uppercase-in-0=input
+```
+
+In the preceding example you mapped and effectively renamed `uppercase-in-0` binding name to `input`. Now all configuration properties can refer to `input` binding name instead (e.g., `--spring.cloud.stream.bindings.input.destination=my-topic`).
+
+> While descriptive binding names may enhance the readability aspect of the configuration, they also create another level of misdirection by mapping an implicit binding name to an explicit binding name. And since all subsequent configuration properties will use the explicit binding name you must always refer to this 'bindings' property to correlate which function it actually corresponds to. We believe that for most cases (with the exception of [Functional Composition](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_functional_composition)) it may be an overkill, so, it is our recommendation to avoid using it altogether, especially since not using it provides a clear path between binder destination and binding name, such as `spring.cloud.stream.bindings.uppercase-in-0.destination=sample-topic`, where you are clearly correlating the input of `uppercase` function to `sample-topic` destination.
+
+#### Explicit binding creation
+
+In the previous section we explained how bindings are created implicitly driven by Function, Supplier or Consumer provided by your application. However, there are times when you may need to create binding explicitly where bindings are not tied to any function. This is typically done to support integrations with other frameworks (e.g., Spring Integration framework) where you may need direct access to the underlying `MessageChannel`.
+
+Spring Cloud Stream allows you to define input and output bindings explicitly via `spring.cloud.stream.input-bindings` and `spring.cloud.stream.output-bindings` properties. Noticed the plural in the property names allowing you to define multiple bindings by simply using `;` as a delimiter. Just look at the following test case as an example:
+
+```java
+@Test
+public void testExplicitBindings() {
+	try (ConfigurableApplicationContext context = new SpringApplicationBuilder(
+		TestChannelBinderConfiguration.getCompleteConfiguration(EmptyConfiguration.class))
+				.web(WebApplicationType.NONE)
+				.run("--spring.jmx.enabled=false",
+					"--spring.cloud.stream.input-bindings=fooin;barin",
+					"--spring.cloud.stream.output-bindings=fooout;barout")) {
+
+	assertThat(context.getBean("fooin-in-0", MessageChannel.class)).isNotNull();
+	assertThat(context.getBean("barin-in-0", MessageChannel.class)).isNotNull();
+	assertThat(context.getBean("fooout-out-0", MessageChannel.class)).isNotNull();
+	assertThat(context.getBean("barout-out-0", MessageChannel.class)).isNotNull();
+	}
+}
+
+@EnableAutoConfiguration
+@Configuration
+public static class EmptyConfiguration {
+}
+```
+
+As you can see we have declared two input bindings and two output bindings while our configuration had no functions defined, yet we were able to successfully create these bindings and access their corresponding channels.
+
+The rest of the binding rules that apply to implicit bindings apply here as well (for example, you can see that `fooin` turned into `fooin-in-0` binding/channel etc).
+
+### Message
+
+You can write a Spring Cloud Stream application by simply writing functions and exposing them as `@Bean`s. You can also use Spring Integration annotations based configuration or Spring Cloud Stream annotation based configuration, although starting with spring-cloud-stream 3.x we recommend using functional implementations.
+
+> Starting with version 3.0 spring-cloud-stream provides support for functions that have multiple inputs and/or multiple outputs (return values). What does this actually mean and what type of use cases it is targeting?
+>
+> - *Big Data: Imagine the source of data you’re dealing with is highly un-organized and contains various types of data elements (e.g., orders, transactions etc) and you effectively need to sort it out.*
+> - *Data aggregation: Another use case may require you to merge data elements from 2+ incoming _streams*.
+
+#### Suppliers
+
+
+
+#### Consumers
+
+
+
+### Event Routing
+
+Event Routing, in the context of Spring Cloud Stream, is the ability to either 
+
+- route events to a particular event subscriber 
+- or, route events produced by an event subscriber to a particular destination. 
+
+Here we’ll refer to it as route ‘TO’ and route ‘FROM’.
+
+## Binders
+
+Spring Cloud Stream provides a Binder abstraction for use in connecting to physical destinations at the external middleware. This section provides information about the main concepts behind the Binder SPI, its main components, and implementation-specific details.
+
+## Configuration Options
+
+## Content Type Negotiation
+
+## Inter-Application Communication
+
+## Health Indicator
+
+Spring Cloud Stream provides a health indicator for binders. It is registered under the name `binders` and can be enabled or disabled by setting the `management.health.binders.enabled` property.
+
