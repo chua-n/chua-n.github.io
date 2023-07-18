@@ -59,78 +59,85 @@ Spring Cloud Stream 的模型：
 
 ![SCSt with binder](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-with-binder.png)
 
-### Binder
+### Binder, Binding, Message
 
-Spring Cloud Stream provides Binder implementations for [Kafka](https://github.com/spring-cloud/spring-cloud-stream-binder-kafka) and [Rabbit MQ](https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit). The framework also includes a test binder for integration testing of your applications as spring-cloud-stream application. See [Testing](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_testing) section for more details.
+- **Destination Binders:** 简称 Binder，SCS 提供的一个抽象概念，负责集成外部消息系统。
 
-Binder abstraction is also one of the extension points of the framework, which means you can implement your own binder on top of Spring Cloud Stream.
+  > 对于一个具体的消息中间件，开发者可以实现一个自己的 Binder 从而集成到 SCS 应用中，SCS 官方提供了 [Kafka](https://github.com/spring-cloud/spring-cloud-stream-binder-kafka) 和 [Rabbit MQ](https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit) 的 Binder。
 
-Spring Cloud Stream uses Spring Boot for configuration, and the Binder abstraction makes it possible for a Spring Cloud Stream application to be flexible in how it connects to middleware.
+- **Bindings:** Bridge between the external messaging systems and application provided *Producers* and *Consumers* of messages (created by the *Destination Binders*).
 
-### Persistent Publish-Subscribe Support
-
-Communication between applications follows a publish-subscribe model, where data is broadcast through shared topics. This can be seen in the following figure, which shows a typical deployment for a set of interacting Spring Cloud Stream applications.
-
-![SCSt sensors](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-sensors.png)
-
-Data reported by sensors to an HTTP endpoint is sent to a common destination named `raw-sensor-data`. From the destination, it is independently processed by a microservice application that computes time-windowed averages and by another microservice application that ingests the raw data into HDFS (Hadoop Distributed File System). In order to process the data, both applications declare the topic as their input at runtime.
-
-The publish-subscribe communication model reduces the complexity of both the producer and the consumer and lets new applications be added to the topology without disruption of the existing flow.
-
-While the concept of publish-subscribe messaging is not new, Spring Cloud Stream takes the extra step of making it an opinionated choice for its application model. By using native middleware support, Spring Cloud Stream also simplifies use of the publish-subscribe model across different platforms.
-
-### Consumer Groups
-
-While the publish-subscribe model makes it easy to connect applications through shared topics, the ability to scale up by creating multiple instances of a given application is equally important. When doing so, different instances of an application are placed in a competing consumer relationship, where only one of the instances is expected to handle a given message.
-
-Spring Cloud Stream models this behavior through the concept of a consumer group. (Spring Cloud Stream consumer groups are similar to and inspired by Kafka consumer groups.) Each consumer binding can use the `spring.cloud.stream.bindings.<bindingName>.group` property to specify a group name. For the consumers shown in the following figure, this property would be set as `spring.cloud.stream.bindings.<bindingName>.group=hdfsWrite` or `spring.cloud.stream.bindings.<bindingName>.group=average`.
-
-![SCSt groups](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-groups.png)
-
-All groups that subscribe to a given destination receive a copy of published data, but only one member of each group receives a given message from that destination. By default, when a group is not specified, Spring Cloud Stream assigns the application to an anonymous and independent single-member consumer group that is in a publish-subscribe relationship with all other consumer groups.
-
-### Consumer Types
-
-Two types of consumer are supported:
-
-- Message-driven (sometimes referred to as Asynchronous)
-- Polled (sometimes referred to as Synchronous)
-
-Prior to version 2.0, only asynchronous consumers were supported. A message is delivered as soon as it is available and a thread is available to process it.
-
-When you wish to control the rate at which messages are processed, you might want to use a synchronous consumer.
-
-### Durability
-
-Consistent with the opinionated application model of Spring Cloud Stream, consumer group subscriptions are durable. That is, a binder implementation ensures that group subscriptions are persistent and that, once at least one subscription for a group has been created, the group receives messages, even if they are sent while all applications in the group are stopped.
-
-> Anonymous subscriptions are non-durable by nature. For some binder implementations (such as RabbitMQ), it is possible to have non-durable group subscriptions.
-
-In general, it is preferable to always specify a consumer group when binding an application to a given destination. When scaling up a Spring Cloud Stream application, you must specify a consumer group for each of its input bindings. Doing so prevents the application’s instances from receiving duplicate messages (unless that behavior is desired, which is unusual).
-
-### Partitioning Support
-
-Spring Cloud Stream provides support for partitioning data between multiple instances of a given application. In a partitioned scenario, the physical communication medium (such as the broker topic) is viewed as being structured into multiple partitions. One or more producer application instances send data to multiple consumer application instances and ensure that data identified by common characteristics are processed by the same consumer instance.
-
-Spring Cloud Stream provides a common abstraction for implementing partitioned processing use cases in a uniform fashion. Partitioning can thus be used whether the broker itself is naturally partitioned (for example, Kafka) or not (for example, RabbitMQ).
-
-![SCSt partitioning](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-partitioning.png)
-
-Partitioning is a critical concept in stateful processing, where it is critical (for either performance or consistency reasons) to ensure that all related data is processed together. For example, in the time-windowed average calculation example, it is important that all measurements from any given sensor are processed by the same application instance.
-
-## 编程模型
-
-To understand the programming model, you should be familiar with the following core concepts:
-
-- **Destination Binders:** Components responsible to provide integration with the external messaging systems.
-- **Bindings:** Bridge between the external messaging systems and application provided *Producers* and *Consumers* of messages (created by the Destination Binders).
-- **Message:** The canonical data structure used by producers and consumers to communicate with Destination Binders (and thus other applications via external messaging systems).
+- **Message:** 用于生产者、消费者通过 *Destination Binders* 进行沟通的规范化的数据结构。
 
 ![SCSt overview](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-overview.png)
 
+### 持久化的发布-订阅机制
+
+应用程序之间的通信遵循 发布-订阅 （publish-subscribe model）模型，数据通过共享主题（shared topics）进行广播。发布-订阅通信模型降低了生产者和消费者的复杂性，使得新的应用程序被添加到拓扑结构中时不会破坏现有的流程。
+
+下图是经典的 SCS 的发布-订阅模型，生产者生产消息发布在 shared topic 上，然后消费者通过订阅这个 topic 来获取消息（两个订阅者都可以接收到消息）：
+
+> 其中 topic 对应于 SCS 中的 destinations（相当于Kafka的 topic、RabbitMQ 的 exchanges）。
+
+![img](../../resources/images/notebook/JavaWeb/SpringCloud/1149398-20180731154827761-111530488.png)
+
+### 消费者组
+
+对于同一个应用的多个实例，当该应用收到一条消息时，如果每一个实例都去消费、处理该消息，很有可能造成“重复消费”的问题，很多情况下你可能只希望该应用只有一个实例去消费该消息，这时便可借助 SCS 提供的消费者组（借鉴自 Kafka 的消费者组）的概念来解决此问题。
+
+每个消费者 binding 可以使用 `spring.cloud.stream.bindings.<bindingName>.group` 属性来指定一个组名. 对于下图所示的消费者，两个消费者组的名称被指定为 `spring.cloud.stream.bindings.<bindingName>.group=Group-A` or `spring.cloud.stream.bindings.<bindingName>.group=Group-B`。
+
+![img](../../resources/images/notebook/JavaWeb/SpringCloud/1149398-20180731154859044-1037571011.png)
+
+All groups that subscribe to a given destination receive a copy of published data, but only one member of each group receives a given message from that destination. By default, when a group is not specified, Spring Cloud Stream assigns the application to an anonymous and independent single-member consumer group that is in a publish-subscribe relationship with all other consumer groups.
+
+所有订阅某一个给定的 destination 的组都会收到发布消息的一个备份，但是每个组内部只会有一个成员接收到该消息。当没有指定组时，默认情况下 SCS 会将该消费者 binding 分配给一个匿名的、独立的“单成员消费者组”，该组与所有其他消费者组都是发布-订阅关系。
+
+> 也就是说如果 binding 没有指定消费组，那么这个匿名消费组会与其它组一起消费消息，可能导致重复消费问题。
+
+一般来说，当把应用程序绑定到一个特定的 destination 时，最好总是指定消费者组。当扩展 SCS 应用程序时，你必须为其每个输入 binding 指定消费者组，这样做可以防止应用程序的实例收到重复的消息，除非你真的需要这种行为（这不太正常）。
+
+### 订阅持久性
+
+Binder 的实现可以确保组的订阅是持久的。也就是说，一旦为一个组创建了至少一个订阅，该组就会收到消息，即使这些消息是在该组的所有 app 都处于宕机状态时发送的。
+
+- 匿名消费者组的订阅在本质上是不可持久的；
+- 对于一些 Binder 的实现（如 RabbitMQ），也可以有非持久性的组订阅。
+
+### 消费者类型
+
+SCS 支持两种消费者类型：
+
+- 消息驱动型（异步型）：Message-driven (sometimes referred to as Asynchronous)
+- 轮询型（同步型）：Polled (sometimes referred to as Synchronous)
+
+> Prior to version 2.0, only asynchronous consumers were supported. A message is delivered as soon as it is available and a thread is available to process it.
+
+当你想控制消息的处理速度时，可能需要用到同步消费者类型。
+
+### 分区
+
+在消费组中我们可以保证消息不会被重复消费，但是在同组下有多个实例的时候，我们无法确定每次处理消息的是不是被同一消费者消费，**分区**的作用就是为了确保具有共同特征标识的数据由同一个消费者实例进行处理。
+
+SCS 提供了在一个应用程序的多个实例之间进行数据分区的支持。In a partitioned scenario, the physical communication medium (such as the broker topic) is viewed as being structured into multiple partitions.
+
+为以统一方式实现分区处理用例，SCS 提供了一个通用抽象。因此，无论 broker 本身是天然分区（如Kafka）的还是不分区（如RabbitMQ）的，都可以使用 SCS 的分区。
+
+![SCSt partitioning](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-partitioning.png)
+
+分区是有状态处理中的一个关键概念，在有状态处理中，确保所有相关数据被一起处理是非常关键的（出于性能或一致性的原因）。例如，在时间窗平均计算的例子中，确保来自任何给定传感器的所有测量数据都由同一个应用实例处理非常重要。
+
+> 注意：要使用分区处理，你必须同时对生产者和消费者进行配置。
+
+## 编程模型
+
 ### Destination Binders
 
-Destination Binders are extension components of Spring Cloud Stream responsible for providing the necessary configuration and implementation to facilitate integration with external messaging systems. This integration is responsible for connectivity, delegation, and routing of messages to and from producers and consumers, data type conversion, invocation of the user code, and more.
+Binder 的集成负责：
+
+- 生产者和消费者之间的连接、委托和消息的路由
+- 数据类型转换
+- 用户代码的调用等
 
 Binders handle a lot of the boiler plate responsibilities that would otherwise fall on your shoulders. However, to accomplish that, the binder still needs some help in the form of minimalistic yet required set of instructions from the user, which typically come in the form of some type of *binding* configuration.
 
