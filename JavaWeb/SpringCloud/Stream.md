@@ -143,7 +143,13 @@ Binders handle a lot of the boiler plate responsibilities that would otherwise f
 
 ### Bindings
 
-The following example shows a fully configured and functioning Spring Cloud Stream application that receives the payload of the message as a `String` type (see [Content Type Negotiation](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#content-type-management) section), logs it to the console and sends it down stream after converting it to upper case.
+#### 函数式 binding
+
+下面的例子显示了一个完全配置和正常运行的 Spring Cloud Stream 应用程序，该应用程序接收作为字符串类型的消息的有效载荷，将其记录到控制台，并在将其转换为大写字母后向下发送。
+
+这个例子看起来和任何 spring-boot 应用程序没有什么不同。那么，它是如何成为 spring-cloud-stream 应用程序的呢？
+
+仅仅是因为在 `classpath` 上存在 spring-cloud-stream 和 binder 的依赖以及自动配置类，它们有效地将启动应用程序的上下文设置为 spring-cloud-stream 应用程序。在这个上下文里，`Supplier`、`Function`、`Consumer` 类型的 bean 被视为事实上的消息处理程序，并遵循一定的命名规则以避免额外的配置。
 
 ```java
 @SpringBootApplication
@@ -163,15 +169,13 @@ public class SampleApplication {
 }
 ```
 
-The above example looks no different then any vanilla spring-boot application. It defines a single bean of type `Function` and that it is. So, how does it became spring-cloud-stream application? It becomes spring-cloud-stream application simply based on the presence of spring-cloud-stream and binder dependencies and auto-configuration classes on the classpath effectively setting the context for your boot application as spring-cloud-stream application. And in this context beans of type `Supplier`, `Function` or `Consumer` are treated as defacto message handlers triggering binding of to destinations exposed by the provided binder following certain naming conventions and rules to avoid extra configuration.
+`binding`（绑定） 是一个抽象概念，代表了由 binder 和用户代码所暴露的源和目标之间的桥梁。这个抽象概念有一个名字，比如，`spring.cloud.stream.bindings.input.destination=myQueue`这个属性名称中的 `input` 就是我们所说的 *binding 的名称*（binding name）。
 
-Binding is an abstraction that represents a bridge between sources and targets exposed by the binder and user code. This abstraction has a name and such name(s) is necessary for cases where additional per-binding configuration is required.
+binding 名称可以通过若干种机制衍生出来，下面的小节将描述 SCS 用于控制绑定名称的命名惯例和配置元素。
 
-Throughout this manual you will see examples of configuration properties such as `spring.cloud.stream.bindings.input.destination=myQueue`. The `input` segment in this property name is what we refer to as *binding name* and it could derive via several mechanisms. The following sub-sections will describe the naming conventions and configuration elements used by spring-cloud-stream to control binding names.
+##### 函数式 binding 的名称
 
-#### Functional binding names
-
-Unlike the explicit naming required by annotation-based support (legacy) used in the previous versions of spring-cloud-stream, the functional programming model defaults to a simple convention when it comes to binding names, thus greatly simplifying application configuration. Let’s look at the first example:
+> Unlike the explicit naming required by annotation-based support (legacy) used in the previous versions of spring-cloud-stream, the functional programming model defaults to a simple convention when it comes to binding names, thus greatly simplifying application configuration.
 
 ```java
 @SpringBootApplication
@@ -184,40 +188,40 @@ public class SampleApplication {
 }
 ```
 
-In the preceding example we have an application with a single function which acts as message handler. As a `Function` it has an input and output. The naming convention used to name input and output bindings is as follows:
+在上面的例子中，我们有一个应用程序，它有一个单一的函数作为消息处理器。首先，作为 `Function`，它有一个输入和输出，SCS 对其的输入和输出绑定的命名规则如下:
 
 - input - `<functionName> + -in- + <index>`
 - output - `<functionName> + -out- + <index>`
 
-The `in` and `out` corresponds to the type of binding (such as *input* or *output*). The `index` is the index of the input or output binding. It is always 0 for typical single input/output function, so it’s only relevant for [Functions with multiple input and output arguments](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_functions_with_multiple_input_and_output_arguments).
+其中，`in` 和 `out` 对应的是 binding 的类型（如输入或输出）；`index`是这个输入或输出绑定的索引，对于典型的单一输入/输出函数，它总是0，所以只有[具有多个输入和输出参数的函数](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_functions_with_multiple_input_and_output_arguments)会与`index`产生关联。
 
-So if for example you would want to map the input of this function to a remote destination (e.g., topic, queue etc) called "my-topic" you would do so with the following property:
+因此，如果你想把这个函数的输入映射到一个叫做 `my-topic` 的 remote destination （远程目标，例如topic、queue等），你可以通过以下属性来实现:
 
 ```properties
 --spring.cloud.stream.bindings.uppercase-in-0.destination=my-topic
 ```
 
-Note how `uppercase-in-0` is used as a segment in property name. The same goes for `uppercase-out-0`.
+请注意其中的 `uppercase-in-0` 是如何作为属性名称中的一段的。同理，`uppercase-out-0`是类似的。
 
-##### Descriptive Binding Names
+##### 起别名
 
-Some times to improve readability you may want to give your binding a more descriptive name (such as 'account', 'orders' etc). Another way of looking at it is you can map an *implicit binding name* to an *explicit binding name*. And you can do it with `spring.cloud.stream.function.bindings.<binding-name>` property. This property also provides a migration path for existing applications that rely on custom interface-based bindings that require explicit names.
+> 官方文档不推荐使用别名。
 
-For example,
+有些时候，为了提高可读性，你可能想给你的 binding 一个更具描述性的名字，此时可以用 `spring.cloud.stream.function.bindings.<binding-name>` 属性，该属性也支持基于自定义接口的绑定。
 
 ```properties
 --spring.cloud.stream.function.bindings.uppercase-in-0=input
 ```
 
-In the preceding example you mapped and effectively renamed `uppercase-in-0` binding name to `input`. Now all configuration properties can refer to `input` binding name instead (e.g., `--spring.cloud.stream.bindings.input.destination=my-topic`).
+例如，上面把 binding name `uppercase-in-0` 重命名为 `input`，这样一来，所有的配置属性都可以引用 `input`这个名字，比如之前的 `--spring.cloud.bindings.input.destination=my-topic`。
 
-> While descriptive binding names may enhance the readability aspect of the configuration, they also create another level of misdirection by mapping an implicit binding name to an explicit binding name. And since all subsequent configuration properties will use the explicit binding name you must always refer to this 'bindings' property to correlate which function it actually corresponds to. We believe that for most cases (with the exception of [Functional Composition](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_functional_composition)) it may be an overkill, so, it is our recommendation to avoid using it altogether, especially since not using it provides a clear path between binder destination and binding name, such as `spring.cloud.stream.bindings.uppercase-in-0.destination=sample-topic`, where you are clearly correlating the input of `uppercase` function to `sample-topic` destination.
+#### 显式创建binding
 
-#### Explicit binding creation
+我们已经知道 SCS 可以通过 Function, Supplier 或 Consumer 驱动来隐式地创建 binding，然而，有时你可能需要显式地创建 binding，同时它们并不与任何函数挂钩。通常来说，这种情况多发生于需要支持与其他框架（如 Spring Integration 框架）进行集成的场景，此时你可能需要直接访问底层的 `MessageChannel`。
 
-In the previous section we explained how bindings are created implicitly driven by Function, Supplier or Consumer provided by your application. However, there are times when you may need to create binding explicitly where bindings are not tied to any function. This is typically done to support integrations with other frameworks (e.g., Spring Integration framework) where you may need direct access to the underlying `MessageChannel`.
+SCS 允许你通过 `spring.cloud.stream.input-bindings` 和 `spring.cloud.output-bindings` 属性来显示定义输入和输出 binding。注意属性名称中的复数，这意味着你可以通过`;`来定义多个 binding。
 
-Spring Cloud Stream allows you to define input and output bindings explicitly via `spring.cloud.stream.input-bindings` and `spring.cloud.stream.output-bindings` properties. Noticed the plural in the property names allowing you to define multiple bindings by simply using `;` as a delimiter. Just look at the following test case as an example:
+下面是一个例子：
 
 ```java
 @Test
@@ -242,13 +246,7 @@ public static class EmptyConfiguration {
 }
 ```
 
-As you can see we have declared two input bindings and two output bindings while our configuration had no functions defined, yet we were able to successfully create these bindings and access their corresponding channels.
-
-The rest of the binding rules that apply to implicit bindings apply here as well (for example, you can see that `fooin` turned into `fooin-in-0` binding/channel etc).
-
-### Message
-
-You can write a Spring Cloud Stream application by simply writing functions and exposing them as `@Bean`s. You can also use Spring Integration annotations based configuration or Spring Cloud Stream annotation based configuration, although starting with spring-cloud-stream 3.x we recommend using functional implementations.
+### 消息的生产/消费
 
 > Starting with version 3.0 spring-cloud-stream provides support for functions that have multiple inputs and/or multiple outputs (return values). What does this actually mean and what type of use cases it is targeting?
 >
