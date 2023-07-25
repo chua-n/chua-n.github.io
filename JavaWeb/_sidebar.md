@@ -21,6 +21,7 @@
   - [配置-代码](/JavaWeb/Spring/配置-代码.md)
   - [AOP-上](/JavaWeb/Spring/AOP-上.md)
   - [AOP-下](/JavaWeb/Spring/AOP-下.md)
+  - [贯通](/JavaWeb/Spring/贯通.md)
   - [Spring+Junit](/JavaWeb/Spring/Spring+Junit.md)
   - [Spring-JdbcTemplate](/JavaWeb/Spring/Spring-JdbcTemplate.md)
 - [SpringMVC](/JavaWeb/SpringMVC/)
