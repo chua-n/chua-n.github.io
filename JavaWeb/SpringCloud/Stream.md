@@ -215,6 +215,16 @@ public class SampleApplication {
 
 例如，上面把 binding name `uppercase-in-0` 重命名为 `input`，这样一来，所有的配置属性都可以引用 `input`这个名字，比如之前的 `--spring.cloud.bindings.input.destination=my-topic`。
 
+##### spring.cloud.function.define
+
+> To specify which functional bean to bind to the external destination(s) exposed by the bindings, you must provide `spring.cloud.function.definition` property.
+
+在你的程序中，如果你只有`java.util.function.[Supplier/Function/Consumer]`类型的单个 Bean，SCS 会自动帮你将这些 Bean 识别为消息处理器。但是，当其中每个函数式类型的 Bean 有多个时，其中某些 Bean 可能是在程序中发挥其他作用的，此时要指定哪个函数式 Bean 需要绑定到 binding 作为消息处理器，你就必须提供 `spring.cloud.function.definition` 属性了。
+
+事实上，在官方文档中提倡永远主动提供这个 `spring.cloud.function.definition` 属性，防止发生混淆。
+
+此外，如果你想禁用 SCS 的这个自动发现机制，可以设置属性 `spring.cloud.stream.function.autodetect=false`。
+
 #### 显式创建binding
 
 我们已经知道 SCS 可以通过 Function, Supplier 或 Consumer 驱动来隐式地创建 binding，然而，有时你可能需要显式地创建 binding，同时它们并不与任何函数挂钩。通常来说，这种情况多发生于需要支持与其他框架（如 Spring Integration 框架）进行集成的场景，此时你可能需要直接访问底层的 `MessageChannel`。
@@ -248,18 +258,211 @@ public static class EmptyConfiguration {
 
 ### 消息的生产/消费
 
-> Starting with version 3.0 spring-cloud-stream provides support for functions that have multiple inputs and/or multiple outputs (return values). What does this actually mean and what type of use cases it is targeting?
->
-> - *Big Data: Imagine the source of data you’re dealing with is highly un-organized and contains various types of data elements (e.g., orders, transactions etc) and you effectively need to sort it out.*
-> - *Data aggregation: Another use case may require you to merge data elements from 2+ incoming _streams*.
+#### Supplier
 
-#### Suppliers
+对于 `java.util.function.[Supplier/Function/Consumer]`作为消息处理器的调用时机，显然其中的 `Function` 和 `Consumer` 是非常直接的，它们会根据发送到它们所绑定的 `destination` 的数据来触发，也就是说，`Function` 和 `Consumer` 是事件驱动的。
 
+然而，对于 `Supplier` 而言，作为数据产生的源头，其触发机制定然不同。
 
+##### Supplier 的实现方式
 
-#### Consumers
+关于 SCS 中 `Supplier` 的实现方式，SCS 提供了三种风格，**命令式（imperative）**、**反应式（reactive）**、**混合式**，这两种风格直接关系到 `Supplier` 的触发机制。
 
+- 命令式：考虑如下的示例：
 
+  ```java
+  @SpringBootApplication
+  public static class SupplierConfiguration {
+  
+  	@Bean
+  	public Supplier<String> stringSupplier() {
+  		return () -> "Hello from Supplier";
+  	}
+  }
+  ```
+
+  SCS 框架的规则是：针对上述 `Supplier` 的 Bean，由框架提供一个轮询机制去触发其 `get()` 方法，默认情况下频率是每秒一次。也就是说，上述代码会每秒钟产生一条消息，发送到其绑定的输出 `destination` 中去。
+
+- 反应式：考虑如下一个不同的例子：
+
+  ```java
+  @SpringBootApplication
+  public static class SupplierConfiguration {
+  
+      @Bean
+      public Supplier<Flux<String>> stringSupplier() {
+          return () -> Flux.fromStream(Stream.generate(new Supplier<String>() {
+              @Override
+              public String get() {
+                  try {
+                      Thread.sleep(1000);
+                      return "Hello from Supplier";
+                  } catch (Exception e) {
+                      // ignore
+                  }
+              }
+          })).subscribeOn(Schedulers.elastic()).share();
+      }
+  }
+  ```
+
+  上面的 `Supplier` Bean 采用了反应式编程风格。与命令式 `Supplier` 不同，通常情况下它只被触发一次，因为调用它的 `get()` 方法会产生连续的消息流而不是单个消息。SCS 框架能够自动识别两种不同的编程风格，并保证这样的 `Supplier` 只被触发一次。
+
+- 混合式：如果你想轮询一些数据源并返回代表结果集的有限数据流，可以如下实现：
+
+  ```java
+  @SpringBootApplication
+  public static class SupplierConfiguration {
+  
+  	@PollableBean
+  	public Supplier<Flux<String>> stringSupplier() {
+  		return () -> Flux.just("hello", "bye");
+  	}
+  }
+  ```
+
+  如此，使用了 `PollableBean` 注解（`@Bean`的子集），从而向框架发出信号，表示“尽管这样一个 `Supplier` 的实现是反应式的，但它仍然需要被轮询”。
+
+##### Supplier 线程
+
+由于 Supplier 没有任何输入，因此由不同的机制（poller）触发，它可能有一个不可预知的线程机制。
+
+虽然大多数时候线程机制的细节与函数的下游执行无关，但在某些情况下可能会出现问题，特别是对于那些可能对线程亲和力（thread affinity）有一定期望的集成框架。例如，Spring Cloud Sleuth 就依赖于存储在 thread local 中的追踪数据。对于这些情况，应该通过另一种基于 `StreamBridge` 的机制，让用户可以对线程机制有更多的控制。
+
+#### StreamBridge
+
+经试验，对于作为 Bean 的 `Supplier`，如果你在业务程序里手动去调用去 `get()` 方法，是无法触发其事件发送机制的，它的表现就像一个普通的业务 Bean 一样，只有被 SCS 框架本身调用时才会具有数据源属性。
+
+然而，有些情况下，实际的数据源可能来自于非 binder 的外部系统，你没有办法借助 SCS 的轮询机制来发送你的数据源。例如，数据源可能来自于一个 REST 请求，此时可使用 SCS 提供的 `StreamBridge` 来发送这样的消息。
+
+##### 一般使用
+
+```java
+@SpringBootApplication
+@Controller
+public class WebSourceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(WebSourceApplication.class, "--spring.cloud.stream.source=toStream");
+	}
+
+	@Autowired
+	private StreamBridge streamBridge;
+
+	@RequestMapping
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public void delegateToSupplier(@RequestBody String body) {
+		System.out.println("Sending " + body);
+		streamBridge.send("toStream-out-0", body);
+	}
+}
+```
+
+在这里，我们 @Autowire了一个 `StreamBridge` Bean，它允许我们将数据发送到 output binding，从而有效地将非 SCS 程序与 SCS 程序连接起来。
+
+- 注意，在上面的例子中，没有预定义任何 `Supplier` 的 Bean，`StreamBridge` 会在第一次调用`send(..)`操作时创建这个不存在的 output binding，并将其缓存起来供后续复用。
+- 如果你想在程序启动时就预先创建一个output binding，你可以利用 `spring.cloud.stream.source` 属性来声明你的数据源的名称，该名称将被用作一个触发器来创建一个数据源绑定（source binding）。对于上面的例子，输出绑定的名称将是`toStream-out-0`，同时你可以使用`;`来表示多个数据源（即多个输出绑定），例如，`-–spring.cloud.stream.source=foo;bar`。
+
+另外，注意 `streamBridge.send(..)` 方法需要一个对象作为入参。这意味着你可以向它发送`POJO`或`Message`，它在发送输出时会像 `Supplier` 或 `Function` 一样经过同样的流程。
+
+##### 动态 destination
+
+`StreamBridge` 也可以用于 output destination(s) 事先不知道的情况，类似于 [Routing FROM Consumer](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_routing_from_consumer)。比如，下面的例子非常类似于上一节的例子，区别仅仅在于没有设置 `spring.cloud.stream.source` 属性，因为此例中的数据被发送至一个不存在的名为 `myDestination` 的地方，这种情况下 `myDestination` 就会被视为动态 destination。
+
+```java
+@SpringBootApplication
+@Controller
+public class WebSourceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(WebSourceApplication.class, args);
+	}
+
+	@Autowired
+	private StreamBridge streamBridge;
+
+	@RequestMapping
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public void delegateToSupplier(@RequestBody String body) {
+		System.out.println("Sending " + body);
+		streamBridge.send("myDestination", body);
+	}
+}
+```
+
+缓存动态 destination 有可能会导致内存泄露，为了一定程度上避免这种情况，SCS 提供了一种自驱逐的缓存机制：默认只缓存10个 output binding，动态 destination 的数量超过这个数，某个已存在的 binding 可能会被驱逐出缓存，在使用的时候需要重新创建。可能通过 `spring.cloud.stream.dynamic-destination-cache-size` 属性来设置其他的值。
+
+##### 拦截器
+
+`StreamBridge` 使用 `MessageChannel` 来建立 output binding，因此当使用 `StreamBridge` 发送数据时可以激活一些 channel 拦截器。SCS 不会将检测到的所有通道拦截器注入到 `StreamBridge` 中，除非它们用 `@GlobalChannelInterceptor(patterns = "*")` 进行了注解.
+
+假设你有下面两个 `StreamBridge` 的 bindings：
+
+- `streamBridge.send("foo-out-0", message);`
+- `streamBridge.send("bar-out-0", message);`
+
+如果你想有一个通道拦截器同时作用于这两个 binding，可以如下声明一个 `GlobalChannelInterceptor` 的 Bean：
+
+```java
+@Bean
+@GlobalChannelInterceptor(patterns = "*")
+public ChannelInterceptor customInterceptor() {
+    return new ChannelInterceptor() {
+        @Override
+        public Message<?> preSend(Message<?> message, MessageChannel channel) {
+            ...
+        }
+    };
+}
+```
+
+如果你希望为每个 binding 关联一个专用的拦截器，可以用如下操作：
+
+```java
+@Bean
+@GlobalChannelInterceptor(patterns = "foo-*")
+public ChannelInterceptor fooInterceptor() {
+    return new ChannelInterceptor() {
+        @Override
+        public Message<?> preSend(Message<?> message, MessageChannel channel) {
+            ...
+        }
+    };
+}
+
+@Bean
+@GlobalChannelInterceptor(patterns = "bar-*")
+public ChannelInterceptor barInterceptor() {
+    return new ChannelInterceptor() {
+        @Override
+        public Message<?> preSend(Message<?> message, MessageChannel channel) {
+            ...
+        }
+    };
+}
+```
+
+#### Consumer
+
+##### ???
+
+Reactive `Consumer` is a little bit special because it has a void return type, leaving framework with no reference to subscribe to. Most likely you will not need to write `Consumer<Flux<?>>`, and instead write it as a `Function<Flux<?>, Mono<Void>>` invoking `then` operator as the last operator on your stream.
+
+For example:
+
+```java
+public Function<Flux<?>, Mono<Void>>consumer() {
+	return flux -> flux.map(..).filter(..).then();
+}
+```
+
+But if you do need to write an explicit `Consumer<Flux<?>>`, remember to subscribe to the incoming Flux.
+
+Also, keep in mind that the same rule applies for function composition when mixing reactive and imperative functions. Spring Cloud Function indeed supports composing reactive functions with imperative, however you must be aware of certain limitations. For example, assume you have composed reactive function with imperative consumer. The result of such composition is a reactive `Consumer`. However, there is no way to subscribe to such consumer as discussed earlier in this section, so this limitation can only be addressed by either making your consumer reactive and subscribing manually (as discussed earlier), or changing your function to be imperative.
+
+##### 轮询型
+
+不想看了......
 
 ### Event Routing
 
@@ -284,3 +487,4 @@ Spring Cloud Stream provides a Binder abstraction for use in connecting to physi
 
 Spring Cloud Stream provides a health indicator for binders. It is registered under the name `binders` and can be enabled or disabled by setting the `management.health.binders.enabled` property.
 
+##### 
