@@ -200,6 +200,7 @@ systemctl restart docker # 重启docker服务
 - `docker save [OPTIONS] IMAGE [IMAGE...]`：将指定镜像保存成 tar 压缩包，会保留该镜像所有的元信息及历史记录
 - `docker load [OPTIONS]`：从压缩包或标准输入中加载一个镜像，会保留该镜像所有的元信息及历史记录
 - `docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]`：类似`docker load`，但丢失所有元数据及历史记录
+- `docker image prune -af --filter "until=240h"`
 
 ### 3.3 容器
 
