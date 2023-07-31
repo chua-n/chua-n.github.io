@@ -139,3 +139,6 @@ WSL的Ubuntu，使用`Sysvinit`而不是`Systemd`，因此，当需要使用`Sys
 | `systemctl enable service_name`  |  `chkconfig service_name on`   |
 | `systemctl disable service_name` |  `chkconfig service_name off`  |
 
+## 其他可配置项目
+
+- [WSL 中的高级设置配置 | Microsoft Learn](https://learn.microsoft.com/zh-cn/windows/wsl/wsl-config#wslconfig)
