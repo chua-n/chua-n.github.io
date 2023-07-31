@@ -103,6 +103,8 @@ TODO
 
 ## 4. @AutoConfigureBefore/After/Order
 
+> 参考链接：[使用@AutoConfigureBefore、After、Order调整Spring Boot自动配置顺序](https://www.cnblogs.com/zimug/p/13264814.html)
+
 |          注解          | 作用                                          |
 | :--------------------: | --------------------------------------------- |
 | `@AutoConfigureBefore` | 在指定的`@AutoConfiguration`之前加载          |
