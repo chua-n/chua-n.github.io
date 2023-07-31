@@ -500,6 +500,92 @@ main:
 [INFO] ------------------------------------------------------------------------
 ```
 
+### 5.3 插件示例：maven-assembly-plugin
+
+> 官方文档：[Apache Maven Assembly Plugin – Introduction](https://maven.apache.org/plugins/maven-assembly-plugin/)。
+
+对于普通的maven项目，其在执行`mvn package`命令时，只会将本项目的代码打入jar包，而本项目所依赖的jar包是不会进入其中的，因此在部署的时候还需要将相关的依赖jar同时移值到服务器上，如果你希望避免这样的麻烦，可以 maven-assembly-plugin 插件。这个插件可以让你在打本项目jar包的同时，将本项目的依赖同时打入最终的jar（说到这里，你可能想起了Spring Boot提供的maven插件spring-boot-maven-plugin，是类似的）。
+
+Assembly 插件的主要作用是，允许用户将项目本身的输出与它的依赖项、模块、站点文档及其他文件一起组装成一个可分发的 jar 包。
+
+一个使用示例是：
+
+- pom.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+      <dependencies>
+          ...
+      </dependencies>
+  
+      <build>
+          ...
+          <plugins>
+              <plugin>
+                  <artifactId>maven-assembly-plugin</artifactId>
+                  <executions>
+                      <execution>
+                          <id>make-assembly</id>
+                          <!--绑定package打包-->
+                          <phase>package</phase>
+                          <goals>
+                              <goal>single</goal>
+                          </goals>
+                          <configuration>
+                              <descriptor>src/main/resources/assembly.xml</descriptor><!--配置描述文件路径-->
+                          </configuration>
+                      </execution>
+                  </executions>
+              </plugin>
+              ...
+          </plugins>
+      </build>
+  </project>
+  ```
+
+- assembly.xml
+
+  ```xml
+  <assembly>
+      <id>plugin</id>
+      <formats>
+          <format>jar</format>
+      </formats>
+      <!--是否包含基础目录-->
+      <includeBaseDirectory>false</includeBaseDirectory>
+      <dependencySets>
+          <dependencySet>
+              <!--指定依赖jar包-->
+              <includes>
+                  <include>org.apache.poi:ooxml-schemas</include>
+                  <include>com.glodon.gatling:gatling-efficiency-utils</include>
+              </includes>
+              <!--移除标准版依赖的jar包-->
+              <excludes>
+                  <exclude>org.apache.poi:poi-ooxml-schemas</exclude>
+              </excludes>
+              <!--是否把本项目添加到依赖文件夹下-->
+              <useProjectArtifact>true</useProjectArtifact>
+              <!--输出目录-->
+              <outputDirectory>/</outputDirectory>
+              <!--是否解压-->
+              <unpack>true</unpack>
+          </dependencySet>
+      </dependencySets>
+      <fileSets>
+          <fileSet>
+              <!--项目源码输出目录-->
+              <directory>${project.build.directory}/classes</directory>
+              <outputDirectory>/</outputDirectory>
+          </fileSet>
+      </fileSets>
+  </assembly>
+  ```
+
 ## 6. Maven 依赖传递
 
 如下图所示，项目 A 依赖于项目 B，B 又依赖于项目 C，此时 B 是 A 的直接依赖，C 是 A 的间接依赖。
