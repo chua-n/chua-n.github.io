@@ -18,6 +18,7 @@
     - your code is slightly easier to understand (reverse engineer)
     - the class file sizes are very slightly bigger (typically inconsequential)
     - the optimization to remove unused local variables is not applied by your compiler.
+- `-javaagent`选项：参考这篇博文 [javaagent使用指南](https://www.cnblogs.com/rickiyang/p/11368932.html)
 
 ## 后端问题定位和分析
 
