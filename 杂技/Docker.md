@@ -1,6 +1,9 @@
-## 0. 容器技术
+> 不错的 docker 文档：
+>
+> - [Docker -- 从入门到实践](https://docker-practice.github.io/zh-cn/)
+> - [容器技术概念详解_Docker 入门教程](https://www.imooc.com/wiki/dockerlesson/containertechnology.html)
 
-> 此节可详见[容器技术概念详解_Docker 入门教程-慕课网 (imooc.com)](https://www.imooc.com/wiki/dockerlesson/containertechnology.html)。
+## 0. 容器技术
 
 ### 容器技术的实质
 
