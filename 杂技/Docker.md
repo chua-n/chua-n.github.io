@@ -505,7 +505,11 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 | <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007124456783-38819526.png" alt="img" style="zoom:80%;" /> | <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007125216709-1729870172.png" alt="img" style="zoom:80%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
-## 6. 自定义镜像：Dockerfile
+## 6. Dockerfile
+
+> 通过Dockerfile可以构建自定义镜像。
+
+### 6.1 镜像结构与Dockerfile
 
 镜像结构：
 
@@ -517,7 +521,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 - Entrypoint：入口，是镜像中应用启动的命令
 - 其他：在BaseImage基础上添加依赖、安装程序、完成整个应用的安装和配置
 
-`Dockerfile`就是一个文本文件，其他包含一个个的指令（Instruction），用指令来说明要执行什么操作来构建镜像，每一个指令都会形成一层Layer，因此每一条指令的内容，就是描述该层应当如何构建。
+`Dockerfile`就是一个文本文件，其他包含一个个的指令（Instruction），用指令来说明要执行什么操作来构建镜像，*每一个指令都会形成一层Layer*，因此每一条指令的内容，就是描述该层应当如何构建。
 
 |     指令      |                           说明                           |             示例              |
 | :-----------: | :------------------------------------------------------: | :---------------------------: |
@@ -532,10 +536,135 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 |   `WORKDIR`   |                                                          |                               |
 |   `VOLUME`    |                                                          |                               |
 |     `CMD`     |              指定默认的容器主进程的启动命令              |                               |
+|      ...      |                           ...                            |              ...              |
 
 > 更多详细语法说明，参考官方文档：https://docs.docker.com/engine/reference/builder 。
 
-示例：
+### 6.2 FROM 指定基础镜像
+
+所谓定制镜像，那一定是以一个镜像为基础，在其上进行定制。而 `FROM` 就是指定**基础镜像**，因此一个 `Dockerfile` 中 `FROM` 是必备的指令，并且必须是第一条指令。
+
+在 [Docker Hub](https://hub.docker.com/search?q=&type=image&image_filter=official) 上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如 [`nginx`](https://hub.docker.com/_/nginx/)、[`redis`](https://hub.docker.com/_/redis/)、[`mongo`](https://hub.docker.com/_/mongo/)、[`mysql`](https://hub.docker.com/_/mysql/)、[`httpd`](https://hub.docker.com/_/httpd/)、[`php`](https://hub.docker.com/_/php/)、[`tomcat`](https://hub.docker.com/_/tomcat/) 等；也有一些方便开发、构建、运行各种语言应用的镜像，如 [`node`](https://hub.docker.com/_/node)、[`openjdk`](https://hub.docker.com/_/openjdk/)、[`python`](https://hub.docker.com/_/python/)、[`ruby`](https://hub.docker.com/_/ruby/)、[`golang`](https://hub.docker.com/_/golang/) 等。可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。
+
+如果没有找到对应服务的镜像，官方镜像中还提供了一些更为基础的操作系统镜像，如 [`ubuntu`](https://hub.docker.com/_/ubuntu/)、[`debian`](https://hub.docker.com/_/debian/)、[`centos`](https://hub.docker.com/_/centos/)、[`fedora`](https://hub.docker.com/_/fedora/)、[`alpine`](https://hub.docker.com/_/alpine/) 等，这些操作系统的软件库为我们提供了更广阔的扩展空间。
+
+除了选择现有镜像为基础镜像外，Docker 还存在一个特殊的镜像，名为 `scratch`，这个镜像是虚拟的概念，并不实际存在，它表示一个空白的镜像。
+
+```dockerfile
+FROM scratch
+...
+```
+
+如果你以 `scratch` 为基础镜像的话，意味着你不以任何镜像为基础，接下来所写的指令将作为镜像第一层开始存在。
+
+不以任何系统为基础，直接将可执行文件复制进镜像的做法并不罕见，对于 Linux 下静态编译的程序来说，并不需要有操作系统提供运行时支持，所需的一切库都已经在可执行文件里了，因此直接 `FROM scratch` 会让镜像体积更加小巧。使用 [Go 语言](https://golang.google.cn/) 开发的应用很多会使用这种方式来制作镜像，这也是为什么有人认为 Go 是特别适合容器微服务架构的语言的原因之一。
+
+### 6.3 RUN 执行命令
+
+`RUN` 指令是用来执行命令行命令的。由于命令行的强大能力，`RUN` 指令在定制镜像时是最常用的指令之一。其格式有两种：
+
+- *shell* 格式：`RUN <命令>`，就像直接在命令行中输入的命令一样。刚才写的 Dockerfile 中的 `RUN` 指令就是这种格式。
+
+  ```dockerfile
+  RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+  ```
+
+- *exec* 格式：`RUN ["可执行文件", "参数1", "参数2"]`，这更像是函数调用中的格式。
+
+既然 `RUN` 就像 Shell 脚本一样可以执行命令，那么我们是否就可以像 Shell 脚本一样把每个命令对应一个 `RUN` 呢？比如这样：
+
+```docker
+FROM debian:stretch
+
+RUN apt-get update
+RUN apt-get install -y gcc libc6-dev make wget
+RUN wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz"
+RUN mkdir -p /usr/src/redis
+RUN tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1
+RUN make -C /usr/src/redis
+RUN make -C /usr/src/redis install
+```
+
+之前说过，Dockerfile 中每一个指令都会建立一层，`RUN` 也不例外。每一个 `RUN` 的行为会新建立一层 layer，在其上执行这些命令，执行结束后，`commit` 这一层的修改，构成新的镜像。因此，上面的这种写法，实际创建了 7 层镜像，这是完全没有意义的。而且很多运行时不需要的东西，都被装进了镜像里，比如编译环境、更新的软件包等等。结果就是产生非常臃肿、非常多层的镜像，不仅仅增加了构建部署的时间，也很容易出错。 这是很多初学 Docker 的人常犯的一个错误。
+
+> Union FS 是有最大层数限制的，比如 AUFS，曾经是最大不得超过 42 层，现在是不得超过 127 层。
+
+上面的 `Dockerfile` 正确的写法应该是这样：
+
+```docker
+FROM debian:stretch
+
+RUN set -x; buildDeps='gcc libc6-dev make wget' \
+    && apt-get update \
+    && apt-get install -y $buildDeps \
+    && wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz" \
+    && mkdir -p /usr/src/redis \
+    && tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \
+    && make -C /usr/src/redis \
+    && make -C /usr/src/redis install \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm redis.tar.gz \
+    && rm -r /usr/src/redis \
+    && apt-get purge -y --auto-remove $buildDeps
+```
+
+- 首先，之前所有的命令只有一个目的，就是编译、安装 redis 可执行文件。因此没有必要建立很多层，这只是一层的事情。因此，这里没有使用很多个 `RUN` 一一对应不同的命令，而是仅仅使用一个 `RUN` 指令，并使用 `&&` 将各个所需命令串联起来。将之前的 7 层，简化为了 1 层。在撰写 Dockerfile 的时候，要经常提醒自己，这并不是在写 Shell 脚本，而是在定义每一层该如何构建。
+
+- 并且，这里为了格式化还进行了换行。Dockerfile 支持 Shell 类的行尾添加 `\` 的命令换行方式，以及行首 `#` 进行注释的格式。良好的格式，比如换行、缩进、注释等，会让维护、排障更为容易，这是一个比较好的习惯。
+
+- 此外，还可以看到这一组命令的最后添加了清理工作的命令，删除了为了编译构建所需要的软件，清理了所有下载、展开的文件，并且还清理了 `apt` 缓存文件。这是很重要的一步，我们之前说过，镜像是多层存储，每一层的东西并不会在下一层被删除，会一直跟随着镜像。因此镜像构建时，一定要确保每一层只添加真正需要添加的东西，任何无关的东西都应该清理掉。
+
+  > 很多人初学 Docker 制作出了很臃肿的镜像的原因之一，就是忘记了每一层构建的最后一定要清理掉无关文件。
+
+### 6.4 镜像构建上下文
+
+以下面的 Dockerfile 为例进行阐释，从命令的输出结果中，我们可以清晰的看到镜像的构建过程。在 `Step 2` 中，如同我们之前所说的那样，`RUN` 指令启动了一个容器 `9cdc27646c7b`，执行了所要求的命令，并最后提交了这一层 `44aa4490ce2c`，随后删除了所用到的这个容器 `9cdc27646c7b`。
+
+```bash
+$ docker build -t nginx:v3 .
+Sending build context to Docker daemon 2.048 kB
+Step 1 : FROM nginx
+ ---> e43d811ce2f4
+Step 2 : RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+ ---> Running in 9cdc27646c7b
+ ---> 44aa4490ce2c
+Removing intermediate container 9cdc27646c7b
+Successfully built 44aa4490ce2c
+```
+
+这里我们使用了 `docker build` 命令进行镜像构建。其格式为 `docker build [选项] <上下文路径/URL/->`，在这里的 `-t nginx:v3` 意思是我们指定了最终镜像的名称。
+
+但注意，`docker build` 命令最后有一个 `.`。`.` 表示当前目录，而 `Dockerfile` 就在当前目录，因此不少初学者以为这个路径是在指定 `Dockerfile` 所在路径，这么理解其实是不准确的。对应上面的命令格式，这其实是在指定**上下文路径**。那么什么是上下文呢？
+
+首先我们要理解 `docker build` 的工作原理。Docker 在运行时分为 Docker 引擎（也就是服务端守护进程）和客户端工具。Docker 的引擎提供了一组 REST API，被称为 [Docker Remote API](https://docs.docker.com/develop/sdk/)，而如 `docker` 命令这样的客户端工具，则是通过这组 API 与 Docker 引擎交互，从而完成各种功能。因此，虽然表面上我们好像是在本机执行各种 `docker` 功能，但实际上，一切都是使用的远程调用形式在服务端（Docker 引擎）完成。也因为这种 C/S 设计，让我们操作远程服务器的 Docker 引擎变得轻而易举。
+
+当我们进行镜像构建的时候，并非所有定制都会通过 `RUN` 指令完成，经常会需要将一些本地文件复制进镜像，比如通过 `COPY` 指令、`ADD` 指令等。而 `docker build` 命令构建镜像，其实并非在本地构建，而是在服务端，也就是 Docker 引擎中构建的。那么在这种客户端/服务端的架构中，如何才能让服务端获得本地文件呢？
+
+这就引入了**上下文**的概念。当构建的时候，用户会指定构建镜像上下文的路径，`docker build` 命令得知这个路径后，会将路径下的所有内容打包，然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后，展开就会获得构建镜像所需的一切文件。
+
+因此，如果在 `Dockerfile` 中这么写 `COPY ./package.json /app/`，这并不是要复制执行 `docker build` 命令所在的目录下的 `package.json`，也不是复制 `Dockerfile` 所在目录下的 `package.json`，而是复制*上下文（context）*目录下的 `package.json`。
+
+也是如此，`COPY` 这类指令中的源文件的路径都是*相对路径*。这也是初学者经常会问的为什么 `COPY ../package.json /app` 或者 `COPY /opt/xxxx /app` 无法工作的原因，因为这些路径已经超出了上下文的范围，Docker 引擎无法获得这些位置的文件。如果真的需要那些文件，应该将它们复制到上下文目录中去。现在就可以理解刚才的命令 `docker build -t nginx:v3 .` 中的这个 `.`，实际上是在指定上下文的目录，`docker build` 命令会将该目录下的内容打包交给 Docker 引擎以帮助构建镜像。
+
+如果观察 `docker build` 输出，我们其实已经看到了这个发送上下文的过程：
+
+```bash
+$ docker build -t nginx:v3 .
+Sending build context to Docker daemon 2.048 kB
+...
+```
+
+理解构建上下文对于镜像构建是很重要的，避免犯一些不应该的错误。比如有些初学者在发现 `COPY /opt/xxxx /app` 不工作后，于是干脆将 `Dockerfile` 放到了硬盘根目录去构建，结果发现 `docker build` 执行后，在发送一个几十 GB 的东西，极为缓慢而且很容易构建失败。那是因为这种做法是在让 `docker build` 打包整个硬盘，这显然是使用错误。
+
+一般来说，应该会将 `Dockerfile` 置于一个空目录下，或者项目根目录下。如果该目录下没有所需文件，那么应该把所需文件复制一份过来。如果目录下有些东西确实不希望构建时传给 Docker 引擎，那么可以用 `.gitignore` 一样的语法写一个 `.dockerignore`，该文件是用于剔除不需要作为上下文传递给 Docker 引擎的。
+
+那么为什么会有人误以为 `.` 是指定 `Dockerfile` 所在目录呢？这是因为在默认情况下，如果不额外指定 `Dockerfile` 的话，会将上下文目录下的名为 `Dockerfile` 的文件作为 Dockerfile。这只是默认行为，实际上 `Dockerfile` 的文件名并不要求必须为 `Dockerfile`，而且并不要求必须位于上下文目录中，比如可以用 `-f ../Dockerfile.php` 参数指定某个文件作为 `Dockerfile`。当然，一般大家习惯性的会使用默认的文件名 `Dockerfile`，以及会将其置于镜像构建上下文目录中。
+
+### 6.5 多阶段构建
+
+把一个镜像有构建过程分散到多个 Dockerfile 中......
+
+### 6.6 示例
 
 - 示例1：基于Ubuntu镜像构建一个新镜像，运行一个java项目
 
@@ -547,15 +676,123 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
     <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005125668.png" alt="image-20211223005125668" style="zoom:40%;" />
 
-## 7. DockerCompose
+## 7. Docker Compose
 
-Docker Compose是可以基于Compose文件帮我们快速的部署分布式应用，而无需手动一个个创建和运行容器。
+### 7.1 概念介绍
 
-Compose文件是一个文本文件，通过指令定义集群中每个容器如何运行，如：
+`Compose` 项目是 Docker 官方的开源项目，负责实现对 Docker 容器集群的快速编排。从功能上看，跟 `OpenStack` 中的 `Heat` 十分类似。`Compose` 的定位是 *「定义和运行多个 Docker 容器的应用」*，其前身是开源项目 Fig。`Compose` 项目由 Python 编写，实现上调用了 Docker 服务提供的 API 来对容器进行管理。因此，只要所操作的平台支持 Docker API，就可以在其上利用 `Compose` 来进行编排管理。
+
+在 `Dockerfile` 一节中，我们已经知道使用一个 `Dockerfile` 模板文件，可以让用户很方便的定义一个单独的应用容器。然而在日常工作中，经常会碰到需要多个容器相互配合来完成某项任务的情况，例如要实现一个 Web 项目，除了 Web 服务容器本身，往往还需要再加上后端的数据库服务容器，甚至还包括负载均衡器等。`Compose` 恰好满足了这样的需求，它允许用户通过一个单独的 `docker-compose.yml` 模板文件来将一组相关联的应用容器定义为一个项目（project）。
+
+`Compose` 恰好满足了这样的需求。它允许用户通过一个单独的 `docker-compose.yml` 模板文件（YAML 格式）来定义一组相关联的应用容器为一个项目（project）。
+
+`Compose` 中有两个重要的概念：
+
+- 服务 (`service`)：一个应用的容器。
+- 项目 (`project`)：由一组关联的容器组成的一个完整业务单元。
+
+`Compose` 的默认管理对象是项目，一个项目可以由多个服务（容器）关联而成，`Compose` 面向项目进行管理，通过子命令对项目中的一组容器进行便捷地生命周期管理。
+
+### 7.2 安装与卸载
+
+`Compose` 支持 Linux、macOS、Windows 三大平台。`Docker Desktop for Mac/Windows` 自带 `compose`，安装 Docker 之后可以直接使用。
+
+至于 Linux，也十分简单，从 [官方 GitHub Release](https://github.com/docker/compose/releases) 处直接下载编译好的二进制文件即可。如下为在 Linux 64 位系统上的操作：
+
+```bash
+$ DOCKER_CONFIG=/usr/local/lib/docker/cli-plugins
+$ sudo mkdir -p $DOCKER_CONFIG/cli-plugins
+$ sudo curl -SL https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+$ sudo chmod +x $DOCKER_CONFIG/cli-plugins
+$ docker compose version
+
+# 国内用户可以使用以下方式加快下载
+$ sudo curl -SL https://download.fastgit.org/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+```
+
+### 7.3 docker-compose.yml
+
+Docker Compose 默认使用文件名 `docker-compose.yml` 作为模板配置文件，不过也可以使用 `-f` 参数指定具体文件。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005256604.png" alt="image-20211223005256604" style="zoom:33%;" />
 
-> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005331811.png" alt="image-20211223005331811" style="zoom:33%;" />
+Docker Compose 的 YAML 文件包含 4 个一级 key：`version, services, networks, volumes`
+
+- `version`：必须指定，且总是位于文件的第一行。它定义了 Compose 文件格式的版本，注意，并非定义 Docker Compose 或 Docker 引擎的版本号。
+- `services`：用于定义各个应用服务，一个服务对应一个单独的 docker 容器。
+- `networks`：用于指引 Docker 创建新的网络。默认情况下，Docker Compose 会创建 bridge 网络（这是一种单主机网络，只能够实现同一主机上容器的连接），也可以使用 driver 属性来指定不同的网络类型。
+- `volumes`：用于指引 Docker 来创建新的卷。
+
+其中还有一些详细的指令，可参考：[Compose 模板文件 · Docker -- 从入门到实践](https://docker-practice.github.io/zh-cn/compose/compose_file.html)。
+
+### 7.4 compose 命令
+
+命令格式：`docker-compose [-f <arg>...] [options] [COMMAND] [ARGS...]`
+
+| 常用命令                 | 说明                                                         |
+| ------------------------ | ------------------------------------------------------------ |
+| `docker-compose up`      | 创建并启动容器                                               |
+| `docker-compose down`    | 停止并删除容器                                               |
+| `docker-compose start`   | 启动已经存在的服务容器                                       |
+| `docker-compose stop`    | 停止已经处于运行状态的容器，但不删除它                       |
+| `docker-compose ps`      | 列出项目中的容器                                             |
+| `docker-compose logs`    | 查看输出日志。默认情况下，docker compose 将对不同的服务输出使用不同的颜色来区分 |
+| `docker-compose build`   | 构建（重新构建）项目中的服务容器                             |
+| `docker-compose restart` | 重启项目中的服务                                             |
+| ...                      | ...                                                          |
+
+更多的看官方文档吧，`docker-compose --help`是个好东西。
+
+### 7.5 示例
+
+- `app.py`
+
+  ```python
+  from flask import Flask
+  from redis import Redis
+  
+  app = Flask(__name__)
+  redis = Redis(host='redis', port=6379)
+  
+  @app.route('/')
+  def hello():
+      count = redis.incr('hits')
+      return 'Hello World! 该页面已被访问 {} 次。\n'.format(count)
+  
+  if __name__ == "__main__":
+      app.run(host="0.0.0.0", debug=True)
+  ```
+
+- `Dockerfile`
+
+  ```dockerfile
+  FROM python:3.6-alpine
+  ADD . /code
+  WORKDIR /code
+  RUN pip install redis flask
+  CMD ["python", "app.py"]
+  ```
+
+- `docker-compose.yml`
+
+  ```yaml
+  version: '3'
+  services:
+  
+    web:
+      build: .
+      ports:
+       - "5000:5000"
+  
+    redis:
+      image: "redis:alpine"
+  ```
+
+- 运行 compose 项目：
+
+  ```bash
+  $ docker compose up
+  ```
 
 ## 8. Docker镜像服务
 
@@ -563,3 +800,4 @@ Compose文件是一个文本文件，通过指令定义集群中每个容器如�
 
 - 公共仓库：如Docker官方的Docker Hub，国内的网易云镜像服务、DaoCloud镜像服务、阿里云镜像服务等
 - 私有仓库：在本地搭建的私有镜像仓库，企业自己的镜像最好是采用私有Docker Registry来实现。
+
