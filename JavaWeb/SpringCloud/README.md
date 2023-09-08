@@ -73,7 +73,7 @@ Spring Cloud 组件体系：
 
 Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件，阿里云商业化组件，以及集成Spring Cloud 组件。
 
-![img](../../resources/images/notebook/JavaWeb/SpringCloud/v2-46c0b9e0d41c441d222390c79a4cd53b_720w.webp)
+![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/v2-46c0b9e0d41c441d222390c79a4cd53b_720w.webp)
 
 - 阿里开源组件
 

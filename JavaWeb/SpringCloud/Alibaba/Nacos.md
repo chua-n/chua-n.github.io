@@ -13,11 +13,11 @@ Nacos 的关键特性包括（详见[什么是 Nacos](https://nacos.io/zh-cn/doc
 
 Nacos 地图：
 
-<img src="../../../resources/images/notebook/JavaWeb/SpringCloud/nacosMap.jpg" alt="img" style="zoom:50%;" />
+<img src="../https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/nacosMap.jpg" alt="img" style="zoom:50%;" />
 
 Nacos 生态图：
 
-<img src="../../../resources/images/notebook/JavaWeb/SpringCloud/1533045871534-e64b8031-008c-4dfc-b6e8-12a597a003fb.png" alt="img" style="zoom:50%;" />
+<img src="../https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/1533045871534-e64b8031-008c-4dfc-b6e8-12a597a003fb.png" alt="img" style="zoom:50%;" />
 
 ### 安装
 
