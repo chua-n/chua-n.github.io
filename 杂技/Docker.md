@@ -82,7 +82,7 @@ Docker如何解决开发、测试、生产环境有差异的问题？
 
 - 镜像层依赖于一系列的底层技术，比如文件系统、写时复制（copy-on-write）、联合挂载（union mounts）等。
 
-  | <img src="../resources/images/notebook/JavaWeb/SpringCloud/v2-d5c06c456761b5a27090e3328b1f6882_r.jpg" alt="img" style="zoom:67%;" /> | <img src="../resources/images/notebook/JavaWeb/SpringCloud/image-20230213222923702.png" alt="image-20230213222923702" style="zoom:67%;" /> |
+  | <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/v2-d5c06c456761b5a27090e3328b1f6882_r.jpg" alt="img" style="zoom:67%;" /> | <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20230213222923702.png" alt="image-20230213222923702" style="zoom:67%;" /> |
   | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 通过 `docker history IMAGE` 命令可以查看到镜像中各层的内容及大小，每层会对应 `Dockerfile` 中的一条指令。例如，
@@ -166,7 +166,7 @@ systemctl restart docker # 重启docker服务
 
 > 以下各命令的具体参数可通过`docker COMMAND --help`来查阅官方说明，不一一列举。
 
-<img src="../resources/images/notebook/JavaWeb/SpringCloud/v2-820aee2a33654099d87cdd2b7a1ce741_r.jpg" alt="img" style="zoom:67%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/v2-820aee2a33654099d87cdd2b7a1ce741_r.jpg" alt="img" style="zoom:67%;" />
 
 ### 3.1 基本信息
 
@@ -223,7 +223,7 @@ systemctl restart docker # 重启docker服务
 
 容器是否会长久运行，是和 `docker run` 指定的命令有关，即容器内是否有前台进程在运行，和 `-d` 参数无关。例如通过 `-d` 参数后台运行 `centos` 镜像，容器创建完成后将退出。而通过 `-it` 分配一个伪终端后，容器内将有一个 bash 终端守护容器，容器便不会退出：
 
-<img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20190923233721960-1995535823.png" alt="img" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20190923233721960-1995535823.png" alt="img" style="zoom:50%;" />
 
 #### 容器操作
 
@@ -468,27 +468,27 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
   - 容器内查看网络配置，可以看到会默认分配一个 `docker0` 的内网IP：
 
-    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006221712371-558945729.png" alt="img" style="zoom:67%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006221712371-558945729.png" alt="img" style="zoom:67%;" />
 
 - `host`：容器不会获得一个独立的 network namespace，而是与主机共用一个。这就意味着容器不会有自己的网卡信息，而是使用宿主机的，容器除了网络，其它都是隔离的。
 
   - 可以看到 host 网络模式下，容器网络配置与宿主机是一样的，那么容器内应用的端口将占用宿主机的端口：
 
-    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006222034377-323969518.png" alt="img" style="zoom:67%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006222034377-323969518.png" alt="img" style="zoom:67%;" />
 
 - `none`：获取独立的 network namespace，但不为容器进行任何网络配置，需要我们手动配置。这种模式应用场景比较少。
 
-  <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006222522643-1364582786.png" alt="img" style="zoom:67%;" />
+  <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006222522643-1364582786.png" alt="img" style="zoom:67%;" />
 
 - `container:<CONTAINER NAME/ID>`：与指定的容器使用同一个 network namespace，具有同样的网络配置信息，两个容器除了网络，其它都是隔离的。
 
   - 创建容器，并映射 9090 端口到容器的 80 端口，进入容器内，通过 `netstat -antp` 可以看到没有端口连接信息：
 
-    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006223802000-1773597709.png" alt="img" style="zoom:67%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006223802000-1773597709.png" alt="img" style="zoom:67%;" />
 
   - 创建 `nginx` 容器，并使用 `net_container` 容器的网络。可以看到 `net_container` 容器内已经在监听 `nginx` 的80端口了，而且通过映射的 9090 端口可以访问到 `nginx` 服务：
 
-    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191006224235577-1982026757.png" alt="img" style="zoom:67%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006224235577-1982026757.png" alt="img" style="zoom:67%;" />
 
 - 自定义网络：与默认的bridge原理一样，但自定义网络具备内部DNS发现，可以通过容器名或者主机名进行容器之间网络通信。
 
@@ -496,7 +496,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
   - 创建两个容器并加入到自定义网络，在容器中就可以互相连通
 
-    <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007123036413-300458064.png" alt="img" style="zoom:67%;" />
+    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191007123036413-300458064.png" alt="img" style="zoom:67%;" />
 
 ### 5.2 容器网络访问原理
 
@@ -505,7 +505,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 - 每次创建一个新容器的时候，Docker 从可用的地址段中选择一个空闲的 IP 地址分配给容器的 eth0 端口，使用本地主机上 docker0 接口的 IP 作为所有容器的默认网关。
 - 当创建一个 Docker 容器的时候，同时会创建一对 veth pair 接口（当数据包发送到一个接口时，另外一个接口也可以收到相同的数据包）。这对接口一端在容器内，即 eth0 ；另一端在本地并被挂载到 docker0 网桥，名称以 veth 开头。通过这种方式，主机可以跟容器通信，容器之间也可以相互通信。Docker 就创建了在主机和所有容器之间的一个虚拟共享网络。
 
-| <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007124456783-38819526.png" alt="img" style="zoom:80%;" /> | <img src="../resources/images/notebook/JavaWeb/SpringCloud/856154-20191007125216709-1729870172.png" alt="img" style="zoom:80%;" /> |
+| <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191007124456783-38819526.png" alt="img" style="zoom:80%;" /> | <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191007125216709-1729870172.png" alt="img" style="zoom:80%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 ## 6. Dockerfile

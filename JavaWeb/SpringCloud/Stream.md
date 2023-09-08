@@ -57,7 +57,7 @@ Spring Cloud Stream provides a number of abstractions and primitives that simpli
 
 Spring Cloud Stream 的模型：
 
-![SCSt with binder](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-with-binder.png)
+![SCSt with binder](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/SCSt-with-binder.png)
 
 ### Binder, Binding, Message
 
@@ -69,7 +69,7 @@ Spring Cloud Stream 的模型：
 
 - **Message:** 用于生产者、消费者通过 *Destination Binders* 进行沟通的规范化的数据结构。
 
-![SCSt overview](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-overview.png)
+![SCSt overview](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/SCSt-overview.png)
 
 ### 持久化的发布-订阅机制
 
@@ -79,7 +79,7 @@ Spring Cloud Stream 的模型：
 
 > 其中 topic 对应于 SCS 中的 destinations（相当于Kafka的 topic、RabbitMQ 的 exchanges）。
 
-![img](../../resources/images/notebook/JavaWeb/SpringCloud/1149398-20180731154827761-111530488.png)
+![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/1149398-20180731154827761-111530488.png)
 
 ### 消费者组
 
@@ -87,7 +87,7 @@ Spring Cloud Stream 的模型：
 
 每个消费者 binding 可以使用 `spring.cloud.stream.bindings.<bindingName>.group` 属性来指定一个组名. 对于下图所示的消费者，两个消费者组的名称被指定为 `spring.cloud.stream.bindings.<bindingName>.group=Group-A` or `spring.cloud.stream.bindings.<bindingName>.group=Group-B`。
 
-![img](../../resources/images/notebook/JavaWeb/SpringCloud/1149398-20180731154859044-1037571011.png)
+![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/1149398-20180731154859044-1037571011.png)
 
 All groups that subscribe to a given destination receive a copy of published data, but only one member of each group receives a given message from that destination. By default, when a group is not specified, Spring Cloud Stream assigns the application to an anonymous and independent single-member consumer group that is in a publish-subscribe relationship with all other consumer groups.
 
@@ -123,7 +123,7 @@ SCS 提供了在一个应用程序的多个实例之间进行数据分区的支�
 
 为以统一方式实现分区处理用例，SCS 提供了一个通用抽象。因此，无论 broker 本身是天然分区（如Kafka）的还是不分区（如RabbitMQ）的，都可以使用 SCS 的分区。
 
-![SCSt partitioning](../../resources/images/notebook/JavaWeb/SpringCloud/SCSt-partitioning.png)
+![SCSt partitioning](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/SCSt-partitioning.png)
 
 分区是有状态处理中的一个关键概念，在有状态处理中，确保所有相关数据被一起处理是非常关键的（出于性能或一致性的原因）。例如，在时间窗平均计算的例子中，确保来自任何给定传感器的所有测量数据都由同一个应用实例处理非常重要。
 

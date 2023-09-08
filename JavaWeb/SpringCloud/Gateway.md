@@ -74,7 +74,7 @@
 
 The following diagram provides a high-level overview of how Spring Cloud Gateway works:
 
-![Spring Cloud Gateway Diagram](../../resources/images/notebook/JavaWeb/SpringCloud/spring_cloud_gateway_diagram.png)
+![Spring Cloud Gateway Diagram](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/spring_cloud_gateway_diagram.png)
 
 - Clients make requests to Spring Cloud Gateway.
 

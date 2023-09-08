@@ -20,7 +20,7 @@ ZK是一个树形目录服务，其数据模型和Unix的文件系统目录树�
 
 |                             Unix                             |                              ZK                              |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![Snipaste_2023-02-22_21-34-29（1）](../../resources/images/notebook/JavaWeb/SpringCloud/Snipaste_2023-02-22_21-34-29（1）.png) | ![Snipaste_2023-02-22_21-34-29（2）](../../resources/images/notebook/JavaWeb/SpringCloud/Snipaste_2023-02-22_21-34-29（2）.png) |
+| ![Snipaste_2023-02-22_21-34-29（1）](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/Snipaste_2023-02-22_21-34-29（1）.png) | ![Snipaste_2023-02-22_21-34-29（2）](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/Snipaste_2023-02-22_21-34-29（2）.png) |
 
 - 其中每一个节点都被称为`ZNode`，每个节点上都会保存自己的数据和节点信息。
 - 节点可以拥有子节点，同时也允许少量（默认1MB）数据存储在该节点之下。
@@ -128,41 +128,41 @@ Zookeeper 是使用临时顺序节点特性实现分布式锁的：
 
 1. 当第一个客户端请求过来时，Zookeeper客户端会创建一个持久节点/locks。如果它（Client1）想获得锁，需要在locks节点下创建一个顺序节点lock1。如图：
 
-   <img src="../../resources/images/notebook/JavaWeb/SpringCloud/6639f3dca0d700bbd66e542975afc2e2.png" alt="img" style="zoom:50%;" />
+   <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/6639f3dca0d700bbd66e542975afc2e2.png" alt="img" style="zoom:50%;" />
 
 2. 接着，客户端 Client1 会查找 locks 下面的所有临时顺序子节点，判断自己的节点 lock1 是不是排序最小的那一个，如果是，则成功获得锁。如图：
 
-   <img src="../../resources/images/notebook/JavaWeb/SpringCloud/86b7355619b2148eb04363bccc3d3690.png" alt="img" style="zoom:50%;" />
+   <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/86b7355619b2148eb04363bccc3d3690.png" alt="img" style="zoom:50%;" />
 
 3. 这时候如果又来一个客户端 client2 前来尝试获得锁，它会在locks下再创建一个临时节点lock2：
 
-   <img src="../../resources/images/notebook/JavaWeb/SpringCloud/75f89b07163facb07fe9ab2f367f6105.png" alt="img" style="zoom:50%;" />
+   <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/75f89b07163facb07fe9ab2f367f6105.png" alt="img" style="zoom:50%;" />
 
 4. 客户端 client2 一样也会查找 locks 下面的所有临时顺序子节点，判断自己的节点 lock2 是不是最小的，此时，发现 lock1 才是最小的，于是获取锁失败。获取锁失败，它是不会甘心的，client2 向它排序靠前的节点 lock1 注册 Watcher 事件，用来监听 lock1 是否存在，也就是说 client2 抢锁失败进入等待状态。如下图：
 
-   <img src="../../resources/images/notebook/JavaWeb/SpringCloud/8496a9156979c153f3c418949bef1400.png" alt="img" style="zoom:50%;" />
+   <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/8496a9156979c153f3c418949bef1400.png" alt="img" style="zoom:50%;" />
 
 5. 此时，如果再来一个客户端 Client3 来尝试获取锁，它会在 locks 下再创建一个临时节点 lock3。如下图：
 
-   <img src="../../resources/images/notebook/JavaWeb/SpringCloud/435bf0ebcc2e30b81f21eb00fee9f66d.png" alt="img" style="zoom:50%;" />
+   <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/435bf0ebcc2e30b81f21eb00fee9f66d.png" alt="img" style="zoom:50%;" />
 
 6. 同样地，client3 一样也会查找 locks 下面的所有临时顺序子节点，判断自己的节点 lock3 是不是最小的，发现自己不是最小的，就获取锁失败。它也是不会甘心的，它会向在它前面的节点 lock2 注册 Watcher 事件，以监听 lock2 节点是否存在。如下图：
 
-   <img src="../../resources/images/notebook/JavaWeb/SpringCloud/a35c10d492049490f67ce1459b074880.png" alt="img" style="zoom:50%;" />
+   <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/a35c10d492049490f67ce1459b074880.png" alt="img" style="zoom:50%;" />
 
 #### 释放锁
 
 zookeeper的「客户端业务完成或者故障」，都会删除临时节点，释放锁。如果是任务完成，Client1 会显式调用删除 lock1 的指令，如下图：
 
-<img src="../../resources/images/notebook/JavaWeb/SpringCloud/cbde9f180968bb7dcfa967103a955c57.png" alt="img" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/cbde9f180968bb7dcfa967103a955c57.png" alt="img" style="zoom:50%;" />
 
 如果是客户端故障了，根据临时节点得特性，lock1 是会自动删除的，如下图：
 
-<img src="../../resources/images/notebook/JavaWeb/SpringCloud/b0a6a2549adaff258f51a23ef623a1b5.png" alt="img" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/b0a6a2549adaff258f51a23ef623a1b5.png" alt="img" style="zoom:50%;" />
 
 lock1 节点删除，Client2 立刻收到通知，也会查找 locks 下面的所有临时顺序子节点，发现lock2是最小，就获得锁，如下图：
 
-<img src="../../resources/images/notebook/JavaWeb/SpringCloud/66b45d6ea360bbc45358f146c2a6c2c8.png" alt="img" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/66b45d6ea360bbc45358f146c2a6c2c8.png" alt="img" style="zoom:50%;" />
 
 同理，Client2 获得锁之后，Client3 也对它虎视眈眈，啊哈哈~
 
@@ -256,7 +256,7 @@ Zookeeper 是采用ZAB协议（Zookeeper Atomic Broadcast，Zookeeper原子广�
 
 项目启动后，再去观察 zk 的节点信息，会发下如下变化：
 
-<img src="../../resources/images/notebook/JavaWeb/SpringCloud/image-20230226202834820.png" alt="image-20230226202834820" style="zoom:50%;" />
+<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20230226202834820.png" alt="image-20230226202834820" style="zoom:50%;" />
 
 对于上述末级 zk 节点，其中存储了如下信息：
 

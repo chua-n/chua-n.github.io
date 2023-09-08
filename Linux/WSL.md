@@ -21,7 +21,7 @@
 
 - 命令输出中`nameserver`字段后的内容即为相应IP。
 
-  ![img](../resources/images/notebook/杂技/Linux/wsl2-network-l2w.png)
+  ![img](https://chua-n.gitee.io/figure-bed/notebook/杂技/Linux/wsl2-network-l2w.png)
 
 通过远程主机访问本地主机WSL中的应用程序时，WSL1 和 WSL2 略有区别：
 

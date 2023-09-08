@@ -107,7 +107,7 @@ Redis 连接命令是主要用于验证 Redis 服务器的连接状态，比如�
 - 网络模型主要负责数据交互的组织方式；
 - 序列化协议则实现了数据的序列化（客户端与服务端交互的数据是以序列后的协议数据进行传输的）。
 
-![Redis序列化协议](../../resources/images/notebook/数据库/Redis/14415131a-0.gif)
+![Redis序列化协议](https://chua-n.gitee.io/figure-bed/notebook/数据库/Redis/14415131a-0.gif)
 
 相关的命令有：
 
