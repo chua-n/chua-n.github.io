@@ -94,7 +94,17 @@ $ git config --global user.email johndoe@example.com
 
 ### 2.3 配置文本编辑器
 
-......似乎没啥用
+当 Git 需要你输入信息时，就会唤起你设置的文本编辑器，默认情况下 Git 会使用操作系统默认的文本编辑器。如果你想使用不同的文本编辑器，例如 Emacs，可以这样做：
+
+```bash
+$ git config --global core.editor emacs
+```
+
+在 Windows 系统上，如果你想要使用别的文本编辑器，有时可能需要指定可执行文件的完整路径，比如：
+
+```bash
+ $ git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
+```
 
 ### 2.4 获取命令的帮助信息
 

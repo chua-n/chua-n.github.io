@@ -102,7 +102,7 @@ $ vim test.rb
 $ git commit -a -m 'made other changes'
 ```
 
-现在，这个项目的提交历史已经产生了分叉（见下图），因为刚才你创建了一个新分支，并切换过去进行了一些工作，随后又切换回 master 分支进行了另外一些工作。 上述两次改动针对的是不同分支，你可以在不同分支间不断地来回切换和工作，并在时机成熟时将它们合并起来。 而所有这些工作，你需要的命令只有 `branch`、`checkout` 和 `commit`。
+现在，这个项目的提交历史已经产生了分叉（见下图），因为刚才你创建了一个新分支，并切换过去进行了一些工作，随后又切换回 `master` 分支进行了另外一些工作。 上述两次改动针对的是不同分支，你可以在不同分支间不断地来回切换和工作，并在时机成熟时将它们合并起来。 而所有这些工作，你需要的命令只有 `branch`、`checkout` 和 `commit`。
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/Git/advance-master.png" style="zoom:80%;" />
 
@@ -884,6 +884,6 @@ $ git branch -d server
 要在BUG分支上修复bug时：
 
 1. 修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
-2. 当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场；
-3. 在master分支上修复的bug，想要合并到当前dev分支上，可以用git       cherry-pick <commit>命令，把bug提交的修改“复制”到当前分支，避免重复劳动。
+2. 当手头工作没有完成时，先把工作现场`git stash`一下，然后去修复bug，修复后，再`git stash pop`，回到工作现场；
+3. 在`master`分支上修复的bug，想要合并到当前`dev`分支上，可以用`git cherry-pick <commit>`命令，把bug提交的修改“复制”到当前分支，避免重复劳动。
 
