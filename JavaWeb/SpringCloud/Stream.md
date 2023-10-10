@@ -486,5 +486,3 @@ Spring Cloud Stream provides a Binder abstraction for use in connecting to physi
 ## Health Indicator
 
 Spring Cloud Stream provides a health indicator for binders. It is registered under the name `binders` and can be enabled or disabled by setting the `management.health.binders.enabled` property.
-
-##### 
