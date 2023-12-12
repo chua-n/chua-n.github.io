@@ -168,6 +168,11 @@ systemctl restart docker # 重启docker服务
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/v2-820aee2a33654099d87cdd2b7a1ce741_r.jpg" alt="img" style="zoom:67%;" />
 
+惯例：`docker`命令中在表达宿主机与容器之间的映射的时候，习惯用`host:container`的方式，即用冒号`:`分隔，左边是宿主机，右边是容器。如：
+
+- `docker run -p 8080:80 -d nginx`：将宿主机的8080端口映射到容器的80端口上；
+- `docker run -v ~/web/ngconf/:/etc/nginx/`：数据卷将宿主机`~/web/ngconfig/`下的内容映射到容器内的`/etc/nginx/`路径中。
+
 ### 3.1 基本信息
 
 - `docker info [OPTIONS]`：显示 Docker 系统信息，包括镜像和容器数等
