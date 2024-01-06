@@ -1,5 +1,11 @@
 .idea
 .vscode
 glodon
+
+# npm/yarn
+node_modules
+yarn.lock
+package-lock.json
+
 # 过滤所有运行时文件
 .~*.md
