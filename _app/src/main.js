@@ -1,8 +1,8 @@
 /* css样式，前后的顺序也不能乱调 */
-import '../static/css/themes/themes-vue.css'
+import './static/css/themes/themes-vue.css'
 import 'docsify-sidebar-collapse/dist/sidebar-folder.min.css'
-import '../static/css/myStyle.css'
-import '../static/css/codeColor.css'
+import './static/css/myStyle.css'
+import './static/css/codeColor.css'
 
 import 'docsify-edit-on-github'
 import '../config/docsify'
