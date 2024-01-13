@@ -14,7 +14,7 @@ import 'docsify-copy-code' // 复制到剪贴板
 import 'docsify-count/dist/countable' // 字数统计
 import 'docsify-pagination/dist/docsify-pagination' // 分页导航插件（上/下章节按钮）
 import 'docsify-scroll-to-top/src/docsify-scroll-to-top' // 回到顶部按钮
-import '../static/js/docsify-sidebar-collapse' // 折叠
+import './component/docsify-sidebar-collapse' // 折叠
 
 /* 支持markdown代码段高亮 */
 import 'prismjs/components/prism-java.min'
@@ -35,4 +35,4 @@ import 'marked'
 import 'docsify-katex/dist/docsify-katex'
 
 // TODO 此处引入 canvas_nest
-import '../static/js/fireworks' // 引入鼠标点击时的烟花效果
+import './component/fireworks' // 引入鼠标点击时的烟花效果
