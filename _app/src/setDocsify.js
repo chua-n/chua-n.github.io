@@ -1,3 +1,6 @@
+import { mathExt } from './component/mathExt';
+import { marked } from 'marked';
+
 (function () {
     window.$docsify = {
         name: "封面",
@@ -64,5 +67,14 @@
                 "编辑"
             ),
         ],
+
+        markdown: function (docsifyMarked, renderer) {
+            // 不能用 docsifyMarked，不知道为什么
+            marked.use({
+                renderer: renderer,
+                extensions: [mathExt], // 支持markdown文本里的数学公式
+            });
+            return marked;
+        },
     };
 }())
