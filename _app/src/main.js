@@ -1,8 +1,4 @@
-/* css样式，前后的顺序也不能乱调 */
-import './static/css/themes/themes-vue.css'
-import 'docsify-sidebar-collapse/dist/sidebar-folder.min.css'
-import './static/css/myStyle.css'
-import './static/css/codeColor.css'
+import './style.css'
 
 import 'docsify-edit-on-github'
 import '../config/docsify'
@@ -30,7 +26,6 @@ import 'prismjs/components/prism-nginx.min'
 
 /* 支持markdown里的数学公式 */
 import 'katex/dist/katex.min'
-import 'katex/dist/katex.min.css'
 import 'marked'
 import 'docsify-katex/dist/docsify-katex'
 
