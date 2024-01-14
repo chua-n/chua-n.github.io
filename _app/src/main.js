@@ -24,10 +24,5 @@ import 'prismjs/components/prism-properties.min'
 import 'prismjs/components/prism-http.min'
 import 'prismjs/components/prism-nginx.min'
 
-/* 支持markdown里的数学公式 */
-import 'katex/dist/katex.min'
-import 'marked'
-import 'docsify-katex/dist/docsify-katex'
-
 // TODO 此处引入 canvas_nest
 import './component/fireworks' // 引入鼠标点击时的烟花效果
