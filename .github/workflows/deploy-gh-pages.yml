@@ -9,7 +9,7 @@ on:
       - feature/goto-webpack
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
@@ -26,10 +26,7 @@ jobs:
           yarn install
           yarn build
         working-directory: ./_app/
-  deploy:
-    needs: build # 需 build 任务完成之后才可以执行 deploy 任务
-    runs-on: ubuntu-latest
-    steps:
+
       - name: Deploy to the github pages
         uses: peaceiris/actions-gh-pages@v3 # 使用第三方 Action 把构建完成的 Artifact 部署到指定分支
         with:
