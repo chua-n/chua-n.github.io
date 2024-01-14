@@ -1,7 +1,7 @@
 import './style.css'
 
 import 'docsify-edit-on-github'
-import '../config/docsify'
+import './setDocsify'
 import 'docsify'
 import 'docsify/lib/plugins/search' // 全文搜索
 import 'docsify/lib/plugins/zoom-image' // 图片缩放

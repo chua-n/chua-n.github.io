@@ -8,7 +8,7 @@ const NOTEBOOK_DIR = path.join(process.cwd(), '../book');
 module.exports = {
   entry: path.resolve(__dirname, '../src/main.js'),
   output: {
-    filename: 'main.js',
+    filename: '[name].js',
     path: OUTPUT_DIR,
     clean: true,
   },
