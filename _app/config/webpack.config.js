@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
 
-const OUTPUT_DIR = path.resolve(__dirname, '../dist');
+const OUTPUT_DIR = path.resolve(__dirname, '../deploy/dist');
 const NOTEBOOK_DIR = path.join(process.cwd(), '../book');
 
 module.exports = {
