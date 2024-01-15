@@ -1,4 +1,4 @@
-![logo](../_app/static/icon/川.svg)
+![logo](https://chua-n.gitee.io/figure-bed/notebook/%E5%B7%9D.svg)
 
 # 荒流的笔记本 <small>1.0</small>
 
