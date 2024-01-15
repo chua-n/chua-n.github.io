@@ -2,10 +2,11 @@
 .vscode
 glodon
 
-# npm/yarn
+# npm/yarn/webpack
 node_modules
 yarn.lock
 package-lock.json
+dist
 
 # 过滤所有运行时文件
 .~*.md
