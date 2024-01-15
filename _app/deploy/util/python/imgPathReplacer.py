@@ -18,7 +18,7 @@ def findFilesRecursively(directory):
     return filenames
 
 
-def setLogger(name, output_dir="./resources/scripts/python/"):
+def setLogger(name, output_dir="./_app/deploy/util/python"):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     c_handler = logging.StreamHandler()
@@ -35,7 +35,7 @@ def setLogger(name, output_dir="./resources/scripts/python/"):
     return logger
 
 
-def main(imageDir="./resources/images", rootDir="./"):
+def main(imageDir="./_app/src/static/img", rootDir="./"):
     logger = setLogger("image-url")
     logger.critical(IMAGE_URL)
     logger.critical(os.path.abspath(imageDir))
