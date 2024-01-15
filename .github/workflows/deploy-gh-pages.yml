@@ -3,10 +3,10 @@ name: Build the notebook and deploy to github pages
 on:
   push:
     branches:
-      - feature/goto-webpack
+      - main
   pull_request:
     branches:
-      - feature/goto-webpack
+      - main
 
 jobs:
   build-and-deploy:
