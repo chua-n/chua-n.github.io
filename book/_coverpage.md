@@ -1,4 +1,4 @@
-![logo](../_app/static/icon/川-1.svg)
+![logo](../_app/static/icon/川.svg)
 
 # 荒流的笔记本 <small>1.0</small>
 
