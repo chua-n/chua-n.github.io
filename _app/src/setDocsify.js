@@ -1,5 +1,6 @@
 import { mathExt } from './component/mathExt';
 import { marked } from 'marked';
+import gitalkPlugin from './component/gitalk-plugin';
 
 (function () {
     window.$docsify = {
@@ -65,6 +66,7 @@ import { marked } from 'marked';
                 null,
                 "编辑"
             ),
+            gitalkPlugin,
         ],
 
         markdown: function (docsifyMarked, renderer) {

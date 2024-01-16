@@ -6,3 +6,6 @@
 
 /* katex 数学公式 */
 @import 'katex/dist/katex.min.css';
+
+/* gitalk */
+@import 'gitalk/dist/gitalk.css';
