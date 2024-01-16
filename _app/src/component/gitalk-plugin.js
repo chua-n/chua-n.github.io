@@ -1,15 +1,5 @@
 import Gitalk from 'gitalk';
 
-const gitalk = new Gitalk({
-  clientID: '0677de831ba15682dc35',
-  clientSecret: '25da21a4bba522e21f21c0ddbf0de748336aa086',
-  repo: 'notebook',
-  owner: 'chua-n',
-  admin: ['chua-n'],
-  id: location.pathname,
-  distractionFreeMode: false
-});
-
 export default function install(hook) {
   const dom = Docsify.dom;
 
@@ -26,6 +16,16 @@ export default function install(hook) {
     while (el.hasChildNodes()) {
       el.removeChild(el.firstChild);
     }
+
+    const gitalk = new Gitalk({
+      clientID: '0677de831ba15682dc35',
+      clientSecret: '25da21a4bba522e21f21c0ddbf0de748336aa086',
+      repo: 'notebook',
+      owner: 'chua-n',
+      admin: ['chua-n'],
+      id: location.hash,
+      distractionFreeMode: false
+    });
 
     // eslint-disable-next-line
     gitalk.render('gitalk-container');

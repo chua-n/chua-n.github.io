@@ -15,7 +15,7 @@ import gitalkPlugin from './component/gitalk-plugin';
         themeColor: "#6a005f", // 替换主题色
         topMargin: 0, // default: 0
         // basePath: '/book/',
-        routerMode: "history", // default: "hash"
+        // routerMode: "history", // default: "hash"
 
         // 开启侧边栏
         // 侧边栏开启后默认不会再生成目录，可以通过设置生成目录的最大层级再次开启这个功能
