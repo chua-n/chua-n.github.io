@@ -14,7 +14,8 @@ import gitalkPlugin from './component/gitalk-plugin';
         onlyCover: true, // 封面单独成页，与主页不共享页面
         themeColor: "#6a005f", // 替换主题色
         topMargin: 0, // default: 0
-        // routerMode: "history", // default: "hash"
+        // basePath: '/book/',
+        routerMode: "history", // default: "hash"
 
         // 开启侧边栏
         // 侧边栏开启后默认不会再生成目录，可以通过设置生成目录的最大层级再次开启这个功能

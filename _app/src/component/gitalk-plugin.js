@@ -6,7 +6,7 @@ const gitalk = new Gitalk({
   repo: 'notebook',
   owner: 'chua-n',
   admin: ['chua-n'],
-  id: location.hash,
+  id: location.pathname,
   distractionFreeMode: false
 });
 
