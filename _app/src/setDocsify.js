@@ -4,7 +4,7 @@ import { marked } from 'marked';
 (function () {
     window.$docsify = {
         name: "封面",
-        repo: "https://github.com/chua-n/notebooks",
+        repo: "https://github.com/chua-n/notebook",
         maxLevel: 6, // 对文档标题渲染成目录的最大层级
         auto2top: true, //切换页面后是否自动跳转到页面顶部。
         // homepage: // 设置首页文件加载路径：适合不想将 README.md 作为入口文件渲染，或是文档存放在其他位置的情况使用
@@ -61,7 +61,7 @@ import { marked } from 'marked';
 
         plugins: [
             EditOnGithubPlugin.create(
-                "https://github.com/chua-n/notebooks/tree/main/",
+                "https://github.com/chua-n/notebook/tree/main/",
                 null,
                 "编辑"
             ),
