@@ -9,5 +9,5 @@
 - 像书本一样展示
 
 <!-- [Blog](www.chua-n.com) -->
-[GitHub](https://github.com/chua-n/notebook/)
+[GitHub](https://github.com/chua-n/chua-n.github.io/)
 [Get Started](/README.md)

@@ -3,7 +3,7 @@ import Gitalk from 'gitalk';
 const BASE_CONFIG = {
   clientID: '0677de831ba15682dc35',
   clientSecret: '25da21a4bba522e21f21c0ddbf0de748336aa086',
-  repo: 'notebook',
+  repo: 'chua-n.github.io',
   owner: 'chua-n',
   admin: ['chua-n'],
   labels: ['gitalk'],
