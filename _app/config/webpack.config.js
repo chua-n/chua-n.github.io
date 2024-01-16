@@ -5,6 +5,7 @@ const path = require('path');
 
 const OUTPUT_DIR = path.resolve(__dirname, '../deploy/dist');
 const NOTEBOOK_DIR = path.join(process.cwd(), '../book');
+const maxMiBSize = 1024 * 1024 * 500; // 最大 500 兆
 
 module.exports = {
   entry: path.resolve(__dirname, '../src/main.js'),
@@ -19,8 +20,8 @@ module.exports = {
     port: 7777,
   },
   performance: {
-    maxEntrypointSize: 1024 * 1024 * 100,
-    maxAssetSize: 1024 * 1024 * 100
+    maxEntrypointSize: maxMiBSize,
+    maxAssetSize: maxMiBSize,
   },
   plugins: [
     new HtmlWebpackPlugin({
