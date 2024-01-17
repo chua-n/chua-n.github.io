@@ -33,6 +33,10 @@ module.exports = {
           from: NOTEBOOK_DIR,
           to: OUTPUT_DIR,
         },
+        {
+          from: path.resolve(__dirname, './CNAME'),
+          to: OUTPUT_DIR,
+        },
       ],
     }),
     new MiniCssExtractPlugin({
