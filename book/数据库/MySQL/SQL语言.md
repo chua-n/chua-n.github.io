@@ -1,10 +1,10 @@
-## 一、DQL
+## 1. DQL
 
 > DQL(Data Query Language)：查询数据。
 
-### 1. 查询数据
+### 1.1 查询数据
 
-#### 1.1 查询的概念
+#### 1.1.1 查询的概念
 
 ```sql
 SELECT cus_name, cust_contact
@@ -23,7 +23,7 @@ WHERE cust_id IN (SELECT cust_id
 
 如果没有明确排序查询结果，则返回的数据的顺序没有特殊意义。
 
-#### 1.2 SELECT基本用法
+#### 1.1.2 SELECT基本用法
 
 | 语法                                          | 说明                   |
 | --------------------------------------------- | ---------------------- |
@@ -42,7 +42,7 @@ WHERE cust_id IN (SELECT cust_id
 
 - 使用`SELECT 列1, 列2, 列3 FROM ...`时，还可以给每一列起个别名，这样，结果集的列名就可以与原表的列名不同。它的语法是`SELECT 列1 别名1, 列2 别名2, 列3 别名3 FROM ...`
 
-#### 1.3 LIMIT子句
+#### 1.1.3 LIMIT子句
 
 带`LIMIT`的查询也叫**分页查询**，至于为什么这么叫，可以看廖雪峰的网站或百度一下。
 
@@ -56,7 +56,7 @@ WHERE cust_id IN (SELECT cust_id
 - `OFFSET`是可选的，如果只写`LIMIT row_count`，那么相当于`LIMIT M OFFSET 0`
 - 使用`LIMIT <M> OFFSET <N>`分页时，随着N越来越大，查询效率也会越来越低
 
-#### 1.4 JOIN子句
+#### 1.1.4 JOIN子句
 
 `JOIN`子句代表连接查询，连接查询是另一种类型的多表查询，其对多个表进行`JOIN`运算。简单地说，就是先确定一个主表作为结果集，然后，把其他表的行有选择性地“连接”在主表结果集上。`JOIN`的语法如下：
 
@@ -243,7 +243,7 @@ SELECT ... FROM tableA ??? JOIN tableB ON tableA.column1 = tableB.column2;
 
 要意识到连接只是一种机制，用来在一条`SELECT`语句中关联表，其不是物理实体，换句话说，它在实际的数据库表中不存在，仅存在于查询的执行当中。
 
-#### 1.5 笛卡尔查询示例
+#### 1.1.5 笛卡尔查询示例
 
 由没有连接条件的表关系返回的结果为笛卡尔积，即一个表中中的每一个将与另一个表中的每个配对而不管它们是否逻辑上可以在一起，如同时从`students`表和`classes`表查询数据：
 
@@ -318,15 +318,15 @@ SELECT
 FROM students s, classes c;
 ```
 
-#### 1.6 注意事项
+#### 1.1.6 注意事项
 
 为执行一个查询，通常也不一定只有一种实现方法，很少有绝对正确或绝对错误的方法，性能可能会受操作类型、表中数据量、是否存在索引或键等一些条件的影响，因此，有必要对不同的选择机制进行实验，以找出最适合具体情况的办法。
 
-### 2. 过滤数据
+### 1.2 过滤数据
 
 查询数据时可以增加过滤条件语句以过滤数据。
 
-#### 2.1 相关关键字
+#### 1.2.1 相关关键字
 
 - `WHERE`：按指定条件进行行过滤，`WHERE`子句通常在`FROM`子句之后给出
 
@@ -432,7 +432,7 @@ FROM students s, classes c;
 
 > 注意事项：在通过过滤条件选择出不具有特定值的行时，你可能希望返回具有`NULL`值的行，但是这其实做不到。因为`NULL`具有特殊的含义，数据库不知道它们是否匹配，所以在匹配过滤或不匹配过滤时不返回它们。
 
-#### 2.2 ON、WHERE、HAVING
+#### 1.2.2 ON、WHERE、HAVING
 
 数据库在通过连接两张或多张表来返回记录时，都会生成一张中间的临时表，然后再将这张临时表返回给用户。在使用`join`时，`on`和`where`条件的区别如下：
 
@@ -440,13 +440,13 @@ FROM students s, classes c;
 - `where`条件：是在临时表生成好后，对这张临时表进行**过滤**的条件；
 - `on, where, having`这三个都可以加条件的子句中，`on`是最先执行，`where`次之，`having`最后。有时候如果这先后顺序不影响中间结果的话，那最终结果是相同的。
 
-### 3. UNION查询
+### 1.3 UNION查询
 
 `UNION`查询，即**组合查询**，或称**复合查询**。即，MySQL允许一条查询语句中含多条`SELECT`语句，并将结果作为单个查询结果集返回。
 
 其实，多数情况下，组合相同表的两个查询完成的工作与具有多个`WHERE`子句条件的单条查询完成的工作相同，`UNION`通常只意味着另一种书写方式，可能这种书写会显得简洁。
 
-#### 3.1 UNION
+#### 1.3.1 UNION
 
 给出每条`SELECT`语句，在各条语句之间放上关键字`UNION`即可：
 
@@ -468,7 +468,7 @@ WHERE vend_id IN (1001, 1002);
 
 3. 列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含转换的类型，如不同的数值类型或不同的日期类型。
 
-#### 3.2 UNION ALL
+#### 1.3.2 UNION ALL
 
 `UNION`默认从查询结果集中自动去除了重复的行，如果想返回所有匹配行，使用`UNION ALL`。
 
@@ -484,7 +484,7 @@ WHERE vend_id IN (1001, 1002);
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/MySQL/5.png" alt="img" style="zoom:50%;" />
 
-#### 3.3 UNION 与 ORDER BY
+#### 1.3.3 UNION 与 ORDER BY
 
 在使用`UNION`组合查询时，**只能使用一条`ORDER BY`子句**，它必须出现在最后一条`SELECT`语句之后。
 
@@ -503,7 +503,7 @@ ORDER BY vend_id, prod_price;
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/MySQL/6.png" alt="6.png" style="zoom:50%;" />
 
-## 二、DML
+## 2. DML
 
 > DML(Data Manipulation Language)：数据的增删改
 
@@ -520,7 +520,7 @@ ORDER BY vend_id, prod_price;
 - `UPDATE`：更新已有记录；
 - `DELETE`：删除已有记录。
 
-### 1. INSERT
+### 2.1 INSERT
 
 语法：
 
@@ -549,7 +549,7 @@ INSERT INTO students (class_id, name, gender, score) VALUES
 SELECT * FROM students;
 ```
 
-### 2. UPDATE
+### 2.2 UPDATE
 
 语法：
 
@@ -585,7 +585,7 @@ UPDATE students SET score=60;
 
 因此，在执行`UPDATE`语句时要非常小心！
 
-### 3. DELETE
+### 2.3 DELETE
 
 语法：
 
@@ -611,7 +611,7 @@ DELETE FROM students;
 
 这时，整个表的所有记录都会被删除。所以，在执行`DELETE`语句时也要非常小心!
 
-### 4. 复合式
+### 2.4 复合式
 
 ```sql
 INSERT … SELECT …
@@ -626,11 +626,11 @@ FROM students
 GROUP BY class_id;
 ```
 
-## 三、DDL
+## 3. DDL
 
 > DDL(Data Definition Language)——修改库表“结构”。
 
-### 1. 库结构操作
+### 3.1 库结构操作
 
 - `SHOW`
 
@@ -692,7 +692,7 @@ GROUP BY class_id;
   mysql> HELP SHOW;
   ```
 
-### 2. 表结构操作
+### 3.2 表结构操作
 
 - `ADD COLUMN`：给`students`表新增一列`birth`：
 
@@ -728,9 +728,9 @@ GROUP BY class_id;
 
 - `DROP INDEX`：删除索引
 
-## 四、函数
+## 4. 函数
 
-### 1. 文本函数
+### 4.1 文本函数
 
 |     函数      | 说明                |
 | :-----------: | ------------------- |
@@ -759,7 +759,7 @@ GROUP BY class_id;
 > | :---------: | :---------: |
 > | Coyote Inc. |    Y Lee    |
 
-### 2. 数值函数
+### 4.2 数值函数
 
 |   函数   | 说明               |
 | :------: | ------------------ |
@@ -773,7 +773,7 @@ GROUP BY class_id;
 | `Sqrt()` | 返回一个数的平方根 |
 | `Tan()`  | 返回一个角度的正切 |
 
-### 3. 日期和时间函数
+### 4.3 日期和时间函数
 
 |      函数       | 说明                           |
 | :-------------: | ------------------------------ |
@@ -795,11 +795,11 @@ GROUP BY class_id;
 |    `Time()`     | 返回一个日期时间的时间部分     |
 |    `Year()`     | 返回一个日期的年份部分         |
 
-### 4. 系统函数
+### 4.4 系统函数
 
 返回DBMS正使用的特殊信息，如返回用户登录信息，检查版本细节
 
-### 5. 聚合函数
+### 4.5 聚合函数
 
 运行在行组上，计算和返回单个值的函数。聚合的计算结果虽然是一个数字，但查询的结果仍然是一个二维表，只是这个二维表只有一行一列。
 
@@ -823,6 +823,6 @@ SELECT COUNT(*) AS num_items,
 FROM products;
 ```
 
-### 6. 一些函数举例
+### 4.6 一些函数举例
 
 ......
