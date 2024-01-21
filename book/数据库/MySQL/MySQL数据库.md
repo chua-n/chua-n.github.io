@@ -1,0 +1,437 @@
+## 1. 数据库的使用
+
+**MySQL**是一种开源的、高性能的DBMS（即它是一种数据库软件），被许多非常重要和有声望的公司用来处理自己的重要数据。使用MySQL的方式有：
+
+1. MySQL Client命令行：命令用`;`或`\g`结束，换句话说，仅按Enter不执行命令；输入`help`或`\h`获得帮助；输入`quit`或`exit`退出命令行程序；
+
+2. MySQL Workbench：可视化图形界面，可以用可视化的方式查询、创建和修改数据库表
+
+
+> 本质上，MySQL Workbench 和 MySQL Client 命令行都是客户端，和MySQL交互，唯一的接口就是SQL。
+
+通常说到“MySQL服务器”这个概念的时候，是指硬件+软件的集合。
+
+### 1.1 卸载
+
+MySQL在windows系统中的**卸载流程**：
+
+1. 去MySQL的安装目录找到`my.ini`文件，复制其中的`datadir="C:/ProgramData/MySQL/MySQL Server 5.5/Data/"`内容；
+
+2. 在控制面板的“程序和功能”中卸载MySQL；
+
+3. 删除`datadir`对应目录下（如这里的`C:ProgramData/`）的MySQL文件夹。
+
+### 1.2 启动
+
+启动MySQL服务（所谓 **服务(service)** ，是指没有界面的、在后台运行的应用程序）：
+
+1. 手动：桌面右击“此电脑”——管理——服务和应用程序——服务——MySQL——右键选择启动
+2. cmd：`services.msc`（打开服务的窗口）
+3. 使用管理员权限打开cmd：
+   - `net start mysql`：启动mysql的服务
+   - `net stop mysql`：关闭mysql的服务
+
+### 1.3 登陆
+
+登陆MySQL，需要以下信息：
+
+1. 主机名（计算机名）；
+2. 端口：默认端口为`3306`；
+3. 合法的用户名和密码。
+
+| 示例                              | 说明                                 |
+| --------------------------------- | ------------------------------------ |
+| `mysql -u root -p ****`           | cmd下的登陆命令（默认登录本地MySQL） |
+| `mysql -h ip地址 -u root -p ****` | 连接特定ip地址的MySQL服务            |
+
+### 1.4 MySQL的目录结构
+
+- 安装目录：注意配置文件`my.ini`
+- 数据目录
+  - 数据库：文件夹
+  - 表：文件
+  - 数据：具体文件中的数据
+
+## 2. 数据库引擎
+
+- `InnoDB`：一个可靠的事务处理引擎，不支持全文本搜索
+- `MyISAM`：一个性能极高的引擎，支持全文本搜索，但不支持事务处理
+- `MEMORY`：功能等同于`MyISAM`，但由于数据存储在内存中，速度很快，特别适合临时表
+
+引擎类型可以混用，但外键不能跨引擎。
+
+## 3. 数据类型
+
+对于一个关系表，除了定义每一列的名称外，还需要定义每一列的数据类型。关系数据库支持的标准数据类型包括数值、字符串、时间等，下表为一些常用类型：
+
+|      名称      |      类型      | 说明                                                         |
+| :------------: | :------------: | ------------------------------------------------------------ |
+|     `INT`      |      整型      | 4字节整数类型，范围约+/-21亿                                 |
+|    `BIGINT`    |     长整型     | 8字节整数类型，范围约+/-922亿亿                              |
+|     `REAL`     |     浮点型     | 4字节浮点数，范围约+/-1038                                   |
+|    `DOUBLE`    |     浮点型     | 8字节浮点数，范围约+/-10308                                  |
+| `DECIMAL(M,N)` |   高精度小数   | 由用户指定精度的小数，例如，`DECIMAL(20,10)`表示一共20位，其中小数10位，通常用于财务计算 |
+|   `CHAR(N)`    |   定长字符串   | 存储指定长度的字符串，例如，`CHAR(100)`总是存储100个字符的字符串 |
+|  `VARCHAR(N)`  |   变长字符串   | 存储可变长度的字符串，例如，`VARCHAR(100)`可以存储0~100个字符的字符串 |
+|   `BOOLEAN`    |    布尔类型    | 存储`True`或者`False`                                        |
+|     `DATE`     |    日期类型    | 存储日期，例如，2018-06-22                                   |
+|     `TIME`     |    时间类型    | 存储时间，例如，12:20:59                                     |
+|   `DATETIME`   | 日期和时间类型 | 存储日期+时间，例如，2018-06-22 12:20:59                     |
+
+## 4. 字符集与排序规则
+
+**字符集（charset）**与**排序规则（collation）**：
+
+- 查看MySQL所支持的字符集完整列表
+
+  ```sql
+  SHOW CHARACTER SET;
+  ```
+
+- 查看MySQL所支持排序规则的完整列表
+
+  ```SQL
+  SHOW COLLATION;
+  ```
+
+- 创建数据库时指定默认的字符集和排序规则
+
+  ```SQL
+  SHOW VARIABLES LIKE 'character%';
+  SHOW VARIABLES LIKE 'collation%';
+  ```
+
+- 给表指定字符集和排序规则
+
+  ```sql
+  CREATE TABLE mytable
+  (
+      column1	INT,
+      column2 VARCHAR(10)
+  ) DEFAULT CHARACTER SET hebrew
+    COLLATE hebrew_general_ci;
+  ```
+
+- 给每个列设置字符集和排序规则
+
+  ```sql
+  CREATE TABLE mytable
+  (
+      column1	INT,
+      column2	VARCHAR(10),
+      column3	VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_general_ci
+  ) DEFAULT CHARACTER SET hebrew
+    COLLATE hebrew_general_ci;
+  ```
+
+MySQL如下确定使用什么样的字符集和排序规则：
+
+1. 如果同时指定`CHARACTER SET`和`COLLATE`两者，则使用这些值；
+
+2. 如果只指定`CHARACTER SET`，使用此字符集及其默认的排序规则；
+
+3. 如果既不指定`CHARACTER SET`，也不指定`COLLATE`，则使用数据库默认值。
+
+
+若需要用与创建表时不同的排序规则排序特定的`SELECT`语句，可以在`SELECT`语句自身进行：
+
+```sql
+SELECT * FROM customers
+ORDER BY lastname, firstname COLLATE latin1_general_cs;
+```
+
+使用`Cast()`和`Convert()`函数可以使得串在字符之间进行转换。
+
+## 5. 权限管理
+
+### 5.1 概念说明
+
+**权限管理**——给用户提供且仅提供他们需要的访问权。
+
+权限管理需要创建和管理**用户账号**。
+
+名为`root`的账号对整个MySQL服务器具有**完全控制权**。在日常工作中，决不能使用`root`，应该创建一系列特定功能的账号。
+
+MySQL用户账号和信息存储在名为mysql的MySQL数据库中，mysql数据库有一个名为`user`的表，它包含所有用户账号。可如下访问：
+
+```sql
+USE mysql;
+SELECT user FROM user;
+```
+
+### 5.2 相关命令
+
+- `CREATE USER`：创建用户账号
+
+  ```sql
+  CREATE USER ben IDENTIFIED BY 'p@$$wOrd';
+  ```
+
+  - 创建用户账号（创建时可以指定口令，也可以不指定）
+  - `IDENTIFIED BY`指定的口令为纯文本，MySQL将在保存到`user`表之前对其进行加密
+  - 为了作为散列值指定口令，使用`IDENTIFIED BY PASSWORD`
+  - `GRANT`语句也可以创建用户账号，不过没有`CREATE USER`清楚直接
+  - 可以通过`INSERT`直接插入行到`user`表来增加用户，不过这样不安全
+
+- `RENAME USER`：重命名账号
+
+  ```sql
+  RENAME USER ben TO bforta;
+  ```
+
+- `DROP USER`：删除账号
+
+  ```sql
+  DROP USER bforta;
+  ```
+
+- `GRANT/REVOKE`：授予/撤销权限
+
+  - `GRANT`：授予权限，要求至少给出以下信息：
+
+    - 要授予的权限（左为`SELECT`权限）
+    - 被授予的访问权限的数据库或表（左为`crashcourse`数据库的所有表）
+    - 用户名
+
+    ```sql
+    GRANT SELECT ON crashcourse.* TO bforta;
+    ```
+
+  - `REVOKE`：撤销权限，`GTANT`的反操作
+
+    ```sql
+    REVOKE SELECT ON crashcourse.* FROM bforta;
+    ```
+
+- `SHOW GTANTS FOR`：显示用户权限：
+
+  1. `USAGE`表示根本没有权限
+  2. 新创建的用户没有访问权限
+  3. MySQL的权限用用户名和主机名结合定义，即`user@host`。如果不指定主机名，则使用默认的主机名（授予用户访问权限而不管主机名）
+
+  ```sql
+  SHOW GRANTS FOR bforta;
+  /*
+  +--------------------------------------+
+  |  Grants for bforta@%                 |
+  +--------------------------------------+
+  |  GRANT USAGE ON *.* TO 'bforta'@'%'  |
+  +--------------------------------------+
+  */
+  
+  SHOW GRANTS FOR bforta;
+  /*
+  +----------------------------------------------------+
+  |  Grants for bforta@%                               |
+  +----------------------------------------------------+
+  |  GRANT USAGE ON *.* TO 'bforta'@'%'                |
+  |  GRANT SELECT ON 'crashcourse'.* TO 'beforta'@'%'  |
+  +----------------------------------------------------+
+  */
+  ```
+
+- `SET PASSWORD`：更改口令/密码
+
+  ```sql
+  SET PASSWORD FOR bforta = Password('n3w p@$$wOrd');
+  ```
+
+  > 在不给定用户名时，其更新当前登录用户的口令。
+  >
+  > ```sql
+  > SET PASSWORD = Password('n3w p@$$wOrd');
+  > ```
+
+### 5.3 权限说明
+
+|           权限            | 说明                                                         |
+| :-----------------------: | :----------------------------------------------------------- |
+|           `ALL`           | 除`GRANT OPTION`外的所有权限                                 |
+|          `ALTER`          | 使用`ALTER TABLE`                                            |
+|      `ALTER ROUTINE`      | 使用`ALTER PROCEDURE`和`DROP PROCEDURE`                      |
+|         `CREATE`          | 使用`CREATE TABLE`                                           |
+|     `CREATE ROUTINE`      | 使用`CREATE PROCEDURE`                                       |
+| `CREATE TEMPORARY TABLES` | 使用`CREATE TEMPORARY TABLE`                                 |
+|       `CREATE USER`       | 使用`CREATE USER, DROP USER, RENAME USER, REVOKE ALL PRIVILEGES` |
+|       `CREATE VIEW`       | 使用`CREATE VIEW`                                            |
+|         `DELETE`          | 使用`DELETE`                                                 |
+|          `DROP`           | 使用`DROP TABLE`                                             |
+|         `EXECUTE`         | 使用`CALL`和存储过程                                         |
+|          `FILE`           | 使用`SELECT INTO OUTFILE`和`LOAD DATA INFILE`                |
+|      `GRANT OPTION`       | 使用`GRANT`和`REVOKE`                                        |
+|          `INDEX`          | 使用`CREATE INDEX`和`DROP INDEX`                             |
+|         `INSERT`          | 使用`INSERT`                                                 |
+|       `LOCK TABLES`       | 使用`LOCK TABLES`                                            |
+|         `PROCESS`         | 使用`SHOW FULL PROCESSLIST`                                  |
+|         `RELOAD`          | 使用`FLUSH`                                                  |
+|   `REPLICATION CLIENT`    | 服务器位置的访问                                             |
+|    `REPLICATION SLAVE`    | 由复制从属使用                                               |
+|         `SELECT`          | 使用`SELECT`                                                 |
+|     `SHOW DATABASES`      | 使用`SHOW DATABASES`                                         |
+|        `SHOW VIEW`        | 使用`SHOW CREATE VIEW`                                       |
+|        `SHUTDOWN`         | 使用`mysqladmin shutdown`（用来关闭MySQL）                   |
+|          `SUPER`          | 使用`CHANGE MASTER, KILL, LOGS, PURGE, MASTER, SET GLOBAL`。还允许`mysqladmin`调试登录 |
+|         `UPDATE`          | 使用`UPDATE`                                                 |
+|          `USAGE`          | 无访问权限                                                   |
+
+### 5.4 示例
+
+- `grant all privileges on *.* to jack@'localhost' identified by "jack" with grant option;`
+- `flush privileges;` 
+- `show grants;`  
+- `show grants for 'jack'@'%‘;` 
+- `revoke delete on *.* from 'jack'@'localhost';` 
+- `drop user 'jack'@'localhost';`
+- `rename user 'jack'@'%' to 'jim'@'%';`
+- `SET PASSWORD FOR 'root'@'localhost' = PASSWORD(’root');` 
+
+### 5.5 忘记密码怎么办
+
+1. 方法2：用`SET PASSWORD`命令
+
+   - 格式：`mysql> set password for username@localhost = password('new-password');` 
+   - 例子：`mysql> set password for root@localhost = password('123');` 
+
+2. 方法2：用`mysqladmin`
+
+   - 格式：`mysqladmin -u用户名 -p旧密码 password 新密码` 
+   - 例子：`mysqladmin -uroot -p123456 password 123` 
+
+3. 方法3：用`UPDATE`直接编辑`user`表
+
+   ```sql
+   mysql> use mysql; 
+   mysql> update user set password=password('123') where user='root' and host='localhost'; 
+   mysql> flush privileges; 
+   ```
+
+4. 方法4：在忘记`root`密码的时候，以windows为例：
+
+   1. 关闭正在运行的MySQL服务
+   2. 打开DOS窗口，转到`mysql\bin`目录
+   3. 输入`mysqld --skip-grant-tables` 回车。`--skip-grant-tables` 的意思是启动MySQL服务的时候跳过权限表认证
+   4. 再开一个DOS窗口（因为刚才那个DOS窗口已经不能动了），转到`mysql\bin`目录
+   5. 输入`mysql`回车，如果成功，将出现MySQL提示符 `>`
+   6. 连接权限数据库：`use mysql;` 
+   7. 改密码：`update user set password=password("123") where user="root";`
+   8. 刷新权限（必须步骤）：`flush privileges;`
+   9. 退出`quit;`
+   10. 注销系统，再进入，使用用户名`root`和刚才设置的新密码`123`登录
+
+## 6. 备份与还原
+
+### 6.1 备份
+
+由于MySQL数据库是**基于磁盘的文件**，因此普通的备份系统和例程就能备份MySQL的数据。但由于这些文件总是处于打开和使用状态，普通的备份不一定有效。
+
+一些**备份数据**的方法：
+
+- 使用命令行实用程序`mysqldump`转储所有数据库内容到某个外部文件。在进行常规备份前这个程序应该正常运行，以便能正确地备份转储文件。
+- 可用命令行程序`mysqlhotcopy`从一个数据库复制所有数据（并非所有数据库引擎都支持这个实用程序）。
+- 可以使用MySQL的`BACKUP TABLE`或`SELECT INTO OUTFILE`转储所有数据到某个外部文件。这两条语句都扔到将要创建的系统文件名，此系统文件必须不存在，否则会出错。数据可以用`RESTORE TABLE`来复原。
+
+为保证所有数据被写到磁盘（包括索引数据），可能需要在备份前使用`FLUSH TABLES`语句。
+
+以下来自岗前培训：
+
+- 数据库备份
+
+  ```sql
+  mysqldump -u root -h localhost -p testbackup > c:\mysql.sql
+  ```
+
+- 备份单个数据表
+
+  ```sql
+  mysqldump -u root -h localhost -p testbackup t_user > c:\mysql.sql
+  ```
+
+- 备份多个数据库
+
+  ```sql
+  mysqldump -u root -h localhost -p --database testbackup db > c:\mysql.sql
+  ```
+
+- 备份所有数据库
+
+  ```sql
+  mysqldump -u root -h localhost -p --all-databases> c:\mysql.sql
+  ```
+
+### 6.2 还原
+
+方法一：
+
+```cmd
+mysql -u root -h localhost -p testbackup< C:\mysql.sql
+```
+
+> 注意：备份前应先创建数据库名
+
+方法二：
+
+也可以登录到数据库中，使用`source`命令 
+
+```cmd
+source C:\mysql.sql
+```
+
+## 7. 数据库维护
+
+数据库维护的一些语句：
+
+| 语句             | 说明                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| `ANALYZE TABLE`  | 检查表键是否正确                                             |
+| `CHECK TABLE`    | 用来针对许多问题对表进行检查                                 |
+| `REPAIR TABLE`   | 修复相应的表                                                 |
+| `OPTIMIZE TABLE` | 从一个表中删除了大量数据时用来收回所用的空间，从而优化表的性能 |
+
+MySQL服务器自身通过在命令行上执行`mysqld`启动，`mysqld`有几个重要的命令行选项：
+
+| 命令行选项    | 说明                                 |
+| ------------- | ------------------------------------ |
+| `--help`      | 显示帮助                             |
+| `--safe-mode` | 装载减去某些最佳配置的服务器         |
+| `--verbose`   | 显示全文本详细，常与`--help`联合使用 |
+| `--version`   | 显示版本信息然后退出                 |
+
+## 8. 日志管理
+
+MySQL维护管理员主要依赖以下**日志**：
+
+1. 错误日志
+
+2. 查询日志
+
+3. 二进制日志
+
+4. 缓慢查询日志
+
+`BinLog`配置：
+
+```cmd
+log-bin="C:\Mysql\log"
+expire_logs_days=10
+max_binlog_size=100M
+# 重启MySQL服务。
+```
+
+通过变量查询可以查看配置的日志是否开启：
+
+```sql
+show VARIABLES LIKE '%log_%';
+```
+
+查看二进制文件命令：
+
+```sql
+SHOW BINARY LOGS;
+```
+
+查看二进制操作记录，`insert`，`update`语句
+
+```sql
+show binlog events;
+```
+
