@@ -1,8 +1,10 @@
+## 一、DQL
+
 > DQL(Data Query Language)：查询数据。
 
-## 1. 查询数据
+### 1. 查询数据
 
-### 1.1 查询的概念
+#### 1.1 查询的概念
 
 ```sql
 SELECT cus_name, cust_contact
@@ -21,7 +23,7 @@ WHERE cust_id IN (SELECT cust_id
 
 如果没有明确排序查询结果，则返回的数据的顺序没有特殊意义。
 
-### 1.2 SELECT基本用法
+#### 1.2 SELECT基本用法
 
 | 语法                                          | 说明                   |
 | --------------------------------------------- | ---------------------- |
@@ -40,7 +42,7 @@ WHERE cust_id IN (SELECT cust_id
 
 - 使用`SELECT 列1, 列2, 列3 FROM ...`时，还可以给每一列起个别名，这样，结果集的列名就可以与原表的列名不同。它的语法是`SELECT 列1 别名1, 列2 别名2, 列3 别名3 FROM ...`
 
-### 1.3 LIMIT子句
+#### 1.3 LIMIT子句
 
 带`LIMIT`的查询也叫**分页查询**，至于为什么这么叫，可以看廖雪峰的网站或百度一下。
 
@@ -54,7 +56,7 @@ WHERE cust_id IN (SELECT cust_id
 - `OFFSET`是可选的，如果只写`LIMIT row_count`，那么相当于`LIMIT M OFFSET 0`
 - 使用`LIMIT <M> OFFSET <N>`分页时，随着N越来越大，查询效率也会越来越低
 
-### 1.4 JOIN子句
+#### 1.4 JOIN子句
 
 `JOIN`子句代表连接查询，连接查询是另一种类型的多表查询，其对多个表进行`JOIN`运算。简单地说，就是先确定一个主表作为结果集，然后，把其他表的行有选择性地“连接”在主表结果集上。`JOIN`的语法如下：
 
@@ -69,7 +71,7 @@ SELECT ... FROM tableA ??? JOIN tableB ON tableA.column1 = tableB.column2;
 | `RIGHT OUTER JOIN`<br />`RIGHT JOIN` | 返回右表都存在的行           |
 | `FULL JOIN`                          | 返回两张表的所有记录         |
 
-#### 案例准备
+##### 案例准备
 
 例如，对于两个表`students`和`classes`，如下：
 
@@ -104,7 +106,7 @@ SELECT * FROM classes;
 
 假设我们希望结果集同时包含所在班级的名称，上面的结果集只有`class_id`列，缺少对应班级的`name`列。而存放班级名称的`name`列存储在`classes`表中，只有根据`students`表的`class_id`，找到`classes`表对应的行，再取出`name`列，就可以获得班级名称。这时，连接查询就派上了用场。
 
-#### INNER JOIN
+##### INNER JOIN
 
 `INNER JOIN`只返回同时存在于两张表的行数据，由于`students`表的`class_id`包含1，2，3，`classes`表的`id`包含1，2，3，4，所以，`INNER JOIN`根据条件`s.class_id = c.id`返回的结果集仅包含1，2，3。
 
@@ -137,7 +139,7 @@ ON s.class_id = c.id;
 4. 可选：加上`WHERE`子句、`ORDER BY`等子句。
 5. 使用别名不是必须的，但可以更好地简化查询语句。       
 
-#### RIGHT OUTER JOIN
+##### RIGHT OUTER JOIN
 
 `RIGHT OUTER JOIN`返回右表都存在的行。如果某一行仅在右表存在，那么结果集就会以`NULL`填充剩下的字段。
 
@@ -167,7 +169,7 @@ ON s.class_id = c.id;
 
 这也容易理解，因为根据`ON`条件`s.class_id = c.id`，`classes`表的`id=4`的行正是“四班”，但是，`students`表中并不存在`class_id=4`的行。
 
-#### LEFT OUTER JOIN
+##### LEFT OUTER JOIN
 
 `LEFT OUTER JOIN`则返回左表都存在的行。如果我们给`students`表增加一行，并添加`class_id=5`，由于`classes`表并不存在`id=5`的行，所以，`LEFT OUTER JOIN`的结果会增加一行，对应的`class_name`是`NULL`。
 
@@ -197,7 +199,7 @@ ON s.class_id = c.id;
 
 `RIGHT OUTER JOIN`和`INNER JOIN`相比的差异同上。
 
-#### FULL JOIN
+##### FULL JOIN
 
 ```sql
 -- 使用FULL OUTER JOIN
@@ -224,7 +226,7 @@ ON s.class_id = c.id;
 
 最后，我们使用`FULL OUTER JOIN`，它会把两张表的所有记录全部选择出来，并且，自动把对方不存在的列填充为`NULL`。
 
-#### 图解连接查询
+##### 图解连接查询
 
 假设查询语句如下，结合下图，我们把`tableA`看作左表，把`tableB`看成右表：
 
@@ -241,7 +243,7 @@ SELECT ... FROM tableA ??? JOIN tableB ON tableA.column1 = tableB.column2;
 
 要意识到连接只是一种机制，用来在一条`SELECT`语句中关联表，其不是物理实体，换句话说，它在实际的数据库表中不存在，仅存在于查询的执行当中。
 
-### 1.5 笛卡尔查询示例
+#### 1.5 笛卡尔查询示例
 
 由没有连接条件的表关系返回的结果为笛卡尔积，即一个表中中的每一个将与另一个表中的每个配对而不管它们是否逻辑上可以在一起，如同时从`students`表和`classes`表查询数据：
 
@@ -316,15 +318,15 @@ SELECT
 FROM students s, classes c;
 ```
 
-### 1.6 注意事项
+#### 1.6 注意事项
 
 为执行一个查询，通常也不一定只有一种实现方法，很少有绝对正确或绝对错误的方法，性能可能会受操作类型、表中数据量、是否存在索引或键等一些条件的影响，因此，有必要对不同的选择机制进行实验，以找出最适合具体情况的办法。
 
-## 2. 过滤数据
+### 2. 过滤数据
 
 查询数据时可以增加过滤条件语句以过滤数据。
 
-### 2.1 相关关键字
+#### 2.1 相关关键字
 
 - `WHERE`：按指定条件进行行过滤，`WHERE`子句通常在`FROM`子句之后给出
 
@@ -430,7 +432,7 @@ FROM students s, classes c;
 
 > 注意事项：在通过过滤条件选择出不具有特定值的行时，你可能希望返回具有`NULL`值的行，但是这其实做不到。因为`NULL`具有特殊的含义，数据库不知道它们是否匹配，所以在匹配过滤或不匹配过滤时不返回它们。
 
-### 2.2 ON、WHERE、HAVING
+#### 2.2 ON、WHERE、HAVING
 
 数据库在通过连接两张或多张表来返回记录时，都会生成一张中间的临时表，然后再将这张临时表返回给用户。在使用`join`时，`on`和`where`条件的区别如下：
 
@@ -438,13 +440,13 @@ FROM students s, classes c;
 - `where`条件：是在临时表生成好后，对这张临时表进行**过滤**的条件；
 - `on, where, having`这三个都可以加条件的子句中，`on`是最先执行，`where`次之，`having`最后。有时候如果这先后顺序不影响中间结果的话，那最终结果是相同的。
 
-## 3. UNION查询
+### 3. UNION查询
 
 `UNION`查询，即**组合查询**，或称**复合查询**。即，MySQL允许一条查询语句中含多条`SELECT`语句，并将结果作为单个查询结果集返回。
 
 其实，多数情况下，组合相同表的两个查询完成的工作与具有多个`WHERE`子句条件的单条查询完成的工作相同，`UNION`通常只意味着另一种书写方式，可能这种书写会显得简洁。
 
-### 3.1 UNION
+#### 3.1 UNION
 
 给出每条`SELECT`语句，在各条语句之间放上关键字`UNION`即可：
 
@@ -466,7 +468,7 @@ WHERE vend_id IN (1001, 1002);
 
 3. 列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含转换的类型，如不同的数值类型或不同的日期类型。
 
-### 3.2 UNION ALL
+#### 3.2 UNION ALL
 
 `UNION`默认从查询结果集中自动去除了重复的行，如果想返回所有匹配行，使用`UNION ALL`。
 
@@ -482,7 +484,7 @@ WHERE vend_id IN (1001, 1002);
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/MySQL/5.png" alt="img" style="zoom:50%;" />
 
-### 3.3 UNION 与 ORDER BY
+#### 3.3 UNION 与 ORDER BY
 
 在使用`UNION`组合查询时，**只能使用一条`ORDER BY`子句**，它必须出现在最后一条`SELECT`语句之后。
 
@@ -500,3 +502,327 @@ ORDER BY vend_id, prod_price;
 ```
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/MySQL/6.png" alt="6.png" style="zoom:50%;" />
+
+## 二、DML
+
+> DML(Data Manipulation Language)：数据的增删改
+
+关系数据库的基本操作就是增删改查，即`CRUD`：
+
+- `Create`
+- `Retrieve`
+- `Update`
+- `Delete`
+
+其中，对于查询，我们已经详细讲述了`SELECT`语句的详细用法，而对于增、删、改，对应的SQL语句分别是：
+
+- `INSERT`：插入新记录；
+- `UPDATE`：更新已有记录；
+- `DELETE`：删除已有记录。
+
+### 1. INSERT
+
+语法：
+
+```sql
+INSERT INTO <表名> (字段1, 字段2, ...) VALUES (值1, 值2, ...);
+```
+
+示例：
+
+```sql
+-- 添加一条新记录
+INSERT INTO students (class_id, name, gender, score) VALUES (2, '大牛', 'M', 80);
+
+-- 查询并观察结果:
+SELECT * FROM students;
+```
+
+还可以一次性添加多条记录，只需要在`VALUES`子句中指定多个记录值，每个记录是由`(...)`包含的一组值：
+
+```sql
+-- 一次性添加多条新记录
+INSERT INTO students (class_id, name, gender, score) VALUES
+  (1, '大宝', 'M', 87),
+  (2, '二宝', 'M', 81);
+
+SELECT * FROM students;
+```
+
+### 2. UPDATE
+
+语法：
+
+```sql
+UPDATE <表名> SET 字段1=值1, 字段2=值2, ... WHERE ...;
+```
+
+示例：
+
+```sql
+-- 更新id=1的记录
+UPDATE students SET name='大牛', score=66 WHERE id=1;
+
+-- 查询并观察结果:
+SELECT * FROM students WHERE id=1;
+```
+
+在`UPDATE`语句中，更新字段时可以使用表达式。例如，把所有80分以下的同学的成绩加10分：
+
+```sql
+-- 更新id=999的记录
+UPDATE students SET score=100 WHERE id=999;
+
+-- 查询并观察结果:
+SELECT * FROM students;
+```
+
+`UPDATE`语句可以没有`WHERE`条件，这时整个表的所有记录都会被更新。例如：
+
+```sql
+UPDATE students SET score=60;
+```
+
+因此，在执行`UPDATE`语句时要非常小心！
+
+### 3. DELETE
+
+语法：
+
+```sql
+DELETE FROM <表名> WHERE ...;
+```
+
+示例：
+
+```sql
+-- 删除id=1的记录 
+DELETE FROM students WHERE id=1;
+
+-- 查询并观察结果:
+SELECT * FROM students;
+```
+
+和`UPDATE`类似，不带`WHERE`条件的`DELETE`语句会删除整个表的数据：
+
+```sql
+DELETE FROM students;
+```
+
+这时，整个表的所有记录都会被删除。所以，在执行`DELETE`语句时也要非常小心!
+
+### 4. 复合式
+
+```sql
+INSERT … SELECT …
+```
+
+结合`INSERT`和`SELECT`，可以将`SELECT`语句的结果集直接插入到指定表中，例如：
+
+```sql
+INSERT INTO statistics (class_id, average)
+SELECT class_id, AVG(score) 
+FROM students
+GROUP BY class_id;
+```
+
+## 三、DDL
+
+> DDL(Data Definition Language)——修改库表“结构”。
+
+### 1. 库结构操作
+
+- `SHOW`
+
+  - `SHOW DATABASES`：列出本MySQL服务器上含有的所有数据库
+
+  - `SHOW TABLES`：查看当前数据库的所有表
+
+  - `SHOW COLUMNS FROM customers`：显式内部表的信息
+
+  - `SHOW CREATE DATABASE/TABLE`：显示创建某数据库/表的MySQL语句
+
+  - `SHOW GRANTS`：显示授予用户的安全权限
+
+  - `SHOW STATUS`：显示广泛的服务器状态信息
+
+  - `SHOW ERRORS`：显示服务器错误消息
+
+  - `SHOW WARNINGS`：显示服务器警告消息
+
+- `DESCRIBE`：作为 `SHOW COLUMNS FROM` 的一种快捷方式
+
+  ```sql
+  DESCRIBE customers;
+  ```
+
+- `CREATE`
+
+  ```sql
+  -- 创建一个新的数据库
+  CREATE DATABASE;
+  -- 创建一个新的表
+  CREATE TABLE;
+  ```
+
+  ```cmd
+  mysql> CREATE DATABASE test;
+  Query OK, 1 row affected (0.01 sec)
+  ```
+
+- `DROP`：`DROP DATABASE/TABLE`删除一个数据库/表（删除一个数据库将导致该数据库的所有表全部被删除）
+
+  ```cmd
+  mysql> DROP DATABASE test;
+  Query OK, 0 rows affected (0.01 sec)
+  ```
+
+- `USE`：把某数据库切换为当前数据库，以便对其操作
+
+  ```cmd
+  mysql> USE test;
+  Database changed
+  ```
+
+- `EXIT`：退出mysql
+
+- `HELP`：显示某命令的帮助
+
+  ```cmd
+  mysql> HELP SHOW;
+  ```
+
+### 2. 表结构操作
+
+- `ADD COLUMN`：给`students`表新增一列`birth`：
+
+  ```sql
+  ALTER TABLE students ADD COLUMN birth VARCHAR(10) NOT NULL;
+  ```
+
+- `CHANGE COLUMN`：修改`birth`列，把列名改为`birthday`，类型改为`VARCHAR(20)`：
+
+  ````sql
+  ALTER TABLE students CHANGE COLUMN birth birthday VARCHAR(20) NOT NULL;
+  ````
+
+- `DROP COLUMN`：删除列`birthday`
+
+  ```sql
+  ALTER TABLE students DROP COLUMN birthday;
+  ```
+
+- `AUTO_INCREMENT`：将表的`AUTO_INCREMENT`值修改为`number`：
+
+  ```sql
+  ALTER TABLE students AUTO_INCREMENT number;
+  ```
+
+- `CREATE TABLE`：创建新表
+
+- `ALTER TABLE`：变更（改变）数据库表
+
+- `DROP TABLE`：删除表
+
+- `CREATE INDEX`：创建索引（搜索键）
+
+- `DROP INDEX`：删除索引
+
+## 四、函数
+
+### 1. 文本函数
+
+|     函数      | 说明                |
+| :-----------: | ------------------- |
+|   `Left()`    | 返回串左边的字符    |
+|  `Length()`   | 返回串的长度        |
+|  `Locate()`   | 找出串的一个子串    |
+|   `Lower()`   | 将串转换为小写      |
+|   `LTrim()`   | 去掉串左边的空格    |
+|   `Right()`   | 返回串右边的字符    |
+|   `RTrim()`   | 去掉串右边的空格    |
+|  `Soundex()`  | 返回串的`SOUNDEX`值 |
+| `SubString()` | 返回子串的字符      |
+|   `Upper()`   | 将串转换为大写      |
+
+> 注：`SOUNDEX`是一个将任何文本串转换为描述其语音表示的字母数字模式的算法。`SOUNDEX`考虑了类似的发音字符和音节，使得能对串进行发音比较而不是字母比较。
+>
+> ```sql
+> SELECT cust_name, cust_concat
+> FROM customers
+> WHERE Soundex(cust_concat) = Soundex('Y Lie');
+> ```
+>
+> 输出：
+>
+> |  cust_name  | cust_concat |
+> | :---------: | :---------: |
+> | Coyote Inc. |    Y Lee    |
+
+### 2. 数值函数
+
+|   函数   | 说明               |
+| :------: | ------------------ |
+| `Abs()`  | 返回一个数的绝对值 |
+| `Cos()`  | 返回一个角度的余弦 |
+| `Exp()`  | 返回一个数的指数值 |
+| `Mod()`  | 返回除操作的余数   |
+|  `Pi()`  | 返回圆周率         |
+| `Rand()` | 返回一个随机数     |
+| `Sin()`  | 返回一个角度的正弦 |
+| `Sqrt()` | 返回一个数的平方根 |
+| `Tan()`  | 返回一个角度的正切 |
+
+### 3. 日期和时间函数
+
+|      函数       | 说明                           |
+| :-------------: | ------------------------------ |
+|   `AddDate()`   | 增加一个日期（天、周等）       |
+|   `AddTime()`   | 增加一个时间（时、分等）       |
+|   `CurDate()`   | 返回当前日期                   |
+|   `CurTime()`   | 返回当前时间                   |
+|    `Date()`     | 返回日期时间的日期部分         |
+|  `DateDiff()`   | 计算两个日期之差               |
+|  `Date_Add()`   | 高度灵活的日期运算函数         |
+| `Date_Format()` | 返回一个格式化的日期或时间串   |
+|     `Day()`     | 返回一个日期的天数部分         |
+|  `DayOfWeek()`  | 对于一个日期，返回对应的星期几 |
+|    `Hour()`     | 返回一个时间的小时部分         |
+|   `Minute()`    | 返回一个时间的分钟部分         |
+|    `Month()`    | 返回一个日期的月份部分         |
+|     `Now()`     | 返回当前日期和时间             |
+|   `Second()`    | 返回一个时间的秒部分           |
+|    `Time()`     | 返回一个日期时间的时间部分     |
+|    `Year()`     | 返回一个日期的年份部分         |
+
+### 4. 系统函数
+
+返回DBMS正使用的特殊信息，如返回用户登录信息，检查版本细节
+
+### 5. 聚合函数
+
+运行在行组上，计算和返回单个值的函数。聚合的计算结果虽然是一个数字，但查询的结果仍然是一个二维表，只是这个二维表只有一行一列。
+
+| 函数                | 说明                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| `COUNT()`           | 返回某列的行数。<br />1) `COUNT(*)`对表中的行的数目进行计算，不管表列中包含的是否为`NULL`；<br/>2) `COUNT(column)`对特定列中具有值的行进行计算，忽略`NULL`值。 |
+| `AVG()`             | 返回某列的平均值，该列必须为数值类型。<br />1) 若要获得多个列的平均值，必须使用多个`AVG()`函数;<br />2) `AVG()`函数忽略值为`NULL`的行。 |
+| `SUM()`             | 返回某列值之和，该列必须为数值类型。其忽略值为`NULL`的行。   |
+| `MAX()`             | 返回某列的最大值。<br />1) 一般用来找出最大的数值或日期值，但MySQL允许其对任意列返回最大值，包括返回文本列中的最大值。<br/>2) 在用于文本数据时，如果数据按相应的列排序，则`MAX()`返回最后一行。<br/>3) `MAX()`忽略值为`NULL`的行。 |
+| `MIN()`             | 返回某列的最小值。                                           |
+| `ALL/DISTINCT` 参数 | 聚集函数默认`ALL`参数，可以指定`DISTINCT`参数                |
+| 结合`WHERE`子句     | 可指定条件查询。<br />如果聚合查询的`WHERE`条件没有匹配到任何行，`COUNT()`会返回`0`，而`SUM(), AVG(), MAX(), MIN()`会返回`NULL`。 |
+
+`SELECT`语句可以包含多个聚集函数：
+
+```sql
+SELECT COUNT(*) AS num_items,
+	MIN(prod_price) AS price_min,
+	MAX(prod_price) AS price_max,
+	AVG(prod_price) AS price_avg
+FROM products;
+```
+
+### 6. 一些函数举例
+
+......
