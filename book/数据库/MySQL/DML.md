@@ -1,8 +1,13 @@
-> DML：数据的增删改
+> DML(Data Manipulation Language)：数据的增删改
 
-关系数据库的基本操作就是增删改查，即CRUD：Create、Retrieve、Update、Delete。
+关系数据库的基本操作就是增删改查，即`CRUD`：
 
-其中，对于查询，我们已经详细讲述了SELECT语句的详细用法，而对于增、删、改，对应的SQL语句分别是：
+- `Create`
+- `Retrieve`
+- `Update`
+- `Delete`
+
+其中，对于查询，我们已经详细讲述了`SELECT`语句的详细用法，而对于增、删、改，对应的SQL语句分别是：
 
 - `INSERT`：插入新记录；
 - `UPDATE`：更新已有记录；
@@ -26,7 +31,7 @@ INSERT INTO students (class_id, name, gender, score) VALUES (2, '大牛', 'M', 8
 SELECT * FROM students;
 ```
 
-还可以一次性添加多条记录，只需要在`VALUES`子句中指定多个记录值，每个记录是由(...)包含的一组值：
+还可以一次性添加多条记录，只需要在`VALUES`子句中指定多个记录值，每个记录是由`(...)`包含的一组值：
 
 ```sql
 -- 一次性添加多条新记录
@@ -71,7 +76,7 @@ SELECT * FROM students;
 UPDATE students SET score=60;
 ```
 
-因此，在执行UPDATE语句时要非常小心！
+因此，在执行`UPDATE`语句时要非常小心！
 
 ## 3. DELETE
 
