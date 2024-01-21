@@ -90,13 +90,13 @@ MySQL在windows系统中的**卸载流程**：
 
 - 查看MySQL所支持排序规则的完整列表
 
-  ```SQL
+  ```sql
   SHOW COLLATION;
   ```
 
 - 创建数据库时指定默认的字符集和排序规则
 
-  ```SQL
+  ```sql
   SHOW VARIABLES LIKE 'character%';
   SHOW VARIABLES LIKE 'collation%';
   ```
