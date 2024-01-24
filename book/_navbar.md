@@ -1,4 +1,4 @@
-- <a href="https://www.chua-n.com">博客</a>
+- <a href="http://chua-n.com/blog">博客</a>
 - Java
   - [Java](/Java/)
   - [JavaWeb](/JavaWeb/)
