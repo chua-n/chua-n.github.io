@@ -63,7 +63,7 @@ import gitalkPlugin from './component/gitalk-plugin';
 
     plugins: [
       EditOnGithubPlugin.create(
-        'https://github.com/chua-n/chua-n.github.io/tree/main/',
+        'https://github.com/chua-n/chua-n.github.io/tree/main/book/',
         null,
         '编辑'
       ),
