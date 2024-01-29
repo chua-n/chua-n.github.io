@@ -1,8 +1,8 @@
 <h1>数据库</h1>
 
 - [MySQL](/数据库/MySQL/)
-  - [何为数据库](/数据库/MySQL/何为数据库.md)
-  - [MySQL数据库](/数据库/MySQL/MySQL数据库.md)
+  - [安装使用及维护](/数据库/MySQL/安装使用及维护.md)
+  - [schema](/数据库/MySQL/schema.md)
   - [SQL语法](/数据库/MySQL/SQL语法.md)
   - [SQL语言](/数据库/MySQL/SQL语言.md)
   - [索引](/数据库/MySQL/索引.md)
