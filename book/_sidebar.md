@@ -4,6 +4,8 @@
 - [JavaWeb](/JavaWeb/)
 - [JavaScript](/JavaScript/)
 - [Python](/Python/)
+- [数学](/数学/)
+- [dsa](/dsa/)
 - [数据库](/数据库/)
 - [Linux](/Linux/)
 - [杂技](/杂技/)
