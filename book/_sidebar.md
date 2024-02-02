@@ -5,7 +5,7 @@
 - [JavaScript](/JavaScript/)
 - [Python](/Python/)
 - [数学](/数学/)
-- [dsa](/dsa/)
+- [DSA](/DSA/)
 - [数据库](/数据库/)
 - [Linux](/Linux/)
 - [杂技](/杂技/)

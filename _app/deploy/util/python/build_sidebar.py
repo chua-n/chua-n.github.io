@@ -18,6 +18,6 @@ def build_sidebar(folder: str, link_base: str):
 
 if __name__ == "__main__":
     build_sidebar(
-        "D:\\code\\notebook\\book\\dsa\\剑指offer",
-        "/dsa/剑指offer/"
+        "D:\\code\\notebook\\book\\DSA\\剑指offer",
+        "/DSA/剑指offer/"
     )
