@@ -15,6 +15,8 @@ import './component/docsify-sidebar-collapse'; // 折叠
 /* 支持markdown代码段高亮 */
 import 'prismjs/components/prism-java.min';
 import 'prismjs/components/prism-python.min';
+import 'prismjs/components/prism-c.min';
+import 'prismjs/components/prism-cpp.min';
 import 'prismjs/components/prism-yaml.min';
 import 'prismjs/components/prism-bash.min';
 import 'prismjs/components/prism-powershell.min';
