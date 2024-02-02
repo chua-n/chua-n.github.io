@@ -9,7 +9,7 @@ def build_sidebar(folder: str, link_base: str):
     link_base = replace_blank(link_base)
     filenames = os.listdir(folder)
     filenames.sort()
-    with open("_sidebar.md", mode="w") as file:
+    with open("_sidebar.md", mode="w", encoding="utf-8") as file:
         for filename in filenames:
             if os.path.isfile(os.path.join(folder, filename)) and filename.endswith(".md"):
                 link = replace_blank(filename)
@@ -18,6 +18,6 @@ def build_sidebar(folder: str, link_base: str):
 
 if __name__ == "__main__":
     build_sidebar(
-        "E:\\code-chuan\\notebook\\book\\dsa\\problem\\LeetCode",
-        "/dsa/problem/LeetCode/"
+        "D:\\code\\notebook\\book\\dsa\\剑指offer",
+        "/dsa/剑指offer/"
     )
