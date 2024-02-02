@@ -106,4 +106,4 @@
     - [排序](/dsa/trick/排序.md)
     - [二叉树](/dsa/trick/二叉树.md)
     - [二叉搜索树](/dsa/trick/二叉搜索树.md)
-    - [图论](/dsa/trick/图论.md)
+    - [图](/dsa/trick/图.md)
