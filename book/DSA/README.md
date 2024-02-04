@@ -1,8 +1,8 @@
 # 合抱之木，生于毫末
 
-LeetCode 的个人刷题历程，C++和 Python 的双实现。
+> DSA: Data Structure and Algorithm.
 
-`./problem` 中为 LeetCode 题目；
+此笔记本记录一些数据结构与算法题。
 
 `./trick` 中为一些“数据结构与算法”的基本思路/应用技巧，其内图件大多引自邓俊辉[《数据结构》](https://dsa.cs.tsinghua.edu.cn/~deng/ds/dsacpp/index.htm)。
 
