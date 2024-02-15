@@ -126,7 +126,7 @@ interface Handler<T> {
 }
 ```
 
-因为类型擦除，Java禁止一个类使用不同的类型参数多次实现同一个泛型接口（即不可能出现MultiHandler implements Handler<Type1>, Handler<Type2>）。这比起传统的Java事件机制也是巨大的退步，至少传统的Java Swing监听者接口使用了不同的方法把不同的事件区分开。
+因为类型擦除，Java禁止一个类使用不同的类型参数多次实现同一个泛型接口（即不可能出现`MultiHandler implements Handler<Type1>, Handler<Type2>`）。这比起传统的Java事件机制也是巨大的退步，至少传统的Java Swing监听者接口使用了不同的方法把不同的事件区分开。
 
 ### EventBus不是破坏了静态类型，排斥了自动重构支持吗？
 
