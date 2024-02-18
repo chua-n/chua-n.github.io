@@ -1,19 +1,17 @@
 import { sidebar } from "vuepress-theme-hope";
 
-function buildSimpleNavObj(title: string) {
+function buildSimpleNavObj(title: string, icon: string = "markdown-black") {
   return {
     text: title,
     link: title,
-    icon: "fab fa-markdown",
+    icon: icon,
   }
 }
 
-const FOLDER_ICON = "";
+const FOLDER_ICON = "folder";
 
 export default sidebar({
-  "/": [
-    "",
-  ],
+  "/": [],
   "/Java/": [
     {
       text: "踏入山门",
@@ -267,7 +265,7 @@ export default sidebar({
       text: "Web后端基础",
       prefix: "Web后端基础/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "backend-dev",
       children: [
         buildSimpleNavObj("Web请求过程"),
         buildSimpleNavObj("Tomcat"),
@@ -287,7 +285,7 @@ export default sidebar({
       text: "Spring",
       prefix: "Spring/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "spring",
       children: [
         buildSimpleNavObj("IoC-上"),
         buildSimpleNavObj("IoC-下"),
@@ -305,7 +303,7 @@ export default sidebar({
       text: "SpringMVC",
       prefix: "SpringMVC/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "MVC",
       children: [
         buildSimpleNavObj("SpringMVC简介"),
         buildSimpleNavObj("接收请求与设置响应"),
@@ -318,7 +316,7 @@ export default sidebar({
       text: "MyBatis",
       prefix: "MyBatis/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "mybatis",
       children: [
         buildSimpleNavObj("持久层技术"),
         buildSimpleNavObj("MyBatis入门"),
@@ -337,7 +335,7 @@ export default sidebar({
       text: "SpringBoot",
       prefix: "SpringBoot/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "spring-boot",
       children: [
         buildSimpleNavObj("踏入山门"),
         buildSimpleNavObj("SpringBoot配置"),
@@ -349,7 +347,7 @@ export default sidebar({
       text: "SpringCloud",
       prefix: "SpringCloud/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "spring-cloud",
       children: [
         buildSimpleNavObj("RestTemplate"),
         buildSimpleNavObj("OpenFeign"),
@@ -357,7 +355,7 @@ export default sidebar({
         buildSimpleNavObj("Zookeeper"),
         buildSimpleNavObj("Gateway"),
         buildSimpleNavObj("Stream"),
-        buildSimpleNavObj("RabbitMQ"),
+        buildSimpleNavObj("RabbitMQ", "rabbitmq"),
         {
           text: "Netflix",
           prefix: "Netflix/",
@@ -384,7 +382,7 @@ export default sidebar({
       text: "SpringData",
       prefix: "SpringData/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "spring-data",
       children: [
         buildSimpleNavObj("JPA基础"),
         buildSimpleNavObj("SpringData-JPA"),
@@ -395,7 +393,7 @@ export default sidebar({
       text: "SpringSecurity",
       prefix: "SpringSecurity/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "security-1",
       children: [
         buildSimpleNavObj("踏入山门"),
         buildSimpleNavObj("认证"),
@@ -407,7 +405,7 @@ export default sidebar({
       text: "Web安全",
       prefix: "Web安全/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "security",
       children: [
         buildSimpleNavObj("认证与授权"),
         buildSimpleNavObj("JWT"),
@@ -419,12 +417,12 @@ export default sidebar({
       text: "其他",
       prefix: "其他/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "other-tech",
       children: [
-        buildSimpleNavObj("YAML概述"),
-        buildSimpleNavObj("Swagger"),
-        buildSimpleNavObj("前后端交互"),
-        buildSimpleNavObj("RESTful"),
+        buildSimpleNavObj("YAML概述", "yaml"),
+        buildSimpleNavObj("Swagger", "swagger"),
+        buildSimpleNavObj("前后端交互", "interactive"),
+        buildSimpleNavObj("RESTful", "restful"),
       ]
     },
   ],
@@ -437,7 +435,7 @@ export default sidebar({
       text: "Vue",
       prefix: "Vue/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "vuejs",
       children: [
         buildSimpleNavObj("1.Vue.js介绍"),
         buildSimpleNavObj("2.Vue对象"),
@@ -590,7 +588,7 @@ export default sidebar({
       text: "LeetCode",
       prefix: "LeetCode/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "leetcode",
       children: [
         buildSimpleNavObj("001. Two Sum"),
         buildSimpleNavObj("002. Add Two Numbers"),
@@ -697,7 +695,7 @@ export default sidebar({
       text: "剑指offer",
       prefix: "剑指offer/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "offer-1",
       // children: "structure"
       children: [
         buildSimpleNavObj("01.Search_in_2D_Array"),
@@ -773,7 +771,7 @@ export default sidebar({
       text: "interview",
       prefix: "interview/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "interview",
       children: [
         buildSimpleNavObj("0-1背包问题"),
         buildSimpleNavObj("最大正方形"),
@@ -783,7 +781,7 @@ export default sidebar({
       text: "trick",
       prefix: "trick/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "bulb",
       children: [
         buildSimpleNavObj("排序"),
         buildSimpleNavObj("二叉树"),
@@ -797,7 +795,7 @@ export default sidebar({
       text: "MySQL",
       prefix: "MySQL/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "mysql",
       children: [
         buildSimpleNavObj("安装使用及维护"),
         buildSimpleNavObj("schema"),
@@ -815,7 +813,7 @@ export default sidebar({
       text: "mongoDB",
       prefix: "mongoDB/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "mongodb",
       children: [
         buildSimpleNavObj("概念解析"),
       ]
@@ -824,7 +822,7 @@ export default sidebar({
       text: "Redis",
       prefix: "Redis/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "redis",
       children: [
         buildSimpleNavObj("踏入山门"),
         buildSimpleNavObj("数据类型"),
@@ -843,7 +841,7 @@ export default sidebar({
       text: "Elasticsearch",
       prefix: "Elasticsearch/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "elasticsearch",
       children: [
         buildSimpleNavObj("概述"),
         buildSimpleNavObj("DSL"),
@@ -872,7 +870,7 @@ export default sidebar({
       text: "计算机组成原理",
       prefix: "计算机组成原理/",
       // collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "CPU",
       children: [
       ]
     },
@@ -880,7 +878,7 @@ export default sidebar({
       text: "计算机网络",
       prefix: "计算机网络/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "computer-network",
       children: [
         buildSimpleNavObj("概要"),
         buildSimpleNavObj("计网体系结构"),
@@ -892,7 +890,7 @@ export default sidebar({
       text: "操作系统",
       prefix: "操作系统/",
       // collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "operating-system",
       children: [
       ]
     },
@@ -900,7 +898,7 @@ export default sidebar({
       text: "C++",
       prefix: "C++/",
       // collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "cpp",
       children: [
       ]
     },
@@ -908,7 +906,7 @@ export default sidebar({
       text: "Git",
       prefix: "Git/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "git",
       children: [
         buildSimpleNavObj("一、Git起步"),
         buildSimpleNavObj("二、版本控制"),
@@ -917,13 +915,13 @@ export default sidebar({
         buildSimpleNavObj("五、Git分支"),
       ]
     },
-    buildSimpleNavObj("Docker"),
-    buildSimpleNavObj("Nginx"),
+    buildSimpleNavObj("Docker", "docker"),
+    buildSimpleNavObj("Nginx", "nginx"),
     {
       text: "CV",
       prefix: "CV/",
       collapsible: true,
-      icon: FOLDER_ICON,
+      icon: "computer-vision-simple",
       children: [
         buildSimpleNavObj("基础概念"),
         buildSimpleNavObj("空间域处理"),

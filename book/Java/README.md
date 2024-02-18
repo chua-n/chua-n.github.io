@@ -1,3 +1,8 @@
+---
+title: Java
+icon: java
+---
+
 > 本笔记为Java相关知识点。
 
 ## 重新思考内容

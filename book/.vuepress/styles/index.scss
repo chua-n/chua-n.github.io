@@ -1,1 +1,13 @@
 // place your custom styles here
+@import "./palette";
+code {
+  color: $theme-color; // 代码块颜色
+}
+
+strong {
+  color: $theme-color;
+}
+
+em {
+  color: $theme-color;
+}

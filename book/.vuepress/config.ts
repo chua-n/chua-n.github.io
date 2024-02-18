@@ -4,10 +4,17 @@ import theme from "./theme.js";
 
 export default defineUserConfig({
   base: "/",
+  dest: "dist",
 
   lang: "zh-CN",
-  title: "文档演示",
-  description: "vuepress-theme-hope 的文档演示",
+  title: "川的笔记本",
+  description: "这是我用 vuepress 工具生成的笔记，采用 vuepress-theme-hope 主题，简单好用，采用 Markdown 编写，像书本一样展示。",
+
+  markdown: {
+    headers: {
+      level: [2, 3, 4, 5, 6],
+    }
+  },
 
   theme,
 

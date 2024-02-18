@@ -1,45 +1,91 @@
 import { hopeTheme } from "vuepress-theme-hope";
 import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
+import { Page } from "vuepress";
 
 export default hopeTheme({
-  hostname: "https://vuepress-theme-hope-docs-demo.netlify.app",
-
+  hostname: "https://chua-n.com",
   author: {
-    name: "Mr.Hope",
-    url: "https://mister-hope.com",
+    name: "chua-n",
+    url: "https://chua-n.com/blog/about/",
   },
 
-  iconAssets: "fontawesome-with-brands",
+  darkmode: "toggle",
+  fullscreen: true,
+  // pure: true,
+  iconAssets: "//at.alicdn.com/t/c/font_4437669_upmypnz3vrh.css",
+  // iconPrefix: ???
+  logo: "https://chua-n.gitee.io/figure-bed/notebook/川.svg",
+  favicon: "/favicon.ico",
 
-  logo: "https://theme-hope-assets.vuejs.press/logo.svg",
-
-  repo: "vuepress-theme-hope/vuepress-theme-hope",
-
-  docsDir: "book",
+  // 是否使用 RTL 布局
+  rtl: false,
 
   // 导航栏
   navbar,
+  navbarIcon: true,
+  navbarLayout: {
+    start: ["Brand"],
+    center: ["Links"],
+    end: ["Language", "Repo", "Outlook", "Search"]
+  },
+  // navTitle: "what the fuck?",
+  repo: "chua-n/chua-n.github.io",
+  navbarAutoHide: "mobile",
 
   // 侧边栏
   sidebar,
-
   headerDepth: 5,
+  toc: true,
+  print: true,
+
+  // 路径导航
+  breadcrumb: true,
+  breadcrumbIcon: true,
+  prevLink: true,
+  nextLink: true,
+
+  // 文章
+  titleIcon: true,
+  pageInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime", "Word", "PageView"],
+  lastUpdated: true,
+  contributors: true,
+  editLink: true,
+  // editLinkPattern: "???"
+  docsBranch: "feature/goto-vuepress",
+  docsDir: "book",
 
   // 页脚
-  footer: "默认页脚",
+  footer: "应无所住，而生其心",
   displayFooter: true,
+
+  blog: {
+    name: "荒流",
+    description: "合抱之木，生于毫末",
+    avatar: "https://chua-n.gitee.io/figure-bed/notebook/blog/avatar.png",
+    roundAvatar: true,
+    intro: "/about",
+    medias: {
+      Github: "https://github.com/chua-n",
+      Gmail: "mailto:chua_n@qq.com",
+    },
+    sidebarDisplay: "mobile",
+    articlePerPage: 5,
+    articleInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime", "Word", "PageView"],
+    timeline: "昨日不在",
+  },
 
   // 加密配置
   encrypt: {
     config: {
       "/demo/encrypt.html": ["1234"],
+      "/glodon/": "1234",
     },
   },
 
   // 多语言配置
   metaLocales: {
-    editLink: "在 GitHub 上编辑此页",
+    editLink: "编辑此页",
   },
 
   // 如果想要实时查看任何改变，启用它。注: 这对更新性能有很大负面影响
@@ -50,10 +96,10 @@ export default hopeTheme({
     // 你应该自行生成自己的评论服务
     comment: {
       provider: "Giscus",
-      repo: "vuepress-theme-hope/giscus-discussions",
-      repoId: "R_kgDOG_Pt2A",
+      repo: "chua-n/chua-n.github.io",
+      repoId: "MDEwOlJlcG9zaXRvcnkzODUxMDYyNTk=",
       category: "Announcements",
-      categoryId: "DIC_kwDOG_Pt2M4COD69",
+      categoryId: "DIC_kwDOFvRBU84CdT13",
     },
 
     components: {
@@ -71,6 +117,7 @@ export default hopeTheme({
       imgLazyload: true,
       imgSize: true,
       include: true,
+      linkify: true,
       mark: true,
       stylize: [
         {
@@ -105,7 +152,10 @@ export default hopeTheme({
       // gfm: true,
 
       // 在启用之前安装 katex
-      katex: true,
+      katex: {
+        copy: true,
+        mhchem: true,
+      },
 
       // 在启用之前安装 mathjax-full
       // mathjax: true,
@@ -127,6 +177,28 @@ export default hopeTheme({
 
       // install sandpack-vue3 before enabling it
       // sandpack: true,
+    },
+
+    blog: {
+      article: "/blog/",
+      category: "/blog/category/",
+      categoryItem: "/blog/category/:name/",
+      tag: "/blog/tag/",
+      tagItem: "/blog/tag/:name/",
+      star: "/blog/star/",
+      timeline: "/blog/timeline/",
+      filter: (page: Page) => {
+        // 博客只展示 blog 目录下的文件
+        return page.filePathRelative && page.filePathRelative.startsWith("blog");
+      }
+    },
+
+    search: true,
+
+    feed: {
+      atom: true,
+      json: true,
+      rss: true,
     },
 
     // 如果你需要 PWA。安装 vuepress-plugin-pwa2 并取消下方注释
