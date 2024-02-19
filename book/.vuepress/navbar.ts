@@ -33,7 +33,7 @@ export default navbar([
   },
   {
     text: "数学",
-    icon: "math",
+    icon: "math-pi",
     link: "/数学/",
   },
   {
