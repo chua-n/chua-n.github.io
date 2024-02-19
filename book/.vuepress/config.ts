@@ -1,6 +1,8 @@
 import { WebpackConfiguration, webpackBundler } from '@vuepress/bundler-webpack'
 import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
+import CopyPlugin from "copy-webpack-plugin";
+import path from "path";
 
 export default defineUserConfig({
   base: "/",
@@ -25,6 +27,16 @@ export default defineUserConfig({
   bundler: webpackBundler({
     configureWebpack: (config: WebpackConfiguration, isServer: boolean, isBuild: boolean) => {
       config.devtool = 'eval-source-map'; // 开发环境调试时浏览器展示源码（好像不生效）
+      config.plugins?.push(
+        new CopyPlugin({
+          patterns: [
+            {
+              from: path.resolve(process.cwd(), './CNAME'),
+              to: ".",
+            },
+          ],
+        })
+      );
     }
   }),
 });
