@@ -1,8 +1,9 @@
 ---
 title: WSL下安装MySQL
 date: 2020-08-14 16:54:00
-categories:
-    - [linux, WSL]
+category:
+    - linux
+    - WSL
     - mysql
 ---
 

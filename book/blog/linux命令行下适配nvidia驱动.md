@@ -1,7 +1,7 @@
 ---
 title: linux 命令行下适配 nvidia 驱动
 date: 2020-06-29 15:56:00
-categories: linux
+category: linux
 ---
 
 疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……

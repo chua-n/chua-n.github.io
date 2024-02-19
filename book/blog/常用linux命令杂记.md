@@ -1,7 +1,7 @@
 ---
 title: 常用linux命令杂记
 date: 2021-01-15 09:38:25
-categories: linux
+category: linux
 ---
 
 `tmux`命令、更改 apt 源、`cloc`命令、更新 Git 到最新版

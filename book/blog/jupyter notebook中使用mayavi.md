@@ -1,9 +1,10 @@
 ---
 title: jupyter notebook中使用mayavi三维绘图库
 date: 2020-12-08 21:09:00
-categories:
-    - [python, jupyter]
-    - [python, mayavi]
+category:
+    - python
+    - jupyter
+    - mayavi
 ---
 
 就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。

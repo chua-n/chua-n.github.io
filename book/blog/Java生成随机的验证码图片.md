@@ -1,8 +1,8 @@
 ---
 title: Java生成随机的验证码图片
 date: 2021-06-27 09:17:32
-categories: Java
-tags: coding
+category: Java
+tag: coding
 ---
 
 > 日常琐碎代码片段记录。
