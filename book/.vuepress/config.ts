@@ -4,9 +4,11 @@ import theme from "./theme.js";
 import CopyPlugin from "copy-webpack-plugin";
 import path from "path";
 
+const sourceDir = "book";
+
 export default defineUserConfig({
   base: "/",
-  dest: "dist",
+  dest: `${sourceDir}/.vuepress/dist`,
 
   lang: "zh-CN",
   title: "川的笔记本",
