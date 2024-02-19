@@ -1,8 +1,9 @@
 ---
 title: 使用 python 绘制不同尺寸的球——利用Mayavi库
 date: 2020-12-22 08:11:00
-categories:
-    - [python, mayavi]
+category:
+    - python
+    - mayavi
 ---
 
 “万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。

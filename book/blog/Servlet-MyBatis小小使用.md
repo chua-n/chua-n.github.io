@@ -1,7 +1,7 @@
 ---
 title: Servlet+MyBatis小小使用
 date: 2021-06-27 09:50:34
-categories: Java
+category: Java
 ---
 
 在学 Servlet 的时候，视频老师用的是 JDBC/Spring JDBCTemplate 作为 DAO 层技术的，但现在主流技术都是 MyBatis 嘛，自己又是个新手，MyBatis 刚学了也没怎么实践过，就想着自己胡戳着把 DAO 层改成 MyBatis 来实现，同时增强 Servlet 和 MyBatis 的基础使用知识。

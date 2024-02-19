@@ -1,7 +1,7 @@
 ---
 title: Python自动化操作GUI
 date: 2022-01-28 11:55:09
-categories:
+category: python
 ---
 
 Python 实现对 windows 鼠标和键盘的接管，自动化 GUI 操作。

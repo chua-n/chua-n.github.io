@@ -1,9 +1,9 @@
 ---
 title: linux 下从源码安装 Python——小白踩坑记
 date: 2020-06-29 15:55:00
-categories:
-    - [linux]
-    - [python]
+category:
+    - linux
+    - python
 ---
 
 实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用`$ python`命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的`$ python`命令指向。

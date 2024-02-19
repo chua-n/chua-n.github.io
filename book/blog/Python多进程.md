@@ -1,7 +1,7 @@
 ---
 title: Python多进程
 date: 2021-03-12 09:39:04
-categories: python
+category: python
 ---
 
 接连面临多个耗时性程序，形势已经演变到必须了解 Python 并行计算的地步了。
