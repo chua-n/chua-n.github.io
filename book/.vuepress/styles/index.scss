@@ -1,13 +1,24 @@
 // place your custom styles here
 @import "./palette";
-code {
+
+// 行内代码块，加粗，斜体都采用主题色
+code,
+strong,
+em {
   color: $theme-color; // 代码块颜色
 }
 
-strong {
-  color: $theme-color;
+/* 设置选中文本时的颜色 */
+::selection {
+  background: $theme-color;
+  color: #eee;
 }
 
-em {
-  color: $theme-color;
+/* 文章每级标题下方加入横线（模仿h2自带的样式） */
+h2,
+h3,
+h4,
+h5,
+h6 {
+  border-bottom: 1px solid #eaecef;
 }
