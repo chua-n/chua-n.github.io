@@ -13,7 +13,7 @@ export default hopeTheme({
   darkmode: "toggle",
   fullscreen: true,
   // pure: true,
-  iconAssets: "//at.alicdn.com/t/c/font_4437669_ojjw53qnrol.css",
+  iconAssets: "//at.alicdn.com/t/c/font_4437669_qqgwxofx2ff.css",
   // iconPrefix: ???
   logo: "https://chua-n.gitee.io/figure-bed/notebook/川.svg",
   favicon: "/favicon.ico",
