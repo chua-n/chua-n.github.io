@@ -1,3 +1,7 @@
+---
+title: OpenFeign
+---
+
 > HTTP客户端`Feign`，本文说的`Feign`是指`OpenFeign`。
 >
 > - Feign 来自 Netflix，OpenFeign 来自Spring Cloud 官方，其基于 Feign 做了改进。

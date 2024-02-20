@@ -1,3 +1,7 @@
+---
+title: OAuth2.0
+---
+
 > 参考资料：
 >
 > - [OAuth 2.0 — OAuth](https://oauth.net/2/)

@@ -1,3 +1,7 @@
+---
+title: mlab
+---
+
 ## 1. mlab 绘图函数
 
 mlab 的绘图函数：

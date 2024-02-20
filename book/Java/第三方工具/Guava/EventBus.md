@@ -1,3 +1,7 @@
+---
+title: EventBus
+---
+
 > EventBus-事件总线
 
 ## 1. 简介

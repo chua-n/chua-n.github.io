@@ -1,3 +1,7 @@
+---
+title: functools
+---
+
 关于functools标准库：
 
 > \>>> help(functools)

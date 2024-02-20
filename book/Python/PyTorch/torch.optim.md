@@ -1,3 +1,7 @@
+---
+title: torch.optim
+---
+
 ## Optimizer
 
 `torch.optim`是一个实现了各种优化算法的包，最常用的方法如SGD、Nesterov-SGD、Adam、RMSProp都已在其中实现，而且这些接口非常通用，你可以很容易地利用这些接口实现你自己的更复杂的优化算法。

@@ -1,3 +1,7 @@
+---
+title: XxxMapper.xml
+---
+
 ## 1. 整体介绍
 
 首先一定不能忘记声明 xml 的版本和编码格式，以及引入 MyBatis 的 DTD 文档定义类型：

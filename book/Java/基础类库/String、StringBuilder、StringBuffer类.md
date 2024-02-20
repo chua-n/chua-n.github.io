@@ -1,3 +1,7 @@
+---
+title: String、StringBuilder、StringBuffer类
+---
+
 Java 提供了 String, StringBuffer, StringBuilder 三个类来封装字符串，并提供了一系列方法。
 
 1. String 类是不可变类，一旦一个 String 对象被创建，包含在这个对象中的字符序列是不可改变的，直至这个对象被销毁；

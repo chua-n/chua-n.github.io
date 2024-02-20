@@ -1,3 +1,7 @@
+---
+title: MyBatis入门
+---
+
 ## 1. 概念
 
 MyBatis是Apache的一个Java开源项目，原名为iBatis（即Internet与abatis的结合），后因项目托管平台的迁移（由Google     Code转移至Github）更名为MyBatis。MyBatis采用配置文件动态管理SQL语句，是一款并含有输入映射、输出映射机制以及数据库连接池配置的持久层框架。

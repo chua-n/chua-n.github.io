@@ -1,3 +1,7 @@
+---
+title: MyBatis的API
+---
+
 > 其实主要就涉及`SqlSessionFactory`类和`SqlSession`类。
 
 ## 1. `SqlSessionFactory`

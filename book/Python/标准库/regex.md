@@ -1,3 +1,7 @@
+---
+title: regex
+---
+
 ## 1. 概要
 
 **正则表达式(Regular Expression, Regex)** 用于文本内容的查找和替换。

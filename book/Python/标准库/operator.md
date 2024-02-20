@@ -1,3 +1,7 @@
+---
+title: operator
+---
+
 关于operator标准库：
 
 > \>>> help(operator)
