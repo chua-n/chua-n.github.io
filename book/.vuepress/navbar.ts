@@ -1,6 +1,7 @@
 import { navbar } from "vuepress-theme-hope";
 
-export default navbar([
+const isDevEnv = process.env.NODE_ENV === "development";
+const navBars = [
   {
     text: "随笔",
     icon: "leaf",
@@ -57,8 +58,12 @@ export default navbar([
     icon: "other-tech",
     link: "/杂技/",
   },
-  {
+];
+if (isDevEnv) {
+  navBars.push({
     text: "glodon",
     link: "glodon/",
-  },
-]);
+    icon: ""
+  });
+}
+export default navbar(navBars);
