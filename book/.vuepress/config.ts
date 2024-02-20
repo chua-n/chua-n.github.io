@@ -12,7 +12,7 @@ export default defineUserConfig({
   dest: `${sourceDir}/.vuepress/dist`,
 
   lang: "zh-CN",
-  title: "川的笔记本",
+  title: "荒流的笔记本",
   description: "这是我用 vuepress 工具生成的笔记，采用 vuepress-theme-hope 主题，简单好用，采用 Markdown 编写，像书本一样展示。",
 
   markdown: {
