@@ -25,7 +25,7 @@ const navBars = [
   },
   {
     text: "JavaScript",
-    icon: "java-script",
+    icon: "javascript",
     link: "/JavaScript/",
   },
   {
