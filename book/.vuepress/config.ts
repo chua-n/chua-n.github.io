@@ -1,8 +1,9 @@
 import { WebpackConfiguration, webpackBundler } from '@vuepress/bundler-webpack'
 import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
+// @ts-ignore
 import CopyPlugin from "copy-webpack-plugin";
-import path from "path";
+import * as path from "path";
 
 const sourceDir = "book";
 
