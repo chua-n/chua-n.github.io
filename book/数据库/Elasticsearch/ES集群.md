@@ -34,7 +34,7 @@ ES中的每个节点角色都有自己不同的职责，因此建议集群部署
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101214619319.png" alt="image-20220101214619319" style="zoom:50%;" />
 
-为了避免脑裂，需要要求选票超过$（eligible节点数量+1）/2$才能当选为主，因此eligible节点数量最好是奇数。对应配置项是discovery.zen.minimum_master_nodes，在ES7.0以后，已经成为默认配置，因此一般不会发生脑裂问题。
+为了避免脑裂，需要要求选票超过$(\text{eligible节点数量}+1)/2$才能当选为主，因此eligible节点数量最好是奇数。对应配置项是discovery.zen.minimum_master_nodes，在ES7.0以后，已经成为默认配置，因此一般不会发生脑裂问题。
 
 ## 3. 集群分布式存储
 

@@ -756,7 +756,7 @@ HTTP 主要有这些不足，例举如下：
 ## 10. HTTPS
 
 $$
-HTTPS = HTTP + 加密 + 认证 + 完整性保护
+HTTPS = HTTP + \text{加密} + \text{认证} + \text{完整性保护}
 $$
 
 为了统一解决上述这些问题，需要在 HTTP 上再加入加密处理和认证等机制。我们把添加了加密及认证机制的HTTP 称为 HTTPS（HTTP Secure）。

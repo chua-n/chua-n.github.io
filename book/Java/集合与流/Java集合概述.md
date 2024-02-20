@@ -289,7 +289,7 @@ hash算法中，hash表里可以存储元素的位置叫做“桶”。
 - 容量(capacity)：hash表中桶的数量。
 - 初始化容量(initial capacity)：创建hash表时桶的数量。HashSet和HashMap都允许在构造器中指定初始化容量。
 - 尺寸(size)：当前hash表中记录的数量。
-- 负载因子(load factor)：$负载因子=size/capacity$。
+- 负载因子(load factor)：$\text{负载因子}=size/capacity$。
     - 负载因子为0，表示空的hash表；
     - 0.5表示半满的hash表，依此类推。
     - 轻负载的hash表具有冲突少、适宜插入与查询的特点，但是使用Iterator迭代元素时比较慢。
