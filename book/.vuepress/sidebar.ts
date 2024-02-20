@@ -791,6 +791,7 @@ export default sidebar({
     },
   ],
   "/数据库/": [
+    buildSimpleNavObj("数据库概论"),
     {
       text: "MySQL",
       prefix: "MySQL/",
