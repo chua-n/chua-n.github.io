@@ -4,6 +4,7 @@ date: 2020-12-22 08:11:00
 category:
     - python
     - mayavi
+star: true
 ---
 
 “万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。
