@@ -61,8 +61,8 @@ export default hopeTheme({
 
   blog: {
     name: "荒流",
-    description: "合抱之木，生于毫末",
-    avatar: "https://chua-n.gitee.io/figure-bed/notebook/blog/avatar.png",
+    description: "应无所住，而生其心",
+    avatar: "/assets/image/wukong.jpg",
     roundAvatar: true,
     intro: "/about",
     medias: {
