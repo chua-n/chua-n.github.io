@@ -1,3 +1,7 @@
+---
+title: MyBatis缓存结构
+---
+
 MyBatis提供一级缓存和二级缓存的机制。
 
 ![47](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/47.png)

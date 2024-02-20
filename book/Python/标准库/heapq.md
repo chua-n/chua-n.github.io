@@ -1,3 +1,7 @@
+---
+title: heapq
+---
+
 关于heapq标准库：
 
 > \>>> help(heapq)

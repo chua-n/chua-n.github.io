@@ -1,3 +1,7 @@
+---
+title: Map
+---
+
 > Java类库为映射（map）提供了两个通用的实现：HashMap和TreeMap，这两个类都实现了Map接口。
 
 ## 1. Map接口

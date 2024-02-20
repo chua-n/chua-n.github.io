@@ -1,3 +1,7 @@
+---
+title: Random、ThreadLocalRandom类
+---
+
 Random类专门用于生成一个伪随机数，它有两个构造器：一个使用默认的种子（以当前时间作为种子），另一个构造器需要程序员显式传入一个long型整数的种子。
 
 ThreadLocalRandom类是Random的增强版，用来保证系统在并发访问的环境下具有更好的线程安全性。

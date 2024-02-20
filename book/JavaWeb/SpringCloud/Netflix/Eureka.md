@@ -1,3 +1,7 @@
+---
+title: Eureka
+---
+
 ## 1. Eureka注册中心
 
 <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128181508456.png" alt="image-20211128181508456" style="zoom:33%;" />

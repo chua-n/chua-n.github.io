@@ -1,3 +1,7 @@
+---
+title: collections
+---
+
 关于collections标准库：
 
 > \>>> help(collections)

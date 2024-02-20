@@ -1,3 +1,7 @@
+---
+title: shell脚本
+---
+
 ## 1. shell 基操
 
 ### 1.1 认识 shell 脚本

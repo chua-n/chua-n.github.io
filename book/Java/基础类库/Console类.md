@@ -1,3 +1,7 @@
+---
+title: Console类
+---
+
 因为输入是可见的，所有Scanner类不适用于从控制台读取密码，Java6特别引入了`java.io.Console`类来实现这个目的，要想读取一个密码，可以使用如下代码：
 
 ```java

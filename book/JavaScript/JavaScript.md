@@ -1,3 +1,7 @@
+---
+title: JavaScript
+---
+
 ## 1. JavaScript简介
 
 JavaScript是一门客户端脚本语言，其运行在客户端浏览器中，每一个浏览器都有JavaScript的解析引擎。

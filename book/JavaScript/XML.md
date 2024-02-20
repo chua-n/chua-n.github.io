@@ -1,3 +1,7 @@
+---
+title: XML
+---
+
 ## 1. 概念
 
 **XML**(Extensible Markup Language)，可扩展标记语言。可扩展的含义是：标签都是自定义的，可以在不中断应用程序的情况下进行扩展。

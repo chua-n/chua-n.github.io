@@ -1,3 +1,7 @@
+---
+title: SQL语言
+---
+
 ## 1. DQL
 
 > DQL(Data Query Language)：查询数据。
