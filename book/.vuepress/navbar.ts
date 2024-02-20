@@ -2,8 +2,9 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   {
-    text: "首页",
-    link: "/",
+    text: "随笔",
+    icon: "leaf",
+    link: "/blog/",
   },
   {
     text: "Java",
@@ -59,10 +60,5 @@ export default navbar([
   {
     text: "glodon",
     link: "glodon/",
-  },
-  {
-    text: "随笔",
-    icon: "blog",
-    link: "/blog/",
   },
 ]);
