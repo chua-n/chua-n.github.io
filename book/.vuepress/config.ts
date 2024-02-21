@@ -11,6 +11,8 @@ export default defineUserConfig({
   base: "/",
   dest: `${sourceDir}/.vuepress/dist`,
 
+  port: 7777,
+
   lang: "zh-CN",
   title: "荒流的笔记本",
   description: "这是我用 vuepress 工具生成的笔记，采用 vuepress-theme-hope 主题，简单好用，采用 Markdown 编写，像书本一样展示。",

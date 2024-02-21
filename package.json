@@ -8,8 +8,8 @@
   "private": true,
   "scripts": {
     "docs:build": "vuepress-webpack build book",
-    "docs:clean-dev": "vuepress-webpack dev book --port 7777 --clean-cache",
-    "docs:dev": "vuepress-webpack dev book --port 7777 --debug",
+    "docs:clean-dev": "vuepress-webpack dev book --clean-cache",
+    "docs:dev": "vuepress-webpack dev book --debug",
     "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
