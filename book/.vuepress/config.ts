@@ -26,7 +26,7 @@ export default defineUserConfig({
   theme,
 
   // 和 PWA 一起启用
-  // shouldPrefetch: false,
+  shouldPrefetch: false,
 
   // 修改 webpack 配置
   bundler: webpackBundler({
