@@ -2,6 +2,7 @@ import { hopeTheme } from "vuepress-theme-hope";
 import navbar from "./navbar.js";
 import sidebar from "./sidebar";
 import { Page } from "vuepress";
+import { cut } from "nodejs-jieba";
 
 export default hopeTheme({
   hostname: "https://chua-n.com",
@@ -195,7 +196,27 @@ export default hopeTheme({
       }
     },
 
-    search: true,
+    searchPro: {
+      indexContent: true,
+      autoSuggestions: false,
+      queryHistoryCount: 5,
+      resultHistoryCount: 0,
+      indexOptions: {
+        // 使用结巴进行分词
+        tokenize: (text, fieldName) => {
+          return fieldName === "id" ? [text] : cut(text, true);
+        },
+      },
+      hotKeys: [
+        {
+          key: "/",
+          ctrl: true
+        },
+        {
+          key: "k",
+          ctrl: true
+        }]
+    },
 
     feed: {
       atom: true,
