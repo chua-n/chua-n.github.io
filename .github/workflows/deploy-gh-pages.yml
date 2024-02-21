@@ -3,10 +3,10 @@ name: build & deploy to github pages
 on:
   push:
     branches:
-      - feature/goto-vuepress
+      - main
   pull_request:
     branches:
-      - feature/goto-vuepress
+      - main
 
 jobs:
   build-and-deploy:

@@ -52,7 +52,7 @@ export default hopeTheme({
   contributors: true,
   editLink: true,
   // editLinkPattern: "???"
-  docsBranch: "feature/goto-vuepress",
+  docsBranch: "main",
   docsDir: "book",
 
   // 页脚
