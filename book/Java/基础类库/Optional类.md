@@ -1,3 +1,7 @@
+---
+title: Optional类
+---
+
 ## 1. Optional类的含义
 
 变量存在时，Optional类只是对类简单封装；变量不存在时，缺失的值会被建模成一个“空”的Optional对象，由方法`Optional.empty()`返回。

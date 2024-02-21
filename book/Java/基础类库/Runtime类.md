@@ -1,3 +1,7 @@
+---
+title: Runtime类
+---
+
 Runtime类代表Java程序的运行时环境，每个Java程序都有一个与之对应的Runtime实例，应用程序通过该对象与其运行时环境相连。
 
 应用程序不能创建自己的Runtime实例，但可以通过Runtime类的getRuntime()方法获取与之关联的Runtime对象。

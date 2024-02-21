@@ -1,3 +1,7 @@
+---
+title: IoC-下
+---
+
 ## 1. 定制Bean的特性
 
 The Spring Framework provides a number of interfaces you can use to customize the nature of a bean. This section groups them as follows:

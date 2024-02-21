@@ -1,3 +1,7 @@
+---
+title: JavaScript
+---
+
 ## 1. JavaScript简介
 
 JavaScript是一门客户端脚本语言，其运行在客户端浏览器中，每一个浏览器都有JavaScript的解析引擎。
@@ -135,7 +139,7 @@ var person = {
 | lastName  | Gates                                                     |
 | age       | 62                                                        |
 | eyeColor  | blue                                                      |
-| fullName  | function() {return this.firstName + " " + this.lastName;} |
+| fullName  | `function() {return this.firstName + " " + this.lastName;}` |
 
 #### 3.2.3 new关键字
 
@@ -630,7 +634,7 @@ RegExp为正则表达式类型。
     | ?        | 表示出现0次/1次                                              |
     | *        | 表示出现0次/多次                                             |
     | +        | 出现1次/多次                                                 |
-    | {m,  n}  | 表示 m  <= 数量 <= n     如果m缺省：{, n}：最多n次   如果n缺省：{m, }：最少m次 |
+    | `{m,  n}`  | 表示 `m  <= 数量 <= n`     如果m缺省：`{, n}`：最多n次   如果n缺省：`{m, }`：最少m次 |
 
 正则对象的创建：
 

@@ -1,3 +1,7 @@
+---
+title: RandomAccessFile类
+---
+
 RandomAccessFile是Java输入/输出流体系中功能最丰富的文件内容访问类，它既可以读取文件内容，又可以向文件输出数据。与普通的输入/输出流不同的是，RandomAccessFile支持“随机访问”的方式，程序可以直接跳转到文件的任意地方来读写数据。
 
 由于RandomAccessFile可以自由访问文件的任意位置，所以如果只需要访问文件部分内容，而不是把文件从头读到尾，使用RandomAccessFile将是更好的选择。

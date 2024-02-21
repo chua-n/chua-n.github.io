@@ -1,3 +1,7 @@
+---
+title: numpy简介
+---
+
 ## NumPy数组概念
 
 > `import numpy as np`

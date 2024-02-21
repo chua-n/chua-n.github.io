@@ -1,3 +1,7 @@
+---
+title: 桌面API
+---
+
 桌面API允许Java应用程序完成这3件事情：
 
 - 通过一个URL，启用主机平台上默认的浏览器打开该URL，该功能由DeskTop的browse方法完成；

@@ -1,3 +1,7 @@
+---
+title: SpringBoot
+---
+
 > 本章是关于SpringBoot的笔记内容。
 
 这里介绍一个开发小工具。

@@ -1,3 +1,7 @@
+---
+title: Applet
+---
+
 ## 1. Applet的优缺点
 
 1. 优点：

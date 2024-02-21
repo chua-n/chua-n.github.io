@@ -1,3 +1,7 @@
+---
+title: PropertyEditor类
+---
+
 ## PropertyEditor 接口
 
 PropertyEditor是属性编辑器的接口，它规定了将外部设置值转换为内部JavaBean属性值的转换接口方法。PropertyEditor主要的接口方法说明如下：
