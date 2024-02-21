@@ -1,3 +1,7 @@
+---
+title: MyBatis集成于DAO层
+---
+
 在正经的JavaWeb工程中，MyBatis都用于在DAO层中集成。
 
 MyBatis在DAO层中的直接集成方法如下：

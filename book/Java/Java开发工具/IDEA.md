@@ -1,3 +1,7 @@
+---
+title: IDEA
+---
+
 ## 1. IDEA项目结构
 
 IDEA的项目结构：

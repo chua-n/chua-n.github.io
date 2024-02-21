@@ -1,3 +1,7 @@
+---
+title: eval与query
+---
+
 ## 高性能的eval()与query()
 
 `eval()`与`query()`的设计动机：复合代数式(compound expression)。

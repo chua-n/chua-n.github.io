@@ -1,3 +1,8 @@
+---
+title: YAML概述
+icon: yaml
+---
+
 ## 1. 简介
 
 YAML 是 "YAML Ain't Markup Language"（YAML 不是一种标记语言）的递归缩写。在开发的这种语言时，YAML 的意思其实是"Yet Another Markup Language"（仍是一种标记语言）。 

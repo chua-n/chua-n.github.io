@@ -1,3 +1,7 @@
+---
+title: 配置-XML
+---
+
 > The configuration metadata is represented in **XML**, **Java annotations**, or **Java code**.
 >
 > - XML: 最早的配置形式。

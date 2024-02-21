@@ -1,3 +1,7 @@
+---
+title: JPA基础
+---
+
 ## 1. JPA简介
 
 JPA全称Java Persistence API，是SUN公司推出的一套基于ORM的规范。注意JPA不是ORM框架，因为JPA并未提供ORM实现，而是只提供了一些编程的API接口。

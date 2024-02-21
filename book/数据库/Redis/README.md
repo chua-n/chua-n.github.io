@@ -1,2 +1,4 @@
-> 本章介绍Redis。
+---
+title: Redis
+---
 

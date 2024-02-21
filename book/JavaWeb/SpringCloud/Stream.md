@@ -1,3 +1,7 @@
+---
+title: Stream
+---
+
 > Spring Cloud Stream.
 
 ## Spring Cloud Stream 介绍

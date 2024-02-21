@@ -2,11 +2,16 @@
 .vscode
 glodon
 
-# npm/yarn/webpack
+# npm/yarn/pnpm/webpack
 node_modules
 yarn.lock
 package-lock.json
+pnpm-lock.yaml
 dist
 
-# 过滤所有运行时文件
+# docsify运行时文件
 .~*.md
+
+# vuepress缓存
+.cache
+.temp

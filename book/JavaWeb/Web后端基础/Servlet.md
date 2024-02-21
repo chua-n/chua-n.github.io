@@ -1,3 +1,7 @@
+---
+title: Servlet
+---
+
 ## 1. Servlet简介
 
 Servlet是用Java技术来实现CGI(Commen Gateway Interface，通用网关接口)功能的编程，其介于浏览器（或其他HTTP客户端）与服务器之间，起到桥梁作用。

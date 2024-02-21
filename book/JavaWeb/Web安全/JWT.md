@@ -1,3 +1,7 @@
+---
+title: JWT
+---
+
 > 参考：
 >
 > - [JSON Web Token 入门教程 - 阮一峰的网络日志 (ruanyifeng.com)](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html) 。

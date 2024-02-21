@@ -1,3 +1,7 @@
+---
+title: weakref
+---
+
 关于weakref标准库：
 
 > \>>> help(weakref)

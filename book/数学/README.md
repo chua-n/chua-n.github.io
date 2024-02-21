@@ -1,3 +1,7 @@
+---
+title: 数学
+---
+
 暂记：
 
 - 三角剖分：[第一回：回望经典，看看别人是怎么干的 - floodpeak - 博客园 (cnblogs.com)](https://www.cnblogs.com/floodpeak/archive/2008/03/27/1124655.html)。

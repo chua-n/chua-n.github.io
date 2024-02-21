@@ -1,3 +1,7 @@
+---
+title: SpringData
+---
+
 > 本章为关于SpringData的相关内容。
 
 ## SpringData简介

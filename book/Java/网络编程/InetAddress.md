@@ -1,3 +1,7 @@
+---
+title: InetAddress
+---
+
 Java的**InetAddress类**代表IP地址，InetAddress下还有两个子类：Inet4Address、Inet6Address，它们分别代表IPv4与IPv6地址。
 
 InetAddress类没有提供构造器，而是提供了两个静态方法来获取InetAddress实例：

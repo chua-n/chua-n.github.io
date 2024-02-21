@@ -1,3 +1,7 @@
+---
+title: WSL
+---
+
 ## 安装WSL
 
 > 参考[如何在 Windows 10 上安装 WSL 2 ](https://zhuanlan.zhihu.com/p/337104547)等。

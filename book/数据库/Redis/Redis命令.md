@@ -1,3 +1,7 @@
+---
+title: Redis命令
+---
+
 Redis 命令用于在 redis 服务上执行操作。要在 redis 服务上执行命令需要一个 redis 客户端，在安装 redis 自动带有一个 redis-cli 工具，即为官方提供的客户端工具。启动 redis-cli 的方法：
 
 - 连接本地服务：`$ redis-cli`

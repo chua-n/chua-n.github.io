@@ -1,3 +1,7 @@
+---
+title: Python
+---
+
 > Python 笔记本。
 
 -   开区间 $[L, R)$ 中含有的数据量 $count = R - L$

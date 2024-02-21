@@ -1,3 +1,7 @@
+---
+title: torch
+---
+
 PyTorch 是一个基于 python 的科学计算包，主要作用在两个方面：
 
 1. 作为 NumPy 的替代品，可以利用 GPU 的性能进行计算；

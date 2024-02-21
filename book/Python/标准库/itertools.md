@@ -1,3 +1,7 @@
+---
+title: itertools
+---
+
 关于itertools标准库：
 
 > \>>> help(itertools)

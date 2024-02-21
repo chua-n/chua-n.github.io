@@ -1,3 +1,7 @@
+---
+title: Stream消息队列
+---
+
 Stream 实际上是一个具有消息发布/订阅功能的组件，也就常说的消息队列。
 
 > 其实这种类似于 broker/consumer(生产者/消费者)的数据结构很常见，比如 RabbitMQ 消息中间件、Celery 消息中间件，以及 Kafka 分布式消息系统等，而 Redis Stream 正是借鉴了 Kafaka 系统。

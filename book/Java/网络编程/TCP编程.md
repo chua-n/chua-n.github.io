@@ -1,3 +1,7 @@
+---
+title: TCP编程
+---
+
 ## 1. ServerSocket类
 
 Java中能接收其他通信实体连接请求的类是**ServerSocket**，ServerSocket对象用于监听来自客户端的Socket连接，如果没有连接，它将一直处于等待状态。

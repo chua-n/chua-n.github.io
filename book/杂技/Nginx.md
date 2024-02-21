@@ -1,3 +1,7 @@
+---
+title: Nginx
+---
+
 > 非常好的一个讲解nginx的github仓库，作者是《深入理解Nginx》一书的作者陶辉：https://github.com/russelltao/geektime-nginx 。
 
 ## 1. nginx简介

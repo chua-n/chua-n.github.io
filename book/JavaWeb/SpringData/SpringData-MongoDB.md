@@ -1,3 +1,7 @@
+---
+title: SpringData-MongoDB
+---
+
 ## 快速入门
 
 步骤：

@@ -1,3 +1,7 @@
+---
+title: URLDecoder、URLEncoder
+---
+
 URLDecoder/URLEncoder提供了普通字符串和application/x-www-form-urlencodedMIME字符串相互转换的静态方法。
 
 | 方法                                     | 说明                                                         |

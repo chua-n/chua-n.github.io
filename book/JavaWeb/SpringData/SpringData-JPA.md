@@ -1,3 +1,7 @@
+---
+title: SpringData-JPA
+---
+
 ## 1. SpringData JPA简介
 
 SpringData JPA是SpringData家庭的一个成员，是Spring Data对JPA封装之后的产物，目的在于简化基于JPA的数据访问技术。

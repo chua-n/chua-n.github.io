@@ -1,6 +1,3 @@
 [submodule "figure-bed"]
-	path = _app/src/static/img
+	path = util/img
 	url = git@github.com:chua-n/figure-bed.git
-[submodule "blog"]
-	path = book/blog
-	url = git@github.com:chua-n/blog.git

@@ -1,3 +1,7 @@
+---
+title: ServletContext
+---
+
 ServletContext对象代表整个web应用，可以和程序的容器（即服务器）来通信。
 
 ## 1. ServletContext对象的获取

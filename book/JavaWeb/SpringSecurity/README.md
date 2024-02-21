@@ -1,3 +1,7 @@
+---
+title: SpringSecurity
+---
+
 > 就是Spring Security啊。
 
 ## Spring Security Oauth 项目已废弃

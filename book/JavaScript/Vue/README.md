@@ -1,3 +1,7 @@
+---
+title: Vue
+---
+
 vue里对js对象的属性似乎更喜欢称之为property，而不是attribute。
 
 不同的是，对于html元素的属性，Vue称之为attribute。

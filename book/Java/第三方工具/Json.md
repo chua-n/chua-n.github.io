@@ -1,3 +1,7 @@
+---
+title: Json
+---
+
 JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。其简洁和清晰的层次结构使得 JSON 成为理想的数据交换语言，同时也易于机器解析和生成，并有效地提升网络传输效率。目前很多Rest服务都采用JSON数据格式进行传输，Java中流行的开源JSON框架主要有Jackson、Gson、Fastjson等。
 
 JSON建构于两种常见的数据结构：

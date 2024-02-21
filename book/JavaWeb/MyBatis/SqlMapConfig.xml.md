@@ -1,3 +1,7 @@
+---
+title: SqlMapConfig.xml
+---
+
 ## 1. 简介
 
 SqlMapConfig.xml，是 MyBatis 与数据库建立连接的核心文件，是整个 MyBatis 的全局配置文件。

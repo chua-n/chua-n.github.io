@@ -1,3 +1,7 @@
+---
+title: SpringBoot配置
+---
+
 ## 1. 读取配置：@ConfigurationProperties
 
 ### 1.1 @ConfigurationProperties

@@ -1,3 +1,7 @@
+---
+title: classpath和jar
+---
+
 ## 1. classpath
 
 > 参考自[classpath和jar - 廖雪峰的官方网站 (liaoxuefeng.com)](https://www.liaoxuefeng.com/wiki/1252599548343744/1260466914339296)

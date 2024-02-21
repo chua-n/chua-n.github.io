@@ -1,3 +1,7 @@
+---
+title: Tensor
+---
+
 `torch.Tensor` 是定义了张量和相关数学操作的 torch 中的一个类。
 
 `torch.Tensor` 是一个张量，非常类似于 NumPy 的 `ndarray`，但 `Tensor` 可以在 GPU 上使用来加速计算。CPU 上的所有张量(CharTensor 除外)都支持与 Numpy 的相互转换。
