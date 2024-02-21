@@ -6,8 +6,9 @@ import { Page } from "vuepress";
 export default hopeTheme({
   hostname: "https://chua-n.com",
   author: {
-    name: "chua-n",
-    url: "https://chua-n.com/blog/about/",
+    name: "荒流",
+    url: "https://chua-n.com",
+    email: "chua_n@qq.com",
   },
 
   darkmode: "toggle",
@@ -15,8 +16,8 @@ export default hopeTheme({
   // pure: true,
   iconAssets: "//at.alicdn.com/t/c/font_4437669_smb2njyjwnf.css",
   // iconPrefix: ???
-  logo: "https://chua-n.gitee.io/figure-bed/notebook/川.svg",
-  favicon: "/favicon.ico",
+  logo: "https://chua-n.gitee.io/figure-bed/logo/荒流.png",
+  favicon: "https://chua-n.gitee.io/figure-bed/logo/川.ico",
 
   // 是否使用 RTL 布局
   rtl: false,
@@ -62,7 +63,7 @@ export default hopeTheme({
   blog: {
     name: "荒流",
     description: "应无所住，而生其心",
-    avatar: "/assets/image/wukong.jpg",
+    avatar: "https://chua-n.gitee.io/figure-bed/logo/wukong.jpg",
     roundAvatar: true,
     intro: "/about",
     medias: {
@@ -72,7 +73,7 @@ export default hopeTheme({
     sidebarDisplay: "mobile",
     articlePerPage: 5,
     articleInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime", "Word", "PageView"],
-    timeline: "昨日不在",
+    timeline: "昨个儿不在",
   },
 
   // 加密配置
