@@ -13,7 +13,7 @@ export default hopeTheme({
   },
 
   darkmode: "toggle",
-  fullscreen: true,
+  fullscreen: false,
   // pure: true,
   iconAssets: "//at.alicdn.com/t/c/font_4437669_smb2njyjwnf.css",
   // iconPrefix: ???
@@ -29,7 +29,7 @@ export default hopeTheme({
   navbarLayout: {
     start: ["Brand"],
     center: ["Links"],
-    end: ["Language", "Repo", "Outlook", "Search"]
+    end: ["Language", "Outlook", "Repo", "Search"]
   },
   // navTitle: "what the fuck?",
   repo: "chua-n/chua-n.github.io",
