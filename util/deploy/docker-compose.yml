@@ -10,7 +10,7 @@ services:
       - "7777:7777"
     container_name: notebook
     volumes:
-      - ./dist/:/usr/share/nginx/notebook/
+      - ../../book/.vuepress/dist/:/usr/share/nginx/notebook/
       - ./notebook.conf:/etc/nginx/conf.d/notebook.conf
     environment:
       NOTEBOOK_ENV: prd # no use
