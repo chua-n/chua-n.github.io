@@ -81,8 +81,7 @@ export default hopeTheme(
     // 加密配置
     encrypt: {
       config: {
-        "/demo/encrypt.html": ["1234"],
-        "/glodon/": "1234",
+        "/glodon/": "TOT",
       },
     },
 
@@ -96,7 +95,11 @@ export default hopeTheme(
 
     // 在这里配置主题提供的插件
     plugins: {
-      // 你应该自行生成自己的评论服务
+
+      // 图片预览
+      photoSwipe: true,
+
+      // 评论服务
       comment: {
         provider: "Giscus",
         repo: "chua-n/chua-n.github.io",

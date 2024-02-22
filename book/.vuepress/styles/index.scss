@@ -28,6 +28,12 @@ ol, ul {
   padding-inline-start: 2em;
 }
 
+/* 表格居中对齐 */
+table {
+  display: table;
+  margin: auto;
+}
+
 /* 图片居中显示 */
 .theme-hope-content img {
   display: block;
