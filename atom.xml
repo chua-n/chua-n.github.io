@@ -4,7 +4,7 @@
   <title>荒流的笔趣屋</title>
   <subtitle>这是我用 vuepress 工具生成的笔记，采用 vuepress-theme-hope 主题，简单好用，采用 Markdown 编写，像书本一样展示。</subtitle>
   <icon>https://chua-n.gitee.io/figure-bed/logo/川.ico</icon>
-  <updated>2024-02-22T06:28:43.597Z</updated>
+  <updated>2024-02-22T08:26:29.317Z</updated>
   <generator>@vuepress/plugin-feed</generator>
   <link rel="self" href="https://chua-n.com/atom.xml"/>
   <link rel="alternate" href="https://chua-n.com/"/>
@@ -26,7 +26,7 @@
     <title type="text">俺是谁？</title>
     <id>https://chua-n.com/about.html</id>
     <link href="https://chua-n.com/about.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>博客由来</h2>
 <p>互联网时代，学习各种技术、特别是 IT 技术的过程中总免不了在互联网中搜索各项技术教程，浏览各种技术博客，然而这个过程实在是让人不太满意的。CSDN、博客园、知乎、简书、掘金等平台，于阅读体验而言，要么本身界面臃肿、广告恼人，要么对代码、数学公式、字体的渲染无甚雕琢，常有撕裂阅读流程之感；于内容创作而言，常有创作人的涂鸦之随性：东拼西凑、搬来主义、语义不明、排版混乱、玩弄噱头；于知识沉淀而言，快阅读下舶来的知识，三天之内总还是自视深明其理的，笔者天资平平，若涉猎之处过于细碎，或因实则未将这些知识串成自己思维内的知识体系，三天之外便全然似是而非了。由此，搭建一个个人博客，记录、疏理自己的所见所识，同时怡悦自己的阅读胃口，此事便开始了。</p>]]></summary>
     <content type="html"><![CDATA[<h2>博客由来</h2>
@@ -56,7 +56,7 @@
     <title type="text">DSA</title>
     <id>https://chua-n.com/DSA/</id>
     <link href="https://chua-n.com/DSA/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>合抱之木，生于毫末。</p>
 </blockquote>
@@ -113,13 +113,13 @@
 <li><a href="67.Cut_Rope.cpp">67.Cut_Rope</a></li>
 </ul>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">Java</title>
     <id>https://chua-n.com/Java/</id>
     <link href="https://chua-n.com/Java/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>本笔记为Java相关知识点。</p>
 </blockquote>
@@ -179,13 +179,13 @@
 <li><code>-javaagent</code>选项：参考这篇博文 <a href="https://www.cnblogs.com/rickiyang/p/11368932.html" target="_blank" rel="noopener noreferrer">javaagent使用指南</a></li>
 </ul>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">HTML&amp;CSS</title>
     <id>https://chua-n.com/JavaScript/HTML_CSS.html</id>
     <link href="https://chua-n.com/JavaScript/HTML_CSS.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. HTML</h2>
 <blockquote>
 <p>详细可参考 <a href="https://www.w3school.com.cn/html/index.asp" target="_blank" rel="noopener noreferrer">HTML 教程 (w3school.com.cn)</a> 。</p>
@@ -210,13 +210,13 @@
 </li>
 </ol>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">JavaScript</title>
     <id>https://chua-n.com/JavaScript/JavaScript.html</id>
     <link href="https://chua-n.com/JavaScript/JavaScript.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. JavaScript简介</h2>
 <p>JavaScript是一门客户端脚本语言，其运行在客户端浏览器中，每一个浏览器都有JavaScript的解析引擎。</p>
 <p>JavaScript可以用来增强用记和html页面的交互过程，可以来控制html元素，让页面有一些动态的效果，增强用户的体验。</p>
@@ -235,13 +235,13 @@ JavaScript=ECMAScript+BOM+DOM
 <p>| 方式   | 说明                                              |
 |</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">JavaScript</title>
     <id>https://chua-n.com/JavaScript/</id>
     <link href="https://chua-n.com/JavaScript/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>本笔记本是关于前端的知识笔记。</p>
 </blockquote>
@@ -250,13 +250,13 @@ JavaScript=ECMAScript+BOM+DOM
 <p>本笔记本是关于前端的知识笔记。</p>
 </blockquote>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">XML</title>
     <id>https://chua-n.com/JavaScript/XML.html</id>
     <link href="https://chua-n.com/JavaScript/XML.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 概念</h2>
 <p><strong>XML</strong>(Extensible Markup Language)，可扩展标记语言。可扩展的含义是：标签都是自定义的，可以在不中断应用程序的情况下进行扩展。</p>
 <p>XML的功能为存储数据。可作为配置文件，并方便在网络中传输数据。</p>
@@ -338,13 +338,13 @@ From: John</p>
 </li>
 </ol>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">web概念概述</title>
     <id>https://chua-n.com/JavaScript/web%E6%A6%82%E5%BF%B5%E6%A6%82%E8%BF%B0.html</id>
     <link href="https://chua-n.com/JavaScript/web%E6%A6%82%E5%BF%B5%E6%A6%82%E8%BF%B0.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<ol>
 <li>
 <p>JavaWeb：使用 Java 语言开发的基于互联网的项目。</p>
@@ -468,13 +468,13 @@ From: John</p>
 </li>
 </ol>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">JavaWeb</title>
     <id>https://chua-n.com/JavaWeb/</id>
     <link href="https://chua-n.com/JavaWeb/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>关于 JavaWeb 的知识点记录。</p>
 </blockquote>
@@ -483,20 +483,20 @@ From: John</p>
 <p>关于 JavaWeb 的知识点记录。</p>
 </blockquote>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">Linux</title>
     <id>https://chua-n.com/Linux/</id>
     <link href="https://chua-n.com/Linux/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <updated>2024-02-22T06:53:24.000Z</updated>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">WSL</title>
     <id>https://chua-n.com/Linux/WSL.html</id>
     <link href="https://chua-n.com/Linux/WSL.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>安装WSL</h2>
 <blockquote>
 <p>参考<a href="https://zhuanlan.zhihu.com/p/337104547" target="_blank" rel="noopener noreferrer">如何在 Windows 10 上安装 WSL 2 </a>等。</p>
@@ -517,13 +517,13 @@ From: John</p>
 <p>|    服务端    |    客户端    |                    客户端访问方式                     |
 | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">shell脚本</title>
     <id>https://chua-n.com/Linux/shell%E8%84%9A%E6%9C%AC.html</id>
     <link href="https://chua-n.com/Linux/shell%E8%84%9A%E6%9C%AC.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. shell 基操</h2>
 <h3>1.1 认识 shell 脚本</h3>
 <p>shell 终端解释器作为用户与 Linux 系统内部的通信媒介，除了支持各种变量与参数外，还提供了诸如循环、分支等高级编程语言才有的控制结构特性。</p>
@@ -535,13 +535,13 @@ From: John</p>
 <p>|                           脚本内容                           |                           执行脚本                           |
 | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">乌合之令</title>
     <id>https://chua-n.com/Linux/%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BB%A4.html</id>
     <link href="https://chua-n.com/Linux/%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BB%A4.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>短小之令</h2>
 <ul>
 <li>
@@ -644,13 +644,13 @@ From: John</p>
 <p>|   按键    |               用途               |
 | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">总览</title>
     <id>https://chua-n.com/Linux/%E6%80%BB%E8%A7%88.html</id>
     <link href="https://chua-n.com/Linux/%E6%80%BB%E8%A7%88.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 什么是 Linux</h2>
 <p>Linux 可划分为以下四部分：</p>
 <figure><img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/Linux/1.png" alt="1" tabindex="0" loading="lazy"><figcaption>1</figcaption></figure>
@@ -744,13 +744,13 @@ From: John</p>
 </li>
 </ul>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">文件操作</title>
     <id>https://chua-n.com/Linux/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C.html</id>
     <link href="https://chua-n.com/Linux/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 操作目录</h2>
 <ul>
 <li>
@@ -874,13 +874,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 </li>
 </ul>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">文件权限</title>
     <id>https://chua-n.com/Linux/%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90.html</id>
     <link href="https://chua-n.com/Linux/%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 权限与归属</h2>
 <h3>1.1 文件类型</h3>
 <p>尽管在 Linux 系统中一切都是文件，但是每个文件的类型不尽相同，因此 Linux 系统使用了不同的字符来加以区分，常见的字符如下：</p>
@@ -928,13 +928,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 <p>| 字符 |    解释    |
 | :--: | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">用户管理</title>
     <id>https://chua-n.com/Linux/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86.html</id>
     <link href="https://chua-n.com/Linux/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 相关概念</h2>
 <p>用户权限是通过创建用户时分配的用户 ID(User ID, <strong>UID</strong>)来跟踪的，UID 是个数值，每个用户都有唯一的 UID，但在登陆系统时用的不是 UID 而是<strong>登录名</strong>。</p>
 <p>Linux 系统的管理员之所以是<strong>root</strong>，并不是因为它的名字叫 root，而是由于该用户的身份号码即<strong>UID</strong>(User Identification)的数值为 0.</p>
@@ -953,13 +953,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 </li>
 </ul>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">磁盘管理</title>
     <id>https://chua-n.com/Linux/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86.html</id>
     <link href="https://chua-n.com/Linux/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 文件系统</h2>
 <p>文件系统的作用是合理规划硬盘，以保证用户正常的使用需求。</p>
 <p>Linux 支持数十种的文件系统，而最常见的文件系统为：</p>
@@ -998,13 +998,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 </li>
 </ol>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">网络操作</title>
     <id>https://chua-n.com/Linux/%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C.html</id>
     <link href="https://chua-n.com/Linux/%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 网络连通性</h2>
 <h3>ping</h3>
 <blockquote>
@@ -1024,13 +1024,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 </code></pre></div><p>| 参数 |          含义          |
 | :--: | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">软件管理</title>
     <id>https://chua-n.com/Linux/%E8%BD%AF%E4%BB%B6%E7%AE%A1%E7%90%86.html</id>
     <link href="https://chua-n.com/Linux/%E8%BD%AF%E4%BB%B6%E7%AE%A1%E7%90%86.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 包管理基础</h2>
 <p>在 Linux 上有各种包管理系统(package management system, PMS)，以及用来进行软件安装、管理和删除的命令行工具。</p>
 <p>软件包通常会依赖其他的包，为了软件能够正常运行，被依赖的包必须提前安装在系统中，PMS 工具将会检测这些依赖关系，并在安装需要的包之前先安装好所有额外的软件包。</p>
@@ -1045,13 +1045,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 <p>| 工具 | 使用对象                                                     | 说明                                                         |
 | :--: |</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">进程管理</title>
     <id>https://chua-n.com/Linux/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86.html</id>
     <link href="https://chua-n.com/Linux/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 关于进程</h2>
 <blockquote>
 <p>Linux 系统管理的要点在于定义究竟什么程度才算是高负载。</p>
@@ -1082,13 +1082,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 <p>| 编码  |                信息                |
 | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">Python</title>
     <id>https://chua-n.com/Python/</id>
     <link href="https://chua-n.com/Python/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>Python 笔记本。</p>
 </blockquote>
@@ -1121,13 +1121,13 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
 </li>
 </ol>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">Hexo-Next + GitHub + Gitee 搭建个人博客</title>
     <id>https://chua-n.com/blog/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html</id>
     <link href="https://chua-n.com/blog/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>采用博客搭建框架 Hexo(v5.3.0)、选用博客主题 Next(v7.8.0)、利用 GitHub 的 Pages 功能作为后端服务、使用 Gitee 的 pages 功能作为博客图床，本文可以免费搭建出一个简洁大方的个人博客。此外，若想更进一步，希望通过个人定制化域名访问博客，可以选择在华为云/阿里云等域名服务商处购买个人域名后，进行简单的映射配置即可。</p>
 <blockquote>
 <p>注：Hexo 博客采用 markdown 语法进行文章内容书写。</p>
@@ -1385,7 +1385,7 @@ blog/
     <title type="text">Java生成随机的验证码图片</title>
     <id>https://chua-n.com/blog/Java%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E7%9A%84%E9%AA%8C%E8%AF%81%E7%A0%81%E5%9B%BE%E7%89%87.html</id>
     <link href="https://chua-n.com/blog/Java%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E7%9A%84%E9%AA%8C%E8%AF%81%E7%A0%81%E5%9B%BE%E7%89%87.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>日常琐碎代码片段记录。</p>
 </blockquote>
@@ -1451,7 +1451,7 @@ blog/
     <title type="text">Python多进程</title>
     <id>https://chua-n.com/blog/Python%E5%A4%9A%E8%BF%9B%E7%A8%8B.html</id>
     <link href="https://chua-n.com/blog/Python%E5%A4%9A%E8%BF%9B%E7%A8%8B.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>接连面临多个耗时性程序，形势已经演变到必须了解 Python 并行计算的地步了。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>接连面临多个耗时性程序，形势已经演变到必须了解 Python 并行计算的地步了。</p>
@@ -1574,7 +1574,7 @@ All subprocesses done, time cost is 7.52.
     <title type="text">Python快速定位至文本文件的最后一行</title>
     <id>https://chua-n.com/blog/Python%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E8%87%B3%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C.html</id>
     <link href="https://chua-n.com/blog/Python%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E8%87%B3%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E8%A1%8C.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>编程语言在读取文本文件时总是自首行读取，因此文本开头的内容读取速度很快，那么如果文本量较大，如何快速读取文本仅最后一行呢？</p>
 <blockquote>
 <p>说得一本正经，但并不是为此而生(* ￣︿￣)。</p>
@@ -1615,7 +1615,7 @@ All subprocesses done, time cost is 7.52.
     <title type="text">Python自动化操作GUI</title>
     <id>https://chua-n.com/blog/Python%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9CGUI.html</id>
     <link href="https://chua-n.com/blog/Python%E8%87%AA%E5%8A%A8%E5%8C%96%E6%93%8D%E4%BD%9CGUI.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>Python 实现对 windows 鼠标和键盘的接管，自动化 GUI 操作。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>Python 实现对 windows 鼠标和键盘的接管，自动化 GUI 操作。</p>
@@ -1722,7 +1722,7 @@ pyautogui<span class="token punctuation">.</span>dragRel<span class="token punct
     <title type="text">使用SSH把个人电脑配置成 linux 服务器</title>
     <id>https://chua-n.com/blog/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8.html</id>
     <link href="https://chua-n.com/blog/SSH%E9%85%8D%E7%BD%AElinux%E6%9C%8D%E5%8A%A1%E5%99%A8.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>以前不懂计算机网络的时候，总觉得服务器是一个很神奇的东西，等到突然知道了 SSH 可以在命令行下连接并操纵另一台电脑，原来每一台电脑都可以作为 C/S 架构中的服务器，于是拿自己的笔记本电脑捣腾了一番。</p>
@@ -1766,7 +1766,7 @@ root <span class="token assign-left variable">ALL</span><span class="token opera
     <title type="text">Servlet+MyBatis小小使用</title>
     <id>https://chua-n.com/blog/Servlet-MyBatis%E5%B0%8F%E5%B0%8F%E4%BD%BF%E7%94%A8.html</id>
     <link href="https://chua-n.com/blog/Servlet-MyBatis%E5%B0%8F%E5%B0%8F%E4%BD%BF%E7%94%A8.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>在学 Servlet 的时候，视频老师用的是 JDBC/Spring JDBCTemplate 作为 DAO 层技术的，但现在主流技术都是 MyBatis 嘛，自己又是个新手，MyBatis 刚学了也没怎么实践过，就想着自己胡戳着把 DAO 层改成 MyBatis 来实现，同时增强 Servlet 和 MyBatis 的基础使用知识。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>在学 Servlet 的时候，视频老师用的是 JDBC/Spring JDBCTemplate 作为 DAO 层技术的，但现在主流技术都是 MyBatis 嘛，自己又是个新手，MyBatis 刚学了也没怎么实践过，就想着自己胡戳着把 DAO 层改成 MyBatis 来实现，同时增强 Servlet 和 MyBatis 的基础使用知识。</p>
@@ -2332,7 +2332,7 @@ jdbc.password=**网络加密**
     <title type="text">WSL下安装MySQL</title>
     <id>https://chua-n.com/blog/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL.html</id>
     <link href="https://chua-n.com/blog/WSL%E4%B8%8B%E5%AE%89%E8%A3%85MySQL.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。</p>
@@ -2395,7 +2395,7 @@ mysql<span class="token operator">&gt;</span>
     <title type="text">jupyter notebook中使用mayavi三维绘图库</title>
     <id>https://chua-n.com/blog/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi.html</id>
     <link href="https://chua-n.com/blog/jupyter%20notebook%E4%B8%AD%E4%BD%BF%E7%94%A8mayavi.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>就像绘图时可使把 matplotlib 嵌入 jupyter 中一样，mayavi 也可以在 jupyter notebook 中嵌入式使用。</p>
@@ -2425,7 +2425,7 @@ mlab<span class="token punctuation">.</span>init_notebook<span class="token punc
     <title type="text">linux 下从源码安装 Python——小白踩坑记</title>
     <id>https://chua-n.com/blog/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python.html</id>
     <link href="https://chua-n.com/blog/linux%E4%BB%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85python.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>实验室服务器使用的系统为 Ubuntu 16.04，自带的 python 版本为 Python 2.7.12 和 Python 3.5.2，命令行下使用<code>$ python</code>命令来启动 python 时默认是 python2.7。而我想使用 Python 3.8，因此尝试从源码安装 Python，并更改默认的<code>$ python</code>命令指向。</p>
@@ -2461,7 +2461,7 @@ mlab<span class="token punctuation">.</span>init_notebook<span class="token punc
     <title type="text">linux 命令行下安装特定版本的 cuda (踩坑记录)</title>
     <id>https://chua-n.com/blog/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda.html</id>
     <link href="https://chua-n.com/blog/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E5%AE%89%E8%A3%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84cuda.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>实验室服务器 Ubuntu 16.04 系统下原本安装的 cuda 版本是 9.0，硬件条件是一张 1080 Ti 的 GPU，在使用 PyTorch 的过程中想要把 cuda 版本换成 10.2，尝试了网上各种教程，无奈网络博客的质量实在是鱼目混珠，现在总结一下自己的踩坑记录，尽量详细地照顾到从头至尾的各个细节。</p>
@@ -2533,7 +2533,7 @@ $ <span class="token function">sudo</span> <span class="token function">sh</span
     <title type="text">linux 命令行下适配 nvidia 驱动</title>
     <id>https://chua-n.com/blog/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8.html</id>
     <link href="https://chua-n.com/blog/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E9%80%82%E9%85%8Dnvidia%E9%A9%B1%E5%8A%A8.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>疫情期间回不了学校，只能用 SSH 连接学校的服务器做试验，PyTorch 需要另一个版本的 cuda，只得在命令行下强装对应的 cuda 版本和 nvidia 驱动，于是有了这篇踩坑实录……</p>
@@ -2578,7 +2578,7 @@ Sun Jun <span class="token number">21</span> <span class="token number">19</span
     <title type="text">mayavi离屏渲染</title>
     <id>https://chua-n.com/blog/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93.html</id>
     <link href="https://chua-n.com/blog/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。</p>
@@ -2627,7 +2627,7 @@ Notes<span class="token punctuation">:</span>
     <title type="text">使用 python 绘制不同尺寸的球——利用Mayavi库</title>
     <id>https://chua-n.com/blog/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83.html</id>
     <link href="https://chua-n.com/blog/python%E7%BB%98%E5%88%B6%E4%B8%89%E7%BB%B4%E7%90%83.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>“万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>“万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。</p>
@@ -2703,7 +2703,7 @@ mlab<span class="token punctuation">.</span>show<span class="token punctuation">
     <title type="text">亲爱的乔乔</title>
     <id>https://chua-n.com/blog/%E4%BA%B2%E7%88%B1%E7%9A%84%E4%B9%94%E4%B9%94.html</id>
     <link href="https://chua-n.com/blog/%E4%BA%B2%E7%88%B1%E7%9A%84%E4%B9%94%E4%B9%94.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>小武写给乔乔的话——2015/07/29。</p>
 </blockquote>
@@ -2741,7 +2741,7 @@ mlab<span class="token punctuation">.</span>show<span class="token punctuation">
     <title type="text">代理模式</title>
     <id>https://chua-n.com/blog/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F.html</id>
     <link href="https://chua-n.com/blog/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>最近学到 Spring 的 AOP，发现以前没搞懂的“JDK 动态代理”终于过来找茬了，所以还是细细地疏理一下吧。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>最近学到 Spring 的 AOP，发现以前没搞懂的“JDK 动态代理”终于过来找茬了，所以还是细细地疏理一下吧。</p>
@@ -2826,7 +2826,7 @@ mlab<span class="token punctuation">.</span>show<span class="token punctuation">
     <title type="text">余数——周期性和分组</title>
     <id>https://chua-n.com/blog/%E4%BD%99%E6%95%B0%E2%80%94%E2%80%94%E5%91%A8%E6%9C%9F%E6%80%A7%E5%92%8C%E5%88%86%E7%BB%84.html</id>
     <link href="https://chua-n.com/blog/%E4%BD%99%E6%95%B0%E2%80%94%E2%80%94%E5%91%A8%E6%9C%9F%E6%80%A7%E5%92%8C%E5%88%86%E7%BB%84.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>余数，作除法运算时剩下的数。尽管从小学起我们就反复练习加、减、乘、除的计算，但有关余数的计算只在学习除法时略见其影，事实上，无论在数学还是编程中，余数都起着非常重要的作用。因为我们将意识到，“余数就是分组”，而且它的神奇性在于，将较大的数字除一次就能分组。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>余数，作除法运算时剩下的数。尽管从小学起我们就反复练习加、减、乘、除的计算，但有关余数的计算只在学习除法时略见其影，事实上，无论在数学还是编程中，余数都起着非常重要的作用。因为我们将意识到，“余数就是分组”，而且它的神奇性在于，将较大的数字除一次就能分组。</p>
@@ -2859,7 +2859,7 @@ mlab<span class="token punctuation">.</span>show<span class="token punctuation">
     <title type="text">决策树之特征选择</title>
     <id>https://chua-n.com/blog/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9.html</id>
     <link href="https://chua-n.com/blog/%E5%86%B3%E7%AD%96%E6%A0%91%E4%B9%8B%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>疏理一下决策树的特征选择的方法，即决策树的节点划分。</p>
@@ -2923,7 +2923,7 @@ a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)
     <title type="text">常用linux命令杂记</title>
     <id>https://chua-n.com/blog/%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4%E6%9D%82%E8%AE%B0.html</id>
     <link href="https://chua-n.com/blog/%E5%B8%B8%E7%94%A8linux%E5%91%BD%E4%BB%A4%E6%9D%82%E8%AE%B0.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p><code>tmux</code>命令、更改 apt 源、<code>cloc</code>命令、更新 Git 到最新版</p>
 ]]></summary>
     <content type="html"><![CDATA[<p><code>tmux</code>命令、更改 apt 源、<code>cloc</code>命令、更新 Git 到最新版</p>
@@ -2954,7 +2954,7 @@ a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)
     <title type="text">晒被子</title>
     <id>https://chua-n.com/blog/%E6%99%92%E8%A2%AB%E5%AD%90.html</id>
     <link href="https://chua-n.com/blog/%E6%99%92%E8%A2%AB%E5%AD%90.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>七点二十的闹钟响了，他起来将晦暗了一夜的宿舍的阳台门打开，外面的些许光亮跳进来，室内阴涩的废气被气流赶出去。看见楼下的晾衣绳上还空空如也，他欢喜地抱起被子、铺的跑过去，庆幸自己比这个世界早了一步醒来。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>七点二十的闹钟响了，他起来将晦暗了一夜的宿舍的阳台门打开，外面的些许光亮跳进来，室内阴涩的废气被气流赶出去。看见楼下的晾衣绳上还空空如也，他欢喜地抱起被子、铺的跑过去，庆幸自己比这个世界早了一步醒来。</p>
@@ -2977,7 +2977,7 @@ a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)
     <title type="text">观演讲：《王德峰-中西方文化差异的渊源》</title>
     <id>https://chua-n.com/blog/%E8%A7%82%E6%BC%94%E8%AE%B2%EF%BC%9A%E3%80%8A%E7%8E%8B%E5%BE%B7%E5%B3%B0-%E4%B8%AD%E8%A5%BF%E6%96%B9%E6%96%87%E5%8C%96%E5%B7%AE%E5%BC%82%E7%9A%84%E6%B8%8A%E6%BA%90%E3%80%8B.html</id>
     <link href="https://chua-n.com/blog/%E8%A7%82%E6%BC%94%E8%AE%B2%EF%BC%9A%E3%80%8A%E7%8E%8B%E5%BE%B7%E5%B3%B0-%E4%B8%AD%E8%A5%BF%E6%96%B9%E6%96%87%E5%8C%96%E5%B7%AE%E5%BC%82%E7%9A%84%E6%B8%8A%E6%BA%90%E3%80%8B.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<img src="https://chua-n.gitee.io/figure-bed/notebook/blog/王德峰/7090828b8b3e48e5c907d5d084a1c8a6020e81f6.jpg" style="zoom:75%;">
 <p><a href="https://www.bilibili.com/video/BV1XU4y1h7iL?share_source=copy_web" target="_blank" rel="noopener noreferrer">讲座</a>发生于2014年3月27号，复旦大学，时长2.5小时，如同一场电影。</p>
 ]]></summary>
@@ -3114,7 +3114,7 @@ a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)
     <title type="text">读书笔记：《历史学是什么》</title>
     <id>https://chua-n.com/blog/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%9A%E3%80%8A%E5%8E%86%E5%8F%B2%E5%AD%A6%E6%98%AF%E4%BB%80%E4%B9%88%E3%80%8B.html</id>
     <link href="https://chua-n.com/blog/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%9A%E3%80%8A%E5%8E%86%E5%8F%B2%E5%AD%A6%E6%98%AF%E4%BB%80%E4%B9%88%E3%80%8B.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>葛剑雄，周筱赟著：《历史学是什么》，北京大学出版社，2015 年 9 月第 1 版。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>葛剑雄，周筱赟著：《历史学是什么》，北京大学出版社，2015 年 9 月第 1 版。</p>
@@ -3134,7 +3134,7 @@ a_* = \underset{a\in A}{\arg \min}\: Gini\_index(D,a)
     <title type="text">在远程服务器中使用mayavi渲染三维图——借助jupyter notebook</title>
     <id>https://chua-n.com/blog/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E4%BD%BF%E7%94%A8mayavi%E6%B8%B2%E6%9F%93%E4%B8%89%E7%BB%B4%E5%9B%BE%E2%80%94%E2%80%94%E5%80%9F%E5%8A%A9jupyter-notebook.html</id>
     <link href="https://chua-n.com/blog/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E4%BD%BF%E7%94%A8mayavi%E6%B8%B2%E6%9F%93%E4%B8%89%E7%BB%B4%E5%9B%BE%E2%80%94%E2%80%94%E5%80%9F%E5%8A%A9jupyter-notebook.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>mayavi 库基于 opengl 绘制三维图，似乎凡是通过 opengl 调用 GPU 进行图像渲染的相关功能在远程连接中都无法使用，SSH 与 linux 的连接如是，win10 的远程桌面连接亦如是，曾经在 2020 年寒假使用服务器工作时深受其害，至 2021 年寒假竟然碰巧发现一些窍门可以正常使用 mayavi 了。</p>
 <blockquote>
 <p>注：本文说的“远程正常使用 mayavi”指其能正常渲染展示 3D 图（使用鼠标可以拖动至各个视角查看），如果只是希望能够保存 mayavi 绘制出的图片为 png 文件，不需要前台的 3D 展示，参考另一篇<a href="https://www.chua-n.com/2020/12/07/mayavi%E7%A6%BB%E5%B1%8F%E6%B8%B2%E6%9F%93/" target="_blank" rel="noopener noreferrer">博文</a>。</p>
@@ -3198,7 +3198,7 @@ Notes<span class="token punctuation">:</span>
     <title type="text">逆变换采样</title>
     <id>https://chua-n.com/blog/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7.html</id>
     <link href="https://chua-n.com/blog/%E9%80%86%E5%8F%98%E6%8D%A2%E9%87%87%E6%A0%B7.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>一般的编程语言都具有（伪）随机数生成功能，如 python 的<code>random.random()</code>函数，然而它们通常只对应均匀分布。那如果想生成符合任意概率分布的随机数，该如何在代码上实现呢？这就可以用到“逆变换采样”了。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>一般的编程语言都具有（伪）随机数生成功能，如 python 的<code>random.random()</code>函数，然而它们通常只对应均匀分布。那如果想生成符合任意概率分布的随机数，该如何在代码上实现呢？这就可以用到“逆变换采样”了。</p>
@@ -3246,7 +3246,7 @@ y=f(x)
     <title type="text">配置jupyter notebook远程连接服务</title>
     <id>https://chua-n.com/blog/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1.html</id>
     <link href="https://chua-n.com/blog/%E9%85%8D%E7%BD%AEjupyter%20notebook%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。</p>
@@ -3293,7 +3293,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
     <title type="text">数学</title>
     <id>https://chua-n.com/%E6%95%B0%E5%AD%A6/</id>
     <link href="https://chua-n.com/%E6%95%B0%E5%AD%A6/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>暂记：</p>
 <ul>
 <li>
@@ -3313,24 +3313,24 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
 </li>
 </ul>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">数据库</title>
     <id>https://chua-n.com/%E6%95%B0%E6%8D%AE%E5%BA%93/</id>
     <link href="https://chua-n.com/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<p>本笔记本是关于数据库的内容。</p>
 ]]></summary>
     <content type="html"><![CDATA[<p>本笔记本是关于数据库的内容。</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">数据库概论</title>
     <id>https://chua-n.com/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%AE%BA.html</id>
     <link href="https://chua-n.com/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%AE%BA.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 定义与模型</h2>
 <p><strong>数据库</strong>就是一个以某种有组织的方式存储的数据集合。</p>
 <ul>
@@ -3456,13 +3456,13 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
 <p>|  ID  |    名称    | 班主任 |
 | :--: | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">Docker</title>
     <id>https://chua-n.com/%E6%9D%82%E6%8A%80/Docker.html</id>
     <link href="https://chua-n.com/%E6%9D%82%E6%8A%80/Docker.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>不错的 docker 文档：</p>
 <ul>
@@ -3547,13 +3547,13 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
 </li>
 </ul>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">Nginx</title>
     <id>https://chua-n.com/%E6%9D%82%E6%8A%80/Nginx.html</id>
     <link href="https://chua-n.com/%E6%9D%82%E6%8A%80/Nginx.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<blockquote>
 <p>非常好的一个讲解nginx的github仓库，作者是《深入理解Nginx》一书的作者陶辉：<a href="https://github.com/russelltao/geektime-nginx" target="_blank" rel="noopener noreferrer">https://github.com/russelltao/geektime-nginx</a> 。</p>
 </blockquote>
@@ -3588,20 +3588,20 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
 <p>| 参数  | 格式                                                         |
 | :</p>
 ]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">杂技</title>
     <id>https://chua-n.com/%E6%9D%82%E6%8A%80/</id>
     <link href="https://chua-n.com/%E6%9D%82%E6%8A%80/"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <updated>2024-02-22T06:53:24.000Z</updated>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">001. Two Sum</title>
     <id>https://chua-n.com/DSA/LeetCode/001.%20Two%20Sum.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/001.%20Two%20Sum.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/two-sum/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3686,13 +3686,13 @@ return [<strong>0</strong>, <strong>1</strong>].
                 <span class="token keyword">if</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">:</span>
                     <span class="token keyword">return</span> i<span class="token punctuation">,</span> j
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">002. Add Two Numbers</title>
     <id>https://chua-n.com/DSA/LeetCode/002.%20Add%20Two%20Numbers.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/002.%20Add%20Two%20Numbers.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3771,13 +3771,13 @@ return [<strong>0</strong>, <strong>1</strong>].
             cur <span class="token operator">=</span> cur<span class="token punctuation">.</span><span class="token builtin">next</span>
         <span class="token keyword">return</span> preHead<span class="token punctuation">.</span><span class="token builtin">next</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">003. Longest Substring Without Repeating Characters</title>
     <id>https://chua-n.com/DSA/LeetCode/003.%20Longest%20Substring%20Without%20Repeating%20Characters.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/003.%20Longest%20Substring%20Without%20Repeating%20Characters.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3873,13 +3873,13 @@ return [<strong>0</strong>, <strong>1</strong>].
 
         <span class="token keyword">return</span> max_length
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">005. Longest Palindromic Substring</title>
     <id>https://chua-n.com/DSA/LeetCode/005.%20Longest%20Palindromic%20Substring.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/005.%20Longest%20Palindromic%20Substring.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -3987,13 +3987,13 @@ return [<strong>0</strong>, <strong>1</strong>].
                         <span class="token keyword">return</span> s<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span>_max<span class="token punctuation">]</span>
                 _max <span class="token operator">-=</span> <span class="token number">1</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">006. ZigZag Conversion</title>
     <id>https://chua-n.com/DSA/LeetCode/006.%20ZigZag%20Conversion.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/006.%20ZigZag%20Conversion.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/zigzag-conversion/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4094,13 +4094,13 @@ P     I</pre>
             tar <span class="token operator">+=</span> zigzag<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
         <span class="token keyword">return</span> tar
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">007. Reverse Interger</title>
     <id>https://chua-n.com/DSA/LeetCode/007.%20Reverse%20Interger.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/007.%20Reverse%20Interger.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/reverse-integer/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4168,13 +4168,13 @@ Assume we are dealing with an environment which could only store integers within
         <span class="token keyword">else</span><span class="token punctuation">:</span>
             <span class="token keyword">return</span> tar
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">008. String to Integer (atoi)</title>
     <id>https://chua-n.com/DSA/LeetCode/008.%20String%20to%20Integer%20(atoi).html</id>
     <link href="https://chua-n.com/DSA/LeetCode/008.%20String%20to%20Integer%20(atoi).html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/string-to-integer-atoi/" target="_blank" rel="noopener noreferrer">HERE</a>..</p>
@@ -4298,13 +4298,13 @@ Assume we are dealing with an environment which could only store integers within
         <span class="token keyword">except</span><span class="token punctuation">:</span>
             <span class="token keyword">return</span> <span class="token number">0</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">009. Palindrome Number</title>
     <id>https://chua-n.com/DSA/LeetCode/009.%20Palindrome%20Number.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/009.%20Palindrome%20Number.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/palindrome-number/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4377,13 +4377,13 @@ Assume we are dealing with an environment which could only store integers within
         str_ <span class="token operator">=</span> <span class="token builtin">str</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token boolean">True</span> <span class="token keyword">if</span> str_<span class="token operator">==</span>str_<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token keyword">else</span> <span class="token boolean">False</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">011. Container With Most Water</title>
     <id>https://chua-n.com/DSA/LeetCode/011.%20Container%20With%20Most%20Water.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/011.%20Container%20With%20Most%20Water.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/container-with-most-water/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4445,13 +4445,13 @@ Assume we are dealing with an environment which could only store integers within
             maxA <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>maxA<span class="token punctuation">,</span> area<span class="token punctuation">(</span>l<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> maxA
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">012. Integer to Roman</title>
     <id>https://chua-n.com/DSA/LeetCode/012.%20Integer%20to%20Roman.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/012.%20Integer%20to%20Roman.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/integer-to-roman/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4582,13 +4582,13 @@ M             1000</pre>
                 tar <span class="token operator">+=</span> symbol<span class="token punctuation">[</span>j<span class="token operator">*</span><span class="token number">10</span><span class="token operator">**</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span>
         <span class="token keyword">return</span> tar
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">013. Roman to Integer</title>
     <id>https://chua-n.com/DSA/LeetCode/013.%20Roman%20to%20Integer.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/013.%20Roman%20to%20Integer.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/roman-to-integer/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4711,13 +4711,13 @@ M             1000</pre>
             digit<span class="token punctuation">.</span>append<span class="token punctuation">(</span>cur<span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>digit<span class="token punctuation">)</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">014. Longest Common Prefix</title>
     <id>https://chua-n.com/DSA/LeetCode/014.%20Longest%20Common%20Prefix.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/014.%20Longest%20Common%20Prefix.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4807,13 +4807,13 @@ M             1000</pre>
                     commen <span class="token operator">+=</span> smallest<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
         <span class="token keyword">return</span> commen
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">015. 3Sum</title>
     <id>https://chua-n.com/DSA/LeetCode/015.%203Sum.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/015.%203Sum.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/3sum/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4908,13 +4908,13 @@ A solution set is:
             i <span class="token operator">+=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> ans
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">016. 3Sum Closest</title>
     <id>https://chua-n.com/DSA/LeetCode/016.%203Sum%20Closest.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/016.%203Sum%20Closest.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/3sum-closest/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4987,13 +4987,13 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
                     third <span class="token operator">-=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> ans
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">017. Letter Combinations of a Phone Number</title>
     <id>https://chua-n.com/DSA/LeetCode/017.%20Letter%20Combinations%20of%20a%20Phone%20Number.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/017.%20Letter%20Combinations%20of%20a%20Phone%20Number.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5071,13 +5071,13 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
             tar <span class="token operator">=</span> temp<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> tar
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">018. 4Sum</title>
     <id>https://chua-n.com/DSA/LeetCode/018.%204Sum.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/018.%204Sum.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/4sum/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5199,13 +5199,13 @@ A solution set is:
                         right <span class="token operator">-=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> ans
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">019. Remove Nth Node From End of List</title>
     <id>https://chua-n.com/DSA/LeetCode/019.%20Remove%20Nth%20Node%20From%20End%20of%20List.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/019.%20Remove%20Nth%20Node%20From%20End%20of%20List.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5288,13 +5288,13 @@ After removing the second node from the end, the linked list becomes <strong>1-&
         slow<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> slow<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">.</span><span class="token builtin">next</span>
         <span class="token keyword">return</span> dummy<span class="token punctuation">.</span><span class="token builtin">next</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">020. Valid Parenttheses</title>
     <id>https://chua-n.com/DSA/LeetCode/020.%20Valid%20Parenttheses.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/020.%20Valid%20Parenttheses.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/valid-parentheses/submissions/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -5398,13 +5398,13 @@ After removing the second node from the end, the linked list becomes <strong>1-&
                 stack<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token boolean">True</span> <span class="token keyword">if</span> stack <span class="token operator">==</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token keyword">else</span> <span class="token boolean">False</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">021. Merge Two Sorted Lists</title>
     <id>https://chua-n.com/DSA/LeetCode/021.%20Merge%20Two%20Sorted%20Lists.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/021.%20Merge%20Two%20Sorted%20Lists.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -5478,13 +5478,13 @@ After removing the second node from the end, the linked list becomes <strong>1-&
                 l2<span class="token punctuation">.</span><span class="token builtin">next</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>mergeTwoLists<span class="token punctuation">(</span>l1<span class="token punctuation">,</span> l2<span class="token punctuation">.</span><span class="token builtin">next</span><span class="token punctuation">)</span>
                 <span class="token keyword">return</span> l2
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">022. Generate Parentheses</title>
     <id>https://chua-n.com/DSA/LeetCode/022.%20Generate%20Parentheses.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/022.%20Generate%20Parentheses.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/generate-parentheses/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5611,13 +5611,13 @@ For example, given <i>n</i> = 3, a solution set is:
                         dp<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>tmp<span class="token punctuation">)</span>
         <span class="token keyword">return</span> dp<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">024. Swap Nodes in Pairs</title>
     <id>https://chua-n.com/DSA/LeetCode/024.%20Swap%20Nodes%20in%20Pairs.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/024.%20Swap%20Nodes%20in%20Pairs.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/swap-nodes-in-pairs/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5710,13 +5710,13 @@ For example, given <i>n</i> = 3, a solution set is:
             cur <span class="token operator">=</span> left
         <span class="token keyword">return</span> fakeHead<span class="token punctuation">.</span><span class="token builtin">next</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">026. Remove Duplicates from Sorted Array</title>
     <id>https://chua-n.com/DSA/LeetCode/026.%20Remove%20Duplicates%20from%20Sorted%20Array.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/026.%20Remove%20Duplicates%20from%20Sorted%20Array.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -5812,13 +5812,13 @@ for (int i = 0; i &lt; len; i++) {
                 ind <span class="token operator">+=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> ind
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">027. Remove Element</title>
     <id>https://chua-n.com/DSA/LeetCode/027.%20Remove%20Element.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/027.%20Remove%20Element.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/remove-element/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -5922,13 +5922,13 @@ for (int i = 0; i &lt; len; i++) {
                 ind <span class="token operator">+=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> ind
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">028. Implement strStr()</title>
     <id>https://chua-n.com/DSA/LeetCode/028.%20Implement%20strStr().html</id>
     <link href="https://chua-n.com/DSA/LeetCode/028.%20Implement%20strStr().html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/implement-strstr/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -6036,13 +6036,13 @@ for (int i = 0; i &lt; len; i++) {
                 <span class="token keyword">return</span> i
         <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">029. Divide Two Integers</title>
     <id>https://chua-n.com/DSA/LeetCode/029.%20Divide%20Two%20Integers.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/029.%20Divide%20Two%20Integers.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/divide-two-integers/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6121,13 +6121,13 @@ for (int i = 0; i &lt; len; i++) {
 </blockquote>
 <div class="language-python" data-ext="py" data-title="py"><pre class="language-python"><code>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">031. Next Permutation</title>
     <id>https://chua-n.com/DSA/LeetCode/031.%20Next%20Permutation.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/031.%20Next%20Permutation.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/next-permutation/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6208,13 +6208,13 @@ for (int i = 0; i &lt; len; i++) {
             right <span class="token operator">-=</span> <span class="token number">1</span>
         <span class="token keyword">return</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">033. Search in Rotated Sorted Array</title>
     <id>https://chua-n.com/DSA/LeetCode/033.%20Search%20in%20Rotated%20Sorted%20Array.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/033.%20Search%20in%20Rotated%20Sorted%20Array.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/search-in-rotated-sorted-array/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6315,13 +6315,13 @@ for (int i = 0; i &lt; len; i++) {
         
         <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">034. Find First and Last Position of Element in Sorted Array</title>
     <id>https://chua-n.com/DSA/LeetCode/034.%20Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/034.%20Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6414,13 +6414,13 @@ for (int i = 0; i &lt; len; i++) {
             right <span class="token operator">+=</span> <span class="token number">1</span>
         <span class="token keyword">return</span> <span class="token punctuation">[</span>left<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> right<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">035. Search Insert Position</title>
     <id>https://chua-n.com/DSA/LeetCode/035.%20Search%20Insert%20Position.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/035.%20Search%20Insert%20Position.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/search-insert-position/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -6512,13 +6512,13 @@ for (int i = 0; i &lt; len; i++) {
         mymax <span class="token operator">=</span> length <span class="token operator">-</span> <span class="token number">1</span> <span class="token keyword">if</span> mymax <span class="token operator">==</span> length <span class="token keyword">else</span> mymax
         <span class="token keyword">return</span> mymax <span class="token keyword">if</span> nums<span class="token punctuation">[</span>mymax<span class="token punctuation">]</span> <span class="token operator">&gt;</span> target <span class="token keyword">else</span> mymax<span class="token operator">+</span><span class="token number">1</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">036. Valid Sudoku</title>
     <id>https://chua-n.com/DSA/LeetCode/036.%20Valid%20Sudoku.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/036.%20Valid%20Sudoku.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/valid-sudoku/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6712,13 +6712,13 @@ for (int i = 0; i &lt; len; i++) {
                     <span class="token keyword">return</span> <span class="token boolean">False</span>
         <span class="token keyword">return</span> <span class="token boolean">True</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">038. Count and Say</title>
     <id>https://chua-n.com/DSA/LeetCode/038.%20Count%20and%20Say.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/038.%20Count%20and%20Say.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/count-and-say/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -6803,13 +6803,13 @@ for (int i = 0; i &lt; len; i++) {
                     count <span class="token operator">=</span> <span class="token number">1</span>
             <span class="token keyword">return</span> ans
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">039. Combination Sum</title>
     <id>https://chua-n.com/DSA/LeetCode/039.%20Combination%20Sum.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/039.%20Combination%20Sum.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/combination-sum/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6967,13 +6967,13 @@ for (int i = 0; i &lt; len; i++) {
 </blockquote>
 <div class="language-python" data-ext="py" data-title="py"><pre class="language-python"><code>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">040. Combination Sum II</title>
     <id>https://chua-n.com/DSA/LeetCode/040.%20Combination%20Sum%20II.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/040.%20Combination%20Sum%20II.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/combination-sum-ii/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7071,13 +7071,13 @@ for (int i = 0; i &lt; len; i++) {
 </blockquote>
 <div class="language-python" data-ext="py" data-title="py"><pre class="language-python"><code>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">043. Multiply Strings</title>
     <id>https://chua-n.com/DSA/LeetCode/043.%20Multiply%20Strings.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/043.%20Multiply%20Strings.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/multiply-strings/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7170,13 +7170,13 @@ for (int i = 0; i &lt; len; i++) {
             ans<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">10</span> <span class="token operator">**</span> factor <span class="token operator">*</span> multiplySingleDigit<span class="token punctuation">(</span>nummax<span class="token punctuation">,</span> digit<span class="token punctuation">)</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token builtin">sum</span><span class="token punctuation">(</span>ans<span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">046. Permutations</title>
     <id>https://chua-n.com/DSA/LeetCode/046.%20Permutations.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/046.%20Permutations.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/permutations/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7285,13 +7285,13 @@ for (int i = 0; i &lt; len; i++) {
         <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
             self<span class="token punctuation">.</span>dfs<span class="token punctuation">(</span>nums<span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">]</span><span class="token operator">+</span>nums<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> path<span class="token operator">+</span><span class="token punctuation">[</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> ans<span class="token punctuation">)</span> <span class="token comment"># 花哨却不中用啊</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">047. Permutations II</title>
     <id>https://chua-n.com/DSA/LeetCode/047.%20Permutations%20II.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/047.%20Permutations%20II.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/permutations-ii/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7375,13 +7375,13 @@ for (int i = 0; i &lt; len; i++) {
         <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
             self<span class="token punctuation">.</span>dfs<span class="token punctuation">(</span>nums<span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">]</span><span class="token operator">+</span>nums<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> path<span class="token operator">+</span><span class="token punctuation">[</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> ans<span class="token punctuation">)</span> <span class="token comment"># 华而不实</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">048. Rotate Image</title>
     <id>https://chua-n.com/DSA/LeetCode/048.%20Rotate%20Image.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/048.%20Rotate%20Image.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/rotate-image/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7515,13 +7515,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
         matrix<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>row<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> row <span class="token keyword">in</span> matrix<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span><span class="token punctuation">]</span>
         <span class="token comment"># the left can't be matrix (without [:])</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">049. Group Anagrams</title>
     <id>https://chua-n.com/DSA/LeetCode/049.%20Group%20Anagrams.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/049.%20Group%20Anagrams.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/group-anagrams/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7632,13 +7632,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
                 ans<span class="token punctuation">[</span>chars<span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span>ele<span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token builtin">list</span><span class="token punctuation">(</span>ans<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">050. Pow(x, n)</title>
     <id>https://chua-n.com/DSA/LeetCode/050.%20Pow(x_%20n).html</id>
     <link href="https://chua-n.com/DSA/LeetCode/050.%20Pow(x_%20n).html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/powx-n/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7714,13 +7714,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
 </blockquote>
 <div class="language-python" data-ext="py" data-title="py"><pre class="language-python"><code>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">053. Maximum Subarray</title>
     <id>https://chua-n.com/DSA/LeetCode/053.%20Maximum%20Subarray.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/053.%20Maximum%20Subarray.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/maximum-subarray/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -7791,13 +7791,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
             maxSum <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>curSum<span class="token punctuation">,</span> maxSum<span class="token punctuation">)</span>
         <span class="token keyword">return</span> maxSum
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">054. Spiral Matrix</title>
     <id>https://chua-n.com/DSA/LeetCode/054.%20Spiral%20Matrix.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/054.%20Spiral%20Matrix.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/spiral-matrix/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7905,13 +7905,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
         ans <span class="token operator">+=</span> <span class="token punctuation">(</span>up <span class="token operator">+</span> right <span class="token operator">+</span> down<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> left<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> ans
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">055. Jump Game</title>
     <id>https://chua-n.com/DSA/LeetCode/055.%20Jump%20Game.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/055.%20Jump%20Game.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/jump-game/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -7981,13 +7981,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
             <span class="token comment"># the farthest location can be arrived at so far</span>
         <span class="token keyword">return</span> <span class="token boolean">True</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">056. Merge Intervals</title>
     <id>https://chua-n.com/DSA/LeetCode/056.%20Merge%20Intervals.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/056.%20Merge%20Intervals.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/merge-intervals/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -8058,13 +8058,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
                 ans<span class="token punctuation">.</span>append<span class="token punctuation">(</span>interval<span class="token punctuation">)</span>
         <span class="token keyword">return</span> ans
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">058. Length of Last Word</title>
     <id>https://chua-n.com/DSA/LeetCode/058.%20Length%20of%20Last%20Word.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/058.%20Length%20of%20Last%20Word.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/length-of-last-word/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -8122,13 +8122,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
         words <span class="token operator">=</span> s<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token number">0</span> <span class="token keyword">if</span> <span class="token keyword">not</span> words <span class="token keyword">else</span> <span class="token builtin">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">059. Spiral Matrix II</title>
     <id>https://chua-n.com/DSA/LeetCode/059.%20Spiral%20Matrix%20II.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/059.%20Spiral%20Matrix%20II.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/spiral-matrix-ii/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -8232,13 +8232,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
             <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>layer<span class="token operator">+</span>size<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> layer<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token comment"># left</span>
                 square<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>layer<span class="token punctuation">]</span> <span class="token operator">=</span> start <span class="token operator">+</span> <span class="token number">3</span><span class="token operator">*</span>size <span class="token operator">-</span> <span class="token number">3</span> <span class="token operator">+</span> <span class="token punctuation">(</span>layer<span class="token operator">+</span>size<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">)</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">060. Permutation Sequence</title>
     <id>https://chua-n.com/DSA/LeetCode/060.%20Permutation%20Sequence.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/060.%20Permutation%20Sequence.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/permutation-sequence/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -8342,13 +8342,13 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
         <span class="token keyword">else</span><span class="token punctuation">:</span>
             <span class="token keyword">return</span> x <span class="token operator">*</span> self<span class="token punctuation">.</span>factorial<span class="token punctuation">(</span>x<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
   <entry>
     <title type="text">061. Rotate List</title>
     <id>https://chua-n.com/DSA/LeetCode/061.%20Rotate%20List.html</id>
     <link href="https://chua-n.com/DSA/LeetCode/061.%20Rotate%20List.html"/>
-    <updated>2024-02-22T06:26:09.000Z</updated>
+    <updated>2024-02-22T06:53:24.000Z</updated>
     <summary type="html"><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/rotate-list/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -8461,6 +8461,6 @@ rotate 4 steps to the right:&nbsp;<code>2-&gt;0-&gt;1-&gt;NULL</code></pre>
         <span class="token comment"># newhead有可能变为了原链表末尾的None而不再是一个ListNode</span>
         <span class="token keyword">return</span> newhead
 </code></pre></div>]]></content>
-    <published>2024-02-22T06:26:09.000Z</published>
+    <published>2024-02-22T06:53:24.000Z</published>
   </entry>
 </feed>
