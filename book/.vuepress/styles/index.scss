@@ -22,6 +22,11 @@ ol, ul {
   padding-inline-start: 2em;
 }
 
+/* fix 侧边栏中文件与文件夹平级时，两者的竖向对齐不准（不晓得有没有副作用） */
+.vp-sidebar-heading, .vp-sidebar-link {
+  margin-inline: unset;
+}
+
 /* 表格居中对齐 */
 table {
   display: table;
