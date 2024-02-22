@@ -25,8 +25,8 @@
     "vuepress-theme-hope": "2.0.0-rc.25"
   },
   "dependencies": {
-    "@vuepress/plugin-blog": "2.0.0-rc.15",
-    "@vuepress/plugin-feed": "2.0.0-rc.15",
+    "@vuepress/plugin-blog": "2.0.0-rc.17",
+    "@vuepress/plugin-feed": "2.0.0-rc.17",
     "@vuepress/plugin-search": "2.0.0-rc.15",
     "nodejs-jieba": "^0.1.2"
   }
