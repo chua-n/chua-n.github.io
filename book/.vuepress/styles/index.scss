@@ -33,3 +33,21 @@ table {
   display: block;
   margin: auto;
 }
+
+/* markdown中有序列表中序号表示符，第 1~4 级依次设定为阿拉伯数字、小写英文字母、小写罗马字母、小写希腊字母 */
+ol {
+  list-style-type: decimal;
+
+  ol {
+    list-style-type: lower-alpha;
+
+    ol {
+      list-style-type: lower-roman;
+
+      ol {
+        list-style-type: lower-greek;
+
+      }
+    }
+  }
+}
