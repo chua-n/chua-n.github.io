@@ -22,3 +22,9 @@ h5,
 h6 {
   border-bottom: 1px solid #eaecef;
 }
+
+/* 图片居中显示 */
+.theme-hope-content img {
+  display: block;
+  margin: auto;
+}
