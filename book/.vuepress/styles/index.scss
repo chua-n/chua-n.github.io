@@ -23,6 +23,11 @@ h6 {
   border-bottom: 1px solid #eaecef;
 }
 
+/* 列表元素的开头空两个字符 */
+ol, ul {
+  padding-inline-start: 2em;
+}
+
 /* 图片居中显示 */
 .theme-hope-content img {
   display: block;
