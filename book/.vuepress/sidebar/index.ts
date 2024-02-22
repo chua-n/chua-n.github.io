@@ -20,4 +20,5 @@ export default sidebar({
   "/数据库/": database,
   "/Linux/": linux,
   "/杂技/": otherTech,
+  "/glodon/": "structure",
 });
