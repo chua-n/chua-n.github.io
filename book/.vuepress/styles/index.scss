@@ -2,9 +2,7 @@
 @import "./palette";
 
 // 行内代码块，加粗，斜体都采用主题色
-code,
-strong,
-em {
+code, strong, em {
   color: $theme-color; // 代码块颜色
 }
 
@@ -15,11 +13,7 @@ em {
 }
 
 /* 文章每级标题下方加入横线（模仿h2自带的样式） */
-h2,
-h3,
-h4,
-h5,
-h6 {
+h2, h3, h4, h5, h6 {
   border-bottom: 1px solid #eaecef;
 }
 
