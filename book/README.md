@@ -3,7 +3,7 @@ title: book
 home: true
 layout: BlogHome
 heroImage: https://chua-n.gitee.io/figure-bed/logo/wukong.jpg
-heroText: 应无所住，而生其心。
+heroText: 应无所住，而生其心
 tagline: 借鉴 OneNote 书本式的笔记方案，使用 VuePress 搭建自己的笔记与博客系统。
 heroImageStyle:
   - border-radius: 50%
