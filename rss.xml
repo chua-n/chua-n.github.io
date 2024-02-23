@@ -6,8 +6,8 @@
     <link>https://chua-n.com/</link>
     <description>这是我用 vuepress 工具生成的笔记，采用 vuepress-theme-hope 主题，简单好用，采用 Markdown 编写，像书本一样展示。</description>
     <language>zh-CN</language>
-    <pubDate>Fri, 23 Feb 2024 05:21:35 GMT</pubDate>
-    <lastBuildDate>Fri, 23 Feb 2024 05:21:35 GMT</lastBuildDate>
+    <pubDate>Fri, 23 Feb 2024 07:38:43 GMT</pubDate>
+    <lastBuildDate>Fri, 23 Feb 2024 07:38:43 GMT</lastBuildDate>
     <generator>@vuepress/plugin-feed</generator>
     <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
     <category>Hexo</category>
@@ -59,7 +59,7 @@
       <guid>https://chua-n.com/DSA/</guid>
       <source url="https://chua-n.com/rss.xml">DSA</source>
       <description>Data Structure and Algorithm</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<blockquote>
 <p>合抱之木，生于毫末。</p>
 </blockquote>
@@ -115,7 +115,7 @@
       <guid>https://chua-n.com/Java/</guid>
       <source url="https://chua-n.com/rss.xml">Java</source>
       <description> 本笔记为Java相关知识点。 重新思考内容 为什么“Java 中不能只分配内存空间而不赋初始值。”（/Java/踏入山门/数组.md 的第 3 节）？C++是怎样的？ 当一个对象被创建成功后，这个对象将被保存在堆内存中，Java程序不允许直接访问堆内存中的对象，只能通过该对象的引用操作该对象，这跟数组类似。 成员变量无法显式地初始化（可能是因为成员变...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<blockquote>
 <p>本笔记为Java相关知识点。</p>
 </blockquote>
@@ -158,7 +158,7 @@
       <guid>https://chua-n.com/JavaScript/HTML_CSS.html</guid>
       <source url="https://chua-n.com/rss.xml">HTML&amp;CSS</source>
       <description>1. HTML 详细可参考 HTML 教程 (w3school.com.cn) 。 1.1 概念 HTML（Hyper Text Markup Language，超文本标记语言）是最基础的网页开发语言。所谓标记语言，是指由标签构成的语言，如html、xml，要明白“标记语言不是编程语言”，其不具备流程控制的能力。 1.2 HTML语法 html文档后缀...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. HTML</h2>
 <blockquote>
 <p>详细可参考 <a href="https://www.w3school.com.cn/html/index.asp" target="_blank" rel="noopener noreferrer">HTML 教程 (w3school.com.cn)</a> 。</p>
@@ -184,7 +184,7 @@
       <guid>https://chua-n.com/JavaScript/JavaScript.html</guid>
       <source url="https://chua-n.com/rss.xml">JavaScript</source>
       <description>1. JavaScript简介 JavaScript是一门客户端脚本语言，其运行在客户端浏览器中，每一个浏览器都有JavaScript的解析引擎。 JavaScript可以用来增强用记和html页面的交互过程，可以来控制html元素，让页面有一些动态的效果，增强用户的体验。 1997年ECMA（欧洲计算机制造商协会）发布了ECMAScript，即所有客...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. JavaScript简介</h2>
 <p>JavaScript是一门客户端脚本语言，其运行在客户端浏览器中，每一个浏览器都有JavaScript的解析引擎。</p>
 <p>JavaScript可以用来增强用记和html页面的交互过程，可以来控制html元素，让页面有一些动态的效果，增强用户的体验。</p>
@@ -204,7 +204,7 @@ JavaScript=ECMAScript+BOM+DOM
       <guid>https://chua-n.com/JavaScript/</guid>
       <source url="https://chua-n.com/rss.xml">JavaScript</source>
       <description> 本笔记本是关于前端的知识笔记。 </description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<blockquote>
 <p>本笔记本是关于前端的知识笔记。</p>
 </blockquote>
@@ -216,7 +216,7 @@ JavaScript=ECMAScript+BOM+DOM
       <guid>https://chua-n.com/JavaScript/XML.html</guid>
       <source url="https://chua-n.com/rss.xml">XML</source>
       <description>1. 概念 XML(Extensible Markup Language)，可扩展标记语言。可扩展的含义是：标签都是自定义的，可以在不中断应用程序的情况下进行扩展。 XML的功能为存储数据。可作为配置文件，并方便在网络中传输数据。 XML与HTML的区别： XML的标签都是自定义的，HTML标签是预定义的； XML的语法严格，HTML语法松散（历史上浏...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 概念</h2>
 <p><strong>XML</strong>(Extensible Markup Language)，可扩展标记语言。可扩展的含义是：标签都是自定义的，可以在不中断应用程序的情况下进行扩展。</p>
 <p>XML的功能为存储数据。可作为配置文件，并方便在网络中传输数据。</p>
@@ -295,7 +295,7 @@ From: John</p>
       <guid>https://chua-n.com/JavaScript/web%E6%A6%82%E5%BF%B5%E6%A6%82%E8%BF%B0.html</guid>
       <source url="https://chua-n.com/rss.xml">web概念概述</source>
       <description> JavaWeb：使用 Java 语言开发的基于互联网的项目。 软件架构： C/S：Client/Server，客户端/服务器端 在用户本地有一个客户端程序，在远程有一个服务器端程序，如 QQ、迅雷…… 优点：用户体验好 缺点：开发、安装、部署、维护麻烦 B/S：Broser/Server，浏览器/服务器端 只需要一个浏览器，用户通过不同的网址（URL...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<ol>
 <li>
 <p>JavaWeb：使用 Java 语言开发的基于互联网的项目。</p>
@@ -338,7 +338,7 @@ From: John</p>
       <guid>https://chua-n.com/JavaWeb/</guid>
       <source url="https://chua-n.com/rss.xml">JavaWeb</source>
       <description> 关于 JavaWeb 的知识点记录。 </description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<blockquote>
 <p>关于 JavaWeb 的知识点记录。</p>
 </blockquote>
@@ -349,7 +349,7 @@ From: John</p>
       <link>https://chua-n.com/Linux/</link>
       <guid>https://chua-n.com/Linux/</guid>
       <source url="https://chua-n.com/rss.xml">Linux</source>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
     </item>
     <item>
       <title>WSL</title>
@@ -357,7 +357,7 @@ From: John</p>
       <guid>https://chua-n.com/Linux/WSL.html</guid>
       <source url="https://chua-n.com/rss.xml">WSL</source>
       <description>安装WSL 参考如何在 Windows 10 上安装 WSL 2 等。 WSL与宿主机的网络映射 官方文档：Accessing network applications with WSL | Microsoft Learn。 在结合WSL开发网络应用时，有几点WSL的特殊性需要明确一下： 在WSL中获取宿主机IP地址的一个方式为： 在WSL中执行cat...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>安装WSL</h2>
 <blockquote>
 <p>参考<a href="https://zhuanlan.zhihu.com/p/337104547" target="_blank" rel="noopener noreferrer">如何在 Windows 10 上安装 WSL 2 </a>等。</p>
@@ -378,7 +378,7 @@ From: John</p>
       <guid>https://chua-n.com/Linux/shell%E8%84%9A%E6%9C%AC.html</guid>
       <source url="https://chua-n.com/rss.xml">shell脚本</source>
       <description>1. shell 基操 1.1 认识 shell 脚本 shell 终端解释器作为用户与 Linux 系统内部的通信媒介，除了支持各种变量与参数外，还提供了诸如循环、分支等高级编程语言才有的控制结构特性。 shell 脚本文件的名称可以任意，但为了避免被误以为是普通文件，最好将 .sh 后缀加上，以表示是一个脚本文件。以下为一个简单的脚本编写内容，其中...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. shell 基操</h2>
 <h3>1.1 认识 shell 脚本</h3>
 <p>shell 终端解释器作为用户与 Linux 系统内部的通信媒介，除了支持各种变量与参数外，还提供了诸如循环、分支等高级编程语言才有的控制结构特性。</p>
@@ -394,7 +394,7 @@ From: John</p>
       <guid>https://chua-n.com/Linux/%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BB%A4.html</guid>
       <source url="https://chua-n.com/rss.xml">乌合之令</source>
       <description>短小之令 clear：清除屏幕里的所有命令 reboot：重启系统，默认只能使用 root 管理员来重启 poweroff：关闭系统，默认只有 root 管理员可关闭 last：查看系统所有的登录记录，last &amp;lt;option&amp;gt; 由于这些信息都是以日志文件的形式保存在系统中，因此黑客可以很轻易地对内容进行篡改，千成不要单纯地以该命令的输出信息来判断系统...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>短小之令</h2>
 <ul>
 <li>
@@ -456,7 +456,7 @@ From: John</p>
       <guid>https://chua-n.com/Linux/%E6%80%BB%E8%A7%88.html</guid>
       <source url="https://chua-n.com/rss.xml">总览</source>
       <description>1. 什么是 Linux Linux 可划分为以下四部分： 11 Linux 内核 GNU 工具 图形化桌面环境 应用软件 1.1 内核 通常来讲，计算机硬件是由运算器、控制器、存储器、I/O 设备等共同组成的，而让各种硬件设备各司其职又能协同运行的东西就是系统内核。Linux 系统的内核负责完成对硬件资源的分配、调度等管理任务。 内核主要负责以下 4...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 什么是 Linux</h2>
 <p>Linux 可划分为以下四部分：</p>
 <figure><img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/Linux/1.png" alt="1" tabindex="0" loading="lazy"><figcaption>1</figcaption></figure>
@@ -547,7 +547,7 @@ From: John</p>
       <guid>https://chua-n.com/Linux/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C.html</guid>
       <source url="https://chua-n.com/rss.xml">文件操作</source>
       <description>1. 操作目录 mkdir：创建空白的目录，mkdir &amp;lt;选项&amp;gt; 目录 rmdir：删除空目录，rmdir 目录 若要删除非空目录，使用rm -r dir。 pwd：输出当前工作目录，pwd &amp;lt;选项&amp;gt; cd：切换工作路径，cd &amp;lt;目录名称&amp;gt; ls：显示目录中的文件信息（按字母排序且按列排序而不是排行），ls &amp;lt;选项&amp;gt; &amp;lt;文件名&amp;gt; ls -l 的长输出中...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 操作目录</h2>
 <ul>
 <li>
@@ -578,7 +578,7 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
       <guid>https://chua-n.com/Linux/%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90.html</guid>
       <source url="https://chua-n.com/rss.xml">文件权限</source>
       <description>1. 权限与归属 1.1 文件类型 尽管在 Linux 系统中一切都是文件，但是每个文件的类型不尽相同，因此 Linux 系统使用了不同的字符来加以区分，常见的字符如下： 1.2 权限表示 在 Linux 系统中，每个文件都有所属的所有者和所有组，并且规定了文件的所有者、所有组以及其他人对文件所拥有的可读(r) 、可写(w) 、可执行(x) 等权限。 ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 权限与归属</h2>
 <h3>1.1 文件类型</h3>
 <p>尽管在 Linux 系统中一切都是文件，但是每个文件的类型不尽相同，因此 Linux 系统使用了不同的字符来加以区分，常见的字符如下：</p>
@@ -592,7 +592,7 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
       <guid>https://chua-n.com/Linux/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86.html</guid>
       <source url="https://chua-n.com/rss.xml">用户管理</source>
       <description>1. 相关概念 用户权限是通过创建用户时分配的用户 ID(User ID, UID)来跟踪的，UID 是个数值，每个用户都有唯一的 UID，但在登陆系统时用的不是 UID 而是登录名。 Linux 系统的管理员之所以是root，并不是因为它的名字叫 root，而是由于该用户的身份号码即UID(User Identification)的数值为 0. Li...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 相关概念</h2>
 <p>用户权限是通过创建用户时分配的用户 ID(User ID, <strong>UID</strong>)来跟踪的，UID 是个数值，每个用户都有唯一的 UID，但在登陆系统时用的不是 UID 而是<strong>登录名</strong>。</p>
 <p>Linux 系统的管理员之所以是<strong>root</strong>，并不是因为它的名字叫 root，而是由于该用户的身份号码即<strong>UID</strong>(User Identification)的数值为 0.</p>
@@ -614,7 +614,7 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
       <guid>https://chua-n.com/Linux/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86.html</guid>
       <source url="https://chua-n.com/rss.xml">磁盘管理</source>
       <description>1. 文件系统 文件系统的作用是合理规划硬盘，以保证用户正常的使用需求。 Linux 支持数十种的文件系统，而最常见的文件系统为： Ext3——一款日志文件系统，能够在系统异常宕机时避免文件系统资料丢失，并能自动修复数据的不一致与错误。不过，当硬盘容量较大时，所需的修复时间也会很长，而且也不能百分之百地保证资料不会丢失。它会把整个磁盘的每个写入动作的细...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 文件系统</h2>
 <p>文件系统的作用是合理规划硬盘，以保证用户正常的使用需求。</p>
 <p>Linux 支持数十种的文件系统，而最常见的文件系统为：</p>
@@ -653,7 +653,7 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
       <guid>https://chua-n.com/Linux/%E7%BD%91%E7%BB%9C%E6%93%8D%E4%BD%9C.html</guid>
       <source url="https://chua-n.com/rss.xml">网络操作</source>
       <description>1. 网络连通性 ping windows上也有此命令。 ping 命令是用来测试 TCP/IP 网络是否畅通或者测试网络连接速度的命令，对确定网络是否正确连接，以及网络连接的状况十分有用。简单的说，ping就是一个测试程序，如果ping运行正确，大体上就可以排除网络访问层、网卡、Modem的输入输出线路、电缆和路由器等存在的故障，从而缩小问题的范围。...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 网络连通性</h2>
 <h3>ping</h3>
 <blockquote>
@@ -673,7 +673,7 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
       <guid>https://chua-n.com/Linux/%E8%BD%AF%E4%BB%B6%E7%AE%A1%E7%90%86.html</guid>
       <source url="https://chua-n.com/rss.xml">软件管理</source>
       <description>1. 包管理基础 在 Linux 上有各种包管理系统(package management system, PMS)，以及用来进行软件安装、管理和删除的命令行工具。 软件包通常会依赖其他的包，为了软件能够正常运行，被依赖的包必须提前安装在系统中，PMS 工具将会检测这些依赖关系，并在安装需要的包之前先安装好所有额外的软件包。 各种主流 linux 发行...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 包管理基础</h2>
 <p>在 Linux 上有各种包管理系统(package management system, PMS)，以及用来进行软件安装、管理和删除的命令行工具。</p>
 <p>软件包通常会依赖其他的包，为了软件能够正常运行，被依赖的包必须提前安装在系统中，PMS 工具将会检测这些依赖关系，并在安装需要的包之前先安装好所有额外的软件包。</p>
@@ -690,7 +690,7 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
       <guid>https://chua-n.com/Linux/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86.html</guid>
       <source url="https://chua-n.com/rss.xml">进程管理</source>
       <description>1. 关于进程 Linux 系统管理的要点在于定义究竟什么程度才算是高负载。 在 LINUX 系统中，有 5 种常见的进程状态，分别为运行、中断、不可中断、僵死、停止，其各自的含义如下： R（运行）——进程正在运行或在运行队列中等待 S（中断）——进程处于休眠中，当某个条件形成后或者接收到信号时，则脱离该状态 D（不可中断）——进程不响应系统异步信号，...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 关于进程</h2>
 <blockquote>
 <p>Linux 系统管理的要点在于定义究竟什么程度才算是高负载。</p>
@@ -716,7 +716,7 @@ $ <span class="token function">mkdir</span> <span class="token parameter variabl
       <guid>https://chua-n.com/Python/</guid>
       <source url="https://chua-n.com/rss.xml">Python</source>
       <description> Python 笔记本。 开区间 [L,R) 中含有的数据量 count=R−L Tutorial 和 Document 的区别：原来 tutorial 更多翻译成教程的意思，而 document 翻译为文档。 History The &amp;quot;dummy&amp;quot; node is used to simplify some corner cases such as ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<blockquote>
 <p>Python 笔记本。</p>
 </blockquote>
@@ -2884,7 +2884,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
       <guid>https://chua-n.com/%E6%95%B0%E5%AD%A6/</guid>
       <source url="https://chua-n.com/rss.xml">数学</source>
       <description>暂记： 三角剖分：第一回：回望经典，看看别人是怎么干的 - floodpeak - 博客园 (cnblogs.com)。 如何判断一个点是否在多边形内？_narutojxl的博客-CSDN博客_判断一个点在多边形内 </description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<p>暂记：</p>
 <ul>
 <li>
@@ -2902,7 +2902,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
       <guid>https://chua-n.com/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <source url="https://chua-n.com/rss.xml">数据库</source>
       <description>本笔记本是关于数据库的内容。 </description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<p>本笔记本是关于数据库的内容。</p>
 ]]></content:encoded>
     </item>
@@ -2912,7 +2912,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
       <guid>https://chua-n.com/%E6%95%B0%E6%8D%AE%E5%BA%93/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%AE%BA.html</guid>
       <source url="https://chua-n.com/rss.xml">数据库概论</source>
       <description>1. 定义与模型 数据库就是一个以某种有组织的方式存储的数据集合。 数据库持久化地存储数据，本质就是一个文件系统； 数据库方便存储和管理数据； 使用了统一的方式操作数据库——SQL。 数据库管理系统，即DBMS，也叫数据库软件。DBMS可分为两类： 基于共享文件系统的DBMS：主要用于桌面用途，通常不用于高端或更关键的应用：如 Microsoft Ac...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 定义与模型</h2>
 <p><strong>数据库</strong>就是一个以某种有组织的方式存储的数据集合。</p>
 <ul>
@@ -3028,7 +3028,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
       <guid>https://chua-n.com/%E6%9D%82%E6%8A%80/Docker.html</guid>
       <source url="https://chua-n.com/rss.xml">Docker</source>
       <description> 不错的 docker 文档： Docker -- 从入门到实践 容器技术概念详解_Docker 入门教程 0. 容器技术 容器技术的实质 假定我们编写了一个批量运算加法的程序，这个程序的输入需要从一个文件 A 中读取，处理结果保存到另一个文件 B 中。当操作系统执行这个加法程序时，操作系统会根据程序的指引，从文件 A 中读取数据，保存到内存里，然后执...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<blockquote>
 <p>不错的 docker 文档：</p>
 <ul>
@@ -3113,7 +3113,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
       <guid>https://chua-n.com/%E6%9D%82%E6%8A%80/Nginx.html</guid>
       <source url="https://chua-n.com/rss.xml">Nginx</source>
       <description> 非常好的一个讲解nginx的github仓库，作者是《深入理解Nginx》一书的作者陶辉：https://github.com/russelltao/geektime-nginx 。 1. nginx简介 nginx的优点： 高并发，高性能 可扩展性好 高可靠性 热部署 BSD许可证 nginx的应用场景： image-202210171532130...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<blockquote>
 <p>非常好的一个讲解nginx的github仓库，作者是《深入理解Nginx》一书的作者陶辉：<a href="https://github.com/russelltao/geektime-nginx" target="_blank" rel="noopener noreferrer">https://github.com/russelltao/geektime-nginx</a> 。</p>
 </blockquote>
@@ -3142,7 +3142,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
       <link>https://chua-n.com/%E6%9D%82%E6%8A%80/</link>
       <guid>https://chua-n.com/%E6%9D%82%E6%8A%80/</guid>
       <source url="https://chua-n.com/rss.xml">杂技</source>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
     </item>
     <item>
       <title>001. Two Sum</title>
@@ -3150,7 +3150,7 @@ c.NotebookApp.notebook_dir <span class="token operator">=</span> <span class="to
       <guid>https://chua-n.com/DSA/LeetCode/001.%20Two%20Sum.html</guid>
       <source url="https://chua-n.com/rss.xml">001. Two Sum</source>
       <description>1. 题目 See Here. Given an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one s...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/two-sum/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3229,7 +3229,7 @@ return [<strong>0</strong>, <strong>1</strong>].
       <guid>https://chua-n.com/DSA/LeetCode/002.%20Add%20Two%20Numbers.html</guid>
       <source url="https://chua-n.com/rss.xml">002. Add Two Numbers</source>
       <description>1. 题目 See Here. You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3303,7 +3303,7 @@ return [<strong>0</strong>, <strong>1</strong>].
       <guid>https://chua-n.com/DSA/LeetCode/003.%20Longest%20Substring%20Without%20Repeating%20Characters.html</guid>
       <source url="https://chua-n.com/rss.xml">003. Longest Substring Without Repeating Characters</source>
       <description>1. 题目 See Here. Given a string, find the length of the longest substring without repeating characters. Example 1: Example 2: Example 3: 2. 解题 2.1 c++ Cost: 28 ms (beats 40.68%),...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3378,7 +3378,7 @@ return [<strong>0</strong>, <strong>1</strong>].
       <guid>https://chua-n.com/DSA/LeetCode/005.%20Longest%20Palindromic%20Substring.html</guid>
       <source url="https://chua-n.com/rss.xml">005. Longest Palindromic Substring</source>
       <description>1. 题目 See HERE. Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example 1: Example 2: 2. 解题 2.1 c++ #版本1 Cost...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -3478,7 +3478,7 @@ return [<strong>0</strong>, <strong>1</strong>].
       <guid>https://chua-n.com/DSA/LeetCode/006.%20ZigZag%20Conversion.html</guid>
       <source url="https://chua-n.com/rss.xml">006. ZigZag Conversion</source>
       <description>1. 题目 See HERE. The string &amp;quot;PAYPALISHIRING&amp;quot; is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/zigzag-conversion/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -3560,7 +3560,7 @@ P     I</pre>
       <guid>https://chua-n.com/DSA/LeetCode/007.%20Reverse%20Interger.html</guid>
       <source url="https://chua-n.com/rss.xml">007. Reverse Interger</source>
       <description>1. 题目 See Here. Given a 32-bit signed integer, reverse digits of an integer. Example 1: Example 2: Example 3: Note: Assume we are dealing with an environment which could only st...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/reverse-integer/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3626,7 +3626,7 @@ Assume we are dealing with an environment which could only store integers within
       <guid>https://chua-n.com/DSA/LeetCode/008.%20String%20to%20Integer%20(atoi).html</guid>
       <source url="https://chua-n.com/rss.xml">008. String to Integer (atoi)</source>
       <description>1. 题目 See HERE.. Implement atoi which converts a string to an integer. The function first discards as many whitespace characters as necessary until the first non-whitespace char...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/string-to-integer-atoi/" target="_blank" rel="noopener noreferrer">HERE</a>..</p>
@@ -3717,7 +3717,7 @@ Assume we are dealing with an environment which could only store integers within
       <guid>https://chua-n.com/DSA/LeetCode/009.%20Palindrome%20Number.html</guid>
       <source url="https://chua-n.com/rss.xml">009. Palindrome Number</source>
       <description>1. 题目 See Here. Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward. Example 1: Example 2: Example 3: Follow up: ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/palindrome-number/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -3775,7 +3775,7 @@ Assume we are dealing with an environment which could only store integers within
       <guid>https://chua-n.com/DSA/LeetCode/011.%20Container%20With%20Most%20Water.html</guid>
       <source url="https://chua-n.com/rss.xml">011. Container With Most Water</source>
       <description>1. 题目 See HERE. Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of li...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/container-with-most-water/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -3831,7 +3831,7 @@ Assume we are dealing with an environment which could only store integers within
       <guid>https://chua-n.com/DSA/LeetCode/012.%20Integer%20to%20Roman.html</guid>
       <source url="https://chua-n.com/rss.xml">012. Integer to Roman</source>
       <description>1. 题目 See HERE. Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M. For example, two is written as II in Roman numeral, just two one&amp;apos;s added toget...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/integer-to-roman/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -3929,7 +3929,7 @@ M             1000</pre>
       <guid>https://chua-n.com/DSA/LeetCode/013.%20Roman%20to%20Integer.html</guid>
       <source url="https://chua-n.com/rss.xml">013. Roman to Integer</source>
       <description>1. 题目 See Here. Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M. For example, two is written as II in Roman numeral, just two one&amp;apos;s added toget...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/roman-to-integer/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4019,7 +4019,7 @@ M             1000</pre>
       <guid>https://chua-n.com/DSA/LeetCode/014.%20Longest%20Common%20Prefix.html</guid>
       <source url="https://chua-n.com/rss.xml">014. Longest Common Prefix</source>
       <description>1. 题目 See Here. Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string &amp;quot;&amp;quot;. Example 1: Exampl...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4098,7 +4098,7 @@ M             1000</pre>
       <guid>https://chua-n.com/DSA/LeetCode/015.%203Sum.html</guid>
       <source url="https://chua-n.com/rss.xml">015. 3Sum</source>
       <description>1. 题目 See HERE. Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero....</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/3sum/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4184,7 +4184,7 @@ A solution set is:
       <guid>https://chua-n.com/DSA/LeetCode/016.%203Sum%20Closest.html</guid>
       <source url="https://chua-n.com/rss.xml">016. 3Sum Closest</source>
       <description>1. 题目 See HERE. Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/3sum-closest/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4253,7 +4253,7 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
       <guid>https://chua-n.com/DSA/LeetCode/017.%20Letter%20Combinations%20of%20a%20Phone%20Number.html</guid>
       <source url="https://chua-n.com/rss.xml">017. Letter Combinations of a Phone Number</source>
       <description>1. 题目 See HERE. Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. A mapping of digit to letters (just...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4324,7 +4324,7 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
       <guid>https://chua-n.com/DSA/LeetCode/018.%204Sum.html</guid>
       <source url="https://chua-n.com/rss.xml">018. 4Sum</source>
       <description>1. 题目 See HERE. Given an array nums of n integers and an integer target, are there elements a, b, c, and d in nums such that a + b + c + d = target? Find all unique quadruplets ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/4sum/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4435,7 +4435,7 @@ A solution set is:
       <guid>https://chua-n.com/DSA/LeetCode/019.%20Remove%20Nth%20Node%20From%20End%20of%20List.html</guid>
       <source url="https://chua-n.com/rss.xml">019. Remove Nth Node From End of List</source>
       <description>1. 题目 See HERE. Given a linked list, remove the n-th node from the end of list and return its head. Example: Note: Given n will always be valid. Follow up: Could you do this in ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4510,7 +4510,7 @@ After removing the second node from the end, the linked list becomes <strong>1-&
       <guid>https://chua-n.com/DSA/LeetCode/020.%20Valid%20Parenttheses.html</guid>
       <source url="https://chua-n.com/rss.xml">020. Valid Parenttheses</source>
       <description>1. 题目 See Here. Given a string containing just the characters &amp;apos;(&amp;apos;, &amp;apos;)&amp;apos;, &amp;apos;{&amp;apos;, &amp;apos;}&amp;apos;, &amp;apos;[&amp;apos; and &amp;apos;]&amp;apos;, determine if the input string is valid. An input string is valid if: Open brackets...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/valid-parentheses/submissions/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4589,7 +4589,7 @@ After removing the second node from the end, the linked list becomes <strong>1-&
       <guid>https://chua-n.com/DSA/LeetCode/021.%20Merge%20Two%20Sorted%20Lists.html</guid>
       <source url="https://chua-n.com/rss.xml">021. Merge Two Sorted Lists</source>
       <description>1. 题目 See Here. Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists. Example: 2. 解题 2.1 ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4660,7 +4660,7 @@ After removing the second node from the end, the linked list becomes <strong>1-&
       <guid>https://chua-n.com/DSA/LeetCode/022.%20Generate%20Parentheses.html</guid>
       <source url="https://chua-n.com/rss.xml">022. Generate Parentheses</source>
       <description>1. 题目 See HERE. Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses. For example, given n = 3, a solution set is: 2. 解题 2.1 c+...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/generate-parentheses/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4776,7 +4776,7 @@ For example, given <i>n</i> = 3, a solution set is:
       <guid>https://chua-n.com/DSA/LeetCode/024.%20Swap%20Nodes%20in%20Pairs.html</guid>
       <source url="https://chua-n.com/rss.xml">024. Swap Nodes in Pairs</source>
       <description>1. 题目 See HERE. 2. 解题 2.1 c++ Cost: 4 ms (68.99%), 8.5 MB (100.00%) 2.2 Python Cost: 20 ms (97.47%), 12.7 MB (100.00%) </description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/swap-nodes-in-pairs/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -4841,7 +4841,7 @@ For example, given <i>n</i> = 3, a solution set is:
       <guid>https://chua-n.com/DSA/LeetCode/026.%20Remove%20Duplicates%20from%20Sorted%20Array.html</guid>
       <source url="https://chua-n.com/rss.xml">026. Remove Duplicates from Sorted Array</source>
       <description>1. 题目 See Here. Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length. Do not allocate extra space for anot...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4913,7 +4913,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/027.%20Remove%20Element.html</guid>
       <source url="https://chua-n.com/rss.xml">027. Remove Element</source>
       <description>1. 题目 See Here. Given an array nums and a value val, remove all instances of that value in-place and return the new length. Do not allocate extra space for another array, you mu...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/remove-element/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -4990,7 +4990,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/028.%20Implement%20strStr().html</guid>
       <source url="https://chua-n.com/rss.xml">028. Implement strStr()</source>
       <description>1. 题目 See Here. Implement strStr(). Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack. Example 1: Example 2: Clarification:...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/implement-strstr/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -5087,7 +5087,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/029.%20Divide%20Two%20Integers.html</guid>
       <source url="https://chua-n.com/rss.xml">029. Divide Two Integers</source>
       <description>1. 题目 See HERE. Given two integers dividend and divisor, divide two integers without using multiplication, division and mod operator. Return the quotient after dividing dividend...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/divide-two-integers/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5153,7 +5153,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/031.%20Next%20Permutation.html</guid>
       <source url="https://chua-n.com/rss.xml">031. Next Permutation</source>
       <description>1. 题目 See HERE. Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers. If such arrangement is not possible, it must...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/next-permutation/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5229,7 +5229,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/033.%20Search%20in%20Rotated%20Sorted%20Array.html</guid>
       <source url="https://chua-n.com/rss.xml">033. Search in Rotated Sorted Array</source>
       <description>1. 题目 See HERE. Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand. (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]). You are give...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/search-in-rotated-sorted-array/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5320,7 +5320,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/034.%20Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.html</guid>
       <source url="https://chua-n.com/rss.xml">034. Find First and Last Position of Element in Sorted Array</source>
       <description>1. 题目 See HERE. Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value. Your algorithm&amp;apos;s runtime complexity mus...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5406,7 +5406,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/035.%20Search%20Insert%20Position.html</guid>
       <source url="https://chua-n.com/rss.xml">035. Search Insert Position</source>
       <description>1. 题目 See Here. Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order. You ma...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/search-insert-position/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -5482,7 +5482,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/036.%20Valid%20Sudoku.html</guid>
       <source url="https://chua-n.com/rss.xml">036. Valid Sudoku</source>
       <description>1. 题目 See HERE. Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules: Each row must contain the digits 1-9 witho...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/valid-sudoku/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5630,7 +5630,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/038.%20Count%20and%20Say.html</guid>
       <source url="https://chua-n.com/rss.xml">038. Count and Say</source>
       <description>1. 题目 See Here. The count-and-say sequence is the sequence of integers with the first five terms as following: 1 is read off as &amp;quot;one 1&amp;quot; or 11. 11 is read off as &amp;quot;two 1s&amp;quot; or 21. ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/count-and-say/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -5694,7 +5694,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/039.%20Combination%20Sum.html</guid>
       <source url="https://chua-n.com/rss.xml">039. Combination Sum</source>
       <description>1. 题目 See HERE. Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate n...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/combination-sum/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5830,7 +5830,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/040.%20Combination%20Sum%20II.html</guid>
       <source url="https://chua-n.com/rss.xml">040. Combination Sum II</source>
       <description>1. 题目 See HERE. Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/combination-sum-ii/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5905,7 +5905,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/043.%20Multiply%20Strings.html</guid>
       <source url="https://chua-n.com/rss.xml">043. Multiply Strings</source>
       <description>1. 题目 See HERE. Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string. Example 1: Example 2: No...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/multiply-strings/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -5985,7 +5985,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/046.%20Permutations.html</guid>
       <source url="https://chua-n.com/rss.xml">046. Permutations</source>
       <description>1. 题目 See HERE. Given a collection of distinct integers, return all possible permutations. Example: 2. 解题 2.1 c++ #版本1：更符合之前习惯 Cost: 12 ms (68.66%), 9.2 MB (95.52%) #版本2：技巧 Cost...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/permutations/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6083,7 +6083,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/047.%20Permutations%20II.html</guid>
       <source url="https://chua-n.com/rss.xml">047. Permutations II</source>
       <description>1. 题目 See HERE. Given a collection of numbers that might contain duplicates, return all possible unique permutations. Example: 2. 解题 2.1 c++ Cost: 24 ms (71.93%), 9.9 MB (78.57%...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/permutations-ii/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6159,7 +6159,7 @@ for (int i = 0; i &lt; len; i++) {
       <guid>https://chua-n.com/DSA/LeetCode/048.%20Rotate%20Image.html</guid>
       <source url="https://chua-n.com/rss.xml">048. Rotate Image</source>
       <description>1. 题目 See HERE. You are given an n x n 2D matrix representing an image. Rotate the image by 90 degrees (clockwise). Note: You have to rotate the image in-place, which means you ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/rotate-image/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6259,7 +6259,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/049.%20Group%20Anagrams.html</guid>
       <source url="https://chua-n.com/rss.xml">049. Group Anagrams</source>
       <description>1. 题目 See HERE. Given an array of strings, group anagrams together. Example: Note: All inputs will be in lowercase. The order of your output does not matter. 2. 解题 2.1 c++ #版本1：...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/group-anagrams/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6358,7 +6358,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/050.%20Pow(x_%20n).html</guid>
       <source url="https://chua-n.com/rss.xml">050. Pow(x, n)</source>
       <description>1. 题目 See HERE. Implement pow(x, n), which calculates x raised to the power n (xn). Example 1: Example 2: Example 3: Note: -100.0 &amp;lt; x &amp;lt; 100.0 n is a 32-bit signed integer, withi...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/powx-n/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6417,7 +6417,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/053.%20Maximum%20Subarray.html</guid>
       <source url="https://chua-n.com/rss.xml">053. Maximum Subarray</source>
       <description>1. 题目 See Here. Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum. Example: Follow up: If y...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/maximum-subarray/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -6482,7 +6482,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/054.%20Spiral%20Matrix.html</guid>
       <source url="https://chua-n.com/rss.xml">054. Spiral Matrix</source>
       <description>1. 题目 See HERE. Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order. Example 1: Example 2: 2. 解题 2.1 c++ Cost: 4 ms (56.80%),...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/spiral-matrix/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6574,7 +6574,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/055.%20Jump%20Game.html</guid>
       <source url="https://chua-n.com/rss.xml">055. Jump Game</source>
       <description>1. 题目 See HERE. Given an array of non-negative integers, you are initially positioned at the first index of the array. Each element in the array represents your maximum jump len...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/jump-game/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6632,7 +6632,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/056.%20Merge%20Intervals.html</guid>
       <source url="https://chua-n.com/rss.xml">056. Merge Intervals</source>
       <description>1. 题目 See HERE. Given a collection of intervals, merge all overlapping intervals. Example 1: Example 2: NOTE: input types have been changed on April 15, 2019. Please reset to de...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/merge-intervals/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6694,7 +6694,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/058.%20Length%20of%20Last%20Word.html</guid>
       <source url="https://chua-n.com/rss.xml">058. Length of Last Word</source>
       <description>1. 题目 See Here. Given a string s consists of upper/lower-case alphabets and empty space characters &amp;apos; &amp;apos;, return the length of last word in the string. If the last word does not e...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/length-of-last-word/" target="_blank" rel="noopener noreferrer">Here</a>.</p>
@@ -6746,7 +6746,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/059.%20Spiral%20Matrix%20II.html</guid>
       <source url="https://chua-n.com/rss.xml">059. Spiral Matrix II</source>
       <description>1. 题目 See HERE. Given a positive integer n, generate a square matrix filled with elements from 1 to n2 in spiral order. Example: 2. 解题 2.1 c++ #版本1：递归 Cost: 4 ms (71.84%), 8.9 M...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/spiral-matrix-ii/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6842,7 +6842,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/060.%20Permutation%20Sequence.html</guid>
       <source url="https://chua-n.com/rss.xml">060. Permutation Sequence</source>
       <description>1. 题目 See HERE. The set [1,2,3,...,n] contains a total of n! unique permutations. By listing and labeling all of the permutations in order, we get the following sequence for n =...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/permutation-sequence/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
@@ -6924,7 +6924,7 @@ rotate the input matrix <strong>in-place</strong> such that it becomes:
       <guid>https://chua-n.com/DSA/LeetCode/061.%20Rotate%20List.html</guid>
       <source url="https://chua-n.com/rss.xml">061. Rotate List</source>
       <description>1. 题目 See HERE. Given a linked list, rotate the list to the right by k places, where k is non-negative. Example 1: Example 2: 2. 解题 2.1 c++ Cost: 12 ms (18.14%), 9.5 MB (7.14%) ...</description>
-      <pubDate>Fri, 23 Feb 2024 05:19:25 GMT</pubDate>
+      <pubDate>Fri, 23 Feb 2024 07:36:28 GMT</pubDate>
       <content:encoded><![CDATA[<h2>1. 题目</h2>
 <blockquote>
 <p>See <a href="https://leetcode.com/problems/rotate-list/" target="_blank" rel="noopener noreferrer">HERE</a>.</p>
