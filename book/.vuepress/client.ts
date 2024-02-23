@@ -16,9 +16,10 @@ export default defineClientConfig({
       next
     ) => {
       // 上报百度统计
-      if (window._hmt && to.path) {
+      const _hmt = typeof window !== 'undefined' ? window._hmt : null; // WebPack编译打包的时候window对象可能不存在
+      if (_hmt && to.path) {
         if (from.path != to.path) { // 同页面发生的哈希切换不上报
-          window._hmt.push(["_trackPageview", decodeURI(to.fullPath)]);
+          _hmt.push(["_trackPageview", decodeURI(to.fullPath)]);
         }
       }
       next();
