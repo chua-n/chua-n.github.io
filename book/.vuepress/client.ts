@@ -19,7 +19,7 @@ export default defineClientConfig({
       const _hmt = typeof window !== 'undefined' ? window._hmt : null; // WebPack编译打包的时候window对象可能不存在
       if (_hmt && to.path) {
         if (from.path != to.path) { // 同页面发生的哈希切换不上报
-          _hmt.push(["_trackPageview", decodeURI(to.fullPath)]);
+          _hmt.push(["_trackPageview", to.fullPath]);
         }
       }
       next();
