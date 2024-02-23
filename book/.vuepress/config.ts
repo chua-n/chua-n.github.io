@@ -17,6 +17,22 @@ export default defineUserConfig({
   title: "荒流的笔趣屋",
   description: "这是我用 vuepress 工具生成的笔记，采用 vuepress-theme-hope 主题，简单好用，采用 Markdown 编写，像书本一样展示。",
 
+  head: [
+    [
+      "script",
+      {},
+      `
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d41714388d97166c965a387883f8c5e0";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+      `
+    ]
+  ],
+
   markdown: {
     headers: {
       level: [2, 3, 4, 5, 6],

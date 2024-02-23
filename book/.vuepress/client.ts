@@ -9,7 +9,21 @@ export default defineClientConfig({
     app,
     router,
     siteData
-  }) {},
+  }) {
+    router.beforeEach((
+      to,
+      from,
+      next
+    ) => {
+      // 上报百度统计
+      if (window._hmt && to.path) {
+        if (from.path != to.path) { // 同页面发生的哈希切换不上报
+          window._hmt.push(["_trackPageview", decodeURI(to.fullPath)]);
+        }
+      }
+      next();
+    });
+  },
   setup() {},
   rootComponents: [],
 });
