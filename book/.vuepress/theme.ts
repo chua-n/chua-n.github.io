@@ -233,6 +233,8 @@ export default hopeTheme(
         themeColor: "#6a005f",
         cacheHTML: true,
         cacheImage: true,
+        maxSize: 200 * 1024, // 200 MB
+        maxImageSize: 100 * 1024, // 100 MB
         appendBase: true,
         showInstall: false,
         apple: {
