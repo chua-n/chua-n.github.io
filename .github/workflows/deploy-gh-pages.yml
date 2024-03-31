@@ -16,7 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 想要“最近更新时间”等 git 日志相关信息，需要拉取全部提交记录
 
       - name: Install pnpm, then install dependencies immediately
         uses: pnpm/action-setup@v2
