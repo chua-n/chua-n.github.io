@@ -45,3 +45,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages # default
           publish_dir: book/.vuepress/dist  # default: public
+          force_orphan: true # 发布至目标分支时，将该分支中的历史提交强制清空
