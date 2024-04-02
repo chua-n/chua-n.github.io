@@ -1,5 +1,6 @@
 ---
 title: 远程使用mayavi
+date: 2020-12-07
 ---
 
 > 当使用SSH连接远程主机使用mayavi绘图的时候，由于mayavi的绘图机理基于OpenGL，似乎总是由于远程连接无法调用OpenGL而报错。

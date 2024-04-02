@@ -1,5 +1,6 @@
 ---
 title: validation
+date: 2019-10-16
 ---
 
 > 增加验证集。

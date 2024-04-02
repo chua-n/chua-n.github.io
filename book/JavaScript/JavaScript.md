@@ -1,5 +1,6 @@
 ---
 title: JavaScript
+date: 2020-10-20
 ---
 
 ## 1. JavaScript简介

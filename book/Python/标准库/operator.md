@@ -1,5 +1,6 @@
 ---
 title: operator
+date: 2019-06-04
 ---
 
 关于operator标准库：

@@ -1,5 +1,6 @@
 ---
 title: MyBatis的API
+date: 2021-04-15
 ---
 
 > 其实主要就涉及`SqlSessionFactory`类和`SqlSession`类。

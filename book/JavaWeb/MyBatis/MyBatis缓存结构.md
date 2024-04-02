@@ -1,5 +1,6 @@
 ---
 title: MyBatis缓存结构
+date: 2020-11-05
 ---
 
 MyBatis提供一级缓存和二级缓存的机制。

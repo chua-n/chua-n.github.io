@@ -1,5 +1,6 @@
 ---
 title: Python
+date: 2019-04-07
 ---
 
 > Python 笔记本。

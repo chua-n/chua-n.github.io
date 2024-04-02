@@ -1,5 +1,6 @@
 ---
 title: numpy简介
+date: 2019-04-07
 ---
 
 ## NumPy数组概念

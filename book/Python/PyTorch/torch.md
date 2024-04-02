@@ -1,5 +1,6 @@
 ---
 title: torch
+date: 2019-10-15
 ---
 
 PyTorch 是一个基于 python 的科学计算包，主要作用在两个方面：

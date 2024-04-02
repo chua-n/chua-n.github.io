@@ -1,5 +1,6 @@
 ---
 title: shell脚本
+date: 2019-09-12
 ---
 
 ## 1. shell 基操

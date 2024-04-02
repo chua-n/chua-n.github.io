@@ -1,5 +1,6 @@
 ---
 title: functools
+date: 2019-06-06
 ---
 
 关于functools标准库：

@@ -1,5 +1,6 @@
 ---
 title: Tensor
+date: 2019-10-16
 ---
 
 `torch.Tensor` 是定义了张量和相关数学操作的 torch 中的一个类。

@@ -1,5 +1,6 @@
 ---
 title: collections
+date: 2019-06-04
 ---
 
 关于collections标准库：

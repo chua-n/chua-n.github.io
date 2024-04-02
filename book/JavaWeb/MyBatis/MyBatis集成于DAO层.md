@@ -1,5 +1,6 @@
 ---
 title: MyBatis集成于DAO层
+date: 2021-04-15
 ---
 
 在正经的JavaWeb工程中，MyBatis都用于在DAO层中集成。

@@ -1,5 +1,6 @@
 ---
 title: itertools
+date: 2019-06-04
 ---
 
 关于itertools标准库：

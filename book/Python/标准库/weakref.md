@@ -1,5 +1,6 @@
 ---
 title: weakref
+date: 2019-06-06
 ---
 
 关于weakref标准库：

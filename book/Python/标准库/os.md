@@ -1,5 +1,6 @@
 ---
 title: os
+date: 2020-07-02
 ---
 
 os 库是 Python 标准库，包含几百个函数，它提供通用的、基本的操作系统交互功能，对 Windows/Mac OS/Linux 都支持。
