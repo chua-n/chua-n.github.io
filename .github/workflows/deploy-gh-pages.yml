@@ -39,6 +39,16 @@ jobs:
           pnpm run docs:build
           > book/.vuepress/dist/.nojekyll
 
+      - name: Deploy to Aliyun ECS
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.ALIYUN_HOST }}
+          REMOTE_USER: ${{ secrets.ALIYUN_USER }}
+          ARGS: "-avzr --delete"
+          SOURCE: book/.vuepress/dist
+          TARGET: ${{ secrets.ALIYUN_DEPLOY_TARGET }}
+
       - name: Deploy to the github pages
         uses: peaceiris/actions-gh-pages@v3 # 使用第三方 Action 把构建完成的 Artifact 部署到指定分支
         with:
