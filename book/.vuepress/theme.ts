@@ -13,7 +13,7 @@ export default hopeTheme(
       email: "chua_n@qq.com",
     },
 
-    darkmode: "toggle",
+    darkmode: "switch",
     fullscreen: false,
     // pure: true,
     iconAssets: "//at.alicdn.com/t/c/font_4437669_pwevx64y1cf.css",

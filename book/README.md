@@ -9,7 +9,7 @@ heroImageStyle:
   - border-radius: 50%
   - width: 200px
   - height: 200px
-bgImage: //theme-hope-assets.vuejs.press/hero/default.jpg
+bgImage: //chua-n.gitee.io/figure-bed/notebook/IMG_20220910_151958.jpg
 bgImageDark: //chua-n.gitee.io/figure-bed/notebook/IMG_20231008_203323.jpg
 heroFullScreen: true
 projects:
