@@ -46,7 +46,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.ALIYUN_HOST }}
           REMOTE_USER: ${{ secrets.ALIYUN_USER }}
           ARGS: "-avzr --delete"
-          SOURCE: book/.vuepress/dist
+          SOURCE: book/.vuepress/dist/
           TARGET: ${{ secrets.ALIYUN_DEPLOY_TARGET }}
 
       - name: Deploy to the github pages
