@@ -109,7 +109,22 @@ export default hopeTheme(
       },
 
       components: {
-        components: ["Badge", "VPCard"],
+        components: [
+          "ArtPlayer",
+          "Badge",
+          "BiliBili",
+          "CodePen",
+          "FontIcon",
+          "PDF",
+          "Replit",
+          "Share",
+          "StackBlitz",
+          "SiteInfo",
+          "VPBanner",
+          "VPCard",
+          "VidStack",
+          "XiGua",
+        ],
       },
 
       // 此处开启了很多功能用于演示，你应仅保留用到的功能。
