@@ -56,3 +56,7 @@ ol {
     }
   }
 }
+
+ul:last-child, ol:last-child {
+  margin-bottom: 0;
+}
