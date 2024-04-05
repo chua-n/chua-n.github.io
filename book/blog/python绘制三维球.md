@@ -1,10 +1,11 @@
 ---
-title: 使用 python 绘制不同尺寸的球——利用Mayavi库
+title: 使用 Python 绘制不同尺寸的球——利用Mayavi库
 date: 2020-12-22 08:11:00
 category:
     - python
     - mayavi
 star: true
+excerpt: <img src="https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/6.png" style="zoom:50%;" />
 ---
 
 “万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。
@@ -18,11 +19,16 @@ mayavi 的 mlab 类似 matplotlib 的 pyplot, 其中`points3d`函数用来绘制
 于是通过研究`mlab.points3d()`函数发现，可以传入若干球的球心坐标对应的`x,y,z`，以及相应的半径`r`，然后设置好`scale_factor`、`resolution`、`mode`参数即可。这三个参数和`r`参数的说明如下：
 
 1. `scale_factor`：缩放因子，mayavi 的[官方文档](http://docs.enthought.com/mayavi/mayavi/auto/mlab_helper_functions.html#mayavi.mlab.points3d)说得很含糊，其到底怎么发挥作用的完全没有说清楚，这里经过多次试验总结为：将其设置为`scale_factor=1`的话，即会按传入的“大小参数”`r`进行一比一缩放，这个参数可视为不存在。
+
 2. `resolution`：每一个点（球）的解析度/分辨率，为整数，默认值为 8，默认值为 8 时可明显看出用球表示点时球有“棱角”，这里将其设置为 30。
-   ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/1.png)
-   ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/2.png)
+
+   | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/1.png) | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/2.png) |
+   | :----------------------------------------------------------: | :----------------------------------------------------------: |
+
     > 观察这里的坐标，显然，`resolution`参数还会一定程度上影响计算的精度吧，毕竟表面是计算后渲染出来的！咳，这点以后再说吧，目前只是需要绘制图形效果。
+
 3. `mode`：其实可以不设置，默认情况即是用 sphere 作为点的的图例，这里拿出来只是作为强调，应该设置为`mode="sphere"`。
+
 4. `r`：按照官方文档，严格来说这不是`r`参数，其形参名为`s`，但不管叫什么，它就是表示`points3d`函数绘制出来的点的大小的一个参数。这里经过多次试验，发现它的数值表示的“大小含义”，对于`mode="sphere"`来说就是球的直径，对于`mode="cube"`来说就是立方体的边长，对于`mode="cone"`来说就是圆锥的高，对于`mode="cylinder"`来说就是圆柱的高。概括而言，在内部实现中，这种对应关系是否有统一理论指导其代码实现尚不得而知。
 
 ## 2. 解决方案
@@ -54,9 +60,8 @@ mlab.axes()
 mlab.show()
 ```
 
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/3.png)
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/4.png)
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/5.png)
+| ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/3.png) | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/4.png) | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/5.png) |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 
 ## 4. 附录
 
