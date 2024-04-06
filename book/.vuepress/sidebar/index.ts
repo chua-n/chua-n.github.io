@@ -8,6 +8,8 @@ import dsa from "./dsa";
 import database from "./database";
 import linux from "./linux";
 import otherTech from "./otherTech";
+import cv from "./cv";
+import computerNetwork from "./computerNetwork";
 
 export default sidebar({
   "/": [],
@@ -15,10 +17,12 @@ export default sidebar({
   "/JavaWeb/": javaWeb,
   "/JavaScript/": javaScript,
   "/Python/": python,
-  "/数学/": math,
-  "/DSA/": dsa,
   "/数据库/": database,
   "/Linux/": linux,
+  "/计算机网络/": computerNetwork,
+  "/DSA/": dsa,
+  "/数学/": math,
+  "/CV/": cv,
   "/杂技/": otherTech,
   "/glodon/": "structure",
 });

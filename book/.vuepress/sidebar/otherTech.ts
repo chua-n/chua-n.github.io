@@ -10,18 +10,6 @@ export default arraySidebar([
     children: []
   },
   {
-    text: "计算机网络",
-    prefix: "计算机网络/",
-    collapsible: true,
-    icon: "computer-network",
-    children: [
-      buildSimpleNavObj("概要"),
-      buildSimpleNavObj("计网体系结构"),
-      buildSimpleNavObj("HTTP协议"),
-      buildSimpleNavObj("WebSocket"),
-    ]
-  },
-  {
     text: "操作系统",
     prefix: "操作系统/",
     // collapsible: true,
@@ -50,19 +38,4 @@ export default arraySidebar([
   },
   buildSimpleNavObj("Docker", "docker"),
   buildSimpleNavObj("Nginx", "nginx"),
-  {
-    text: "CV",
-    prefix: "CV/",
-    collapsible: true,
-    icon: "computer-vision-simple",
-    children: [
-      buildSimpleNavObj("基础概念"),
-      buildSimpleNavObj("空间域处理"),
-      buildSimpleNavObj("频率域滤波"),
-      buildSimpleNavObj("图像复原与重建"),
-      buildSimpleNavObj("形态学图像处理"),
-      buildSimpleNavObj("彩色图像处理"),
-      buildSimpleNavObj("小波变换"),
-    ]
-  },
 ]);

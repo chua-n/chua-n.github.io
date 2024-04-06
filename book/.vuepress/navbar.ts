@@ -34,16 +34,6 @@ const navBars = [
     link: "/Python/",
   },
   {
-    text: "数学",
-    icon: "math-pi",
-    link: "/数学/",
-  },
-  {
-    text: "DSA",
-    icon: "algorithm",
-    link: "/DSA/",
-  },
-  {
     text: "数据库",
     link: "/数据库/",
     icon: "database",
@@ -52,6 +42,26 @@ const navBars = [
     text: "Linux",
     link: "/Linux/",
     icon: "linux",
+  },
+  {
+    text: "计算机网络",
+    icon: "computer-network",
+    link: "/计算机网络/",
+  },
+  {
+    text: "DSA",
+    icon: "algorithm",
+    link: "/DSA/",
+  },
+  {
+    text: "数学",
+    icon: "math-pi",
+    link: "/数学/",
+  },
+  {
+    text: "CV",
+    icon: "computer-vision-simple",
+    link: "/CV/",
   },
   {
     text: "杂技",
