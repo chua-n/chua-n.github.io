@@ -1,6 +1,6 @@
 import { navbar } from "vuepress-theme-hope";
+import { isDevEnv } from "./utils";
 
-const isDevEnv = process.env.NODE_ENV === "development";
 const navBars = [
   {
     text: "随笔",
