@@ -1,5 +1,6 @@
 ---
 title: book
+icon: /favicon.ico
 home: true
 layout: BlogHome
 heroImage: https://chua-n.gitee.io/figure-bed/logo/wukong.jpg
