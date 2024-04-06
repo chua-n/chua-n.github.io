@@ -49,11 +49,11 @@ projects:
   - name: 计算机网络
     desc: 计算机网络知识笔记，看上去要学的真不多，但遇到的困难真不少
     icon: computer-network
-    link: /杂技/计算机网络/
+    link: /计算机网络/
   - name: CV
     desc: Computer Vision，我宁愿称之为 Digital Image Processing，另外冈萨雷斯的书是真不行
     icon: computer-vision-simple
-    link: /杂技/CV/
+    link: /CV/
   - name: 杂技
     desc: 杂七杂八之技也：Git, Docker, Nginx...
     icon: other-tech
