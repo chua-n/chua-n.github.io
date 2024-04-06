@@ -1,9 +1,7 @@
 ---
 title: 配置jupyter notebook远程连接服务
 date: 2020-12-08 20:49:00
-category:
-    - python
-    - jupyter
+category: python
 ---
 
 jupyter notebook 不仅可在本地进行连接，而且可以在远程主机上开启 jupyter notebook 服务，然后在本地进行连接以便使用服务器的资源。

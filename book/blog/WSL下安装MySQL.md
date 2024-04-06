@@ -1,10 +1,7 @@
 ---
 title: WSL下安装MySQL
 date: 2020-08-14 16:54:00
-category:
-    - linux
-    - WSL
-    - mysql
+category: linux
 ---
 
 近期我在 Win10 中装了 WSL(Windows Subsystem for Linux)，又在学习 mysql，试图在 WSL(Ubuntu)中安装 mysql 进行命令行练习时，发现如下问题并解决。

@@ -3,7 +3,6 @@ title: jupyter notebook中使用mayavi三维绘图库
 date: 2020-12-08 21:09:00
 category:
     - python
-    - jupyter
     - mayavi
 ---
 

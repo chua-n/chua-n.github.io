@@ -3,7 +3,6 @@ title: 在远程服务器中使用mayavi渲染三维图——借助jupyter noteb
 date: 2021-02-01 19:26:56
 category:
     - python
-    - jupyter
     - mayavi
 ---
 
