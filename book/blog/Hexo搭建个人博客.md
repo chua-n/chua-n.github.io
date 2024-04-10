@@ -39,7 +39,7 @@ npm(node package management)，即 nodejs 的包管理器（nodejs 通常也称�
 
 两者名称中打头的“Git”即缘自上一步提及的 Git，GitHub 和 Gitee 是用 Git 管理你的代码的云端存储仓库，Gitee 其实是 GitHub 的国内山寨版，风格、界面、操作几乎一模一样。
 
-GitHub 和 Gitee 都提供免费的 pages 服务，所谓的 [pages](https://www.baidu.com/link?url=els0W6Bd92GOMdr_r84LrqCpKPR10Iy_jiKgK1SPYhO5zBOOffTngA99ocKeFqOt_buq2pOAN9XbUUcIkgROBSsFwM_dThgGt6HE6-m1UCDhQ3taP2udYnjBoeivseBP&wd=&eqid=a1a54f2a0000076f000000035ff6c65a) 是一个免费的静态网页托管服务，可以用来托管博客、项目官网等静态网页，本文所谈的博客搭建正是基于 GitHub 的 pages。简而言之，你用这个 pages 服务搭好你的博客内容后，你就拥有了一个博客主页：username.github.io 或 username.gitee.io，其中 username 是注册的 GitHub 或 Gitee 账户的用户名，比如笔者的博客网址就是 [chua-n.github.io](https://chua-n.github.io/)。至于为什么不用 Gitee 的 pages，只是因为它现在不再支持免费的自定义域名，而我希望使用自定义域名来访问我的博客，比如在浏览器输入地址 www.chua-n.com ，也可以进入我的博客，和 chua-n.github.io 是一模一样的。
+GitHub 和 Gitee 都提供免费的 pages 服务，所谓的 [pages](https://www.baidu.com/link?url=els0W6Bd92GOMdr_r84LrqCpKPR10Iy_jiKgK1SPYhO5zBOOffTngA99ocKeFqOt_buq2pOAN9XbUUcIkgROBSsFwM_dThgGt6HE6-m1UCDhQ3taP2udYnjBoeivseBP&wd=&eqid=a1a54f2a0000076f000000035ff6c65a) 是一个免费的静态网页托管服务，可以用来托管博客、项目官网等静态网页，本文所谈的博客搭建正是基于 GitHub 的 pages。简而言之，你用这个 pages 服务搭好你的博客内容后，你就拥有了一个博客主页：username.github.io 或 username.gitee.io，其中 username 是注册的 GitHub 或 Gitee 账户的用户名，比如笔者的博客网址就是 [chua-n.github.io](https://chua-n.github.io/)。至于为什么不用 Gitee 的 pages，只是因为它现在不再支持免费的自定义域名，而我希望使用自定义域名来访问我的博客，比如在浏览器输入地址 chua-n.com ，也可以进入我的博客，和 chua-n.github.io 是一模一样的。
 
 那为什么用了 GitHub 还要使用 Gitee 呢？原因在于 GitHub 毕竟是国外的产品，服务器在中国境外，作为全世界 IT 工程师的核心交流社区虽未被墙，但在其中访问图片资源的时候效率极其低下，博客中的图片经常加载不出来，因此国内网络上有很多寻找各种“图床”（一个在网络上存储你的图片的地方，以便你在博客中引用该图片时能够正常显示，可理解为公开的网盘吧）的帖子，这些帖子最常提到的图床有七牛云（免费 10G 空间）、腾讯云（不了解）、微博相册（不了解）等等，它们往往有空间有限、面临收费或正在收费、每日上/下载流量有限等问题。因此笔者脑门一激灵，想着 GitHub 和 Gitee 均作为重要的开源免费社区，既然图片能免费存在 GitHub 上，只是影响博客加载效率，何不单独将图片存储在 Gitee 中再引用呢？于是又用到了 Gitee。
 

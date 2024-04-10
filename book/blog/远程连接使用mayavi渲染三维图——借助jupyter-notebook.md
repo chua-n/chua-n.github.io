@@ -8,7 +8,7 @@ category:
 
 mayavi 库基于 opengl 绘制三维图，似乎凡是通过 opengl 调用 GPU 进行图像渲染的相关功能在远程连接中都无法使用，SSH 与 linux 的连接如是，win10 的远程桌面连接亦如是，曾经在 2020 年寒假使用服务器工作时深受其害，至 2021 年寒假竟然碰巧发现一些窍门可以正常使用 mayavi 了。
 
-> 注：本文说的“远程正常使用 mayavi”指其能正常渲染展示 3D 图（使用鼠标可以拖动至各个视角查看），如果只是希望能够保存 mayavi 绘制出的图片为 png 文件，不需要前台的 3D 展示，参考另一篇[博文](https://www.chua-n.com/2020/12/07/mayavi离屏渲染/)。
+> 注：本文说的“远程正常使用 mayavi”指其能正常渲染展示 3D 图（使用鼠标可以拖动至各个视角查看），如果只是希望能够保存 mayavi 绘制出的图片为 png 文件，不需要前台的 3D 展示，参考另一篇[博文](https://chua-n.com/2020/12/07/mayavi离屏渲染/)。
 
 <!-- more -->
 
@@ -43,7 +43,7 @@ Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, 
 
 ## 2. 解决方案 1
 
-巧合的是，离校前我在服务器的主机上就地操作时，开启了一个 tmux 终端服务(见[常用 linux 命令杂记](https://www.chua-n.com/2021/01/15/常用linux命令杂记/))，在这个 tmux 终端中我意外开启了 jupyter-notebook 服务，jupyter 竟然能正常渲染出 mayavi 的三维图了！
+巧合的是，离校前我在服务器的主机上就地操作时，开启了一个 tmux 终端服务(见[常用 linux 命令杂记](https://chua-n.com/2021/01/15/常用linux命令杂记/))，在这个 tmux 终端中我意外开启了 jupyter-notebook 服务，jupyter 竟然能正常渲染出 mayavi 的三维图了！
 
 ```shell
 chuan@zwgroup-1080ti:~/soil$ jupyter-notebook
@@ -67,7 +67,7 @@ jupyter-notebook  # 无所谓何时开启Jupyter服务
 
 ## <span id="jump">3. 解决方案 2</span>
 
-此方案实际是 mayavi 离屏渲染方法的一体两面，参见[此篇博文](https://www.chua-n.com/2020/12/07/mayavi离屏渲染/)创建一个 `mayaviOffScreen.mlab` 代替你需要的 `mayavi.mlab` 吧：
+此方案实际是 mayavi 离屏渲染方法的一体两面，参见[此篇博文](https://chua-n.com/2020/12/07/mayavi离屏渲染/)创建一个 `mayaviOffScreen.mlab` 代替你需要的 `mayavi.mlab` 吧：
 
 ```python
 """Render the mayavi scene off screen.

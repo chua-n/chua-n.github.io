@@ -71,7 +71,7 @@ $ sudo sh cuda_10.2.89_440.33.01_linux.run
 
 ## 2. 解决驱动问题
 
-为了这个专门写了篇博客，移步[这里](https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/)。
+为了这个专门写了篇博客，移步[这里](https://chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/)。
 
 ## 3. 安装
 
@@ -91,6 +91,6 @@ sudo sh cuda_10.2.89_440.33.01_linux.run
 
 简而言之，总的流程其实是：
 
-1. 适配好你需要的 NVIDIA Driver(英伟达驱动)，参考[这里](https://www.chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/)；
+1. 适配好你需要的 NVIDIA Driver(英伟达驱动)，参考[这里](https://chua-n.com/2020/06/29/linux命令行下安装特定版本的cuda/)；
 2. 使用 1.2 节的`runfile(local)`方法先下载好相应的 cuda 版本；
 3. 按照第 3 节进行安装。

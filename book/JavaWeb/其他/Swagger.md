@@ -76,12 +76,12 @@ Maven坐标：有两个，分别是`springfox-swagger2`, `springfox-swagger-ui`�
         // 配置Swagger信息
         private ApiInfo apiInfo() {
             // 作者信息
-            Contact contact = new Contact("徐川", "https://www.chua-n.com/", "chua_n@qq.com");
+            Contact contact = new Contact("徐川", "https://chua-n.com/", "chua_n@qq.com");
             return new ApiInfo(
                 "荒流的SwaggerAPI文档",
                 "合抱之木，生于毫末",
                 "v1.0",
-                "https://www.chua-n.com/",
+                "https://chua-n.com/",
                 contact,
                 "Apache 2.0",
                 "http://www.apache.org/licenses/LICENSE-2.0",
