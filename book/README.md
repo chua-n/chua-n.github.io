@@ -13,6 +13,7 @@ heroImageStyle:
 bgImage: //chua-n.gitee.io/figure-bed/notebook/IMG_20220910_151958.jpg
 bgImageDark: //chua-n.gitee.io/figure-bed/notebook/IMG_20231008_203323.jpg
 heroFullScreen: true
+footer: <a href="https://beian.miit.gov.cn" target="_blank">陕ICP备2024034563号</a>
 projects:
   - name: Java
     desc: Java 语言学习笔记
