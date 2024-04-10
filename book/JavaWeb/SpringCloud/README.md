@@ -8,7 +8,7 @@ title: SpringCloud
 
 **单体架构**：将业务的所有功能集中在一个项目中开发，打成一个包部署。如下图：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128173356114.png" alt="image-20211128173356114" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128173356114.png" alt="image-20211128173356114" style="zoom:50%;" />
 
 单体架构的优点是：
 
@@ -19,7 +19,7 @@ title: SpringCloud
 
 **分布式架构**：根据业务功能对系统进行拆分，每个业务模块作为独立项目开发，称为一个**服务**。如下图：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128173526231.png" alt="image-20211128173526231" style="zoom:30%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128173526231.png" alt="image-20211128173526231" style="zoom:30%;" />
 
 分布式架构的优点是：
 
@@ -33,7 +33,7 @@ title: SpringCloud
 - 服务之间如何实现远程调用？
 - 服务健康状态如何感知？
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128173747166.png" alt="image-20211128173747166" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128173747166.png" alt="image-20211128173747166" style="zoom:33%;" />
 
 ### 1.3 微服务方案的服务治理
 
@@ -44,7 +44,7 @@ title: SpringCloud
 - 自治：团队独立、技术独立、数据独立、部署独立
 - 隔离性强：服务调用做好隔离、容错、降级，避免出现级联问题
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128174200051.png" alt="image-20211128174200051" style="zoom:66%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128174200051.png" alt="image-20211128174200051" style="zoom:66%;" />
 
 ## 2. Spring Cloud
 
@@ -77,7 +77,7 @@ Spring Cloud 组件体系：
 
 Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件，阿里云商业化组件，以及集成Spring Cloud 组件。
 
-![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/v2-46c0b9e0d41c441d222390c79a4cd53b_720w.webp)
+![img](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/v2-46c0b9e0d41c441d222390c79a4cd53b_720w.webp)
 
 - 阿里开源组件
 
@@ -102,4 +102,4 @@ Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件�
 
 企业常用技术选型组合：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211128172746094.png" alt="image-20211128172746094" style="zoom:28%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128172746094.png" alt="image-20211128172746094" style="zoom:28%;" />

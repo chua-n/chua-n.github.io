@@ -5,7 +5,7 @@ category:
     - python
     - mayavi
 star: true
-excerpt: <img src="https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/6.png" style="zoom:50%;" />
+excerpt: <img src="https://figure-bed.chua-n.com/notebook/blog/python绘制三维球/6.png" style="zoom:50%;" />
 ---
 
 “万恶”的 mayavi 库，琢磨了老半天，才弄清楚怎么根据给定的球心坐标和半径批量绘制出三维空间的球。
@@ -22,7 +22,7 @@ mayavi 的 mlab 类似 matplotlib 的 pyplot, 其中`points3d`函数用来绘制
 
 2. `resolution`：每一个点（球）的解析度/分辨率，为整数，默认值为 8，默认值为 8 时可明显看出用球表示点时球有“棱角”，这里将其设置为 30。
 
-   | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/1.png) | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/2.png) |
+   | ![](https://figure-bed.chua-n.com/notebook/blog/python绘制三维球/1.png) | ![](https://figure-bed.chua-n.com/notebook/blog/python绘制三维球/2.png) |
    | :----------------------------------------------------------: | :----------------------------------------------------------: |
 
     > 观察这里的坐标，显然，`resolution`参数还会一定程度上影响计算的精度吧，毕竟表面是计算后渲染出来的！咳，这点以后再说吧，目前只是需要绘制图形效果。
@@ -60,14 +60,14 @@ mlab.axes()
 mlab.show()
 ```
 
-| ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/3.png) | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/4.png) | ![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/5.png) |
+| ![](https://figure-bed.chua-n.com/notebook/blog/python绘制三维球/3.png) | ![](https://figure-bed.chua-n.com/notebook/blog/python绘制三维球/4.png) | ![](https://figure-bed.chua-n.com/notebook/blog/python绘制三维球/5.png) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 
 ## 4. 附录
 
 ### 4.1. 我本来想要画的球堆积颗粒模型：
 
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/python绘制三维球/6.png)
+![](https://figure-bed.chua-n.com/notebook/blog/python绘制三维球/6.png)
 
 ### 4.2. 原本我采用的绘球函数：
 

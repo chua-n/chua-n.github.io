@@ -33,24 +33,24 @@ title: Docker
 
 大型项目组件较多，运行环境也较为复杂，部署时会碰到一些问题，如依赖关系复杂易导致的兼容性问题，开发、测试、生产环境有差异。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0980.JPG" alt="IMG_0980" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0980.JPG" alt="IMG_0980" style="zoom:67%;" />
 
 ### 1.2 Docker的原理
 
 通常而言，计算机软硬件的架构是这样的：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0983.JPG" alt="IMG_0983" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0983.JPG" alt="IMG_0983" style="zoom:40%;" />
 
 那么Docker如何解决不同系统环境的问题呢？
 
-> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0984.JPG" alt="IMG_0984" style="zoom:50%;" />
+> <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0984.JPG" alt="IMG_0984" style="zoom:50%;" />
 
 - Docker将用户程序与所需要调用的系统（如Ubuntu）函数库一起打包
 - Docker运行到不同操作系统时，直接基于打包的库函数，借助于操作系统的Linux内核来运行
 
 通过Docker可以解决依赖的兼容问题：
 
-> <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0981.JPG" alt="IMG_0981" style="zoom:50%;" />
+> <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0981.JPG" alt="IMG_0981" style="zoom:50%;" />
 
 - 将应用的Libs（函数库）、Deps（依赖）、配置与应用一起打包
 - 将每个应用放到一个隔离容器去运行，避免互相干扰
@@ -59,7 +59,7 @@ title: Docker
 
 虚拟机是在操作系统中模拟硬件设备，然后运行另一个操作系统，比如在windows系统里运行Ubuntu系统，这样就可以运行任意的Ubuntu应用了。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0987.JPG" alt="IMG_0988" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0987.JPG" alt="IMG_0988" style="zoom:40%;" />
 
 ### 1.4 Docker的解决方案总结
 
@@ -86,7 +86,7 @@ Docker如何解决开发、测试、生产环境有差异的问题？
 
 - 镜像层依赖于一系列的底层技术，比如文件系统、写时复制（copy-on-write）、联合挂载（union mounts）等。
 
-  | <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/v2-d5c06c456761b5a27090e3328b1f6882_r.jpg" alt="img" style="zoom:67%;" /> | <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20230213222923702.png" alt="image-20230213222923702" style="zoom:67%;" /> |
+  | <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/v2-d5c06c456761b5a27090e3328b1f6882_r.jpg" alt="img" style="zoom:67%;" /> | <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20230213222923702.png" alt="image-20230213222923702" style="zoom:67%;" /> |
   | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 通过 `docker history IMAGE` 命令可以查看到镜像中各层的内容及大小，每层会对应 `Dockerfile` 中的一条指令。例如，
@@ -122,7 +122,7 @@ IMAGE          CREATED         CREATED BY                                      S
 
 > 镜像运行起来就是容器，一个镜像可以运行多个容器。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0989.JPG" alt="IMG_0989" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0989.JPG" alt="IMG_0989" style="zoom:50%;" />
 
 
 
@@ -130,7 +130,7 @@ IMAGE          CREATED         CREATED BY                                      S
 
 `DockerHub`是一个Docker镜像的托管平台，这样的平台称为Docker Registry。国内也有类似于`DockerHub`的公开服务，如网易云镜像服务、阿里云镜像库等。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0990.JPG" alt="IMG_0990" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0990.JPG" alt="IMG_0990" style="zoom:40%;" />
 
 ### 2.4 Docker架构
 
@@ -139,7 +139,7 @@ Docker是一个CS架构的程序，由两部分组成：
 - 服务端：Docker守护进程，负责处理Docker指令，管理镜像、容器等
 - 客户端：通过命令或RestAPI向Docker服务端发送指令。可以在本地或远程向服务端发送指令。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0991.JPG" alt="IMG_0991" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0991.JPG" alt="IMG_0991" style="zoom:45%;" />
 
 ### 2.5 Docker安装与启动
 
@@ -170,7 +170,7 @@ systemctl restart docker # 重启docker服务
 
 > 以下各命令的具体参数可通过`docker COMMAND --help`来查阅官方说明，不一一列举。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/v2-820aee2a33654099d87cdd2b7a1ce741_r.jpg" alt="img" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/v2-820aee2a33654099d87cdd2b7a1ce741_r.jpg" alt="img" style="zoom:67%;" />
 
 惯例：`docker`命令中在表达宿主机与容器之间的映射的时候，习惯用`host:container`的方式，即用冒号`:`分隔，左边是宿主机，右边是容器。如：
 
@@ -188,11 +188,11 @@ systemctl restart docker # 重启docker服务
 
 镜像名称一般分两部分组成：`[repository]:[tag]`，在没有指定tag时，默认是`latest`，即最新版本的镜像。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222234533061.png" alt="image-20211222234533061" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211222234533061.png" alt="image-20211222234533061" style="zoom:50%;" />
 
 镜像操作命令：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222234637316.png" alt="image-20211222234637316" style="zoom:30%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211222234637316.png" alt="image-20211222234637316" style="zoom:30%;" />
 
 #### 镜像仓库
 
@@ -216,7 +216,7 @@ systemctl restart docker # 重启docker服务
 
 ### 3.3 容器
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1003.JPG" alt="IMG_1003" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1003.JPG" alt="IMG_1003" style="zoom:45%;" />
 
 #### 容器生命周期管理
 
@@ -232,7 +232,7 @@ systemctl restart docker # 重启docker服务
 
 容器是否会长久运行，是和 `docker run` 指定的命令有关，即容器内是否有前台进程在运行，和 `-d` 参数无关。例如通过 `-d` 参数后台运行 `centos` 镜像，容器创建完成后将退出。而通过 `-it` 分配一个伪终端后，容器内将有一个 bash 终端守护容器，容器便不会退出：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20190923233721960-1995535823.png" alt="img" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20190923233721960-1995535823.png" alt="img" style="zoom:50%;" />
 
 #### 容器操作
 
@@ -272,7 +272,7 @@ docker stop $(docker ps -q) & docker rm $(docker ps -aq)
 
 - 示例2：进入Nginx容器，修改HTML文件的内容：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1006.JPG" alt="IMG_1006" style="zoom:40%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1006.JPG" alt="IMG_1006" style="zoom:40%;" />
 
 ### 3.4 附：Management Commands
 
@@ -374,11 +374,11 @@ To get more help with docker, check out our guides at https://docs.docker.com/go
 
 背景——容器与数据耦合导致的问题：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1007.JPG" alt="IMG_1007" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1007.JPG" alt="IMG_1007" style="zoom:40%;" />
 
 数据卷（volume）是一个虚拟目录，指向宿主机文件系统中的某个目录：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1008.JPG" alt="IMG_1008" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1008.JPG" alt="IMG_1008" style="zoom:50%;" />
 
 数据卷的作用是将容器与数据分离，解耦合，方便操作容器内数据，保证数据安全。
 
@@ -402,15 +402,15 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
 我们在创建容器时，可以通过`-v`参数来挂载一个数据卷到某个容器目录：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223003923310.png" alt="image-20211223003923310" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211223003923310.png" alt="image-20211223003923310" style="zoom:40%;" />
 
 例如，创建并运行一个MySQL容器，将宿主机目录直接挂载到容器：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1012.JPG" alt="IMG_1012" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1012.JPG" alt="IMG_1012" style="zoom:50%;" />
 
 数据卷挂载的方式对比：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1014.JPG" alt="IMG_1014" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1014.JPG" alt="IMG_1014" style="zoom:45%;" />
 
 ## 5. 容器网络
 
@@ -477,27 +477,27 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
   - 容器内查看网络配置，可以看到会默认分配一个 `docker0` 的内网IP：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006221712371-558945729.png" alt="img" style="zoom:67%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191006221712371-558945729.png" alt="img" style="zoom:67%;" />
 
 - `host`：容器不会获得一个独立的 network namespace，而是与主机共用一个。这就意味着容器不会有自己的网卡信息，而是使用宿主机的，容器除了网络，其它都是隔离的。
 
   - 可以看到 host 网络模式下，容器网络配置与宿主机是一样的，那么容器内应用的端口将占用宿主机的端口：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006222034377-323969518.png" alt="img" style="zoom:67%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191006222034377-323969518.png" alt="img" style="zoom:67%;" />
 
 - `none`：获取独立的 network namespace，但不为容器进行任何网络配置，需要我们手动配置。这种模式应用场景比较少。
 
-  <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006222522643-1364582786.png" alt="img" style="zoom:67%;" />
+  <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191006222522643-1364582786.png" alt="img" style="zoom:67%;" />
 
 - `container:<CONTAINER NAME/ID>`：与指定的容器使用同一个 network namespace，具有同样的网络配置信息，两个容器除了网络，其它都是隔离的。
 
   - 创建容器，并映射 9090 端口到容器的 80 端口，进入容器内，通过 `netstat -antp` 可以看到没有端口连接信息：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006223802000-1773597709.png" alt="img" style="zoom:67%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191006223802000-1773597709.png" alt="img" style="zoom:67%;" />
 
   - 创建 `nginx` 容器，并使用 `net_container` 容器的网络。可以看到 `net_container` 容器内已经在监听 `nginx` 的80端口了，而且通过映射的 9090 端口可以访问到 `nginx` 服务：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191006224235577-1982026757.png" alt="img" style="zoom:67%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191006224235577-1982026757.png" alt="img" style="zoom:67%;" />
 
 - 自定义网络：与默认的bridge原理一样，但自定义网络具备内部DNS发现，可以通过容器名或者主机名进行容器之间网络通信。
 
@@ -505,7 +505,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
   - 创建两个容器并加入到自定义网络，在容器中就可以互相连通
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191007123036413-300458064.png" alt="img" style="zoom:67%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191007123036413-300458064.png" alt="img" style="zoom:67%;" />
 
 ### 5.2 容器网络访问原理
 
@@ -514,7 +514,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 - 每次创建一个新容器的时候，Docker 从可用的地址段中选择一个空闲的 IP 地址分配给容器的 eth0 端口，使用本地主机上 docker0 接口的 IP 作为所有容器的默认网关。
 - 当创建一个 Docker 容器的时候，同时会创建一对 veth pair 接口（当数据包发送到一个接口时，另外一个接口也可以收到相同的数据包）。这对接口一端在容器内，即 eth0 ；另一端在本地并被挂载到 docker0 网桥，名称以 veth 开头。通过这种方式，主机可以跟容器通信，容器之间也可以相互通信。Docker 就创建了在主机和所有容器之间的一个虚拟共享网络。
 
-| <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191007124456783-38819526.png" alt="img" style="zoom:80%;" /> | <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/856154-20191007125216709-1729870172.png" alt="img" style="zoom:80%;" /> |
+| <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191007124456783-38819526.png" alt="img" style="zoom:80%;" /> | <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/856154-20191007125216709-1729870172.png" alt="img" style="zoom:80%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 ## 6. Dockerfile
@@ -525,7 +525,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
 镜像结构：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_1015.JPG" alt="IMG_1015" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1015.JPG" alt="IMG_1015" style="zoom:40%;" />
 
 镜像是分层结构，每一层称为一个layer：
 
@@ -680,13 +680,13 @@ Sending build context to Docker daemon 2.048 kB
 
 - 示例1：基于Ubuntu镜像构建一个新镜像，运行一个java项目
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005014040.png" alt="image-20211223005014040" style="zoom:35%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211223005014040.png" alt="image-20211223005014040" style="zoom:35%;" />
 
 - 示例2：基于java:8-alpine镜像，将一个java项目构建为镜像
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005050347.png" alt="image-20211223005050347" style="zoom:33%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211223005050347.png" alt="image-20211223005050347" style="zoom:33%;" />
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005125668.png" alt="image-20211223005125668" style="zoom:40%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211223005125668.png" alt="image-20211223005125668" style="zoom:40%;" />
 
 ## 7. Docker Compose
 
@@ -726,7 +726,7 @@ $ sudo curl -SL https://download.fastgit.org/docker/compose/releases/download/v2
 
 Docker Compose 默认使用文件名 `docker-compose.yml` 作为模板配置文件，不过也可以使用 `-f` 参数指定具体文件。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211223005256604.png" alt="image-20211223005256604" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211223005256604.png" alt="image-20211223005256604" style="zoom:33%;" />
 
 Docker Compose 的 YAML 文件包含 4 个一级 key：`version, services, networks, volumes`
 

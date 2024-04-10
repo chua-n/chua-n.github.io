@@ -5,11 +5,11 @@ date: 2020-11-05
 
 MyBatis提供一级缓存和二级缓存的机制。
 
-![47](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/47.png)
+![47](https://figure-bed.chua-n.com/notebook/JavaWeb/MyBatis/47.png)
 
 ## 1. 一级缓存
 
-![48](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/48.png)
+![48](https://figure-bed.chua-n.com/notebook/JavaWeb/MyBatis/48.png)
 
 **一级缓存**是SqlSession级别的缓存。在操作数据库时，每个SqlSession类的实例对象中有一个数据结构（HashMap）可以用于存储缓存数据，不同的SqlSession类的实例对象缓存的数据区域（HashMap）是互不影响的。
 
@@ -19,7 +19,7 @@ MyBatis提供一级缓存和二级缓存的机制。
 
 ## 2. 二级缓存
 
-![49](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/MyBatis/49.png)
+![49](https://figure-bed.chua-n.com/notebook/JavaWeb/MyBatis/49.png)
 
 **二级缓存**是Mapper级别的缓存。多个SqlSession类的实例对象操作同一个Mapper配置文件中的SQL语句，多个SqlSession类的实例对象可以共用二级缓存，二级缓存是跨SqlSession的。
 

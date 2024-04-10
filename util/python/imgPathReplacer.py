@@ -3,7 +3,7 @@ import os
 from tarfile import ENCODING
 import win32file
 
-IMAGE_URL = "https://chua-n.gitee.io/figure-bed"
+IMAGE_URL = "https://figure-bed.chua-n.com"
 ENCODING = "UTF-8"
 
 

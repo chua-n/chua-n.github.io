@@ -38,4 +38,4 @@ mlab.init_notebook()
 
 此后，mlab 绘制出来的三维图即是内嵌于 jupyter 之中了，而且也可以用鼠标对其进行拖动旋转等操作。
 
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/jupyter%20notebook中使用mayavi/jupyter效果图.png)
+![](https://figure-bed.chua-n.com/notebook/blog/jupyter%20notebook中使用mayavi/jupyter效果图.png)

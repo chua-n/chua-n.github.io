@@ -6,7 +6,7 @@ title: RestAPI
 
 ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/en/elasticsearch/client/index.html)，用来操作ES，这些客户端的本质就是组装DSL语句，通过HTTP请求发送给ES。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231225812173.png" alt="image-20211231225812173" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231225812173.png" alt="image-20211231225812173" style="zoom:50%;" />
 
 ## 2. 操作索引库
 
@@ -21,7 +21,7 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 1. 导入课前资料Demo：`tb_hotel.sql`, `hotel-demo`
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231230302633.png" alt="image-20211231230302633" style="zoom:33%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231230302633.png" alt="image-20211231230302633" style="zoom:33%;" />
 
 2. 分析数据结构，定义mapping属性——考虑字段名、数据类型、是否参与搜索、是否分词、如果分词那么分词器是什么
 
@@ -53,9 +53,9 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 4. 利用JavaRestClient创建索引库
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231231648680.png" alt="image-20211231231648680" style="zoom:40%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231231648680.png" alt="image-20211231231648680" style="zoom:40%;" />
 
-    > <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231231940533.png" alt="image-20211231231940533" style="zoom:50%;" />
+    > <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231231940533.png" alt="image-20211231231940533" style="zoom:50%;" />
 
 5. 利用JavaRestClient删除索引库
 
@@ -116,27 +116,27 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 2. 新增酒店数据
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231233648176.png" alt="image-20211231233648176" style="zoom:45%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231233648176.png" alt="image-20211231233648176" style="zoom:45%;" />
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231233732619.png" alt="image-20211231233732619" style="zoom:55%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231233732619.png" alt="image-20211231233732619" style="zoom:55%;" />
 
 3. 根据id查询酒店数据
 
     > 根据id查询到的文档数据是json，需要反序列化为Java对象
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231233839531.png" alt="image-20211231233839531" style="zoom:45%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231233839531.png" alt="image-20211231233839531" style="zoom:45%;" />
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231233915282.png" alt="image-20211231233915282" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231233915282.png" alt="image-20211231233915282" style="zoom:50%;" />
 
 4. 根据id修改酒店数据
 
     > 依旧可分为全量更新与局部更新。
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231234058245.png" alt="image-20211231234058245" style="zoom:45%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231234058245.png" alt="image-20211231234058245" style="zoom:45%;" />
 
 5. 根据id删除文档数据
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20211231234139694.png" alt="image-20211231234139694" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20211231234139694.png" alt="image-20211231234139694" style="zoom:50%;" />
 
 ### 批量处理
 
@@ -189,11 +189,11 @@ ES官方提供了各种不同语言的[客户端](https://www.elastic.co/guide/e
 
 RestAPI中构建DSL是通过`HighLevelRestClient`中的`resource()`来实现的，其中包含了查询、排序、分页、高亮等所有功能：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101130721646.png" alt="image-20220101130721646" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101130721646.png" alt="image-20220101130721646" style="zoom:45%;" />
 
 RestAPI中构建查询条件的核心部分是由一个名为QueryBuilders的工具类提供的，其中包含了各种查询方法：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101130821791.png" alt="image-20220101130821791" style="zoom:36%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101130821791.png" alt="image-20220101130821791" style="zoom:36%;" />
 
 ### match查询
 
@@ -201,9 +201,9 @@ RestAPI中构建查询条件的核心部分是由一个名为QueryBuilders的工
 
 这里通过`match_all`来演示基本的API：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101130409162.png" alt="image-20220101130409162" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101130409162.png" alt="image-20220101130409162" style="zoom:50%;" />
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101130438837.png" alt="image-20220101130438837" style="zoom:60%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101130438837.png" alt="image-20220101130438837" style="zoom:60%;" />
 
 #### match、multi_match
 
@@ -216,7 +216,7 @@ QueryBuilders.matchQuery("all", "如家");
 QueryBuilders.multiMatchQuery("如家", "name", "business");
 ```
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101131436846.png" alt="image-20220101131436846" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101131436846.png" alt="image-20220101131436846" style="zoom:50%;" />
 
 ### 精确查询
 
@@ -227,7 +227,7 @@ QueryBuilders.termQuery("city", "杭州");
 QueryBuilders.rangeQuery("price").gte(100).let(150);
 ```
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101131640604.png" alt="image-20220101131640604" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101131640604.png" alt="image-20220101131640604" style="zoom:50%;" />
 
 ### 复合查询
 
@@ -240,23 +240,23 @@ boolQuery.must(QueryBuilders.termQuery("city", "杭州"));
 boolQuery.filter(QueryBuilders.rangeQuery("price").lte(250));
 ```
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101131900230.png" alt="image-20220101131900230" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101131900230.png" alt="image-20220101131900230" style="zoom:50%;" />
 
 ### 排序、分页、高亮
 
 搜索结果的排序和分页是与query同级的参数，对应的API如下：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101132021781.png" alt="image-20220101132021781" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101132021781.png" alt="image-20220101132021781" style="zoom:50%;" />
 
 高亮API包括请求DSL构建和结果解析两部分：
 
 - DSL构建：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101132103021.png" alt="image-20220101132103021" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101132103021.png" alt="image-20220101132103021" style="zoom:50%;" />
 
 - 结果解析：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101132121066.png" alt="image-20220101132121066" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101132121066.png" alt="image-20220101132121066" style="zoom:50%;" />
 
 ## 5. 数据聚合
 
@@ -264,6 +264,6 @@ boolQuery.filter(QueryBuilders.rangeQuery("price").lte(250));
 
 以品牌聚合为例：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101210151672.png" alt="image-20220101210151672" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101210151672.png" alt="image-20220101210151672" style="zoom:50%;" />
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/Elasticsearch/image-20220101210215327.png" alt="image-20220101210215327" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101210215327.png" alt="image-20220101210215327" style="zoom:50%;" />

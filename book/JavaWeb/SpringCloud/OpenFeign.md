@@ -28,7 +28,7 @@ User user = restTemplate.getForObject(url, User.class);
 
 Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/OpenFeign/feign ，其作用就是帮助我们优雅的实现HTTP请求的发送，解决上述问题。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0931.JPG" alt="IMG_0931" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0931.JPG" alt="IMG_0931" style="zoom:33%;" />
 
 
 
@@ -201,13 +201,13 @@ Feign底层的客户端实现：
 - 服务紧耦合
 - 父接口参数列表中的映射不会被继承
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222154441762.png" alt="image-20211222154441762" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211222154441762.png" alt="image-20211222154441762" style="zoom:33%;" />
 
 ### 5.2 方式二：抽取
 
 将`FeignClient`抽取为独立模块，并且把接口有关的POJO、默认的Feign配置都放到这个模块中，提供给所有的消费者使用：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0948.JPG" alt="IMG_0948" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0948.JPG" alt="IMG_0948" style="zoom:40%;" />
 
 抽取`FeignClient`的步骤：
 

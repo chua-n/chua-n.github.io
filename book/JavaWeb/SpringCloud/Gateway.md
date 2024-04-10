@@ -6,7 +6,7 @@ title: Gateway
 
 对于微服务集群内部而言，服务注册与发现机制已经解决了服务之间的相互调用问题。而对于微服务集群外部呢？比如终端的用户，其到目前为止，要向一个微服务发起请求，仍然需要直接面向该服务的 `ip:port` 信息，面对千千万万个微服务，这无疑又对用户造成了巨大的困扰。因此，有必要为外部的客户端提供一个统一的访问入口，避免客户端直接与庞大的后台微服务进行接触，从而让客户端的访问更简单。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0953.JPG" alt="IMG_0953" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0953.JPG" alt="IMG_0953" style="zoom:40%;" />
 
 概括而言，网关发挥了如下作用：
 
@@ -20,7 +20,7 @@ title: Gateway
 
 搭建网关服务的步骤：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0960.JPG" alt="IMG_0960" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0960.JPG" alt="IMG_0960" style="zoom:50%;" />
 
 1. 创建新的module，引入`SpringCloudGateway`的依赖和`nacos`的服务发现依赖：
 
@@ -78,7 +78,7 @@ title: Gateway
 
 The following diagram provides a high-level overview of how Spring Cloud Gateway works:
 
-![Spring Cloud Gateway Diagram](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/spring_cloud_gateway_diagram.png)
+![Spring Cloud Gateway Diagram](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/spring_cloud_gateway_diagram.png)
 
 - Clients make requests to Spring Cloud Gateway.
 
@@ -100,7 +100,7 @@ Spring Cloud Gateway 的术语：
 
 例如，`Path=/user/**`是按照路径匹配，这个规则是由`org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory`类来处理的，像这样的路由断言工厂在 Spring Cloud Gateway 中内置了十几个，可以从[官方文档](https://docs.spring.io/spring-cloud-gateway/docs/3.1.6/reference/html/#gateway-request-predicates-factories)中一窥其貌：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0963.JPG" alt="IMG_0963" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0963.JPG" alt="IMG_0963" style="zoom:33%;" />
 
 ## 4. 路由过滤器
 
@@ -110,7 +110,7 @@ Spring Cloud Gateway 的术语：
 
 `GatewayFilter`是网关中提供的一种过滤器，可以对进入网关的请求和微服务返回的响应做处理：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0964.JPG" alt="IMG_0964" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0964.JPG" alt="IMG_0964" style="zoom:45%;" />
 
 类似于路由断言工厂，Spring 提供了30多种不同的路由过滤器工厂**`GatewayFilter` Factory**，例如：
 
@@ -124,19 +124,19 @@ Spring Cloud Gateway 的术语：
 |          ...           |            ......            |
 |    `DefaultFilters`    | 默认过滤器（对所有请求生效） |
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0966.JPG" alt="IMG_0966" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0966.JPG" alt="IMG_0966" style="zoom:33%;" />
 
 #### 案例
 
 假设我们需要给所有进入`userservice`的请求添加一个请求头：`Truth=itcast is freaking awesome!`，其实现方式是，在`gateway`中修改`application.yml`文件，给`userservice`的路由添加过滤器：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0967.JPG" alt="IMG_0967" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0967.JPG" alt="IMG_0967" style="zoom:50%;" />
 
 #### 默认过滤器
 
 如果要对所有的路由都生效，可以将过滤器工厂写到 `default-filters`下，这个属性接收一个过滤器数组。如：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0968.JPG" alt="IMG_0968" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0968.JPG" alt="IMG_0968" style="zoom:45%;" />
 
 ### 4.2 `GlobalFilter`
 
@@ -144,7 +144,7 @@ Spring Cloud Gateway 的术语：
 
 全局过滤器（`GlobalFilter`）的作用也是处理一切进入网关的请求和微服务响应，与`GatewayFilter`的作用一样。区别在于，`GatewayFilter`通过配置定义，处理逻辑是固定的，而`GlobalFilter`的逻辑可以自定义，需要自己写代码实现，定义方式是实现`GlobalFilter`接口：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0969.JPG" alt="IMG_0969" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0969.JPG" alt="IMG_0969" style="zoom:45%;" />
 
 实现全局过滤器的步骤：
 
@@ -152,7 +152,7 @@ Spring Cloud Gateway 的术语：
 - 添加`@Order`注解或实现`Ordered`接口
 - 编写处理逻辑
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0973.jpg" alt="IMG_0973" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0973.jpg" alt="IMG_0973" style="zoom:40%;" />
 
 #### 案例
 
@@ -167,7 +167,7 @@ Spring Cloud Gateway 的术语：
 
 1. 自定义过滤器——自定义类，实现`GatewayFilter`接口，添加`@Order`注解：
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0971.JPG" alt="IMG_0971" style="zoom:45%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0971.JPG" alt="IMG_0971" style="zoom:45%;" />
 
 2. ...
 
@@ -181,13 +181,13 @@ Spring Cloud Gateway 的术语：
 
 可参考下面几个类的源码来看：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/IMG_0974.JPG" alt="IMG_0974" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0974.JPG" alt="IMG_0974" style="zoom:40%;" />
 
 ## 5. 跨域问题
 
 网关对CORS的解决方案，只需简单配置即可实现：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/SpringCloud/image-20211222175152188.png" alt="image-20211222175152188" style="zoom:35%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211222175152188.png" alt="image-20211222175152188" style="zoom:35%;" />
 
 CORS跨域要配置的参数包括哪几个？
 

@@ -39,7 +39,7 @@ Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, 
 
 即使使用 jupyter notebook 导入 mlab，也会把其服务搞挂掉：
 
-![jupyter挂掉](https://chua-n.gitee.io/figure-bed/notebook/blog/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter挂掉.png)
+![jupyter挂掉](https://figure-bed.chua-n.com/notebook/blog/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter挂掉.png)
 
 ## 2. 解决方案 1
 
@@ -52,7 +52,7 @@ chuan@zwgroup-1080ti:~/soil$ jupyter-notebook
 [I 20:09:54.166 NotebookApp] http://[ipAddress]:8888/
 ```
 
-![jupyter成功使用mayavi](https://chua-n.gitee.io/figure-bed/notebook/blog/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter成功使用mayavi.png)
+![jupyter成功使用mayavi](https://figure-bed.chua-n.com/notebook/blog/远程连接使用mayavi渲染三维图——借助jupyter-notebook/jupyter成功使用mayavi.png)
 
 但这个 tmux 终端是我在服务器主机上本地开启的，现在我在远程连接中再开一个新的 tmux 终端并开启 jupyter-notebook 服务时，导入 mlab 依然会挂掉 jupyter 服务。因而推测：**在远程连接中调用一些系统命令时，跟在本地调用相同命令时被系统授予的权限是不同的**，尽管我可以在远程连接中新开一个 tmux，但这个 tmux 没有权限连接 X 服务（无法渲染基于 opengl 的 3D 图像），而本地开启的 tmux 则拥有相关权限。
 

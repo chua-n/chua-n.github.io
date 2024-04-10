@@ -16,7 +16,7 @@ category:
 
 在官网[这里](https://www.python.org/downloads/source/)下载你想要的 linux 环境下的 python 源码，如我下载的是下图第一个 Gzipped source tarball，其实二选一就好。
 
-![python源码.png](https://chua-n.gitee.io/figure-bed/notebook/blog/linux源码安装python/python源码包.png)
+![python源码.png](https://figure-bed.chua-n.com/notebook/blog/linux源码安装python/python源码包.png)
 
 我下载完成后是一个叫 Python-3.8.3.tgz 的文件，在下载目录里使用`tar -xvf Python-3.8.3.tgz` 命令解压文件包，目录里多出一个 Python-3.8.3 的文件夹，cd 命令进入该文件夹。
 
@@ -97,7 +97,7 @@ sudo make install
 
 至此 python 的安装过程其实已经完成，在安装目录里使用`./bin/python3`即可打开安装好的 python 可执行文件并进入 python 命令行了：
 
-![启动python.png](https://chua-n.gitee.io/figure-bed/notebook/blog/linux源码安装python/python命令行.png)
+![启动python.png](https://figure-bed.chua-n.com/notebook/blog/linux源码安装python/python命令行.png)
 
 但是每次要从安装目录里启动 python 很不方便，我们想要达到的是在 shell 中随时随地唤醒这个 python，这便需要进行相关的环境配置。
 

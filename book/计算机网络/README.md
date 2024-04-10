@@ -22,6 +22,6 @@ title: 计算机网络
 
 3. 我们并不愿意在每一个网络上都设置一个DHCP**服务器**，这会使DHCP服务器的数量太多。因此现在是使每一个网络至少有一个DHCP中继代理(relay agent)，这通常是一台路由器，它配置了DHCP服务器的IP地址信息。DHCP服务器分拨给DHCP客户的IP地址是临时的，因此DHCP客户只能在一段有限时间内使用这个分配到的IP地址，DHCP协议称这段时间为租用期(lease period)。
 
-    <img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/计算机网络/64.png" style="zoom:67%;" />
+    <img src="https://figure-bed.chua-n.com/notebook/杂技/计算机网络/64.png" style="zoom:67%;" />
 
 P2P应用的范围很广，例如文件分发、实时音频或视频会议、数据库系统、网络服务支持（如P2P打车软件、P2P理财等）。目前在互联网流量中，P2P工作方式下的文件分发已经占据了最大的份额，比万维网应用所占的比例大得多。

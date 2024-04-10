@@ -118,7 +118,7 @@ title: MySQL调优
 
 我们再回顾一下，当向 MySQL 发送一个请求的时候，MySQL 到底做了些什么：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/数据库/MySQL/19.jpg" alt="MySQL查询的执行路径" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/数据库/MySQL/19.jpg" alt="MySQL查询的执行路径" style="zoom:50%;" />
 
 #### 2.3.1 MySQL 的客户端/服务器信息协议
 

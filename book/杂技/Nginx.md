@@ -16,11 +16,11 @@ nginx的优点：
 
 nginx的应用场景：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/nginx/image-20221017153213016.png" alt="image-20221017153213016" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/杂技/nginx/image-20221017153213016.png" alt="image-20221017153213016" style="zoom:50%;" />
 
 nginx的组成：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/nginx/image-20221017153449346.png" alt="image-20221017153449346" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/杂技/nginx/image-20221017153449346.png" alt="image-20221017153449346" style="zoom:50%;" />
 
 nginx同redis类似都采用了io多路复用机制......
 
@@ -164,7 +164,7 @@ nginx配置文件由三大块组成：
       - location块：匹配请求的路由uri，以及各种页面的处理情况
     - upstream块：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/nginx/image-20221017173158576.png" alt="image-20221017173158576" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/杂技/nginx/image-20221017173158576.png" alt="image-20221017173158576" style="zoom:50%;" />
 
 ### 3.3 语法格式
 
@@ -190,7 +190,7 @@ content_by_lua_block {ngx.say("Hello World ")}
 
 示例：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/nginx/image-20221017172946874.png" alt="image-20221017172946874" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/杂技/nginx/image-20221017172946874.png" alt="image-20221017172946874" style="zoom:50%;" />
 
 ### 3.4 全局变量
 
@@ -311,7 +311,7 @@ location 的语法形式有两种：
 
 location的匹配顺序：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/杂技/nginx/nginx_location.png" alt="image-20221018102708228" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/杂技/nginx/nginx_location.png" alt="image-20221018102708228" style="zoom:67%;" />
 
 #### proxy_pass
 

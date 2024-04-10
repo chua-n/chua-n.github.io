@@ -47,7 +47,7 @@ B/S架构中，服务端基于统一的HTTP，而传统的C/S架构使用自定�
 
 ### Web请求过程
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/8.png" alt="image-20211009232347506" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/8.png" alt="image-20211009232347506" style="zoom:50%;" />
 
 当一个用户在浏览器里输入 www.taobao.com 这个URL时，将会发生很多操作：
 
@@ -68,7 +68,7 @@ B/S架构中，服务端基于统一的HTTP，而传统的C/S架构使用自定�
 
 浏览器缓存是一个比较复杂但又比较重要的机制，在我们浏览一个页面时发现有异常的情况下，通常考虑的就是是不是浏览器做了缓存，所以一般的做法就是按Ctrl+F5组合键重新请求一次这个页面，此时在HTTP的请求头中会增加一些请求头，它告诉服务器端我们要获取最新的数据而不是缓存，因而重新请求的页面肯定是最新的页面。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/9.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/9.png" style="zoom:80%;" />
 
 > 请求头中多了两个请求项：
 >
@@ -116,7 +116,7 @@ Pragma字段的作用和Cache-Control有点类似，它也是在HTTP头中包含
 
 DNS域名解析的过程大概有10步，如图所示：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/10.png" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/10.png" style="zoom:67%;" />
 
 在浏览器中输入域名并回车后：
 
@@ -258,7 +258,7 @@ $$
 
 通常的CDN架构：
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/11.png" alt="image-20211010111124657" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/11.png" alt="image-20211010111124657" style="zoom:67%;" />
 
 ### 4.2 负载均衡
 
@@ -270,7 +270,7 @@ $$
 
 CDN的动态加速技术也是当前比较流行的一种优化技术，它的技术原理就是在CDN的DNS解析中通过动态的链路探测来寻找回源最好的一条路径，然后通过DNS的调度将所有请求调度到选定的这条路径上回源，从而加速用户访问的效率。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/后端/12.png" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/12.png" style="zoom:67%;" />
 
 由于CDN节点是遍布全国的，所以用户接入一个CDN节点后，可以选择一条从离用户最近的CDN节点到源站链路最好的路径让用户走。一个简单的原则就是在每个CDN节点上从源站下载一个一定大小的文件，看哪个链路的总耗时最短，这样可以构成一个链路列表，然后绑定到DNS解析上，更新到CDN的Local DNS。当然是否走这个并不一定根据耗时这个唯一条件，有时也要考虑网络成本，例如走某个节点虽然可以节省10ms，但是网络带宽的成本却增加了很多，还有其他网络链路的安全等因素也要综合考虑。
 

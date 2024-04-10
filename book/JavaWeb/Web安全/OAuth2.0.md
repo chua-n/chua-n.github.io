@@ -34,7 +34,7 @@ OAuth 2.0 是一个行业的标准授权协议。其作用是为第三方应用�
 
 下图详细的描述了这四个角色之间的步骤流程：
 
-![oauth2-roles](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Web安全/oauth2-roles.jpg)
+![oauth2-roles](https://figure-bed.chua-n.com/notebook/JavaWeb/Web安全/oauth2-roles.jpg)
 
 1. Client 请求 Resource Owner 的授权。授权请求可以直接向 Resource Owner 请求，也可以通过 Authorization Server 间接的进行。
 2. Client 获得授权许可。
@@ -256,7 +256,7 @@ OAuth 2.0 标准定义了四种授权方式：
 
 有些 Web 应用是纯前端应用，没有后端。这时就不能用上面的方式了，必须将令牌储存在前端。RFC 6749 就规定了第二种方式，允许直接向前端颁发令牌。这种方式没有授权码这个中间步骤，所以称为（授权码）**隐藏式**（implicit）。
 
-![img](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Web安全/bg2019040906.jpg)
+![img](https://figure-bed.chua-n.com/notebook/JavaWeb/Web安全/bg2019040906.jpg)
 
 1. 第一步，A 网站提供一个链接，要求用户跳转到 B 网站，授权用户数据给 A 网站使用。
 

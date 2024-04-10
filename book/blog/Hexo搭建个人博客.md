@@ -99,7 +99,7 @@ hexo server
 ```
 
 即可在本地浏览器中输入网站 http://localhost:4000 浏览你的博客，由于没有自己的文章，默认只有一篇 hexo 自带的博文`blog/source/_posts/hello-world.md`，所以主页显示如下:
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/hexo搭博客/hexo-default.jpeg)
+![](https://figure-bed.chua-n.com/notebook/blog/hexo搭博客/hexo-default.jpeg)
 
 ### 2.2. 设置站点信息
 
@@ -169,7 +169,7 @@ hexo server
 ```
 
 效果如下：
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/hexo搭博客/hexo-written.jpeg)
+![](https://figure-bed.chua-n.com/notebook/blog/hexo搭博客/hexo-written.jpeg)
 
 ### 2.3. Hexo 基本命令
 
@@ -220,7 +220,7 @@ hexo generate
 hexo server
 ```
 
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/hexo搭博客/next.jpeg)
+![](https://figure-bed.chua-n.com/notebook/blog/hexo搭博客/next.jpeg)
 
 依然很丑？没关系，它已经种下了美的种子，后面会被逐步雕刻起来的，而且不会有多麻烦。
 
@@ -587,13 +587,13 @@ symbols_count_time:
     tags: math
     mathjax: true
     ---
-
+    
     ## 做一道题吧
-
+    
     题目：请证明$3=0$。
-
+    
     证明：
-
+    
     > 对于方程
     >
     > $$
@@ -627,7 +627,7 @@ symbols_count_time:
     > 证明完毕。
     ```
 
-    效果如下：![](https://chua-n.gitee.io/figure-bed/notebook/blog/hexo搭博客/test-math.png)
+    效果如下：![](https://figure-bed.chua-n.com/notebook/blog/hexo搭博客/test-math.png)
 
 ### 4.12. 阅读量统计
 
@@ -746,11 +746,11 @@ git commit -m "add images"
 git push
 ```
 
-并在 Gitee Pages 仓库中重新部署 Pages 服务：![](https://chua-n.gitee.io/figure-bed/notebook/blog/hexo搭博客/update-gitee-pages.png)
+并在 Gitee Pages 仓库中重新部署 Pages 服务：
 
-即可在书写 markdown 博客时通过链接格式`http://username.gitee.io/gitee_pages_repo_name/path_to_the_image`引用这张图片，对于我刚刚上传的这张图片，其链接为`https://chua-n.gitee.io/figure-bed/notebook/blog/avatar.png`。
+![](https://figure-bed.chua-n.com/notebook/blog/hexo搭博客/update-gitee-pages.png)
 
-我直接在这里引用示意一下，书写 markdown 语句`![](https://chua-n.gitee.io/figure-bed/notebook/blog/avatar.png)`，显示如下![](https://chua-n.gitee.io/figure-bed/notebook/blog/avatar.png)
+即可在书写 markdown 博客时通过链接格式`http://username.gitee.io/gitee_pages_repo_name/path_to_the_image`引用这张图片。对于我刚刚上传的这张图片，其链接为`https://chua-n.gitee.io/figure-bed/notebook/blog/avatar.png`，我在这里的 markdown 语句引用示意一下，显示如下![](https://figure-bed.chua-n.com/notebook/blog/avatar.png)
 
 > 需要强调的是，目前 Gitee 做图床有一个比较麻烦的地方，每一次上传新的图片后，需要手动更新一下 Pages 服务，不然无法按照上述格式链接到新上传的图片，因为它们没有被部署到 Pages。
 

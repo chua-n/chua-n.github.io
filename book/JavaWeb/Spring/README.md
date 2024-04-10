@@ -54,13 +54,13 @@ Spring的优势：
 
 ### Spring体系结构
 
-![9](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/9.png)
+![9](https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/9.png)
 
 The following diagram shows a high-level view of how Spring works. Your application classes are
 combined with configuration metadata so that, after the ApplicationContext is created and
 initialized, you have a fully configured and executable system or application.
 
-![image-20220509232513242](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/image-20220509232513242.png)
+![image-20220509232513242](https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/image-20220509232513242.png)
 
 ### Spring开发步骤
 
@@ -72,4 +72,4 @@ Spring开发的一般步骤：
 4. 在配置文件中进行Bean的配置；
 5. 创建ApplicationContext对象（Spring的客户端），以getBean方法得到指定的Bean。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Spring/10.png" alt="10" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/10.png" alt="10" style="zoom:50%;" />

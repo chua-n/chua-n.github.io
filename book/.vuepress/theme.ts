@@ -18,8 +18,8 @@ export default hopeTheme(
     // pure: true,
     iconAssets: "//at.alicdn.com/t/c/font_4437669_pwevx64y1cf.css",
     // iconPrefix: ???
-    logo: "https://chua-n.gitee.io/figure-bed/logo/荒流.png",
-    favicon: "https://chua-n.gitee.io/figure-bed/logo/川.ico",
+    logo: "https://figure-bed.chua-n.com/logo/荒流.png",
+    favicon: "https://figure-bed.chua-n.com/logo/川.ico",
 
     // 是否使用 RTL 布局
     rtl: false,
@@ -65,7 +65,7 @@ export default hopeTheme(
     blog: {
       name: "荒流",
       description: "应无所住，而生其心",
-      avatar: "https://chua-n.gitee.io/figure-bed/logo/wukong.jpg",
+      avatar: "https://figure-bed.chua-n.com/logo/wukong.jpg",
       roundAvatar: true,
       intro: "/about",
       medias: {

@@ -296,4 +296,4 @@ if __name__ == "__main__":
     task(20)
 ```
 
-![](https://chua-n.gitee.io/figure-bed/notebook/blog/python自动化操作GUI/pyautogui.gif)
+![](https://figure-bed.chua-n.com/notebook/blog/python自动化操作GUI/pyautogui.gif)

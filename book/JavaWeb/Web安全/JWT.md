@@ -35,7 +35,7 @@ JWT 的原理是，服务器认证以后，生成一个 JSON 对象，发回给�
 
 JWT 通常是这样的：`xxx.yyy.zzz`，其本质上就是一组字串，通过点（`.`）切分成三个为 Base64 编码的部分：
 
-![此图片来源于：https://supertokens.com/blog/oauth-vs-jwt](https://chua-n.gitee.io/figure-bed/notebook/JavaWeb/Web安全/jwt-composition.png)
+![此图片来源于：https://supertokens.com/blog/oauth-vs-jwt](https://figure-bed.chua-n.com/notebook/JavaWeb/Web安全/jwt-composition.png)
 
 - **Header（头部）**: 描述 JWT 的元数据，定义了生成签名的算法以及 `Token` 的类型。
 - **Payload（负载）**: 用来存放实际需要传递的数据

@@ -12,13 +12,13 @@ Redis 主从模式的结构图如下。其中，Redis 主机会一直将自己�
 
 |                         “主从直连”式                         |                         “薪火相传”式                         |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![Redis主从模式](https://chua-n.gitee.io/figure-bed/notebook/数据库/Redis/16133214H-0.gif) | ![image-20221014111727994](https://chua-n.gitee.io/figure-bed/notebook/数据库/Redis/image-20221014111727994.png) |
+| ![Redis主从模式](https://figure-bed.chua-n.com/notebook/数据库/Redis/16133214H-0.gif) | ![image-20221014111727994](https://figure-bed.chua-n.com/notebook/数据库/Redis/image-20221014111727994.png) |
 
 当一个主机挂掉之后，如果没有手动进行任何更改，不会有任何一个从机跃升为主机，它们的相对关系不会发生变化，当主机恢复之后仍将成为主机。
 
 ### 1.2 复制过程
 
-![image-20221014111538664](https://chua-n.gitee.io/figure-bed/notebook/数据库/Redis/image-20221014111538664.png)
+![image-20221014111538664](https://figure-bed.chua-n.com/notebook/数据库/Redis/image-20221014111538664.png)
 
 1. slave 启动成功连接到 master 后会发送一个 sync 命令；
 2. master 接到 sync 命令后会启动后台的存盘进程，同时收集所有接收到的用于修改数据集的命令，在后台进程执行完毕之后，master 将传送整个数据文件到 slave，以完成一次完全同步；
@@ -73,7 +73,7 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 
 哨兵模式是一种特殊的模式，Redis 为其提供了专属的哨兵命令，它是一个独立的进程，能够独立运行。其基本结构图如下：
 
-![哨兵模式](https://chua-n.gitee.io/figure-bed/notebook/数据库/Redis/1K00M955-0.gif)
+![哨兵模式](https://figure-bed.chua-n.com/notebook/数据库/Redis/1K00M955-0.gif)
 
 在上图过程中，哨兵主要有两个重要作用：
 
@@ -84,7 +84,7 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 
 在实际生产情况中，Redis Sentinel 是集群的高可用的保障，为避免 Sentinel 发生意外，它一般是由 3～5 个节点组成，这样就算挂了个别节点，该集群仍然可以正常运转。其结构图如下所示：
 
-![Redis哨兵模式](https://chua-n.gitee.io/figure-bed/notebook/数据库/Redis/1K00HQ5-1.gif)
+![Redis哨兵模式](https://figure-bed.chua-n.com/notebook/数据库/Redis/1K00HQ5-1.gif)
 
 上图所示，多个哨兵之间也存在互相监控，这就形成了多哨兵模式，对该模式的工作过程如下：
 

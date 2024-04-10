@@ -74,11 +74,11 @@ public class SwingApplication {
 }
 ```
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/Java/20210722182318356.png" alt="20210722182318356" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/Java/20210722182318356.png" alt="20210722182318356" style="zoom:67%;" />
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/Java/20210722182318356.png" alt="20210722182318356" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/Java/20210722182318356.png" alt="20210722182318356" style="zoom:67%;" />
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/Java/image-20210722182352158.png" alt="image-20210722182352158" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/notebook/Java/image-20210722182352158.png" alt="image-20210722182352158" style="zoom:67%;" />
 
 ## 3. Swing组件的体系结构
 

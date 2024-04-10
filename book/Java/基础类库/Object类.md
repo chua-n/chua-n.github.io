@@ -20,7 +20,7 @@ Java对象都是Object类的实例，都可直接调用该类中定义的方法�
 
 Object类提供的拷贝机制只对对象里各实例变量进行“简单复制”，如果实例变量的类型是引用类型，Object的Clone机制只是简单地复制这个引用变量，这样原有对象的引用类型的实例变量和克隆对象的引用类型的实例变量依然指向内存中的同一个实例。
 
-<img src="https://chua-n.gitee.io/figure-bed/notebook/Java/35.png" alt="35" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/notebook/Java/35.png" alt="35" style="zoom:80%;" />
 
 如果开发者需要对对象进行深拷贝，需要开发者自己进行“递归”克隆，保证所有类型的成员变量值所引用的对象都被复制了。
 
