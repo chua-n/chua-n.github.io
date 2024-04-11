@@ -251,7 +251,7 @@ export default hopeTheme(
         maxSize: 200 * 1024, // 200 MB
         maxImageSize: 100 * 1024, // 100 MB
         appendBase: true,
-        showInstall: false,
+        showInstall: true,
         apple: {
           icon: "/assets/icon/logo-apple-152.png",
           statusBarColor: "black",
