@@ -5,7 +5,7 @@ home: true
 layout: BlogHome
 heroImage: https://figure-bed.chua-n.com/logo/wukong.jpg
 heroText: 应无所住，而生其心
-tagline: 借鉴 OneNote 书本式的笔记方案，使用 VuePress 搭建自己的笔记与博客系统。
+tagline: 借鉴 OneNote 书本式的笔记方案，使用 VuePress 搭建自己的笔记兼博客系统。
 heroImageStyle:
   - border-radius: 50%
   - width: 200px
@@ -28,7 +28,7 @@ projects:
     icon: javascript
     link: /JavaScript/
   - name: Python
-    desc: Python 语言的 cookbook 及其数学生态（numpy, pands, scipy, pytorch, matplotlib, mayavi...）
+    desc: Python 语言的 cookbook 及其数学生态（numpy, pandas, scipy, pytorch, matplotlib, mayavi...）
     icon: python
     link: /Python/
   - name: Math
