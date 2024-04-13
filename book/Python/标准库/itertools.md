@@ -119,9 +119,9 @@ date: 2019-06-04
 
     | 示例                                                 |
     | ---------------------------------------------------- |
-    | ![](https://figure-bed.chua-n.com/notebook/Python/267.png) |
-    | ![](https://figure-bed.chua-n.com/notebook/Python/268.png) |
-    | ![](https://figure-bed.chua-n.com/notebook/Python/269.png) |
+    | ![](https://figure-bed.chua-n.com/Python/267.png) |
+    | ![](https://figure-bed.chua-n.com/Python/268.png) |
+    | ![](https://figure-bed.chua-n.com/Python/269.png) |
 
 过滤工具`itertools.compress()`，见“数据结构与算法”页面笔记
 

@@ -17,11 +17,11 @@ Nacos 的关键特性包括（详见[什么是 Nacos](https://nacos.io/zh-cn/doc
 
 Nacos 地图：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/nacosMap.jpg" alt="img" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/nacosMap.jpg" alt="img" style="zoom:50%;" />
 
 Nacos 生态图：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/1533045871534-e64b8031-008c-4dfc-b6e8-12a597a003fb.png" alt="img" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/1533045871534-e64b8031-008c-4dfc-b6e8-12a597a003fb.png" alt="img" style="zoom:50%;" />
 
 ### 安装
 
@@ -29,9 +29,9 @@ Nacos 生态图：
 
 ## 2. 服务注册
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128211348606.png" alt="image-20211128211348606" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211128211348606.png" alt="image-20211128211348606" style="zoom:50%;" />
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128211407488.png" alt="image-20211128211407488" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211128211407488.png" alt="image-20211128211407488" style="zoom:45%;" />
 
 ## 3. Nacos服务分级存储模型
 
@@ -39,15 +39,15 @@ Nacos 生态图：
 - 二级是集群，例如杭州、上海
 - 三级是实例，例如杭州机房的某台部署了userservice的服务器
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128212006476.png" alt="image-20211128212006476" style="zoom:25%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211128212006476.png" alt="image-20211128212006476" style="zoom:25%;" />
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128212122650.png" alt="image-20211128212122650" style="zoom:30%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211128212122650.png" alt="image-20211128212122650" style="zoom:30%;" />
 
 设置实例的集群属性：
 
 - 修改application.yml文件，添加`spring.cloud.nacos.discovery.cluster-name`属性即可。
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211128212328655.png" alt="image-20211128212328655" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211128212328655.png" alt="image-20211128212328655" style="zoom:33%;" />
 
 ## 4. Nacos负载均衡
 
@@ -94,11 +94,11 @@ NacosRule负载均衡策略：
 
 1. 在Nacos控制台可以设置实例的权重值，首先选中实例后面的编辑按钮
 
-    ![IMG_0899](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0899.jpg)
+    ![IMG_0899](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0899.jpg)
 
 2. 将权重设置为0.1，测试可以发现8081被访问到的频率大大降低
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0899-2.JPG" alt="IMG_0899-2" style="zoom:67%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0899-2.JPG" alt="IMG_0899-2" style="zoom:67%;" />
 
 ## 5. Nacos注册中心
 
@@ -106,33 +106,33 @@ NacosRule负载均衡策略：
 
 Nacos中服务存储和数据存储的最外层都是一个名为namespace的东西，用来做最外层隔离。
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0901.JPG" alt="IMG_0901" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0901.JPG" alt="IMG_0901" style="zoom:50%;" />
 
 步骤示例：
 
 1. 在Nacos控制台可以创建namespace，用来隔离不同环境
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0902.JPG" alt="IMG_0902" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0902.JPG" alt="IMG_0902" style="zoom:50%;" />
 
 2. 然后填写一个新的命名空间信息
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0903.JPG" alt="IMG_0903" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0903.JPG" alt="IMG_0903" style="zoom:50%;" />
 
 3. 保存后会在控制台看到这个命名空间的id:
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211221232618963.png" alt="image-20211221232618963" style="zoom:40%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211221232618963.png" alt="image-20211221232618963" style="zoom:40%;" />
 
 4. 修改order-service的application.yml，添加namespace:
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211221232701490.png" alt="image-20211221232701490" style="zoom:40%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211221232701490.png" alt="image-20211221232701490" style="zoom:40%;" />
 
 5. 重启order-service后，再来查看控制台:
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211221232930869.png" alt="image-20211221232930869" style="zoom:40%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211221232930869.png" alt="image-20211221232930869" style="zoom:40%;" />
 
 6. 此时访问order-service，因为namespace不同，会导致找不到userservice，控制台会报错：
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211221232951661.png" alt="image-20211221232951661" style="zoom:33%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211221232951661.png" alt="image-20211221232951661" style="zoom:33%;" />
 
 Nacos环境隔离：
 
@@ -142,7 +142,7 @@ Nacos环境隔离：
 
 ### Nacos注册中心原理
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0910.JPG" alt="IMG_0910" style="zoom:40%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0910.JPG" alt="IMG_0910" style="zoom:40%;" />
 
 ### 临时实例和非临时实例
 
@@ -180,29 +180,29 @@ spring:
 
 配置更改热更新：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0913.JPG" alt="IMG_0913" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0913.JPG" alt="IMG_0913" style="zoom:50%;" />
 
 在弹出表单中填写配置信息：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0914.JPG" alt="IMG_0914" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0914.JPG" alt="IMG_0914" style="zoom:50%;" />
 
 配置获取的步骤如下：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0916.JPG" alt="IMG_0916" style="zoom:45%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0916.JPG" alt="IMG_0916" style="zoom:45%;" />
 
 #### 6.1.2 步骤
 
 1. 引入Nacos的配置管理客户端依赖：
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211221234335154.png" alt="image-20211221234335154" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211221234335154.png" alt="image-20211221234335154" style="zoom:50%;" />
 
 2. 在userservice中的resource目录添加一个bootstrap.yml文件，这个文件是引导文件，优先级高于application.yml：
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211221234355526.png" alt="image-20211221234355526" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211221234355526.png" alt="image-20211221234355526" style="zoom:50%;" />
 
 3. 测试：在user-service中将pattern.dateformat这个属性注入到UserController中做测试：
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0918.JPG" alt="IMG_0918" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0918.JPG" alt="IMG_0918" style="zoom:50%;" />
 
 将配置交给Nacos管理的步骤：
 
@@ -216,11 +216,11 @@ Nacos中的配置文件变更后，微服务无需重启即可感知，不过需
 
 - 方式一：在`@Value`注入的变量所在类上添加注解`@RefreshScope`
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0920.JPG" alt="IMG_0920" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0920.JPG" alt="IMG_0920" style="zoom:50%;" />
 
 - 方式二：使用`@ConfigurationProperties`注解
 
-    <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0921.JPG" alt="IMG_0921" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0921.JPG" alt="IMG_0921" style="zoom:50%;" />
 
 注意事项：不宜把所有的配置都放到配置中心，维护起来比较麻烦，建议将一些关键参数，需要运行时调整的参数放到nacos配置中心，一般都是自定义配置。
 
@@ -233,17 +233,17 @@ Nacos中的配置文件变更后，微服务无需重启即可感知，不过需
 
 无论profile如何变化，`[spring.application.name].yaml`这个文件一定会加载，因此多环境共享配置可以写入这个文件：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0923.JPG" alt="IMG_0923" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0923.JPG" alt="IMG_0923" style="zoom:50%;" />
 
 多种配置的优先级：
 
 `[服务名]-[环境].yaml` > `[服务名].yaml` > `本地配置`
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211221235605552.png" alt="image-20211221235605552" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211221235605552.png" alt="image-20211221235605552" style="zoom:50%;" />
 
 ### 6.4 Nacos集群搭建
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_0926.JPG" alt="IMG_0926" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0926.JPG" alt="IMG_0926" style="zoom:50%;" />
 
 集群搭建步骤：
 

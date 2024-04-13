@@ -45,9 +45,9 @@ date: 2019-06-04
 
 | 操作                                                 | 说明                                                         |
 | ---------------------------------------------------- | ------------------------------------------------------------ |
-| ![](https://figure-bed.chua-n.com/notebook/Python/262.png) | ![](https://figure-bed.chua-n.com/notebook/Python/263.png)         |
-| ![](https://figure-bed.chua-n.com/notebook/Python/264.png) | `itemgetter()`函数也支持多个keys                             |
-| ![](https://figure-bed.chua-n.com/notebook/Python/265.png) | `itemgetter()`有时候也可以用lambda表达式替代；<br/> 这种方案不错，但是`itemgetter()`方式会稍快一点。 |
-| ![](https://figure-bed.chua-n.com/notebook/Python/266.png) | 其实，`itemgetter()`操作也适用于`min()`和`max()`函数         |
+| ![](https://figure-bed.chua-n.com/Python/262.png) | ![](https://figure-bed.chua-n.com/Python/263.png)         |
+| ![](https://figure-bed.chua-n.com/Python/264.png) | `itemgetter()`函数也支持多个keys                             |
+| ![](https://figure-bed.chua-n.com/Python/265.png) | `itemgetter()`有时候也可以用lambda表达式替代；<br/> 这种方案不错，但是`itemgetter()`方式会稍快一点。 |
+| ![](https://figure-bed.chua-n.com/Python/266.png) | 其实，`itemgetter()`操作也适用于`min()`和`max()`函数         |
 
 `operator.methodcaller()`函数可通过字符串形式的方法名称调用某个对象的对应方法。见“类”页面笔记。

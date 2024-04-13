@@ -47,7 +47,7 @@ Spring提供了两种类型的IoC容器：
 
 `ApplicationContext`为接口，其代直接翻译为（Spring的）应用上下文，用来代表Spring的IoC容器，通过`ApplicationContext`接口的对象可获得Spring容器中的Bean对象。
 
-![image-20220416171705471](https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/23.png)
+![image-20220416171705471](https://figure-bed.chua-n.com/JavaWeb/Spring/23.png)
 
 `ApplicationContext`在初始化上下文时就实例化了所有单例的 Bean。`ApplicationContext`接口的实现类常见的有：
 
@@ -181,7 +181,7 @@ The Spring Framework supports six scopes, four of which are available only if yo
 
 #### 2.5.1 singleton
 
-![singleton](https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/singleton.png)
+![singleton](https://figure-bed.chua-n.com/JavaWeb/Spring/singleton.png)
 
 The scope of the Spring singleton is best described as being per-container and per-bean. This means that, if you define one bean for a particular class in a single Spring container, the Spring container creates one and only one instance of the class defined by that bean definition.
 
@@ -194,7 +194,7 @@ The scope of the Spring singleton is best described as being per-container and p
 
 #### 2.5.2 prototype
 
-![prototype](https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/prototype.png)
+![prototype](https://figure-bed.chua-n.com/JavaWeb/Spring/prototype.png)
 
 The non-singleton prototype scope of bean deployment results in the creation of a new bean instance every time a request for that specific bean is made. That is, the bean is injected into another bean or you request it through a `getBean()` method call on the container. As a rule, you should use the prototype scope for all stateful beans and the singleton scope for stateless beans.
 
@@ -271,11 +271,11 @@ void registerScope(String scopeName, Scope scope);
 
 对于两个类UserService和UserDao，它们都在Spring容器中，前者的代码定义中需要使用到后者。以前的做法是在容器外部获得UserService实例和UserDao实例，然后在程序中进行结合；然而，最终程序直接使用的是UserService，所以更好的方式是：在Spring容器中，将UserDao设置到UserSerivice内部。
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/11.png" alt="11" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/Spring/11.png" alt="11" style="zoom:50%;" />
 
 以Spring进行依赖注入后的效果如下图：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/Spring/12.png" alt="12" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/Spring/12.png" alt="12" style="zoom:50%;" />
 
 ### 3.1 构造方法注入
 

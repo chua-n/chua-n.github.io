@@ -73,9 +73,9 @@ date: 2019-06-04
 
 若要从一个容器中获取最大或者最小的N个元素组成的列表，可以通过`heapq`模块的`nlargest()`和`nsmallest()`解决这个问题（他们在底层实现里会对数据进行堆排序，时间复杂度仅仅是`O(log N)`，N是堆大小）。
 
-![](https://figure-bed.chua-n.com/notebook/Python/260.png)
+![](https://figure-bed.chua-n.com/Python/260.png)
 
-![](https://figure-bed.chua-n.com/notebook/Python/261.png)
+![](https://figure-bed.chua-n.com/Python/261.png)
 
 - 当要查找的元素个数相对较小时，函数`nlargest()`和`nsmallest()`非常合适；
 - 若仅仅要查找唯一的最小或最大的元素的话，使用`min()`和`max()`函数会更快些；

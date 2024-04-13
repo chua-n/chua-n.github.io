@@ -9,7 +9,7 @@ date: 2021-04-15
 
 - 工程目录
 
-    ![50](https://figure-bed.chua-n.com/notebook/JavaWeb/MyBatis/50.png)
+    ![50](https://figure-bed.chua-n.com/JavaWeb/MyBatis/50.png)
 
 - 这里的主要特点是Service层的编写，Service业务方法中含有重复性代码，即使将其封装为一个MyBtatisUtils也非佳作：
 
@@ -128,7 +128,7 @@ date: 2021-04-15
 
 Spring整合MyBatis的思路：
 
-![51](https://figure-bed.chua-n.com/notebook/JavaWeb/MyBatis/51.png)
+![51](https://figure-bed.chua-n.com/JavaWeb/MyBatis/51.png)
 
 将SqlSessionFactory配置到Spring容器中：
 

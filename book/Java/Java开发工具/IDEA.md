@@ -6,7 +6,7 @@ title: IDEA
 
 IDEA的项目结构：
 
-<img src="https://figure-bed.chua-n.com/notebook/Java/53.png" alt="53" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/Java/53.png" alt="53" style="zoom:50%;" />
 
 IDEA中创建包和创建目录时是不一样的：包在创建时，com.itheima.dao是一个三级结构；目录在创建时，com.itheima.dao是一级目录。
 

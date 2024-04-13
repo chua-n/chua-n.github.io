@@ -241,10 +241,10 @@ SELECT ... FROM tableA ??? JOIN tableB ON tableA.column1 = tableB.column2;
 
 |      连接方式      |                             图示                             |          说明          |
 | :----------------: | :----------------------------------------------------------: | :--------------------: |
-|    `INNER JOIN`    | ![inner-join](https://figure-bed.chua-n.com/notebook/数据库/MySQL/1.png) | 选出两张表都存在的记录 |
-| `LEFT OUTER JOIN`  | ![left-outer-join](https://figure-bed.chua-n.com/notebook/数据库/MySQL/2.png) |   选出左表存在的记录   |
-| `RIGHT OUTER JOIN` | ![right-outer-join](https://figure-bed.chua-n.com/notebook/数据库/MySQL/3.png) |   选出右表存在的记录   |
-| `FULL OUTER JOIN`  | ![full-outer-join](https://figure-bed.chua-n.com/notebook/数据库/MySQL/4.png) | 选出左右表都存在的记录 |
+|    `INNER JOIN`    | ![inner-join](https://figure-bed.chua-n.com/数据库/MySQL/1.png) | 选出两张表都存在的记录 |
+| `LEFT OUTER JOIN`  | ![left-outer-join](https://figure-bed.chua-n.com/数据库/MySQL/2.png) |   选出左表存在的记录   |
+| `RIGHT OUTER JOIN` | ![right-outer-join](https://figure-bed.chua-n.com/数据库/MySQL/3.png) |   选出右表存在的记录   |
+| `FULL OUTER JOIN`  | ![full-outer-join](https://figure-bed.chua-n.com/数据库/MySQL/4.png) | 选出左右表都存在的记录 |
 
 要意识到连接只是一种机制，用来在一条`SELECT`语句中关联表，其不是物理实体，换句话说，它在实际的数据库表中不存在，仅存在于查询的执行当中。
 
@@ -487,7 +487,7 @@ FROM products
 WHERE vend_id IN (1001, 1002);
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/MySQL/5.png" alt="img" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/数据库/MySQL/5.png" alt="img" style="zoom:50%;" />
 
 #### 1.3.3 UNION 与 ORDER BY
 
@@ -506,7 +506,7 @@ WHERE vend_id IN (1001, 1002)
 ORDER BY vend_id, prod_price;
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/MySQL/6.png" alt="6.png" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/数据库/MySQL/6.png" alt="6.png" style="zoom:50%;" />
 
 ## 2. DML
 

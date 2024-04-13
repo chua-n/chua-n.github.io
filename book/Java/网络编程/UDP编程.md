@@ -62,7 +62,7 @@ IP多点广播实现了将单一信息发送到多个接收者的广播，其思
 
 IP协议点多点广播提供了这批特殊的IP地址，这些IP地址的范围是224.0.0.0~239.255.255.255。多点广播示意图如下：
 
-![52](https://figure-bed.chua-n.com/notebook/Java/52.png)
+![52](https://figure-bed.chua-n.com/Java/52.png)
 
 ### 构造方法
 

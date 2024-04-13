@@ -21,15 +21,15 @@ $ git commit -m 'The initial commit of my project'
 
 现在，Git 仓库中有五个对象：三个 *blob* 对象（保存着文件快照）、一个 **树** 对象 （记录着目录结构和 blob 对象索引）以及一个 **提交** 对象（包含着指向前述树对象的指针和所有提交信息）。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/commit-and-tree.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/commit-and-tree.png" style="zoom:80%;" />
 
 做些修改后再次提交，那么这次产生的提交对象会包含一个指向上次提交对象（父对象）的指针。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/commits-and-parents.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/commits-and-parents.png" style="zoom:80%;" />
 
 Git 的分支，其实本质上仅仅是指向提交对象的可变指针。 Git 的默认分支名字是 `master`。 在多次提交操作之后，你其实已经有一个指向最后那个提交对象的 `master` 分支， `master` 分支会在每次提交时自动向前移动。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/branch-and-history.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/branch-and-history.png" style="zoom:80%;" />
 
 ## 2. 分支创建
 
@@ -41,13 +41,13 @@ $ git branch testing
 
 这会在当前所在的提交对象上创建一个指针：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/two-branches.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/two-branches.png" style="zoom:80%;" />
 
 那么，Git 又是怎么知道当前在哪一个分支上呢？ 也很简单，它有一个名为 `HEAD` 的特殊指针。 请注意它和许多其它版本控制系统（如 Subversion 或 CVS）里的 `HEAD` 概念完全不同， 在 Git 中，它是一个指针，指向当前所在的本地分支。 
 
 在本例中，你仍然在 `master` 分支上， 因为 `git branch` 命令仅仅 **创建** 一个新分支，并不会自动切换到新分支中去。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/head-to-master.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/head-to-master.png" style="zoom:80%;" />
 
 > 附：你可以简单地使用 `git log` 命令查看各个分支当前所指的对象，提供这一功能的参数是 `--decorate`。
 >
@@ -74,7 +74,7 @@ $ git checkout testing
 
 这样 `HEAD` 就指向 `testing` 分支了：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/head-to-testing.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/head-to-testing.png" style="zoom:80%;" />
 
 那么，这样的实现方式会给我们带来什么好处呢？ 现在不妨再提交一次：
 
@@ -83,7 +83,7 @@ $ vim test.rb
 $ git commit -a -m 'made a change'
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/advance-testing.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/advance-testing.png" style="zoom:80%;" />
 
 如图所示，你的 `testing` 分支向前移动了，但是 `master` 分支却没有，它仍然指向运行 `git checkout` 时所指的对象。 这就有意思了，现在我们切换回 `master` 分支看看：
 
@@ -91,7 +91,7 @@ $ git commit -a -m 'made a change'
 $ git checkout master
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/checkout-master.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/checkout-master.png" style="zoom:80%;" />
 
 这条命令做了两件事，一是使 HEAD 指回 `master` 分支，二是将工作目录恢复成 `master` 分支所指向的快照内容。 也就是说，你现在做修改的话，项目将始于一个较旧的版本。 本质上来讲，这就是忽略 `testing` 分支所做的修改，以便于向另一个方向进行开发。
 
@@ -108,7 +108,7 @@ $ git commit -a -m 'made other changes'
 
 现在，这个项目的提交历史已经产生了分叉（见下图），因为刚才你创建了一个新分支，并切换过去进行了一些工作，随后又切换回 `master` 分支进行了另外一些工作。 上述两次改动针对的是不同分支，你可以在不同分支间不断地来回切换和工作，并在时机成熟时将它们合并起来。 而所有这些工作，你需要的命令只有 `branch`、`checkout` 和 `commit`。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/advance-master.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/advance-master.png" style="zoom:80%;" />
 
 > 附：你可以简单地使用 `git log` 命令查看分叉历史。 运行 `git log --oneline --decorate --graph --all` ，它会输出你的提交历史、各个分支的指向以及项目的分支分叉情况。
 >
@@ -148,7 +148,7 @@ $ git commit -a -m 'made other changes'
 
 首先，我们假设你正在你的项目上工作，并且在 `master` 分支上已经有了一些提交。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-branching-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-branching-1.png" style="zoom:80%;" />
 
 现在，你已经决定要解决你的公司使用的问题追踪系统中的 #53 问题。 想要新建一个分支并同时切换到那个分支上，你可以运行一个带有 `-b` 参数的 `git checkout` 命令：
 
@@ -164,7 +164,7 @@ $ git branch iss53
 $ git checkout iss53
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-branching-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-branching-2.png" style="zoom:80%;" />
 
 你继续在 #53 问题上工作，并且做了一些提交。 在此过程中，`iss53` 分支在不断的向前推进，因为你已经检出到该分支 （也就是说，你的 `HEAD` 指针指向了 `iss53` 分支）
 
@@ -173,7 +173,7 @@ $ vim index.html
 $ git commit -a -m 'added a new footer [issue 53]'
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-branching-3.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-branching-3.png" style="zoom:80%;" />
 
 现在你接到那个电话，有个紧急问题等待你来解决。 有了 Git 的帮助，你不必把这个紧急问题和 `iss53` 的修改混在一起， 你也不需要花大力气来还原关于 53# 问题的修改，然后再添加关于这个紧急问题的修改，最后将这个修改提交到线上分支，你所要做的仅仅是切换回 `master` 分支。
 
@@ -197,7 +197,7 @@ $ git commit -a -m 'fixed the broken email address'
  1 file changed, 2 insertions(+)
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-branching-4.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-branching-4.png" style="zoom:80%;" />
 
 你可以运行你的测试，确保你的修改是正确的，然后将 `hotfix` 分支合并回你的 `master` 分支来部署到线上。 你可以使用 `git merge` 命令来达到上述目的：
 
@@ -214,7 +214,7 @@ Fast-forward
 
 现在，最新的修改已经在 `master` 分支所指向的提交快照中，你可以着手发布该修复了。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-branching-5.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-branching-5.png" style="zoom:80%;" />
 
 关于这个紧急问题的解决方案发布之后，你准备回到被打断之前时的工作中。 然而，你应该先删除 `hotfix` 分支，因为你已经不再需要它了 —— `master` 分支已经指向了同一个位置。 你可以使用带 `-d` 选项的 `git branch` 命令来删除分支：
 
@@ -234,7 +234,7 @@ $ git commit -a -m 'finished the new footer [issue 53]'
 1 file changed, 1 insertion(+)
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-branching-6.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-branching-6.png" style="zoom:80%;" />
 
 你在 `hotfix` 分支上所做的工作并没有包含到 `iss53` 分支中。 如果你需要拉取 `hotfix` 所做的修改，你可以使用 `git merge master` 命令将 `master` 分支合并入 `iss53` 分支，或者你也可以等到 `iss53` 分支完成其使命，再将其合并回 `master` 分支。
 
@@ -255,11 +255,11 @@ index.html |    1 +
 
 这和你之前合并 `hotfix` 分支的时候看起来有一点不一样。 在这种情况下，你的开发历史从一个更早的地方开始分叉开来（diverged）。 因为，`master` 分支所在提交并不是 `iss53` 分支所在提交的直接祖先，Git 不得不做一些额外的工作。 出现这种情况的时候，Git 会使用两个分支的末端所指的快照（`C4` 和 `C5`）以及这两个分支的公共祖先（`C2`），做一个简单的**三方合并**：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-merging-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-merging-1.png" style="zoom:80%;" />
 
 和之前将分支指针向前推进所不同的是，Git 将此次三方合并的结果做了一个新的快照并且自动创建一个新的提交指向它。 这个被称作一次<font size=5>**合并提交**</font>，它的特别之处在于他有不止一个父提交。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-merging-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-merging-2.png" style="zoom:80%;" />
 
 既然你的修改已经合并进来了，就不再需要 `iss53` 分支了，现在你可以在任务追踪系统中关闭此项任务，并删除这个分支：
 
@@ -469,11 +469,11 @@ git branch -m oldName newName
 
 事实上我们刚才讨论的，是随着你的提交而不断右移的指针。 稳定分支的指针总是在提交历史中落后一大截，而前沿分支的指针往往比较靠前。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/lr-branches-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/lr-branches-1.png" style="zoom:80%;" />
 
 通常把他们想象成流水线（work silos）可能更好理解一点，那些经过测试考验的提交会被遴选到更加稳定的流水线上去。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/lr-branches-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/lr-branches-2.png" style="zoom:80%;" />
 
 你可以用这种方法维护不同层次的稳定性。 一些大型项目还有一个 `proposed`（建议） 或 `pu: proposed updates`（建议更新）分支，它可能因包含一些不成熟的内容而不能进入 `next` 或者 `master` 分支。 这么做的目的是使你的分支具有不同级别的稳定性；当它们具有一定程度的稳定性后，再把它们合并入具有更高级别稳定性的分支中。 再次强调一下，使用多个长期分支的方法并非必要，但是这么做通常很有帮助，尤其是当你在一个非常庞大或者复杂的项目中工作时。
 
@@ -485,11 +485,11 @@ git branch -m oldName newName
 
 考虑这样一个例子，你在 `master` 分支上工作到 `C1`，这时为了解决一个问题而新建 `iss91` 分支，在 `iss91` 分支上工作到 `C4`，然而对于那个问题你又有了新的想法，于是你再新建一个 `iss91v2` 分支试图用另一种方法解决那个问题，接着你回到 `master` 分支工作了一会儿，你又冒出了一个不太确定的想法，你便在 `C10` 的时候新建一个 `dumbidea` 分支，并在上面做些实验。 你的提交历史看起来像下面这个样子：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/topic-branches-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/topic-branches-1.png" style="zoom:80%;" />
 
 现在，我们假设两件事情：你决定使用第二个方案来解决那个问题，即使用在 `iss91v2` 分支中方案。 另外，你将 `dumbidea` 分支拿给你的同事看过之后，结果发现这是个惊人之举。 这时你可以抛弃 `iss91` 分支（即丢弃 `C5` 和 `C6` 提交），然后把另外两个分支合并入主干分支。 最终你的提交历史看起来像下面这个样子：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/topic-branches-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/topic-branches-2.png" style="zoom:80%;" />
 
 我们将会在 [分布式 Git](https://git-scm.com/book/zh/v2/ch00/ch05-distributed-git) 中向你揭示更多有关分支工作流的细节， 因此，请确保你阅读完那个章节之后，再来决定你的下个项目要使用什么样的分支策略（branching scheme）。
 
@@ -513,25 +513,25 @@ git branch -m oldName newName
 >
 > 远程仓库名字 “origin” 与分支名字 “master” 一样，在 Git 中并没有任何特别的含义一样。 同时 “master” 是当你运行 `git init` 时默认的起始分支名字，原因仅仅是它的广泛使用， “origin” 是当你运行 `git clone` 时默认的远程仓库名字。 如果你运行 `git clone -o booyah`，那么你默认的远程分支名字将会是 `booyah/master`。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/remote-branches-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/remote-branches-1.png" style="zoom:80%;" />
 
 如果你在本地的 `master` 分支做了一些工作，在同一段时间内有其他人推送提交到 `git.ourcompany.com` 并且更新了它的 `master` 分支，这就是说你们的提交历史已走向不同的方向。 即便这样，只要你保持不与 `origin` 服务器连接（并拉取数据），你的 `origin/master` 指针就不会移动。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/remote-branches-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/remote-branches-2.png" style="zoom:80%;" />
 
 如果要与给定的远程仓库同步数据，运行 `git fetch <remote>` 命令（在本例中为 `git fetch origin`）。 这个命令查找 “origin” 是哪一个服务器（在本例中，它是 `git.ourcompany.com`）， 从中抓取本地没有的数据，并且更新本地数据库，移动 `origin/master` 指针到更新之后的位置。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/remote-branches-3.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/remote-branches-3.png" style="zoom:80%;" />
 
 #### 示例2
 
 为了演示有多个远程仓库与远程分支的情况，我们假定你有另一个内部 Git 服务器，仅服务于你的某个敏捷开发团队。 这个服务器位于 `git.team1.ourcompany.com`。 你可以运行 `git remote add` 命令添加一个新的远程仓库引用到当前的项目，这个命令我们会在 [Git 基础](https://git-scm.com/book/zh/v2/ch00/ch02-git-basics-chapter) 中详细说明。 将这个远程仓库命名为 `teamone`，将其作为完整 URL 的缩写。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/remote-branches-4.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/remote-branches-4.png" style="zoom:80%;" />
 
 现在，可以运行 `git fetch teamone` 来抓取远程仓库 `teamone` 有而本地没有的数据。 因为那台服务器上现有的数据是 `origin` 服务器上的一个子集， 所以 Git 并不会抓取数据而是会设置远程跟踪分支 `teamone/master` 指向 `teamone` 的 `master` 分支。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/remote-branches-5.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/remote-branches-5.png" style="zoom:80%;" />
 
 ### 8.2 推送分支到远端
 
@@ -691,11 +691,11 @@ To https://github.com/schacon/simplegit
 
 请回顾之前在 [分支的合并](https://git-scm.com/book/zh/v2/ch00/_basic_merging) 中的一个例子，你会看到开发任务分叉到两个不同分支，又各自提交了更新。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-rebase-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-rebase-1.png" style="zoom:80%;" />
 
 之前介绍过，整合分支最容易的方法是 `merge` 命令。 它会把两个分支的最新快照（`C3` 和 `C4`）以及二者最近的共同祖先（`C2`）进行三方合并，合并的结果是生成一个新的快照（并提交）。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-rebase-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-rebase-2.png" style="zoom:80%;" />
 
 其实，还有一种方法：你可以提取在 `C4` 中引入的补丁和修改，然后在 `C3` 的基础上应用一次。 在 Git 中，这种操作就叫做 **变基（rebase）**。 你可以使用 `rebase` 命令将提交到某一分支上的所有修改都移至另一分支上，就好像“重新播放”一样。
 
@@ -710,7 +710,7 @@ Applying: added staged command
 
 它的原理是首先找到这两个分支（即当前分支 `experiment`、变基操作的目标基底分支 `master`） 的最近共同祖先 `C2`，然后对比当前分支相对于该祖先的历次提交，提取相应的修改并存为临时文件， 然后将当前分支指向目标基底 `C3`, 最后以此将之前另存为临时文件的修改依序应用。 （译注：写明了 commit id，以便理解，下同）
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-rebase-3.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-rebase-3.png" style="zoom:80%;" />
 
 现在回到 `master` 分支，进行一次快进合并。
 
@@ -719,7 +719,7 @@ $ git checkout master
 $ git merge experiment
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/basic-rebase-4.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/basic-rebase-4.png" style="zoom:80%;" />
 
 此时，`C4'` 指向的快照就和 [the merge example](https://git-scm.com/book/zh/v2/ch00/ebasing-merging-example) 中 `C5` 指向的快照一模一样了。 这两种整合方法的最终结果没有任何区别，但是变基使得提交历史更加整洁。 你在查看一个经过变基的分支的历史记录时会发现，尽管实际的开发工作是并行的， 但它们看上去就像是串行的一样，提交历史是一条直线没有分叉。
 
@@ -731,7 +731,7 @@ $ git merge experiment
 
 在对两个分支进行变基时，所生成的“重放”并不一定要在目标分支上应用，你也可以指定另外的一个分支进行应用。 就像 [从一个主题分支里再分出一个主题分支的提交历史](https://git-scm.com/book/zh/v2/ch00/bdiag_e) 中的例子那样。 你创建了一个主题分支 `server`，为服务端添加了一些功能，提交了 `C3` 和 `C4`。 然后从 `C3` 上创建了主题分支 `client`，为客户端添加了一些功能，提交了 `C8` 和 `C9`。 最后，你回到 `server` 分支，又提交了 `C10`。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/interesting-rebase-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/interesting-rebase-1.png" style="zoom:80%;" />
 
 假设你希望将 `client` 中的修改合并到主分支并发布，但暂时并不想合并 `server` 中的修改， 因为它们还需要经过更全面的测试。这时，你就可以使用 `git rebase` 命令的 `--onto` 选项， 选中在 `client` 分支里但不在 `server` 分支里的修改（即 `C8` 和 `C9`），将它们在 `master` 分支上重放：
 
@@ -741,7 +741,7 @@ $ git rebase --onto master server client
 
 以上命令的意思是：“取出 `client` 分支，找出它从 `server` 分支分歧之后的补丁， 然后把这些补丁在 `master` 分支上重放一遍，让 `client` 看起来像直接基于 `master` 修改一样”。这理解起来有一点复杂，不过效果非常酷。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/interesting-rebase-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/interesting-rebase-2.png" style="zoom:80%;" />
 
 现在可以快进合并 `master` 分支了。（如图 [快进合并 `master` 分支，使之包含来自 `client` 分支的修改](https://git-scm.com/book/zh/v2/ch00/bdiag_g)）：
 
@@ -750,7 +750,7 @@ $ git checkout master
 $ git merge client
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/interesting-rebase-3.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/interesting-rebase-3.png" style="zoom:80%;" />
 
 接下来你决定将 `server` 分支中的修改也整合进来。 使用 `git rebase <basebranch> <topicbranch>` 命令可以直接将主题分支 （即本例中的 `server`）变基到目标分支（即 `master`）上。 这样做能省去你先切换到 `server` 分支，再对其执行变基命令的多个步骤。
 
@@ -760,7 +760,7 @@ $ git rebase master server
 
 如图 [将 `server` 中的修改变基到 `master` 上](https://git-scm.com/book/zh/v2/ch00/bdiag_h) 所示，`server` 中的代码被“续”到了 `master` 后面。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/interesting-rebase-4.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/interesting-rebase-4.png" style="zoom:80%;" />
 
 然后就可以快进合并主分支 `master` 了：
 
@@ -776,7 +776,7 @@ $ git branch -d client
 $ git branch -d server
 ```
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/interesting-rebase-5.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/interesting-rebase-5.png" style="zoom:80%;" />
 
 ### 9.3 变基的风险
 
@@ -790,19 +790,19 @@ $ git branch -d server
 
 让我们来看一个在公开的仓库上执行变基操作所带来的问题。 假设你从一个中央服务器克隆然后在它的基础上进行了一些开发。 你的提交历史如图所示：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/perils-of-rebasing-1.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/perils-of-rebasing-1.png" style="zoom:80%;" />
 
 然后，某人又向中央服务器提交了一些修改，其中还包括一次合并。 你抓取了这些在远程分支上的修改，并将其合并到你本地的开发分支，然后你的提交历史就会变成这样：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/perils-of-rebasing-2.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/perils-of-rebasing-2.png" style="zoom:80%;" />
 
 接下来，这个人又决定把合并操作回滚，改用变基；继而又用 `git push --force` 命令覆盖了服务器上的提交历史。 之后你从服务器抓取更新，会发现多出来一些新的提交。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/perils-of-rebasing-3.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/perils-of-rebasing-3.png" style="zoom:80%;" />
 
 结果就是你们两人的处境都十分尴尬。 如果你执行 `git pull` 命令，你将合并来自两条提交历史的内容，生成一个新的合并提交，最终仓库会如图所示：
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/perils-of-rebasing-4.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/perils-of-rebasing-4.png" style="zoom:80%;" />
 
 此时如果你执行 `git log` 命令，你会发现有两个提交的作者、日期、日志居然是一样的，这会令人感到混乱。 此外，如果你将这一堆又推送到服务器上，你实际上是将那些已经被变基抛弃的提交又找了回来，这会令人感到更加混乱。 很明显对方并不想在提交历史中看到 `C4` 和 `C6`，因为之前就是他把这两个提交通过变基丢弃的。
 
@@ -823,7 +823,7 @@ $ git branch -d server
 
 从而我们将得到与 [你将相同的内容又合并了一次，生成了一个新的提交](https://git-scm.com/book/zh/v2/ch00/_merge_rebase_work) 中不同的结果，如图 [在一个被变基然后强制推送的分支上再次执行变基](https://git-scm.com/book/zh/v2/ch00/_rebase_rebase_work) 所示。
 
-<img src="https://figure-bed.chua-n.com/notebook/杂技/Git/perils-of-rebasing-5.png" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/杂技/Git/perils-of-rebasing-5.png" style="zoom:80%;" />
 
 要想上述方案有效，还需要对方在变基时确保 `C4'` 和 `C4` 是几乎一样的。 否则变基操作将无法识别，并新建另一个类似 `C4` 的补丁（而这个补丁很可能无法整洁的整合入历史，因为补丁中的修改已经存在于某个地方了）。
 

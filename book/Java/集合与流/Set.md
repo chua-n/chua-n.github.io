@@ -82,7 +82,7 @@ TreeSet 是 SortedSet 接口的实现类，TreeSet 可以确保集合处于有�
 
 将一个元素添加到树中要比添加到散列表中慢，参见下表。但是与检查数组或链表中的重复元素相比，使用树会快很多。如果树中包含n个元素，查找新元素的正确位置平均需要$log_2n$将比较。
 
-![image-20220618234720132](https://figure-bed.chua-n.com/notebook/Java/image-20220618234720132.png)
+![image-20220618234720132](https://figure-bed.chua-n.com/Java/image-20220618234720132.png)
 
 与 HashSet 相比，TreeSet 提供了以下几个额外的方法：
 

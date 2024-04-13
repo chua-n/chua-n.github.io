@@ -13,7 +13,7 @@ shell 脚本文件的名称可以任意，但为了避免被误以为是普通�
 
 |                           脚本内容                           |                           执行脚本                           |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![](https://figure-bed.chua-n.com/notebook/杂技/Linux/31.png) | ![](https://figure-bed.chua-n.com/notebook/杂技/Linux/32.png) |
+| ![](https://figure-bed.chua-n.com/杂技/Linux/31.png) | ![](https://figure-bed.chua-n.com/杂技/Linux/32.png) |
 
 ### 1.2 执行脚本
 
@@ -2182,7 +2182,7 @@ min hour dayofmonth month dayofweek command
 
 - cron时间表的图解：
 
-  <img src="https://figure-bed.chua-n.com/notebook/杂技/Linux/34.png" style="zoom:50%;" />
+  <img src="https://figure-bed.chua-n.com/杂技/Linux/34.png" style="zoom:50%;" />
 
 #### crontab 命令
 

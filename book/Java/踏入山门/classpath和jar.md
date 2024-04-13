@@ -117,9 +117,9 @@ jar 文件使用ZIP格式组织文件和子目录，可以使用任何ZIP工具�
 
 JAR 文件通常使用 jar 命令压缩而成，当使用 jar 命令压缩生成 jar 文件时，可以把一个或多个路径全部压缩成一个 JAR 文件。jar 是随 JDK 自动安装的，在 JDK 安装目录下的 bin 目录中，Windows 下文件名为 jar.exe，Linux 下文件名为 jar。
 
-<img src="https://figure-bed.chua-n.com/notebook/Java/22.png" alt="22" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/Java/22.png" alt="22" style="zoom:80%;" />
 
-<img src="https://figure-bed.chua-n.com/notebook/Java/23.png" alt="23" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/Java/23.png" alt="23" style="zoom:80%;" />
 
 语法：通常 jar 命令的格式为`jar options file1, file2…`
 

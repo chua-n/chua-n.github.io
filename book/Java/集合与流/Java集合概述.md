@@ -15,7 +15,7 @@ Java集合大致可分为Set, List, Queue, Map四种体系，集合类主要负�
 
 Java集合框架为不同类型的集合定义了大量接口，如下：
 
-![image-20220618111636028](https://figure-bed.chua-n.com/notebook/Java/image-20220618111636028.png)
+![image-20220618111636028](https://figure-bed.chua-n.com/Java/image-20220618111636028.png)
 
 集合有两个基本接口：`Collection`和`Map`。
 
@@ -37,7 +37,7 @@ Java集合框架为不同类型的集合定义了大量接口，如下：
 
 ### 具体集合类
 
-![image-20220618113431146](https://figure-bed.chua-n.com/notebook/Java/image-20220618113431146.png)
+![image-20220618113431146](https://figure-bed.chua-n.com/Java/image-20220618113431146.png)
 
 在Java程序设计语言中，所有实际上都是双向链接的，即每个链接还存放着其前驱的引用。
 
@@ -251,7 +251,7 @@ Java集合框架不认为映射本身是一个集合，而其他语言的数据�
 
 Map用于保存具有映射关系的数据，因此Map集合里保存着两组值，一组值用于保存Map的key，另外一组值用于保存Map里的value，key和value都可以是任何引用类型的数据，但key不允许重复。
 
-<img src="https://figure-bed.chua-n.com/notebook/Java/38.png" alt="38" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/Java/38.png" alt="38" style="zoom:67%;" />
 
 实际上，如果把Map里的key放在一起看，它们就组成了一个Set集合，故而所有对Set元素的要求基本就是对Map里的key的要求，Map里key集和Set里的元素集的存储形式很像。
 
@@ -281,7 +281,7 @@ hash算法中，hash表里可以存储元素的位置叫做“桶”。
 
 2. 但hash表的状态是open的：在发生“hash冲突”的情况下，单个桶会存储多个元素，这些元素以**链表**形式存储，必须按顺序搜索。
 
-    ![39](https://figure-bed.chua-n.com/notebook/Java/39.png)
+    ![39](https://figure-bed.chua-n.com/Java/39.png)
     
 3. 在Java8中，桶满时会从链表变为平衡二叉树。
 

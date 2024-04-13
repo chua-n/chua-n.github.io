@@ -19,7 +19,7 @@ Stream 消息队列主要由四部分组成，分别是：
 
 Redis Stream 消息队列结构程如下图所示：
 
-![Redis Stream结构图](https://figure-bed.chua-n.com/notebook/数据库/Redis/15253613F-0.gif)
+![Redis Stream结构图](https://figure-bed.chua-n.com/数据库/Redis/15253613F-0.gif)
 
 - Stream direction：表示数据流，它是一个消息链，将所有的消息都串起来，每个消息都有一个唯一标识 ID 和对应的消息内容（Message content）；
 

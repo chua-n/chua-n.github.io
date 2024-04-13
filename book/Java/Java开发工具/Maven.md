@@ -21,7 +21,7 @@ Maven是一个基于Java的工具，所以Maven的使用必须安装有JDK。
 
 > 每一个构建项目的命令都对应了Maven底层的一个插件。
 
-![Maven概念模型](https://figure-bed.chua-n.com/notebook/Java/Maven概念模型.png)
+![Maven概念模型](https://figure-bed.chua-n.com/Java/Maven概念模型.png)
 
 ## 2. Maven项目
 
@@ -424,7 +424,7 @@ Maven 默认为一些核心的生命周期阶段绑定了插件目标，当用�
 
 执行 Maven 命令时即可看到该构建过程包含了哪些插件目标。例如，在 Maven 项目中执行 `mvn clean install` 命令，能看到如下输出，图中标记的部分就是执行此命令时所调用的插件目标：
 
-![Maven 内置插件目标](https://figure-bed.chua-n.com/notebook/Java/142H4N00-0.png)
+![Maven 内置插件目标](https://figure-bed.chua-n.com/Java/142H4N00-0.png)
 
 #### 5.2.2 自定义绑定
 
@@ -594,7 +594,7 @@ Assembly 插件的主要作用是，允许用户将项目本身的输出与它�
 
 如下图所示，项目 A 依赖于项目 B，B 又依赖于项目 C，此时 B 是 A 的直接依赖，C 是 A 的间接依赖。
 
-![依赖传递](https://figure-bed.chua-n.com/notebook/Java/1212441G0-0.png)
+![依赖传递](https://figure-bed.chua-n.com/Java/1212441G0-0.png)
 
 Maven 的依赖传递机制是指：不管 Maven 项目存在多少间接依赖，POM 中都只需要定义其直接依赖，不必定义任何间接依赖，Maven 会自动读取当前项目各个直接依赖的 POM，将那些必要的间接依赖以传递性依赖的形式引入到当前项目中。Maven 的依赖传递机制能够帮助用户一定程度上简化 POM 的配置。
 
@@ -1180,7 +1180,7 @@ Maven 通过 profiles 元素来声明一组 profile 配置，该元素下可以�
 
 - 在 pom.xml 中声明的 profile，由于其能够随着 pom.xml 一起存在，它被提交到代码仓库中，被 Maven 安装到本地仓库或远程仓库中，所以它能够修改或增加很多 POM 元素，其中其常操作的元素如下表：
 
-  <img src="https://figure-bed.chua-n.com/notebook/Java/image-20221203085844029.png" alt="image-20221203085844029" style="zoom:50%;" />
+  <img src="https://figure-bed.chua-n.com/Java/image-20221203085844029.png" alt="image-20221203085844029" style="zoom:50%;" />
 
 - 在 setting.xml 中声明的 profile 是无法保证能够随着 pom.xml 一起被分发的，因此 Maven 不允许用户在该类型的 profile 修改或增加依赖或插件等配置信息，它只能声明以下范围较为宽泛的元素：
 

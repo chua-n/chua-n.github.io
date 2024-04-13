@@ -17,13 +17,13 @@ title: RabbitMQ
 
 微服务间基于Feign的调用就属于同步方式：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1030.JPG" alt="IMG_1030" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_1030.JPG" alt="IMG_1030" style="zoom:50%;" />
 
 ### 1.2 异步调用
 
 异步调用常见实现就是事件驱动模式：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225210725247.png" alt="image-20211225210725247" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225210725247.png" alt="image-20211225210725247" style="zoom:50%;" />
 
 异步调用的优势：
 
@@ -35,7 +35,7 @@ title: RabbitMQ
 
 - 流量削峰
 
-    > <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/IMG_1034.JPG" alt="IMG_1034" style="zoom:40%;" />
+    > <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_1034.JPG" alt="IMG_1034" style="zoom:40%;" />
 
 异步通信的缺点：
 
@@ -46,7 +46,7 @@ title: RabbitMQ
 
 MQ（Message Queue），即消息队列，字面来看就是存放消息的队列，也就是事件驱动架构中的Broker。
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225211328779.png" alt="image-20211225211328779" style="zoom:66%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225211328779.png" alt="image-20211225211328779" style="zoom:66%;" />
 
 ## 2. RabbitMQ
 
@@ -61,7 +61,7 @@ RabbitMQ中的几个概念：
 - `queue`: 缓存消息
 - `virtual host`: 虚拟主机，是对queue, exchange等资源的逻辑分组
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225211515013.png" alt="image-20211225211515013" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225211515013.png" alt="image-20211225211515013" style="zoom:67%;" />
 
 ### 2.2 常见消息模型
 
@@ -69,31 +69,31 @@ MQ的官方文档中给出了5个MQ的Demo示例，对应了几种不同的用�
 
 1. 基本消息队列（BasicQueue）
 
-    ![image-20211225212054633](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225212054633.png)
+    ![image-20211225212054633](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225212054633.png)
 
 2. 工作消息队列（WorkQueue）
 
-    ![image-20211225212101443](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225212101443.png)
+    ![image-20211225212101443](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225212101443.png)
 
 3. 发布订阅（Publish/Subscribe）——根据交换机类型不同分为三种：
 
     1. Fanout Exchange
 
-        ![image-20211225212115648](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225212115648.png)
+        ![image-20211225212115648](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225212115648.png)
 
     2. Direct Exchange
 
-        ![image-20211225212123109](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225212123109.png)
+        ![image-20211225212123109](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225212123109.png)
 
     3. Topic Exchange
 
-        ![image-20211225212130816](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225212130816.png)
+        ![image-20211225212130816](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225212130816.png)
 
 ### 2.3 快速入门案例
 
 HelloWorld案例：基于最基础的消息队列模型来实现，只包括三个角色：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225212311595.png" alt="image-20211225212311595" style="zoom:66%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225212311595.png" alt="image-20211225212311595" style="zoom:66%;" />
 
 - publisher：消息发布者，将消息发送到队列queue
 - queue：消息队列，负责接受并缓存消息
@@ -200,7 +200,7 @@ HelloWorld案例：基于最基础的消息队列模型来实现，只包括三�
 
 Work Queue，工作队列，可以提高消息处理速度，避免队列消息堆积。
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225214534320.png" alt="image-20211225214534320" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225214534320.png" alt="image-20211225214534320" style="zoom:67%;" />
 
 - 多个消费者绑定到一个队列，同一条消息只会被一个消费者处理
 - 通过设置prefetch来控制消费者预取的消息数量
@@ -230,17 +230,17 @@ spring:
 - `Direct`：路由
 - `Topic`：话题
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225215154665.png" alt="image-20211225215154665" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225215154665.png" alt="image-20211225215154665" style="zoom:67%;" />
 
 #### 3.3.1 Fanout Exchange
 
 Fanout Exchange 会将接收到的消息广播到每一个跟其绑定的queue：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225215409556.png" alt="image-20211225215409556" style="zoom:60%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225215409556.png" alt="image-20211225215409556" style="zoom:60%;" />
 
 利用SpringAMQP演示FanoutExchange的使用：
 
-> <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225215603233.png" alt="image-20211225215603233" style="zoom:50%;" />
+> <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225215603233.png" alt="image-20211225215603233" style="zoom:50%;" />
 
 - 在consumer服务中，利用代码声明交换机（`Exchange`）、队列（`Queue`），并将两者绑定（`Binding`）：
 
@@ -271,7 +271,7 @@ Fanout Exchange 会将接收到的消息广播到每一个跟其绑定的queue�
 
     > 类关系图：
     >
-    > <img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225215818506.png" alt="image-20211225215818506" style="zoom:60%;" />
+    > <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225215818506.png" alt="image-20211225215818506" style="zoom:60%;" />
 
 - 在consumer服务中，编写两个消费者方法，分别监听fanout.queue1和fanout.queue2：
 
@@ -309,11 +309,11 @@ Direct Exchange会将接收到的消息根据规则路由到指定的Queue，因
 - 发布者发送消息时，指定消息的`RoutingKey`
 - `Exchange`将消息路由到`BindingKey`与消息`RoutingKey`一致的队列
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225221007411.png" alt="image-20211225221007411" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225221007411.png" alt="image-20211225221007411" style="zoom:50%;" />
 
 利用SpringAMQP演示Direct Exchange的使用，实现思路如下：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225221318200.png" alt="image-20211225221318200" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225221318200.png" alt="image-20211225221318200" style="zoom:50%;" />
 
 1. 在consumer服务中，编写两个消费者方法，分别监听direct.queue1和direct.queue2，并使用`@RabbitListener`声明`Exchange`、`Queue`、`RoutingKey`
 
@@ -368,11 +368,11 @@ Queue与Exchange指定BindingKey时可以使用通配符：
 - `#`：代指0/N个单词
 - `*`：代指一个单词
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225222812663.png" alt="image-20211225222812663" style="zoom:66%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225222812663.png" alt="image-20211225222812663" style="zoom:66%;" />
 
 利用SpringAMQP演示Topic Exchange的使用：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20211225223019895.png" alt="image-20211225223019895" style="zoom:80%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211225223019895.png" alt="image-20211225223019895" style="zoom:80%;" />
 
 - 在consumer服务中，编写两个消费者方法，分别监听topic.queue1和topic.queue2，并利用`@RabbitListener`声明`Exchange`、`Queue`、`RoutingKey`：
 

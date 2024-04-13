@@ -18,27 +18,27 @@ date: 2019-04-07
 
 4. 同样的算法面对不同的输入可能有质的差别：
 
-    | ![](https://figure-bed.chua-n.com/notebook/Python/QQ截图20190524090536.jpg) | ![](https://figure-bed.chua-n.com/notebook/Python/QQ截图20190524090601.jpg) | ![](https://figure-bed.chua-n.com/notebook/Python/QQ截图20190524090606.jpg) |
+    | ![](https://figure-bed.chua-n.com/Python/QQ截图20190524090536.jpg) | ![](https://figure-bed.chua-n.com/Python/QQ截图20190524090601.jpg) | ![](https://figure-bed.chua-n.com/Python/QQ截图20190524090606.jpg) |
     | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
 
 5. `a += b` 与 `a = a + b`:
 
- <img src="https://figure-bed.chua-n.com/notebook/Python/574.png" style="zoom:67%;" />
+ <img src="https://figure-bed.chua-n.com/Python/574.png" style="zoom:67%;" />
 
 6. Leetcode 55. Jump Game:
 
-    ![](https://figure-bed.chua-n.com/notebook/Python/575.png)
+    ![](https://figure-bed.chua-n.com/Python/575.png)
 
     - 对于使得目标台阶 target 变为 loc，虽然在现时世界中你肯定认为“可以到达 loc 但不必要”，固然可以通过先踩到这一阶 loc 的位置再到达之前的 target，但是现世中也许完全可以通过从此 loc 之前的某一位置而一步跨到 target，所以在思考的时候可能很难想到这一方案是可行的。
     - 但是！其实接着上面的思路——可从 loc 一步到达 target，也可从 loc 之前的某位置一步跨到 target，因为该位置在 loc 之前，那么必然该位置对应的最大步长 step 大于 loc 的 step，故而总可以从该位置抵达 loc，即若该位置方案可行则必然存在 loc 方案！故而某种程度上可认为 loc 方案与该位置方案等价，那么就可以将 loc 方案认为是唯一方案了！所以将 loc 设为 target 是可行的！
 
 7. 树结构的回溯
 
-    ![](https://figure-bed.chua-n.com/notebook/Python/576.png)
+    ![](https://figure-bed.chua-n.com/Python/576.png)
 
 8. 先序遍历与中序遍历的关系：
 
-    ![](https://figure-bed.chua-n.com/notebook/Python/577.png)
+    ![](https://figure-bed.chua-n.com/Python/577.png)
 
 9. 按照计算机科学的一般概念，脚本指的是一个程序，它被另一个程序（解释程序）而不是计算机的处理机来解释或执行。
 

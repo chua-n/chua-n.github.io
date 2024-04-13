@@ -39,7 +39,7 @@ Spring Cloud Config 默认工作流程如下：
 3. Config 客户端通过 Config 服务端暴露出来的接口，拉取配置仓库中的配置；
 4. Config 客户端获取到配置信息，以支持服务的运行。
 
-![image-20230216223629694](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20230216223629694.png)
+![image-20230216223629694](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20230216223629694.png)
 
 ### 2.2 Config Server的 HTTP 接口
 
@@ -64,11 +64,11 @@ Spring Cloud Config 默认工作流程如下：
 
 如果去看`EnvironmentController`中的url，会发现其中的路径参数在表达`application`的时候，是用的变量名`name`：
 
-![image-20230221141020919](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20230221141020919.png)
+![image-20230221141020919](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20230221141020919.png)
 
 在看`spring-cloud-config-server`包的时候，发现其中还有一个`ResourceController`，不知道具体做啥用的，这里暂记一下吧。其内的 url 包含如下：
 
-![image-20230221141425840](https://figure-bed.chua-n.com/notebook/JavaWeb/SpringCloud/image-20230221141425840.png)
+![image-20230221141425840](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20230221141425840.png)
 
 ## 3. 快速入门
 

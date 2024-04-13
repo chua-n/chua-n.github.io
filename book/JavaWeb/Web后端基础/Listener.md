@@ -20,13 +20,13 @@ date: 2021-02-11
 
 目前在Servlet中提供了6种两类事件的观察者接口：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/27.png" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/后端/27.png" style="zoom:50%;" />
 
 实际上，这6个Listener都继承了`EventListener`接口，每个Listener各自定义了需要实现的接口：
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/28.png" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/后端/28.png" style="zoom:50%;" />
 
-<img src="https://figure-bed.chua-n.com/notebook/JavaWeb/后端/29.png" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/后端/29.png" style="zoom:50%;" />
 
 如Spring的`org.springframework.web.context.ContextLoaderListener`就实现了一个`ServletContextListener`，当容器加载时启动Spring容器。
 

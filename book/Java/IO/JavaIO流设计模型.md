@@ -10,17 +10,17 @@ Java把所有设备里的有序数据抽象成流模型，简化了输入/输出
 
 - 输入流——输入流使用**隐式的记录指针**来表示当前正准备从哪个“水滴”开始读取，每当程序从输入流中取出一个或多个“水滴”后，记录指针自动向后移动；
 
-    <img src="https://figure-bed.chua-n.com/notebook/Java/43.jpg" alt="43" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/Java/43.jpg" alt="43" style="zoom:50%;" />
 
 - 输出流——输出流同样采样**隐式的记录指针**来标识当前水滴即将放入的位置，每当程序向输出流里输出一个或多个水滴后，记录指针自动向后移动。
 
-    <img src="https://figure-bed.chua-n.com/notebook/Java/44.jpg" alt="44" style="zoom:50%;" />
+    <img src="https://figure-bed.chua-n.com/Java/44.jpg" alt="44" style="zoom:50%;" />
 
 ## 2. Java的处理流模型
 
 Java的**处理流模型**则体现了Java输入/输出流设计的灵活性，处理流的功能主要体现在：
 
-<img src="https://figure-bed.chua-n.com/notebook/Java/45.jpg" alt="45" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/Java/45.jpg" alt="45" style="zoom:50%;" />
 
 - 性能的提高：主要以增加缓冲的方式来提高输入/输出的效率；
 - 操作的便捷：处理流可能提供了一系列便捷的方法来一次输入/输出大批量的内容，而不是输入/输出一个或多个“水滴”。
@@ -163,7 +163,7 @@ Java输入/输出流体系中常用的流分类（有些流无法提供字节流
 
 两个推回输入流都带有一个推回缓冲区，当程序调用它们的unread()方法时，系统将会把指定数组的内容推回到该缓冲区里，而推回输入流每次调用read()方法时总是先从推回缓冲区读取，只有完全读取了推回缓冲区的内容，且还没有装满read()所需的数组时才会从原输入流中读取。
 
-<img src="https://figure-bed.chua-n.com/notebook/Java/46.png" alt="46" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/Java/46.png" alt="46" style="zoom:50%;" />
 
 据上，当程序创建一个PushbackInputStream或PushbackReader时需要指定推回缓冲区的大小，默认的推回缓冲区的长度为1。如果程序中推回到推回缓冲区的内容超出了推回缓冲区的大小，将引发Pushback buffer overflow的IOException异常。
 

@@ -10,8 +10,8 @@ heroImageStyle:
   - border-radius: 50%
   - width: 200px
   - height: 200px
-bgImage: //figure-bed.chua-n.com/notebook/IMG_20220910_151958.jpg
-bgImageDark: //figure-bed.chua-n.com/notebook/IMG_20231008_203323.jpg
+bgImage: //figure-bed.chua-n.com/IMG_20220910_151958.jpg
+bgImageDark: //figure-bed.chua-n.com/IMG_20231008_203323.jpg
 heroFullScreen: true
 footer: <a href="https://beian.miit.gov.cn" target="_blank">陕ICP备2024034563号</a>
 projects:

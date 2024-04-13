@@ -14,7 +14,7 @@ WebSocket是一种网络通信协议，[RFC6455](https://tools.ietf.org/html/rfc
 
 而轮询的效率低，非常浪费资源（因为必须不停连接，或者 HTTP 连接始终打开）。因此，WebSocket 应运而生。WebSocket 连接允许客户端和服务器之间进行全双工通信，以便任一方都可以通过建立的连接将数据推送到另一端，并且 WebSocket 只需要建立一次连接，就可以一直保持连接状态，这相比于轮询方式的不停建立连接显然效率要大大提高。
 
-![](https://figure-bed.chua-n.com/notebook/JavaWeb/其他/1.png)
+![](https://figure-bed.chua-n.com/JavaWeb/其他/1.png)
 
 ### WebSocket 如何工作？
 
@@ -31,7 +31,7 @@ WebSocket 协议在2008年诞生，2011年成为国际标准，现在所有浏�
 - 没有同源限制，客户端可以与任意服务器通信。
 - 协议标识符是`ws`（如果加密，则为`wss`），服务器网址就是 URL，如`ws://example.com:80/some/path`
 
-![](https://figure-bed.chua-n.com/notebook/JavaWeb/其他/2.jpg)
+![](https://figure-bed.chua-n.com/JavaWeb/其他/2.jpg)
 
 ## 2. WebSocket 客户端
 

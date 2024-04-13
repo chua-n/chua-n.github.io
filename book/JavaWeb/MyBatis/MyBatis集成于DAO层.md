@@ -9,7 +9,7 @@ MyBatis在DAO层中的直接集成方法如下：
 
 - 项目结构概览：
 
-    ![45](https://figure-bed.chua-n.com/notebook/JavaWeb/MyBatis/45.png)
+    ![45](https://figure-bed.chua-n.com/JavaWeb/MyBatis/45.png)
 
 - DAO层代码
 

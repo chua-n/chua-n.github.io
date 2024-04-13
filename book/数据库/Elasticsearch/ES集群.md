@@ -6,14 +6,14 @@ title: ES集群
 
 ES集群结构：单机的ES做数据存储，必然面临两个问题：
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101213703181.png" alt="image-20220101213703181" style="zoom:33%;" />
+<img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101213703181.png" alt="image-20220101213703181" style="zoom:33%;" />
 
 - 海量数据存储问题：将索引库从逻辑上拆分为N个分片（shard），存储到多个节点
 - 单点故障问题：将分片数据在不同节点备份（replica）
 
 自己玩的时候，可以尝试用3个docker容器模拟3个ES的节点：
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/IMG_1220.JPG" alt="IMG_1220" style="zoom:30%;" />
+<img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/IMG_1220.JPG" alt="IMG_1220" style="zoom:30%;" />
 
 ES中集群节点有不同的职责划分：
 
@@ -26,13 +26,13 @@ ES中集群节点有不同的职责划分：
 
 ES中的每个节点角色都有自己不同的职责，因此建议集群部署时，每个节点都有独立的角色。
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101214345746.png" alt="image-20220101214345746" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101214345746.png" alt="image-20220101214345746" style="zoom:50%;" />
 
 ## 2. 集群脑裂问题
 
 默认情况下，每个节点都是master eligible节点，因此一旦master节点宕机，其它候选节点会选举一个成为主节点。当主节点与其它节点网络故障时，可能发生脑裂问题。
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101214619319.png" alt="image-20220101214619319" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101214619319.png" alt="image-20220101214619319" style="zoom:50%;" />
 
 为了避免脑裂，需要要求选票超过$（eligible节点数量+1）/2$才能当选为主，因此eligible节点数量最好是奇数。对应配置项是discovery.zen.minimum_master_nodes，在ES7.0以后，已经成为默认配置，因此一般不会发生脑裂问题。
 
@@ -49,7 +49,7 @@ shard = hash(_routing) % number_of_shards
 
 新增文档流程：
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101215059940.png" alt="image-20220101215059940" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101215059940.png" alt="image-20220101215059940" style="zoom:50%;" />
 
 ## 4. 集群分布式查询
 
@@ -58,11 +58,11 @@ ES的查询分成两个阶段：
 - scatter phase：分散阶段，coordinating node会把请求分发到每一个分片
 - gather phase：聚集阶段，coordinating node汇总data node的搜索结果，并处理为最终结果集返回给用户
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101215304196.png" alt="image-20220101215304196" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101215304196.png" alt="image-20220101215304196" style="zoom:50%;" />
 
 ## 5. 集群故障转移
 
 集群的master节点会监控集群中的节点状态，如果发现有节点宕机，会立即将宕机节点的分片数据迁移到其它节点，确保数据安全，即**故障转移**。
 
-<img src="https://figure-bed.chua-n.com/notebook/数据库/Elasticsearch/image-20220101215445902.png" alt="image-20220101215445902" style="zoom:50%;" />
+<img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101215445902.png" alt="image-20220101215445902" style="zoom:50%;" />
 
