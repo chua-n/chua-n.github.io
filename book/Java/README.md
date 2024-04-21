@@ -17,11 +17,18 @@ icon: java
 
 4. 线程通信的Condition、BlockingQueue......
 
-10. Java自带的日志体系（《Java核心技术 卷I》第7章）......
+5. Java自带的日志体系（《Java核心技术 卷I》第7章）......
 
-- 如果编译代码时使用了`-g:vars`选项，意味着：
-    - your code is slightly easier to understand (reverse engineer)
-    - the class file sizes are very slightly bigger (typically inconsequential)
-    - the optimization to remove unused local variables is not applied by your compiler.
-- `-javaagent`选项：参考这篇博文 [javaagent使用指南](https://www.cnblogs.com/rickiyang/p/11368932.html)
+6. Java 命令行参数：
 
+    - 如果编译代码时使用了`-g:vars`选项，意味着：
+      - your code is slightly easier to understand (reverse engineer)
+      - the class file sizes are very slightly bigger (typically inconsequential)
+      - the optimization to remove unused local variables is not applied by your compiler.
+    - `-javaagent`选项：参考这篇博文 [javaagent使用指南](https://www.cnblogs.com/rickiyang/p/11368932.html)
+
+
+## 重新思考内容-2024.04
+
+1. `volatile` 关键字
+2. 
