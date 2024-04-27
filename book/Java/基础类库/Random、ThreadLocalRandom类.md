@@ -2,11 +2,11 @@
 title: Random、ThreadLocalRandom类
 ---
 
-Random类专门用于生成一个伪随机数，它有两个构造器：一个使用默认的种子（以当前时间作为种子），另一个构造器需要程序员显式传入一个long型整数的种子。
+`Random` 类专门用于生成一个伪随机数，它有两个构造器：一个使用默认的种子（以当前时间作为种子），另一个构造器需要程序员显式传入一个`long`型整数的种子。
 
-ThreadLocalRandom类是Random的增强版，用来保证系统在并发访问的环境下具有更好的线程安全性。
+`ThreadLocalRandom`类是`Random`的增强版，用来保证系统在并发访问的环境下具有更好的线程安全性。
 
-Random和ThreadLocalRandom都比Math的random()方法提供了更多的方式来生成各种伪随机数，可以生成浮点类型的伪随机数，也可以生成整数类型的伪随机数，还可以指定生成随机数的范围。
+`Random`和`ThreadLocalRandom`都比`Math`的`random()`方法提供了更多的方式来生成各种伪随机数，可以生成浮点类型的伪随机数，也可以生成整数类型的伪随机数，还可以指定生成随机数的范围。
 
 ```java
 class RandomTest {

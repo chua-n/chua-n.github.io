@@ -4,13 +4,13 @@ title: PropertyEditor类
 
 ## PropertyEditor 接口
 
-PropertyEditor是属性编辑器的接口，它规定了将外部设置值转换为内部JavaBean属性值的转换接口方法。PropertyEditor主要的接口方法说明如下：
+`PropertyEditor` 是属性编辑器的接口，它规定了将外部设置值转换为内部 JavaBean 属性值的转换接口方法。`PropertyEditor` 主要的接口方法说明如下：
 
 - `Object getValue()`：返回属性的当前值，基本类型被封装成对应的包装类实例；
 - `void setValue(Object newValue)`：设置属性的值，基本类型以包装类传入（自动装箱）；
-- `String getAsText()`：将属性对象用一个字符串表示，以便外部的属性编辑器能以可视化的方式显示。缺省返回null，表示该属性不能以字符串表示；
+- `String getAsText()`：将属性对象用一个字符串表示，以便外部的属性编辑器能以可视化的方式显示。缺省返回`null`，表示该属性不能以字符串表示；
 - `void setAsText(String text)`：用一个字符串去更新属性的内部值，这个字符串一般从外部属性编辑器传入；
-- `String[] getTags()`：返回表示有效属性值的字符串数组（如boolean属性对应的有效Tag为true和false），以便属性编辑器能以下拉框的方式显示出来。缺省返回null，表示属性没有匹配的字符值有限集合；
+- `String[] getTags()`：返回表示有效属性值的字符串数组（如`boolean`属性对应的有效`Tag`为`true`和`false`），以便属性编辑器能以下拉框的方式显示出来。缺省返回`null`，表示属性没有匹配的字符值有限集合；
 - `String getJavaInitializationString()`：为属性提供一个表示初始值的字符串，属性编辑器以此值作为属性的默认值。
 
 ```java

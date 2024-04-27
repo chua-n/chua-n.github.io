@@ -2,22 +2,22 @@
 title: Runtime类
 ---
 
-Runtime类代表Java程序的运行时环境，每个Java程序都有一个与之对应的Runtime实例，应用程序通过该对象与其运行时环境相连。
+`Runtime` 类代表 Java 程序的运行时环境，每个 Java 程序都有一个与之对应的 `Runtime` 实例，应用程序通过该对象与其运行时环境相连。
 
-应用程序不能创建自己的Runtime实例，但可以通过Runtime类的getRuntime()方法获取与之关联的Runtime对象。
+应用程序不能创建自己的 `Runtime` 实例，但可以通过 `Runtime` 类的 `getRuntime()` 方法获取与之关联的 `Runtime` 对象。
 
-Runtime类的方法：
+`Runtime` 类的方法：
 
-| 方法                         | 作用                              |
-| ---------------------------- | --------------------------------- |
-| static  Runtime getRuntime() | 获取与该应用程序关联的Runtime对象 |
-| gc()                         | 通知系统进行垃圾回收              |
-| runFinalization()            | 通知系统进行垃圾回收              |
-| load(String  filename)       | 加载文件                          |
-| loadLibrary(String  libname) | 加载动态链接库                    |
-| ……                           | ……                                |
+| 方法                           | 作用                                  |
+| ------------------------------ | ------------------------------------- |
+| `static  Runtime getRuntime()` | 获取与该应用程序关联的 `Runtime` 对象 |
+| `gc()`                         | 通知系统进行垃圾回收                  |
+| `runFinalization()`            | 通知系统进行垃圾回收                  |
+| `load(String filename)`        | 加载文件                              |
+| `loadLibrary(String libname)`  | 加载动态链接库                        |
+| ……                             | ……                                    |
 
-Runtime类代表Java程序的运行时环境，可以访问JVM的相关信息，如处理器数量、内存信息等。
+`Runtime` 类代表 Java 程序的运行时环境，可以访问 JVM 的相关信息，如处理器数量、内存信息等。
 
 ```java
 class RuntimeTest {
@@ -32,7 +32,7 @@ class RuntimeTest {
 }
 ```
 
-Runtime提供了一系列exec()方法来运行操作系统命令，可查看相关API文档。通过exec启动平台上的命令之后，它就变成了一个进程，Java使用**Processs**来代表进程。
+`Runtime` 提供了一系列 `exec()` 方法来运行操作系统命令，可查看相关 API 文档。通过 `exec` 启动平台上的命令之后，它就变成了一个进程，Java使用 `Processs` 来代表进程。
 
 ```java
 import java.util.concurrent.CompletableFuture;

@@ -2,19 +2,19 @@
 title: String、StringBuilder、StringBuffer类
 ---
 
-Java 提供了 String, StringBuffer, StringBuilder 三个类来封装字符串，并提供了一系列方法。
+Java 提供了 `String, StringBuffer, StringBuilder` 三个类来封装字符串，并提供了一系列方法。
 
-1. String 类是不可变类，一旦一个 String 对象被创建，包含在这个对象中的字符序列是不可改变的，直至这个对象被销毁；
+1. `String` 类是不可变类，一旦一个 `String` 对象被创建，包含在这个对象中的字符序列是不可改变的，直至这个对象被销毁；
 
-2. StringBuilder 类的对象代表一个字符序列可变的字符串，当一个 StringBuilder 对象被创建以后，通过其提供的 append(), insert(), reverse(), setCharAt(), setLength()等方法可以改变这个字符串对象的字符序列。一旦通过 StringBuilder 生成了最终想要的字符串，就可以调用它的 toString()方法将其转换为一个 String 对象。
+2. `StringBuilder` 类的对象代表一个字符序列可变的字符串，当一个 `StringBuilder` 对象被创建以后，通过其提供的 `append(), insert(), reverse(), setCharAt(), setLength()` 等方法可以改变这个字符串对象的字符序列。一旦通过 `StringBuilder` 生成了最终想要的字符串，就可以调用它的 `toString()`方法将其转换为一个 `String` 对象。
 
-3. StringBuffer 类同 StringBuilder 类几乎一样，唯一的差别是，StringBuilder 是线程不安全的，而 StringBuffer 是线程安全的，因而性能略低。若不需考虑线程安全，通常会使用前者。
+3. `StringBuffer` 类同 `StringBuilder` 类几乎一样，唯一的差别是，`StringBuilder` 是线程不安全的，而 `StringBuffer` 是线程安全的，因而性能略低。若不需考虑线程安全，通常会使用前者。
 
 所有字符串都实现了`CharSequence`接口。
 
 ## String 类的构造方法
 
-String 类提供了大量构造器来创建 String 对象，如：
+`String` 类提供了大量构造器来创建 `String` 对象，如：
 
 | 构造方法                                                         |                                                                                                         |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -30,7 +30,7 @@ String 类提供了大量构造器来创建 String 对象，如：
 
 ## String 类的方法
 
-String 类也提供了大量方法来操作字符串对象：
+`String` 类也提供了大量方法来操作字符串对象：
 
 | 方法                                                         | 作用                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -82,4 +82,4 @@ String 类也提供了大量方法来操作字符串对象：
 
 ## Java 9 改动
 
-Java 9 改进了字符串的实现：在 Java 9 以前，字符串采用 char[]数组来保存字符，因此字符串的每个字符占 2 字节；而 Java 9 的字符串采用 byte[]数组再加一个 encoding-flag 字段来保存字符，因此字符串的每个字符只占 1 字节。
+Java 9 改进了字符串的实现：在 Java 9 以前，字符串采用 `char[]` 数组来保存字符，因此字符串的每个字符占 2 字节；而 Java 9 的字符串采用 `byte[]`数组再加一个 `encoding-flag` 字段来保存字符，因此字符串的每个字符只占 1 字节。
