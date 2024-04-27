@@ -103,7 +103,6 @@ export default arraySidebar([
     collapsible: true,
     icon: FOLDER_ICON,
     children: [
-      buildSimpleNavObj("JavaIO概述"),
       buildSimpleNavObj("JavaIO流设计模型"),
       buildSimpleNavObj("JavaIO工作的机制"),
       buildSimpleNavObj("File类"),
