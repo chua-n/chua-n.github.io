@@ -34,3 +34,4 @@ icon: java
 2. 什么是多态？
 3. `PriorityQueue` 与堆的关系？
 4. `TreeSet` 与 `LinkedHashSet` ?
+5. `Thread` 和 `Executor` 的关系？
