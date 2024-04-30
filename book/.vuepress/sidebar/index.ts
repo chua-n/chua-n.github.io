@@ -24,5 +24,4 @@ export default sidebar({
   "/数学/": math,
   "/CV/": cv,
   "/杂技/": otherTech,
-  "/glodon/": "structure",
 });

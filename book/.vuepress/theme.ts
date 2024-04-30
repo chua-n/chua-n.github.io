@@ -81,7 +81,6 @@ export default hopeTheme(
     // 加密配置
     encrypt: {
       config: {
-        "/glodon/": "TOT",
       },
     },
 

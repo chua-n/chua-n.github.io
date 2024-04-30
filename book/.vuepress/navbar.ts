@@ -70,10 +70,5 @@ const navBars = [
   },
 ];
 if (isDevEnv) {
-  navBars.push({
-    text: "glodon",
-    link: "glodon/",
-    icon: ""
-  });
 }
 export default navbar(navBars);
