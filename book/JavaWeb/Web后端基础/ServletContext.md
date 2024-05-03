@@ -3,24 +3,24 @@ title: ServletContext
 date: 2021-02-10
 ---
 
-ServletContext对象代表整个web应用，可以和程序的容器（即服务器）来通信。
+ServletContext 对象代表整个 web 应用，可以和程序的容器（即服务器）来通信。
 
-## 1. ServletContext对象的获取
+## 1. ServletContext 对象的获取
 
-以下两者获取的是同一个ServletContext对象。
+以下两者获取的是同一个 ServletContext 对象。
 
-- 通过request对象获取：`request.getServletContext();`
-- 通过HttpServlet获取：`this.getServletContext();`
+- 通过 request 对象获取：`request.getServletContext();`
+- 通过 HttpServlet 获取：`this.getServletContext();`
 
-## 2. ServletContext对象的功能
+## 2. ServletContext 对象的功能
 
-1. 获取MIME类型
+1. 获取 MIME 类型
 
     |      概念      | 解释                                               |
     | :------------: | -------------------------------------------------- |
-    |    MIME类型    | 在互联网通信过程中定义的一种描述文件数据类型的标准 |
-    | MIME类型的格式 | 大类型/小类型，如text/html，image/jpeg             |
-    |    获取方式    | String  getMimeType(String file)                   |
+    |    MIME 类型    | 在互联网通信过程中定义的一种描述文件数据类型的标准 |
+    | MIME 类型的格式 | 大类型/小类型，如 `text/html`、`image/jpeg`         |
+    |    获取方式    | `String getMimeType(String file)`                 |
 
     示例：
 
@@ -45,9 +45,9 @@ ServletContext对象代表整个web应用，可以和程序的容器（即服务
 
 3. 获取文件的真实路径，即服务器路径：`String getRealPath(String path)`
 
-    - 在使用时，传入的参数是从当前web项目所在文件夹算起的相对路径，要以"/" 开头，否则会找不到路径，导致NullPointerException。
-    - 比如，当前编译后的web项目（即实际运行tomcat的项目）文件夹为"D:\code\practiceJava\servlet\target\servlet-1.0-SNAPSHOT\"，则传入参数"/a.txt"将得到"D:\code\practiceJava\servlet\target\servlet-1.0-SNAPSHOT\a.txt"。
-    - 注意项目src路径下的文件会被编译到WEB-INF目录的classes文件夹，因而对于src路径下的文件，传入参数时应该写作"/WEB-INF/classes/c.txt"。
+    - 在使用时，传入的参数是从当前 web 项目所在文件夹算起的相对路径，要以"/" 开头，否则会找不到路径，导致 `NullPointerException`。
+    - 比如，当前编译后的 web 项目（即实际运行 tomcat 的项目）文件夹为`D:\code\practiceJava\servlet\target\servlet-1.0-SNAPSHOT`，则传入参数`/a.txt`将得到`D:\code\practiceJava\servlet\target\servlet-1.0-SNAPSHOT\a.txt`。
+    - 注意项目 src 路径下的文件会被编译到 WEB-INF 目录的 classes 文件夹，因而对于 src 路径下的文件，传入参数时应该写作`/WEB-INF/classes/c.txt`。
 
 ## 3. 案例
 
@@ -61,16 +61,9 @@ ServletContext对象代表整个web应用，可以和程序的容器（即服务
 
 步骤：
 
-1. 定义页面，编辑超链接的href属性，使其指向一个Servlet，传递资源名称filename
-2. 定义Servlet：
+1. 定义页面，编辑超链接的 href 属性，使其指向一个 Servlet，传递资源名称 filename
+2. 定义 Servlet：
     1. 获取文件名称；
     2. 使用字节输入流加载文件进内存；
-    3. 指定response的响应头：content-disposition:attachment;filename=xxx
-    4. 将数据写出到response输出流。
-
-
-
-​    
-
-​    
-
+    3. 指定 response 的响应头：`content-disposition:attachment;filename=xxx`
+    4. 将数据写出到 response 输出流。
