@@ -5,7 +5,7 @@ date: 2020-11-08
 
 ## 1. 问题引入
 
-原始junit测试Spring的问题：在测试类中，每个测试方法都有以下两行代码，它们的作用是获取容器，如果不写的话，会产生空指针异常，所以又不能轻易删掉。
+原始 junit 测试 Spring 的问题：在测试类中，每个测试方法都有以下两行代码，它们的作用是获取容器，如果不写的话，会产生空指针异常，所以又不能轻易删掉。
 
 ```java
 ApplicationContext app = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -14,12 +14,12 @@ UserService userService = app.getBean(UserService.class);
 
 解决方案：
 
-1. 让SpringJunit负责创建Spring容器，此时需要将配置文件的名称告诉它；
-2. 将需要进行测试的Bean直接在测试类中进行注入
+1. 让 SpringJunit 负责创建 Spring 容器，此时需要将配置文件的名称告诉它；
+2. 将需要进行测试的 Bean 直接在测试类中进行注入
 
-## 2. Spring集成Junit步骤
+## 2. Spring 集成 Junit 步骤
 
-1. 导入spring集成junit的坐标；
+1. 导入 spring 集成 junit 的坐标；
 
     ```xml
     <dependency>
@@ -74,6 +74,3 @@ UserService userService = app.getBean(UserService.class);
         }
     }
     ```
-
-
-

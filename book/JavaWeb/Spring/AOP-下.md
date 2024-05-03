@@ -2,9 +2,9 @@
 title: AOP-下
 ---
 
-## 1. 在Spring应用中使用AspectJ
+## 1. 在 Spring 应用中使用 AspectJ
 
-> 暂略，详见[here](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-using-aspectj).
+> 暂略，详见 [here](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-using-aspectj).
 
 ### Using AspectJ to Dependency Inject Domain Objects with Spring
 
@@ -14,7 +14,7 @@ title: AOP-下
 
 ### Load-time Weaving with AspectJ in the Spring Framework
 
-## 2. Spring AOP的底层API
+## 2. Spring AOP 的底层 API
 
 ### Pointcut API in Spring
 

@@ -8,43 +8,43 @@ title: 配置-XML
 > - Annotation-based configuration: Spring 2.5 开始支持。
 > - Java-based configuration: Starting with Spring 3.0 开始支持。
 
-## 1. bean标签
+## 1. bean 标签
 
-bean标签用于配置将由Spring来创建的对象。默认情况下它调的是类中的无参构造函数，如果没有无参构造函数则不能成功创建。
+bean 标签用于配置将由 Spring 来创建的对象。默认情况下它调的是类中的无参构造函数，如果没有无参构造函数则不能成功创建。
 
 ### 基本属性配置
 
 | 基本属性 | 作用                                                         |
 | :------: | ------------------------------------------------------------ |
-|    id    | Bean实例（Bean对象）在Spring容器中的唯一标识（若未指定id，默认使用其全限定名作为id） |
-|  class   | Bean的全限定名称                                             |
+|    id    | Bean 实例（Bean 对象）在 Spring 容器中的唯一标识（若未指定 id，默认使用其全限定名作为 id） |
+|  class   | Bean 的全限定名称                                             |
 |  scope   | 指对象的作用范围，可取值为`singleton, prototype, request, session, global session` |
 
-scope的取值：
+scope 的取值：
 
 - `singleton`：单例的（默认值）
-    - Bean的实例化个数：1个
-    - Bean的实例化时机：当Spring核心文件被加载时实例化Bean实例
-    - Bean的生命周期：
+    - Bean 的实例化个数：1 个
+    - Bean 的实例化时机：当 Spring 核心文件被加载时实例化 Bean 实例
+    - Bean 的生命周期：
         - 对象创建：当应用加载，创建容器时，对象就被创建了
         - 对象运行：只要容器在，对象就一直活着
         - 对象销毁：当应用卸载，销毁容器时，对象就被销毁了
 - `prototype`：多例的
-    - Bean的实例化个数：多个
-    - Bean的实例化时机：当调用`getBean()`方法时实例化Bean实例
-    - Bean的生命周期：
+    - Bean 的实例化个数：多个
+    - Bean 的实例化时机：当调用`getBean()`方法时实例化 Bean 实例
+    - Bean 的生命周期：
         - 对象创建：当使用对象时，创建新的对象实例
         - 对象运行：只要对象在使用中，就一直活着
-        - 对象销毁：当对象长时间不用时，被Java的垃圾回收器回收
+        - 对象销毁：当对象长时间不用时，被 Java 的垃圾回收器回收
 
-### Bean生命周期属性配置
+### Bean 生命周期属性配置
 
 |      方法      |           作用           |
 | :------------: | :----------------------: |
 |  init-method   | 指定类中的初始化方法名称 |
 | destroy-method |  指定类中的销毁方法名称  |
 
-### Bean实例化三种方式
+### Bean 实例化三种方式
 
 1. 无参构造函数实例化
 
@@ -66,28 +66,28 @@ scope的取值：
     <bean id="userDao" factory-bean="factory" factory-method="getUserDao"/>
     ```
 
-## 2. Bean的依赖注入
+## 2. Bean 的依赖注入
 
 ### 属性注入
 
 > 通过`setXxx()`方法。
 
-采用`<property>`子标签注入；其中`name`属性指定bean的属性名称，`value`属性指定属性的值。
+采用`<property>`子标签注入；其中`name`属性指定 bean 的属性名称，`value`属性指定属性的值。
 
 - 对于普通属性，直接指定：
 
     ```xml
-    <!-- fullname为String类型 -->
+    <!-- fullname 为 String 类型 -->
     <property name="fullname" value="张三"></property>
     ```
 
-- 若属性值为其他bean，使用`ref`来引用：
+- 若属性值为其他 bean，使用`ref`来引用：
 
     ```xml
     <property name="person" ref="person"></property>
     ```
 
-    > 附：Person类的定义及其bean配置为：
+    > 附：Person 类的定义及其 bean 配置为：
     >
     > ```java
     > package com.glodon.pojo;
@@ -113,7 +113,7 @@ scope的取值：
 - 若属性值为集合类型：
 
     ```xml
-    <!-- fruit 为String[]类型 -->
+    <!-- fruit 为 String[] 类型 -->
     <property name="fruit">
         <list value-type="java.lang.String">
             <value>apple</value>
@@ -122,7 +122,7 @@ scope的取值：
         </list>
     </property>
     
-    <!-- family 为Map<String, String>类型 -->
+    <!-- family 为 Map<String, String>类型 -->
     <property name="family">
         <map key-type="java.lang.String" value-type="java.lang.String">
             <entry key="father" value="lisi"/>
@@ -132,17 +132,17 @@ scope的取值：
     </property>
     ```
 
-- 可采用p命名空间注入，此时可采用属性的方式去注入。
+- 可采用 p 命名空间注入，此时可采用属性的方式去注入。
 
 另：依赖注入的数据类型对应的属性/标签：
 
 - 普通数据类型：`value="…"`
-- 引用其他bean：`ref="…"`
+- 引用其他 bean：`ref="…"`
 - 集合数据类型：`<list>、<map>`等子标签
 
 #### 空属性
 
-设置Bean的属性时，Spring将空参数视为空字符串。故而以下与`exampleBean.setEmail("");`等效：
+设置 Bean 的属性时，Spring 将空参数视为空字符串。故而以下与`exampleBean.setEmail("");`等效：
 
 ```xml
 <bean class="ExampleBean">
@@ -150,7 +150,7 @@ scope的取值：
 </bean>
 ```
 
-若想单独设置某个属性为null，可使用`<null/>`标签：
+若想单独设置某个属性为 null，可使用`<null/>`标签：
 
 ```xml
 <bean class="ExampleBean">
@@ -188,9 +188,9 @@ scope的取值：
 
 略。
 
-### 内部Bean
+### 内部 Bean
 
-当 Bean 实例**仅仅**给一个特定的属性使用时, 可以将其声明为内部 Bean. 内部 Bean 声明直接包含在 `<property>` 或 `<constructor-arg>` 元素里, 不需要设置任何 id 或 name 属性。
+当 Bean 实例**仅仅**给一个特定的属性使用时，可以将其声明为内部 Bean. 内部 Bean 声明直接包含在 `<property>` 或 `<constructor-arg>` 元素里，不需要设置任何 id 或 name 属性。
 
 <font color="red">???????</font>
 
@@ -204,7 +204,7 @@ You can disable the registration of `AutowiredAnnotationBeanPostProcessor` and `
 
 ## 4. 分模块开发
 
-Spring的配置文件可**分模块开发**，此时在主配置文件中引用其他配置文件的方法为使用`<import>`标签加载：
+Spring 的配置文件可**分模块开发**，此时在主配置文件中引用其他配置文件的方法为使用`<import>`标签加载：
 
 ```xml
 <beans>
@@ -217,7 +217,7 @@ Spring的配置文件可**分模块开发**，此时在主配置文件中引用�
 </beans>
 ```
 
-## 5. p命名空间、c命名空间
+## 5. p 命名空间、c 命名空间
 
 - The p-namespace lets you use the bean element’s attributes (instead of nested \<property/> elements) to describe your property values collaborating beans, or both.
 - Similar to the XML Shortcut with the p-namespace, the c-namespace, introduced in Spring 3.1, allows inlined attributes for configuring the constructor arguments rather then nested constructorarg elements.
@@ -228,13 +228,13 @@ A bean definition can contain a lot of configuration information, including cons
 
 A child bean definition inherits configuration data from a parent definition. The child definition can override some values or add others as needed. Using parent and child bean definitions can save a lot of typing. Effectively, this is a form of templating.
 
-所以，以后再看吧。。。。。。
+所以，以后再看吧。
 
-## 7. 附一些特殊场景的spring配置
+## 7. 附一些特殊场景的 spring 配置
 
-### 数据源（以XML为例）
+### 数据源（以 XML 为例）
 
-> spring容器加载properties文件：
+> spring 容器加载 properties 文件：
 >
 > ```xml
 > <context:property-placeholder location="xx.properties"/>
@@ -249,20 +249,20 @@ A child bean definition inherits configuration data from a parent definition. Th
 - 它会事先实例化数据源，初始化部分连接源；
 - 使用连接资源时从数据源中获取，使用完毕后会将连接资源归还给数据源。
 
-常见的数据源（连接池）：DBCP、C3P0、BoneCP、Druid等。
+常见的数据源（连接池）：DBCP、C3P0、BoneCP、Druid 等。
 
 数据源的手动创建：
 
 1. 在代码中直接创建（强耦合）
-2. 通过properties配置文件创建（解耦合）
+2. 通过 properties 配置文件创建（解耦合）
 
-#### 使用Spring配置数据源
+#### 使用 Spring 配置数据源
 
-通过Spring创建数据源，其基本步骤依然遵循spring开发的一般步骤，只是DataSource的创建权交由了Spring容器去完成。
+通过 Spring 创建数据源，其基本步骤依然遵循 spring 开发的一般步骤，只是 DataSource 的创建权交由了 Spring 容器去完成。
 
-> 以下为c3p0数据源为例。
+> 以下为 c3p0 数据源为例。
 
-- 可以直接在Spring配置文件applicationContext.xml中配置DataSource的相关连接信息：
+- 可以直接在 Spring 配置文件 applicationContext.xml 中配置 DataSource 的相关连接信息：
 
     ```xml
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -273,7 +273,7 @@ A child bean definition inherits configuration data from a parent definition. Th
     </bean>
     ```
 
-- 也可以让Spring抽取另外的DataSource的properties配置文件，令applicationContext.xml加载jdbc.properties配置文件来获得连接信息。
+- 也可以让 Spring 抽取另外的 DataSource 的 properties 配置文件，令 applicationContext.xml 加载 jdbc.properties 配置文件来获得连接信息。
 
     > 其不再在`<bean>`标签内了，而需引入`<context>`标签。
     >
@@ -291,7 +291,7 @@ A child bean definition inherits configuration data from a parent definition. Th
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     ">
-        <!-- 加载外部的properties文件 -->
+        <!-- 加载外部的 properties 文件 -->
         <context:property-placeholder location="classpath:jdbc.properties"/>
         
         <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -310,10 +310,10 @@ A child bean definition inherits configuration data from a parent definition. Th
 
 声明式事务处理的作用：事务管理不侵入开发的组件。具体来说，业务逻辑对象不会意识到是否正处在事务管理之中，如果想要改变事务管理策划的话，只需要在定义文件中重新配置即可。这样其实更符合实际，因为事务管理是属于系统层面的服务，而不是业务逻辑的一部分。
 
-Spring声明式事务控制的底层就是AOP。
+Spring 声明式事务控制的底层就是 AOP。
 
-基于XML的声明式事务控制：
+基于 XML 的声明式事务控制：
 
-> 暂略，参见 https://b23.tv/GAAFVz 视频的P66。
+> 暂略，参见 https://b23.tv/GAAFVz 视频的 P66。
 
 基于注解的声明式事务控制：暂略

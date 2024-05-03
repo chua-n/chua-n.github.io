@@ -2,7 +2,7 @@
 title: IoC-下
 ---
 
-## 1. 定制Bean的特性
+## 1. 定制 Bean 的特性
 
 The Spring Framework provides a number of interfaces you can use to customize the nature of a bean. This section groups them as follows:
 
@@ -12,7 +12,7 @@ The Spring Framework provides a number of interfaces you can use to customize th
 
 ### 1.1 Lifecycle Callbacks
 
-#### 1.1.1 单个Bean的控制
+#### 1.1.1 单个 Bean 的控制
 
 To interact with the container’s management of the bean lifecycle, you can implement the Spring `InitializingBean` and `DisposableBean` interfaces. The container calls `afterPropertiesSet()` for the former and `destroy()` for the latter to let the bean perform certain actions upon initialization and destruction of your beans.
 
@@ -20,11 +20,11 @@ Internally, the Spring Framework uses `BeanPostProcessor` implementations to pro
 
 ##### 实现方式
 
-使用“回调”参与到Bean的生命周期的方式有三种：
+使用“回调”参与到 Bean 的生命周期的方式有三种：
 
-- 使用JSR-250的`@PostConstruct` 和 `@PreDestroy` 注解（强烈推荐）
+- 使用 JSR-250 的`@PostConstruct` 和 `@PreDestroy` 注解（强烈推荐）
 
-- Spring配置中配置Bean的`init-method`和`destroy-method`（推荐）
+- Spring 配置中配置 Bean 的`init-method`和`destroy-method`（推荐）
 
     ```java
     <bean id="exampleInitBean" class="examples.ExampleBean" init-method="init"/>
@@ -39,9 +39,9 @@ Internally, the Spring Framework uses `BeanPostProcessor` implementations to pro
     }
     ```
 
-    > 使用XML配置时，顶级的`<beans/>`标签中可以通过`default-init-method`、`default-destroy-method`属性配置默认的Bean初始化和销毁方法，详情不在此阐述。
+    > 使用 XML 配置时，顶级的`<beans/>`标签中可以通过`default-init-method`、`default-destroy-method`属性配置默认的 Bean 初始化和销毁方法，详情不在此阐述。
 
-- 实现Spring的`InitializingBean`和`DisposableBean`接口（不推荐，与SpringAPI强耦合了）：
+- 实现 Spring 的`InitializingBean`和`DisposableBean`接口（不推荐，与 SpringAPI 强耦合了）：
 
     ```java
     package org.springframework.beans.factory;
@@ -59,7 +59,7 @@ Internally, the Spring Framework uses `BeanPostProcessor` implementations to pro
     }
     ```
 
-如上所述，配置生命周期回调的方式有三种，如果对同一个Bean同时配置了这三种方式，其执行顺序如下：
+如上所述，配置生命周期回调的方式有三种，如果对同一个 Bean 同时配置了这三种方式，其执行顺序如下：
 
 - 初始化
     - Methods annotated with `@PostConstruct`
@@ -70,7 +70,7 @@ Internally, the Spring Framework uses `BeanPostProcessor` implementations to pro
     - `destroy()` as defined by the `DisposableBean` callback interface
     - A custom configured `destroy()` method
 
-##### 生命周期回调与AOP执行顺序
+##### 生命周期回调与 AOP 执行顺序
 
 A target bean is fully created first and then an AOP proxy (for example) with its interceptor chain is applied.
 
@@ -82,13 +82,13 @@ A target bean is fully created first and then an AOP proxy (for example) with it
 
     > Hence, it would be inconsistent to apply the interceptors to the `init` method, because doing so would couple the lifecycle of the target bean to its proxy or interceptors and leave strange semantics when your code interacts directly with the raw target bean.
 
-#### 1.1.2 容器级别的控制：Lifecycle接口
+#### 1.1.2 容器级别的控制：Lifecycle 接口
 
 In addition to the initialization and destruction callbacks, Spring-managed objects may also implement the `Lifecycle` interface so that those objects can participate in the startup and shutdown process, as driven by the container’s own lifecycle.
 
-##### Lifecycle接口
+##### Lifecycle 接口
 
-`Lifecycle` 接口属于面向生命周期的一种通用的基本接口，其中定义的方法是当任何一个Java对象想要表达生命周期这一概念时都会需要的方法，如表示启动的`start()`、表示停止的`stop()`。
+`Lifecycle` 接口属于面向生命周期的一种通用的基本接口，其中定义的方法是当任何一个 Java 对象想要表达生命周期这一概念时都会需要的方法，如表示启动的`start()`、表示停止的`stop()`。
 
 `Lifecycle` 接口的源码定义如下：
 
@@ -127,7 +127,7 @@ public interface LifecycleProcessor extends Lifecycle {
 - 如果想要在 spring 容器启动/关闭/刷新的时候自动触发 `Lifecycle` 的 `start/stop` 方法，可以选择实现 `SmartLifecycle` 接口；
 - Also, please note that stop notifications are not guaranteed to come before destruction. On regular shutdown, all `Lifecycle` beans first receive a stop notification before the general destruction callbacks are being propagated. However, on hot refresh during a context’s lifetime or on stopped refresh attempts, only destroy methods are called.
 
-##### SmartLifecycle接口
+##### SmartLifecycle 接口
 
 > TODO: `ApplicationContext` 的 `refresh` 是一种怎样的操作？
 
@@ -157,11 +157,11 @@ public interface SmartLifecycle extends Lifecycle, Phased {
 }
 ```
 
-##### SmartLifecycle实现类的执行顺序
+##### SmartLifecycle 实现类的执行顺序
 
-当Bean之间存在依赖关系时，它们触发`startup`和`shutdown`方法的时机需要明确：如果A depends-on B，则是B先于A触发`startup`，同时B滞后于A触发`shutdown`。
+当 Bean 之间存在依赖关系时，它们触发`startup`和`shutdown`方法的时机需要明确：如果 A depends-on B，则是 B 先于 A 触发`startup`，同时 B 滞后于 A 触发`shutdown`。
 
-然而，有时候Bean之间的依赖关系不是那么明确，此时可以通过`SmartLifecycle`接口的`getPhase()`方法（继承自`Phased`接口）来定义一个绝对的顺序：
+然而，有时候 Bean 之间的依赖关系不是那么明确，此时可以通过`SmartLifecycle`接口的`getPhase()`方法（继承自`Phased`接口）来定义一个绝对的顺序：
 
 ```java
 package org.springframework.context;
@@ -171,15 +171,15 @@ public interface Phased {
 }
 ```
 
-对于`startup`方法，phase最小的对象最早执行；对于`shutdown`方法则正好相反，phase最小的对象最晚执行。
+对于`startup`方法，phase 最小的对象最早执行；对于`shutdown`方法则正好相反，phase 最小的对象最晚执行。
 
-实际上，对于未实现`SmartLifecycle`接口的`Lifecycle`对象，其对应的phase值默认被设定为0。
+实际上，对于未实现`SmartLifecycle`接口的`Lifecycle`对象，其对应的 phase 值默认被设定为 0。
 
-##### SmartLifecycle与InitializingBean、DisposableBean的相对执行顺序
+##### SmartLifecycle 与 InitializingBean、DisposableBean 的相对执行顺序
 
-对于一个同时实现了`SmartLifecycle`、`InitializingBean`、`DisposableBean`的bean而言，我们知道，在bean完成初始化后会执行`InitializingBean`的回调，而容器初始化完成后会执行`SmartLifecycle`的`start`回调，那么它们的顺序是如何的呢？
+对于一个同时实现了`SmartLifecycle`、`InitializingBean`、`DisposableBean`的 bean 而言，我们知道，在 bean 完成初始化后会执行`InitializingBean`的回调，而容器初始化完成后会执行`SmartLifecycle`的`start`回调，那么它们的顺序是如何的呢？
 
-这实际上是bean初始化完成与容器初始化完成的标准定义问题。对于spring容器，其会在其中所有的bean初始化完成之后才认为自己步入了初始化完成的阶段，因此，一个 bean 的 `InitializingBean` 回调会早于其`SmartLifecycle`的`start`回调；而对于销毁方法，过程正好相反。顺序如下所示：
+这实际上是 bean 初始化完成与容器初始化完成的标准定义问题。对于 spring 容器，其会在其中所有的 bean 初始化完成之后才认为自己步入了初始化完成的阶段，因此，一个 bean 的 `InitializingBean` 回调会早于其`SmartLifecycle`的`start`回调；而对于销毁方法，过程正好相反。顺序如下所示：
 
 ```
 smart postConstruct
@@ -188,11 +188,11 @@ smart stop
 smart preDestroy
 ```
 
-#### 1.1.3 关停非Web的IoC容器
+#### 1.1.3 关停非 Web 的 IoC 容器
 
 >  This section applies only to non-web applications. Spring’s web-based `ApplicationContext` implementations already have code in place to gracefully shut down the Spring IoC container when the relevant web application is shut down.
 
-如果在 non-web application 的环境下使用IoC容器，需要通过 JVM 的钩子来注册关停回调，这样才能保证相关联的 singleton bean 的生命周期回调能够正常被执行。要注册这样一个回调钩子，可以通过 Spring 的 `ConfigurableApplicationContext#registerShutdownHook` 方法，如下所示：
+如果在 non-web application 的环境下使用 IoC 容器，需要通过 JVM 的钩子来注册关停回调，这样才能保证相关联的 singleton bean 的生命周期回调能够正常被执行。要注册这样一个回调钩子，可以通过 Spring 的 `ConfigurableApplicationContext#registerShutdownHook` 方法，如下所示：
 
 ```java
 import org.springframework.context.ConfigurableApplicationContext;
@@ -215,7 +215,7 @@ public final class Boot {
 
 ### 1.2 ApplicationContextAware
 
-如果一个Bean（注意前提它得是一个Spring的Bean）实现了`org.springframework.context.ApplicationContextAware`接口，该Bean的实例会被提供一个指向`ApplicationContext`的引用。因此，一个Bean可以借此操作创造它们的（母体）`ApplicationContext`。
+如果一个 Bean（注意前提它得是一个 Spring 的 Bean）实现了`org.springframework.context.ApplicationContextAware`接口，该 Bean 的实例会被提供一个指向`ApplicationContext`的引用。因此，一个 Bean 可以借此操作创造它们的（母体）`ApplicationContext`。
 
 `ApplicationContextAware`接口的定义如下：
 
@@ -227,7 +227,7 @@ public interface ApplicationContextAware extends Aware {
 
 ### 1.3 BeanNameAware
 
-> 获取Bean在IoC容器中的名字。
+> 获取 Bean 在 IoC 容器中的名字。
 
 When an `ApplicationContext` creates a class that implements the `org.springframework.beans.factory.BeanNameAware` interface, the class is provided with a reference to the name defined in its associated object definition.
 
@@ -259,9 +259,9 @@ Besides `ApplicationContextAware` and `BeanNameAware`, Spring offers a wide rang
 
 > Note again that using these interfaces ties your code to the Spring API and does not follow the Inversion of Control style. As a result, we recommend them for infrastructure beans that require programmatic access to the container.
 
-## 2. IoC容器的扩展点
+## 2. IoC 容器的扩展点
 
-通常情况下，程序开发者不需要去继承`ApplicationContext`接口的实现类，而可以通过Spring提供的特殊集成接口来对 IoC 容器进行扩展。
+通常情况下，程序开发者不需要去继承`ApplicationContext`接口的实现类，而可以通过 Spring 提供的特殊集成接口来对 IoC 容器进行扩展。
 
 ### 2.1 `BeanFactoryPostProcessor`: Customizing Configuration Metadata
 
@@ -276,7 +276,7 @@ public interface BeanFactoryPostProcessor {
 }
 ```
 
-`BeanFactoryPostProcessor` 的语义与 `BeanPostProcessor` 类似，区别在于 `BeanFactoryPostProcessor` 操作的是 Bean 的配置数据。也就是说，在Spring的 IoC 容器实例化所有 Bean 对象（不包含`BeanFactoryPostProcessor` 对象，因为显然它们需要事先被实例化）之前，会让 `BeanFactoryPostProcessor` 读取配置数据，并允许对配置进行改变，从而改变 Bean 的一些特性。
+`BeanFactoryPostProcessor` 的语义与 `BeanPostProcessor` 类似，区别在于 `BeanFactoryPostProcessor` 操作的是 Bean 的配置数据。也就是说，在 Spring 的 IoC 容器实例化所有 Bean 对象（不包含`BeanFactoryPostProcessor` 对象，因为显然它们需要事先被实例化）之前，会让 `BeanFactoryPostProcessor` 读取配置数据，并允许对配置进行改变，从而改变 Bean 的一些特性。
 
 从 `BeanFactoryPostProcessor` 接口的定义可以看出，尽管在技术上一个 `BeanFactoryPostProcessor` 也是可以直接操作 Bean 对象本身的——使用 `BeanFactory.getBean()` 即可获取相应的 bean ——然而并不推荐这样做！因为这实际上造成了 Bean 被提前创建，与标准的 IoC 容器赋予的生命周期相脱离，很可能导致一些负面效果。
 
@@ -297,7 +297,7 @@ As with `BeanPostProcessor`s , you typically do not want to configure `BeanFacto
 
 `BeanPostProcessor` 对象操作的是被实例化了 Bean 对象，也就是说，首先由 Spring IoC 容器创建 Bean 实例，然后`BeanPostProcessor` 开始干它们的活儿。
 
-`BeanPostProcessor` 接口包含两个回调方法，当在 Spring 容器中注册了一个 `BeanPostProcessor` 后，每当Spring 容器创建一个 Bean 对象，注册的 `BeanPostProcessor` 对象在 Bean 对象的初始化方法 (container initialization methods, such as `InitializingBean.afterPropertiesSet()` or any declared `init` method) 执行前后都会收到一个回调：
+`BeanPostProcessor` 接口包含两个回调方法，当在 Spring 容器中注册了一个 `BeanPostProcessor` 后，每当 Spring 容器创建一个 Bean 对象，注册的 `BeanPostProcessor` 对象在 Bean 对象的初始化方法 (container initialization methods, such as `InitializingBean.afterPropertiesSet()` or any declared `init` method) 执行前后都会收到一个回调：
 
 ```java
 package org.springframework.beans.factory.config;
@@ -325,7 +325,7 @@ The post-processor can take any action with the bean instance, including ignorin
 
 #### 2.2.2 配置`BeanPostProcessor`
 
-由于`BeanPostProcessor`的实现类是一种特殊的Bean，Spring容器在扫描配置的时候会自动检测`BeanPostProcessor`的存在。由此引发的一个特殊点在于，当使用`@Bean`工厂方法来配置`BeanPostProcessor`的时候，该方法的返回类型一定要显式声明为属于`BeanPostProcessor`类型，否则Spring容器无法根据类型判断出它是一个`BeanPostProcessor`，这会影响后续的工作。
+由于`BeanPostProcessor`的实现类是一种特殊的 Bean，Spring 容器在扫描配置的时候会自动检测`BeanPostProcessor`的存在。由此引发的一个特殊点在于，当使用`@Bean`工厂方法来配置`BeanPostProcessor`的时候，该方法的返回类型一定要显式声明为属于`BeanPostProcessor`类型，否则 Spring 容器无法根据类型判断出它是一个`BeanPostProcessor`，这会影响后续的工作。
 
 尽管更推荐通过自动扫描的方式配置`BeanPostProcessor`，但也可以编程式地注册`BeanPostProcessor`的实例：
 
@@ -384,11 +384,11 @@ public interface FactoryBean<T> {
 }
 ```
 
-`FactoryBean` 接口表示一个工厂 Bean，即它可以生成某一个类型的 Bean 实例，`FactoryBean` 最大的作用即是可以让我们自定义 Bean 的创建过程。如果一些情况下使用XML/注解等配置的手段来创建 Bean 显得太复杂了，那么可以选择使用 `FactoryBean` 来通过代码定义创建 Bean 的过程，只要最后将 `FactoryBean` 纳入 Spring 容器即可（即`FactoryBean`本身需要是一个容器中的 Bean）。
+`FactoryBean` 接口表示一个工厂 Bean，即它可以生成某一个类型的 Bean 实例，`FactoryBean` 最大的作用即是可以让我们自定义 Bean 的创建过程。如果一些情况下使用 XML/注解等配置的手段来创建 Bean 显得太复杂了，那么可以选择使用 `FactoryBean` 来通过代码定义创建 Bean 的过程，只要最后将 `FactoryBean` 纳入 Spring 容器即可（即`FactoryBean`本身需要是一个容器中的 Bean）。
 
-Spring框架本身也定义和使用了大量的 `FactoryBean`，差不多有50多个。
+Spring 框架本身也定义和使用了大量的 `FactoryBean`，差不多有 50 多个。
 
-当你需要从容器中获取一个`FactoryBean`本身，而非该`FactoryBean`创建的 Bean 时，只需要在调用`ApplicationContext`的 `getBean()` 方法时，传入（由该`FactoryBean`创建的）Bean的`id`然后加上一个`&`前缀。
+当你需要从容器中获取一个`FactoryBean`本身，而非该`FactoryBean`创建的 Bean 时，只需要在调用`ApplicationContext`的 `getBean()` 方法时，传入（由该`FactoryBean`创建的）Bean 的`id`然后加上一个`&`前缀。
 
 ## 3. Environment Abstraction
 
@@ -436,7 +436,7 @@ public interface PropertyResolver {
 }
 ```
 
-- 一个`profile`是指对一系列bean definitions进行的一个逻辑分组，不同的 profile（即分组）通过名称区分。只有激活`profile`，其关联的这组bean definitions才会被注册到Spring容器中。`Environment`会决定当前激活的是哪个`profile`，以及在默认情况下会激活哪个`profile`。
+- 一个`profile`是指对一系列 bean definitions 进行的一个逻辑分组，不同的 profile（即分组）通过名称区分。只有激活`profile`，其关联的这组 bean definitions 才会被注册到 Spring 容器中。`Environment`会决定当前激活的是哪个`profile`，以及在默认情况下会激活哪个`profile`。
 
   > A profile is a named, logical group of bean definitions to be registered with the container only if the given profile is active.
 
@@ -564,9 +564,9 @@ public interface PropertyResolver {
 
 ### 3.2 Bean Definition Profiles
 
-Bean definition profiles 提供了一种在不同环境可以注册不同的bean的机制。这里的环境比如开发环境、测试环境、生产环境，其中连接的SQL数据库可能不同，因此属于不同条件下需要激活的profile。
+Bean definition profiles 提供了一种在不同环境可以注册不同的 bean 的机制。这里的环境比如开发环境、测试环境、生产环境，其中连接的 SQL 数据库可能不同，因此属于不同条件下需要激活的 profile。
 
-`@Profile`注解可以修饰类/方法，其作用是指明一个Bean只有在某个/某些profile被激活时，才能被注册到Spring容器（未设置`@Profile`的bean，不受激活的profile的限制），比如：
+`@Profile`注解可以修饰类/方法，其作用是指明一个 Bean 只有在某个/某些 profile 被激活时，才能被注册到 Spring 容器（未设置`@Profile`的 bean，不受激活的 profile 的限制），比如：
 
 ```java
 @Configuration
@@ -626,9 +626,9 @@ The profile string may contain a simple profile name (for example, `production`)
 - `&`: A logical “and” of the profiles
 - `|`: A logical “or” of the profiles
 
-#### 激活profile
+#### 激活 profile
 
-激活一个profile的方式可分为两种：
+激活一个 profile 的方式可分为两种：
 
 - 编程式激活：调用`Environment`的 api：
 
@@ -647,10 +647,9 @@ The profile string may contain a simple profile name (for example, `production`)
 
   - 系统环境变量
 
-  - web.xml中的servlet context参数
+  - web.xml 中的 servlet context 参数
 
   - JNDI
-
 
   ```java
   -Dspring.profiles.active="profile1,profile2"
@@ -660,9 +659,9 @@ The profile string may contain a simple profile name (for example, `production`)
 
 需要强调的是，激活的 profile 不是一种 *eithor-or* 的关系，可以同时激活多个 profile 的。
 
-#### 默认Profile
+#### 默认 Profile
 
-如果没有在程序中显式指定一个被激活的`profile`，Spring会激活名称为`default`的默认`profile`。即，默认情况下如下 bean 会被激活：
+如果没有在程序中显式指定一个被激活的`profile`，Spring 会激活名称为`default`的默认`profile`。即，默认情况下如下 bean 会被激活：
 
 ```java
 @Configuration
@@ -685,12 +684,12 @@ public class DefaultDataConfig {
 
 #### 释义
 
-`PropertySource` 是对任何形式表达的key-value键值对的一种抽象。
+`PropertySource` 是对任何形式表达的 key-value 键值对的一种抽象。
 
 Spring 的 [`StandardEnvironment`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/core/env/StandardEnvironment.html) 源自两个 `PropertySource` 对象： 
 
 - 一个代表 JVM 系统参数 (`System.getProperties()`) 的 `PropertySource` 对象
-- 一个代表系统环境变量 (`System.getenv()`)的 `PropertySource` 对象
+- 一个代表系统环境变量 (`System.getenv()`) 的 `PropertySource` 对象
 
 #### `PropertySource`的搜索
 
@@ -703,7 +702,7 @@ boolean containsMyProperty = env.containsProperty("my-property");
 System.out.println("Does my environment contain the 'my-property' property? " + containsMyProperty);
 ```
 
-`Environment` 在查找对应的property的时候，有如下规则：
+`Environment` 在查找对应的 property 的时候，有如下规则：
 
 - By default, system properties have precedence over environment variables. 
 - So, if the `my-property` property happens to be set in both places during a call to `env.getProperty("my-property")`, the system property value “wins” and is returned. 
@@ -729,11 +728,11 @@ For a common `StandardServletEnvironment`, the full hierarchy is as follows, wit
   sources.addFirst(new MyPropertySource());
   ```
 
-  > 此外，如果你想设置你自定义的`PropertySource`的搜索优先级，只需要设置其在 `Environment` 的 `PropertySources` 这个list中的顺序即可。如上将`MyPropertySource` 加到了 list 中的第一个元素，因而其将拥有最高优先级。
+  > 此外，如果你想设置你自定义的`PropertySource`的搜索优先级，只需要设置其在 `Environment` 的 `PropertySources` 这个 list 中的顺序即可。如上将`MyPropertySource` 加到了 list 中的第一个元素，因而其将拥有最高优先级。
 
 - 声明式：使用`@PropertySource`注解
 
-  - 示例1：
+  - 示例 1：
 
     ```java
     @Configuration
@@ -752,7 +751,7 @@ For a common `StandardServletEnvironment`, the full hierarchy is as follows, wit
     }
     ```
 
-  - 示例2：在路径参数中的 `${prop:defaultValue}` 占位符代表一个变量`prop`，`prop`的值将从之前已经载入 `Environment` 中的 `PropertySource` （如JVM系统参数、环境变量）中取，如果取不到，`prop`将使用默认值`defaultValue`。
+  - 示例 2：在路径参数中的 `${prop:defaultValue}` 占位符代表一个变量`prop`，`prop`的值将从之前已经载入 `Environment` 中的 `PropertySource` （如 JVM 系统参数、环境变量）中取，如果取不到，`prop`将使用默认值`defaultValue`。
 
     > 当然，也可以选择不设置默认值，此时解析不到变量`prop`，程序将抛出一个 `IllegalArgumentException` 异常。
 
@@ -801,7 +800,7 @@ The `@PropertySource` annotation is repeatable, according to Java 8 conventions.
 
 ## 4. LoadTimeWeaver
 
-> Load Time Weaver，简称LTW。
+> Load Time Weaver，简称 LTW。
 
 The `LoadTimeWeaver` is used by Spring to dynamically transform classes as they are loaded into the Java virtual machine (JVM).
 
@@ -820,7 +819,7 @@ Once configured for the `ApplicationContext`, any bean within that `ApplicationC
 - Consult the [`LocalContainerEntityManagerFactoryBean`](https://docs.spring.io/spring-framework/docs/5.3.20/javadoc-api/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.html) javadoc for more detail. 
 - For more on AspectJ load-time weaving, see [Load-time Weaving with AspectJ in the Spring Framework](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-aj-ltw).
 
-## 5. ApplicationContext的其他功能
+## 5. ApplicationContext 的其他功能
 
 > 后面再跟。
 

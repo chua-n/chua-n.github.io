@@ -2,28 +2,28 @@
 title: IoC-上
 ---
 
-## 1. IoC释义
+## 1. IoC 释义
 
-> Spring容器指Spring的IoC容器。
+> Spring 容器指 Spring 的 IoC 容器。
 >
-> 以下将[Spring官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core)中的configuration metadata理解为“配置”一词。
+> 以下将 [Spring 官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core) 中的 configuration metadata 理解为“配置”一词。
 
-在Spring读取Bean配置创建 Bean 实例之前，必须首先对Spring的IoC容器进行实例化，从而才能从 IoC 容器里获取 Bean 实例并使用。
+在 Spring 读取 Bean 配置创建 Bean 实例之前，必须首先对 Spring 的 IoC 容器进行实例化，从而才能从 IoC 容器里获取 Bean 实例并使用。
 
-- Spring IOC容器的两个基础包是`org.springframework.beans`和`org.springframework.context`。
+- Spring IOC 容器的两个基础包是`org.springframework.beans`和`org.springframework.context`。
 - In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called **beans**.
 - Beans, and the dependencies among them, are reflected in the configuration metadata used by a container.
 
-### 1.1 两种类型的IoC容器
+### 1.1 两种类型的 IoC 容器
 
-Spring提供了两种类型的IoC容器：
+Spring 提供了两种类型的 IoC 容器：
 
-- `BeanFactory`接口： IoC容器的基础实现，是Spring框架的基础设施。
+- `BeanFactory`接口： IoC 容器的基础实现，是 Spring 框架的基础设施。
 - `ApplicationContext`接口：提供了更多的高级特性，实际是 `BeanFactory` 的子接口。`ApplicationContext`面向使用 Spring 框架的开发者，几乎所有的应用场合都可以直接使用 `ApplicationContext` 而非底层的 `BeanFactory`。
 
-从IoC容器中获取Bean对象的方法是调用底层`BeanFactory`接口提供的`getBean()`方法，`getBean()`方法有两种使用形式：
+从 IoC 容器中获取 Bean 对象的方法是调用底层`BeanFactory`接口提供的`getBean()`方法，`getBean()`方法有两种使用形式：
 
-- 根据bean的id名称进行获取（允许容器中出现多个相同类型的bean）
+- 根据 bean 的 id 名称进行获取（允许容器中出现多个相同类型的 bean）
 
     ```java
     public Object getBean(String name) throws BeansException {
@@ -32,7 +32,7 @@ Spring提供了两种类型的IoC容器：
     }
     ```
 
-- 根据bean的类型进行获取（容器中存在多个相同类型的bean时无法识别，会报错）
+- 根据 bean 的类型进行获取（容器中存在多个相同类型的 bean 时无法识别，会报错）
 
     ```java
     public <T> T getBean(Class<T> requiredType) throws BeansException {
@@ -41,11 +41,11 @@ Spring提供了两种类型的IoC容器：
     }
     ```
 
-实际上，Spring不建议调用任何`getBean`方法来获取对象，因为这样会导致应用程序的代码依赖了Spring的API。
+实际上，Spring 不建议调用任何`getBean`方法来获取对象，因为这样会导致应用程序的代码依赖了 Spring 的 API。
 
-### 1.2 ApplicationContext接口
+### 1.2 ApplicationContext 接口
 
-`ApplicationContext`为接口，其代直接翻译为（Spring的）应用上下文，用来代表Spring的IoC容器，通过`ApplicationContext`接口的对象可获得Spring容器中的Bean对象。
+`ApplicationContext`为接口，其代直接翻译为（Spring 的）应用上下文，用来代表 Spring 的 IoC 容器，通过`ApplicationContext`接口的对象可获得 Spring 容器中的 Bean 对象。
 
 ![image-20220416171705471](https://figure-bed.chua-n.com/JavaWeb/Spring/23.png)
 
@@ -55,7 +55,7 @@ Spring提供了两种类型的IoC容器：
 | :----------------------------------: | ------------------------------------------------------------ |
 |   `ClassPathXmlApplicationContext`   | 从类路径下加载配置文件（推荐）                               |
 |  `FileSystemXmlApplicationContext`   | 从文件系统中加载配置文件，配置文件可以在磁盘任意位置         |
-| `AnnotationConfigApplicationContext` | 当使用注解配置容器对象时，需要使用此类来创建Spring容器，其用来读取注解 |
+| `AnnotationConfigApplicationContext` | 当使用注解配置容器对象时，需要使用此类来创建 Spring 容器，其用来读取注解 |
 
 通过拿到`ApplicationContext`的`BeanFactory`（通常是`DefaultListableBeanFactory`），`ApplicationContext`的实现类也支持注册在容器外创建的对象。比如`DefaultListableBeanFactory`可以通过`registerSingleton(..)` 和 `registerBeanDefinition(..)`方法来支持注册功能。
 
@@ -92,14 +92,14 @@ This metadata translates to a set of properties that make up each bean definitio
 
 A bean definition is essentially a recipe for creating one or more objects. The container looks at the recipe for a named bean when asked and uses the configuration metadata encapsulated by that bean definition to create (or acquire) an actual object.
 
-### 2.2 Bean的命名
+### 2.2 Bean 的命名
 
-如果Bean在配置的时候没有给予其名称，Spring默认按照如下规则给其命名：
+如果 Bean 在配置的时候没有给予其名称，Spring 默认按照如下规则给其命名：
 
 1. 以类名为名，并将首字母小写；
 2. 如果类名的前两个字母均为大写，将会保留原始的类名。
 
-### 2.3 Bean的实例化时机
+### 2.3 Bean 的实例化时机
 
 - The Spring container validates the configuration of each bean as the container is created. However, the bean properties themselves are not set until the bean is actually created.
 - You can generally trust Spring to do the right thing. It detects configuration problems, such as references to non-existent beans and circular dependencies, at container load-time. Spring sets properties and resolves dependencies as late as possible, when the bean is actually created.
@@ -107,9 +107,9 @@ A bean definition is essentially a recipe for creating one or more objects. The 
 - ..., the bean is instantiated (if it is not a pre-instantiated singleton), its dependencies are set, and the relevant lifecycle methods (such as a configured init method or the InitializingBean callback
     method) are invoked.
 
-### 2.4 Bean的实例化方式
+### 2.4 Bean 的实例化方式
 
-实例化Bean的三种方式：
+实例化 Bean 的三种方式：
 
 - 构造方式实例化
 
@@ -166,7 +166,7 @@ A bean definition is essentially a recipe for creating one or more objects. The 
 
 ### 2.5 Bean Scopes
 
-> 私以为将其翻译为bean的作用域不太准确。
+> 私以为将其翻译为 bean 的作用域不太准确。
 
 The Spring Framework supports six scopes, four of which are available only if you use a web-aware ApplicationContext. You can also create a custom scope.
 
@@ -212,9 +212,9 @@ notes:
 
 > When you use singleton-scoped beans with dependencies on prototype beans, be aware that dependencies are resolved at instantiation time. 
 
-单例的Bean中注入的prototype-bean实例始终是同一个对象，不会随着调用的重复而重新获取新的prototype-bean实例。
+单例的 Bean 中注入的 prototype-bean 实例始终是同一个对象，不会随着调用的重复而重新获取新的 prototype-bean 实例。
 
-如果你需要每次获取一个全新的prototype-bean实例，参见[Method Injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-method-injection)即可。
+如果你需要每次获取一个全新的 prototype-bean 实例，参见 [Method Injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-method-injection) 即可。
 
 #### 2.5.4 Request, Session, Application, and WebSocket Scopes
 
@@ -261,19 +261,19 @@ void registerScope(String scopeName, Scope scope);
 
 > DI exists in two major variants: **Constructor-based dependency injection** and **Setter-based dependency injection**.
 
-在编写程序时，通过控制反转，把对象的创建权交给了Spring，但是代码中不可能出现没有依赖的情况，而IoC解耦只是降低他们的依赖关系，但不会消除，例如：业务层仍会调用持久层的方法。
+在编写程序时，通过控制反转，把对象的创建权交给了 Spring，但是代码中不可能出现没有依赖的情况，而 IoC 解耦只是降低他们的依赖关系，但不会消除，例如：业务层仍会调用持久层的方法。
 
-这种业务层和持久层的依赖关系，在使用Spring之后，就让Spring来维护了，简单地说，就是坐等框架把持久层对象传入业务层，而不用我们自己去获取，这些便由所谓的依赖注入去实现。
+这种业务层和持久层的依赖关系，在使用 Spring 之后，就让 Spring 来维护了，简单地说，就是坐等框架把持久层对象传入业务层，而不用我们自己去获取，这些便由所谓的依赖注入去实现。
 
-**依赖注入**(Dependency Injection, DI)，是Spring框架核心IoC的具体实现，依赖注入表示组件之间的依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。
+**依赖注入** (Dependency Injection, DI)，是 Spring 框架核心 IoC 的具体实现，依赖注入表示组件之间的依赖关系由容器在运行期决定，形象的说，即由容器动态的将某个依赖关系注入到组件之中。
 
 ### 引导案例
 
-对于两个类UserService和UserDao，它们都在Spring容器中，前者的代码定义中需要使用到后者。以前的做法是在容器外部获得UserService实例和UserDao实例，然后在程序中进行结合；然而，最终程序直接使用的是UserService，所以更好的方式是：在Spring容器中，将UserDao设置到UserSerivice内部。
+对于两个类 UserService 和 UserDao，它们都在 Spring 容器中，前者的代码定义中需要使用到后者。以前的做法是在容器外部获得 UserService 实例和 UserDao 实例，然后在程序中进行结合；然而，最终程序直接使用的是 UserService，所以更好的方式是：在 Spring 容器中，将 UserDao 设置到 UserSerivice 内部。
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/Spring/11.png" alt="11" style="zoom:50%;" />
 
-以Spring进行依赖注入后的效果如下图：
+以 Spring 进行依赖注入后的效果如下图：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/Spring/12.png" alt="12" style="zoom:50%;" />
 
@@ -297,7 +297,7 @@ public class ExampleBean {
 
 - 默认情况下，构造方法的形参匹配是通过参数的类型来进行的。
 
-    - 在无歧义的情况下，形参按照在构造方法中出现的顺序依次进行赋值以初始化Bean。
+    - 在无歧义的情况下，形参按照在构造方法中出现的顺序依次进行赋值以初始化 Bean。
 
     - 此时也可以选择显示地指定参数类型来进行匹配，但没有这个必要。
 
@@ -326,7 +326,7 @@ public class ExampleBean {
     </bean>
     ```
 
-### 3.2 setter方法注入
+### 3.2 setter 方法注入
 
 > Setter-based DI is accomplished by the container calling setter methods on your beans after invoking a no-argument constructor or a no-argument static factory method to instantiate your bean.
 
@@ -347,15 +347,15 @@ public class SimpleMovieLister {
 The ApplicationContext also supports setter-based DI after some dependencies have already been injected through the
 constructor approach. 
 
-### 3.3 构造注入 or setter注入？
+### 3.3 构造注入 or setter 注入？
 
-尽管Spring既支持构造器注入和setter方法注入，但Spring更推荐使用构造器注入：
+尽管 Spring 既支持构造器注入和 setter 方法注入，但 Spring 更推荐使用构造器注入：
 
 - The Spring team generally advocates constructor injection, as it lets you implement application components as immutable objects and ensures that required dependencies are not null. 
 - Furthermore, constructor-injected components are always returned to the client (calling) code in a fully initialized state. 
 - As a side note, a large number of constructor arguments is a bad code smell, implying that the class likely has too many responsibilities and should be refactored to better address proper separation of concerns.
 
-setter方法注入应该作为一种备选项：
+setter 方法注入应该作为一种备选项：
 
 - Setter injection should primarily only be used for optional dependencies that can be assigned reasonable default values within the class. Otherwise, not-null checks must be performed everywhere the code uses the dependency. 
 
@@ -369,7 +369,7 @@ setter方法注入应该作为一种备选项：
 
 > For example: Class A requires an instance of class B through constructor injection, and class B requires an instance of class A through constructor injection. If you configure beans for classes A and B to be injected into each other, the Spring IoC container detects this circular reference at runtime, and throws a `BeanCurrentlyInCreationException`.
 
-解决方案——构造器注入不支持循环依赖，setter注入支持循环依赖：
+解决方案——构造器注入不支持循环依赖，setter 注入支持循环依赖：
 
 > Alternatively, avoid constructor injection and use setter injection
 > only. In other words, although it is not recommended, you can configure circular dependencies with setter injection.
@@ -378,7 +378,7 @@ setter方法注入应该作为一种备选项：
 
 > The Spring container can autowire relationships between collaborating beans. You can let Spring resolve collaborators (other beans) automatically for your bean by inspecting the contents of the ApplicationContext.
 
-在XML中，可以通过`<bean/>`标签的`autowire`属性来配置自动织入，其有4个模式：
+在 XML 中，可以通过`<bean/>`标签的`autowire`属性来配置自动织入，其有 4 个模式：
 
 | Mode          | Explanation                                                  |
 | :------------ | :----------------------------------------------------------- |
@@ -389,20 +389,20 @@ setter方法注入应该作为一种备选项：
 
 注意：
 
-- `byName`或`byType`自动织入时，相应的字段必须有setter方法，否则无法注入。
+- `byName`或`byType`自动织入时，相应的字段必须有 setter 方法，否则无法注入。
 - Explicit dependencies in property and constructor-arg settings always override autowiring. 
 - You cannot autowire simple properties such as primitives, Strings, and Classes (and arrays of such simple properties). This limitation is by-design.
 
-如果不希望某些bean参与到自动织入的体系，即不希望它们可以被自动织入到其他类：
+如果不希望某些 bean 参与到自动织入的体系，即不希望它们可以被自动织入到其他类：
 
-- 可以通过设置\<bean/>标签的autowire-candidate属性为false来实现。不过，这个属性只对byType类型织入的模式有效。
+- 可以通过设置`<bean/>`标签的 autowire-candidate 属性为 false 来实现。不过，这个属性只对 byType 类型织入的模式有效。
 - You can also limit autowire candidates based on pattern-matching against bean names.
 
 ## 4. 注入方法（Method Injection）
 
 ### 4.1 场景引入
 
-有时我们需要在一个bean A中调用另一个bean B的方法，通常我们会添加一个字段，然后使用依赖注入把bean B的实例注入到这个字段上。这种情况下在bean A 和 bean B都是singleton时没问题，但是在 bean A是singleton和bean B是非singleton时就可能出现问题。因为bean B为非singleton , 那么bean B是希望他的使用者在一些情况下创建一个新实例，而bean A使用字段把bean B的一个实例缓存了下来，每次都使用的是同一个实例。
+有时我们需要在一个 bean A 中调用另一个 bean B 的方法，通常我们会添加一个字段，然后使用依赖注入把 bean B 的实例注入到这个字段上。这种情况下在 bean A 和 bean B 都是 singleton 时没问题，但是在 bean A 是 singleton 和 bean B 是非 singleton 时就可能出现问题。因为 bean B 为非 singleton , 那么 bean B 是希望他的使用者在一些情况下创建一个新实例，而 bean A 使用字段把 bean B 的一个实例缓存了下来，每次都使用的是同一个实例。
 
 A solution is to forego（放弃） some inversion of control. You can make bean A aware of the container by implementing the ApplicationContextAware interface, and by making a getBean("B") call to the container ask for (a typically new) bean B instance every time bean A needs it. The following example shows this approach:
 
@@ -438,11 +438,11 @@ public class CommandManager implements ApplicationContextAware {
 }
 ```
 
-然而这种方式并不推荐，因为这样的代码就和Spring API强绑定了。相反，Method Injection, a somewhat advanced feature of the Spring IoC container, lets you handle this use case cleanly.
+然而这种方式并不推荐，因为这样的代码就和 Spring API 强绑定了。相反，Method Injection, a somewhat advanced feature of the Spring IoC container, lets you handle this use case cleanly.
 
 > 注入方法即重写方法、替换方法？
 
-Spring提供两种机制来注入方法，分别是 Lookup Method Injection 和Arbitrary method replacement。
+Spring 提供两种机制来注入方法，分别是 Lookup Method Injection 和 Arbitrary method replacement。
 
 - Lookup Method Injection 只提供返回值注入
 - Arbitrary method replacement 可以替换任意方法来达到注入
@@ -451,7 +451,7 @@ Spring提供两种机制来注入方法，分别是 Lookup Method Injection 和A
 
 Lookup method injection is the ability of the container to override methods on container-managed beans and **return the lookup result** for another named bean in the container. 
 
-这种方法通常用于涉及prototype bean的场景，Spring实现这种方法注入的原理是使用CGLIB动态生成一个覆盖该方法的子类（如果该方法是抽象方法，则在子类中实现该方法；如果该方法不是抽象方法，则在子类中覆盖该方法）。基于此原理，Lookup Method Injection有如下限制：
+这种方法通常用于涉及 prototype bean 的场景，Spring 实现这种方法注入的原理是使用 CGLIB 动态生成一个覆盖该方法的子类（如果该方法是抽象方法，则在子类中实现该方法；如果该方法不是抽象方法，则在子类中覆盖该方法）。基于此原理，Lookup Method Injection 有如下限制：
 
 - For this dynamic subclassing to work, the class that the Spring bean container subclasses cannot be final, and the method to be overridden cannot be final, either.
 - Unit-testing a class that has an abstract method requires you to subclass the class yourself and to supply a stub implementation of the abstract method.
@@ -459,7 +459,7 @@ Lookup method injection is the ability of the container to override methods on c
 - A further key limitation is that lookup methods do not work with factory
     methods and in particular not with `@Bean` methods in configuration classes, since, in that case, the container is not in charge of creating the instance and therefore cannot create a runtime-generated subclass on the fly.
 
-对于上述场景，Lookup Method Injection的解决方案是：
+对于上述场景，Lookup Method Injection 的解决方案是：
 
 - 代码
 
@@ -483,7 +483,7 @@ Lookup method injection is the ability of the container to override methods on c
     }
     ```
 
-- XML配置方式
+- XML 配置方式
 
     ```java
     <!-- a stateful bean deployed as a prototype (non-singleton) -->
@@ -524,7 +524,7 @@ In the client class that contains the method to be injected (the `CommandManager
 
 A less useful form of method injection than lookup method injection is the ability to replace arbitrary methods in a managed bean with another method implementation.
 
-在XML配置中，可以通过replaced-method标签来替换一个已经存在的方法实现。
+在 XML 配置中，可以通过 replaced-method 标签来替换一个已经存在的方法实现。
 
 例如，现在想替换一个类中的`computeValue`方法：
 
@@ -549,8 +549,8 @@ A class that implements the `org.springframework.beans.factory.support.MethodRep
 public class ReplacementComputeValue implements MethodReplacer {
 
     /**
-     * 重新实现某个Bean的某个方法。
-     * @param o 某Bean对象
+     * 重新实现某个 Bean 的某个方法。
+     * @param o 某 Bean 对象
      * @param m 被替换的方法
      * @param args 方法的实参列表
      */
@@ -580,20 +580,20 @@ The bean definition to deploy the original class and specify the method override
 
 ### depends-on
 
-通常情况下，一个bean中引用另一个bean，可以使用`<ref/>`标签。但是当两个bean有强烈的生命周期依赖时，就需要使用`depends-on`属性了。
+通常情况下，一个 bean 中引用另一个 bean，可以使用`<ref/>`标签。但是当两个 bean 有强烈的生命周期依赖时，就需要使用`depends-on`属性了。
 
 - The depends-on attribute can explicitly force one or more beans to be initialized before the bean using this element is initialized. 
 - The depends-on attribute can specify both an initialization-time dependency and, in the case of singleton beans only, a corresponding destruction-time dependency. Dependent beans that define a depends-on relationship with a given bean are destroyed first, prior to the given bean itself being destroyed. Thus, depends-on can also control shutdown order.
 
 ### 懒加载
 
-所谓懒加载的Bean，其实例化的时机是该Bean第一次被使用的时候，而不是在项目启动的时候。
+所谓懒加载的 Bean，其实例化的时机是该 Bean 第一次被使用的时候，而不是在项目启动的时候。
 
-Spring不推荐使用Bean的懒加载模式，因为这会导致一些问题可能到项目运行 了很长时间以后才会暴露出来，而不是项目启动的时候即可以被发现。
+Spring 不推荐使用 Bean 的懒加载模式，因为这会导致一些问题可能到项目运行 了很长时间以后才会暴露出来，而不是项目启动的时候即可以被发现。
 
 懒加载的配置方式：
 
-- 单个Bean层次的控制
+- 单个 Bean 层次的控制
 
     ```xml
     <bean id="lazy" class="com.something.ExpensiveToCreateBean" lazy-init="true"/>

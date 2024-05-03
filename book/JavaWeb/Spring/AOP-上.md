@@ -4,7 +4,7 @@ title: AOP-上
 
 ## 1. 概念
 
-**AOP(Aspect Oriented Programming)** ，直译过来即为面向切面编程。AOP 是一种编程思想，是面向对象编程OOP的一种补充，提供了与 OOP 不同的抽象软件结构的视角。在 OOP 中，我们以类(class)作为我们的基本单元，而 AOP 中的基本单元是切面(Aspect)。好比下图，所谓切面，相当于应用对象间的横切点，我们可以将其单独抽象为单独的模块。
+**AOP(Aspect Oriented Programming)** ，直译过来即为面向切面编程。AOP 是一种编程思想，是面向对象编程 OOP 的一种补充，提供了与 OOP 不同的抽象软件结构的视角。在 OOP 中，我们以类 (class) 作为我们的基本单元，而 AOP 中的基本单元是切面 (Aspect)。好比下图，所谓切面，相当于应用对象间的横切点，我们可以将其单独抽象为单独的模块。
 
 ![img](https://figure-bed.chua-n.com/JavaWeb/Spring/24.png)
 
@@ -15,28 +15,28 @@ title: AOP-上
 - **核心业务**：登陆、注册、增、删、改、查等，都叫核心业务
 - **周边功能**：日志、事务管理等为周边业务
 
-在面向切面编程中，核心业务功能和周边功能是分别独立进行开发，两者不是耦合的。然后把切面功能和核心业务功能 “编织”在一起，便谓之AOP。
+在面向切面编程中，核心业务功能和周边功能是分别独立进行开发，两者不是耦合的。然后把切面功能和核心业务功能 “编织”在一起，便谓之 AOP。
 
-### AOP的目的
+### AOP 的目的
 
-AOP 要达到的效果是，保证开发者不修改源代码的前提下，去为系统中的业务组件添加某种**通用**功能。即，AOP能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。
+AOP 要达到的效果是，保证开发者不修改源代码的前提下，去为系统中的业务组件添加某种**通用**功能。即，AOP 能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。
 
-在技术上，AOP可以在程序运行期间，在不修改源码的情况下对方法进行功能增强，如此一来，不难理解 AOP 其实就是代理模式的典型应用。
+在技术上，AOP 可以在程序运行期间，在不修改源码的情况下对方法进行功能增强，如此一来，不难理解 AOP 其实就是代理模式的典型应用。
 
-### AOP实现的分类
+### AOP 实现的分类
 
 按照 AOP 修改源代码的时机，可以将其分为两类：
 
 - 静态 AOP 实现：AOP 框架在编译阶段对程序源代码进行修改，生成了静态的 AOP 代理类（生成的 *.class 文件已经被改掉了，需要使用特定的编译器）。例如 AspectJ。
 - 动态 AOP 实现： AOP 框架在运行阶段动态生成代理对象（在内存中以 JDK 或 CGlib 动态代理动态地生成 AOP 代理类）。如 SpringAOP。
 
-常用AOP实现比较：
+常用 AOP 实现比较：
 
 |      类别      |    机制     |                             原理                             |           优点           |                            缺点                            |
 | :------------: | :---------: | :----------------------------------------------------------: | :----------------------: | :--------------------------------------------------------: |
-|    静态AOP     |  静态织入   |    在编译期，切面直接以字节码的形式编译到目标字节码文件中    |     对系统无性能影响     |                         灵活性不足                         |
-|    动态AOP     | JDK动态代理 | 在运行期，目标类加载后，为接口动态生成代理类，将切面织入到代理类中 |  相对于静态AOP更加灵活   | 1) 切入的关注点需要实现接口；<br />2) 对系统有一点性能损耗 |
-| 动态字节码生成 |    CGLIB    | 在运行期，目标类加载后，动态生成目标类的子类，将切面逻辑加入到子类中 |    没有接口也可以织入    |       扩展类的实例方法用final修饰时，则无法进行织入        |
+|    静态 AOP     |  静态织入   |    在编译期，切面直接以字节码的形式编译到目标字节码文件中    |     对系统无性能影响     |                         灵活性不足                         |
+|    动态 AOP     | JDK 动态代理 | 在运行期，目标类加载后，为接口动态生成代理类，将切面织入到代理类中 |  相对于静态 AOP 更加灵活   | 1) 切入的关注点需要实现接口；<br />2) 对系统有一点性能损耗 |
+| 动态字节码生成 |    CGLIB    | 在运行期，目标类加载后，动态生成目标类的子类，将切面逻辑加入到子类中 |    没有接口也可以织入    |       扩展类的实例方法用 final 修饰时，则无法进行织入        |
 | 自定义类加载器 |             |      在运行期，目标类加载前，将切面逻辑加到目标字节码里      | 可以对绝大部分类进行织入 |      代码中如果使用了其他类加载器，则这些类将不会织入      |
 |   字节码转换   |             |          在运行期，所有类加载器加载字节码前进行拦截          |   可以对所有类进行织入   |                                                            |
 
@@ -50,12 +50,12 @@ AOP 要达到的效果是，保证开发者不修改源代码的前提下，去�
 | :-----------: | :------: | ------------------------------------------------------------ |
 |    Aspect     |   切面   | 横跨多个类的某个功能（如事务管理）。从概念上，它是切点和增强的结合。 |
 |  Join point   |  联结点  | 程序执行过程中的一个时机（点）。例如方法的调用、异常的抛出。<br /><blockquote>在 Spring AOP 中，联结点总是方法的调用。</blockquote> |
-|    Advice     |   增强   | 在某个联结点上，某个切面执行的具体动作（这里对advice译为增强，为意译）。<br /><blockquote>很多AOP框架（包括Spring）都把增强建模为一个拦截器，并且相应地围绕联结点维护了一个拦截器链。</blockquote> |
+|    Advice     |   增强   | 在某个联结点上，某个切面执行的具体动作（这里对 advice 译为增强，为意译）。<br /><blockquote>很多 AOP 框架（包括 Spring）都把增强建模为一个拦截器，并且相应地围绕联结点维护了一个拦截器链。</blockquote> |
 |   Pointcut    |   切点   | 一个用来匹配联结点的谓词。<br /><blockquote>Advice is associated with a pointcut expression and runs at any join point matched by the pointcut. For example, you could use an introduction to make a bean implement an `IsModified` interface, to simplify caching.</blockquote> |
 | Introduction  |   引入   | 引入是为一个类声明额外的方法或字段。<br /><blockquote>Spring AOP lets you introduce new interfaces (and a corresponding implementation) to any advised object. </blockquote> |
-| Target object | 目标对象 | 要被切面增强的（原始）对象，也常称作advised object（增强对象，这种称呼并不好，有歧义）。<br /><blockquote>由于Spring是基于运行时代理的机制实现AOP的，因此目标对象总是一个proxied object（被代理的对象）。</blockquote> |
-|   AOP Proxy   | AOP代理  | AOP为实现切面功能而创建的对象，故名之代理对象。<br /><blockquote>在Spring中，代理对象总是一个JDK代理或CGLIB代理对象。</blockquote> |
-|    Weaving    |   织入   | 描述了把增强处理添加到目标对象、并创建一个被增强的对象（代理）这一过程，不对应一份实体。<br /><blockquote>1) 织入可以发生在编译时、加载时、运行时<br />2) SpringAOP的织入总是发生在运行时。</blockquote> |
+| Target object | 目标对象 | 要被切面增强的（原始）对象，也常称作 advised object（增强对象，这种称呼并不好，有歧义）。<br /><blockquote>由于 Spring 是基于运行时代理的机制实现 AOP 的，因此目标对象总是一个 proxied object（被代理的对象）。</blockquote> |
+|   AOP Proxy   | AOP 代理  | AOP 为实现切面功能而创建的对象，故名之代理对象。<br /><blockquote>在 Spring 中，代理对象总是一个 JDK 代理或 CGLIB 代理对象。</blockquote> |
+|    Weaving    |   织入   | 描述了把增强处理添加到目标对象、并创建一个被增强的对象（代理）这一过程，不对应一份实体。<br /><blockquote>1) 织入可以发生在编译时、加载时、运行时<br />2) SpringAOP 的织入总是发生在运行时。</blockquote> |
 
 增强的类型：
 
@@ -65,23 +65,23 @@ AOP 要达到的效果是，保证开发者不修改源代码的前提下，去�
 - 后置增强
 - 环绕增强
 
-## 2. Spring AOP的特性
+## 2. Spring AOP 的特性
 
 ### 能力与目标
 
 Spring AOP does not need to control the class loader hierarchy and is thus suitable for use in a servlet container or application server.
 
-Spring AOP当前只支持对Spring Bean的方法作为联结点，不支持对字段的拦截（尽管对字段拦截的支持不需要破坏Spring AOP的核心API）。如果希望拦截对字段的访问与更新，建议直接使用AspectJ。
+Spring AOP 当前只支持对 Spring Bean 的方法作为联结点，不支持对字段的拦截（尽管对字段拦截的支持不需要破坏 Spring AOP 的核心 API）。如果希望拦截对字段的访问与更新，建议直接使用 AspectJ。
 
-SpringAOP使用时需要结合SpringIoC容器，因此SpringAOP无法对非常细粒度的对象进行增强，典型的例子就是domain objects，对于这些场景，选择AspectJ吧。
+SpringAOP 使用时需要结合 SpringIoC 容器，因此 SpringAOP 无法对非常细粒度的对象进行增强，典型的例子就是 domain objects，对于这些场景，选择 AspectJ 吧。
 
-### AOP机制
+### AOP 机制
 
 > The AOP runtime is still pure Spring AOP, though, and there is no dependency on the AspectJ compiler or weaver.
 >
-> spring关于AOP的spring-aspects包中引用了aspectjweaver。
+> spring 关于 AOP 的 spring-aspects 包中引用了 aspectjweaver。
 
-AOP技术在Spring中实现的内容：Spring框架监控切点方法的执行，一旦监控到切入点方法被运行，即使用**动态代理**机制，动态创建目标对象的代理对象，根据增强类别在代理对象的相应位置将Advice对应的功能织入，从而完成增强后的整个代码逻辑的执行（TODO 代理发生的时机对吗？）。
+AOP 技术在 Spring 中实现的内容：Spring 框架监控切点方法的执行，一旦监控到切入点方法被运行，即使用**动态代理**机制，动态创建目标对象的代理对象，根据增强类别在代理对象的相应位置将 Advice 对应的功能织入，从而完成增强后的整个代码逻辑的执行（TODO 代理发生的时机对吗？）。
 
 Spring 的 AOP 实现底层就是对 JDK 代理、cglib 代理的方式进行了封装，封装后我们只需要对需要关注的部分进行代码编写，并通过配置的方式完成指定目标的方法增强。
 
@@ -90,31 +90,31 @@ Spring 的 AOP 实现底层就是对 JDK 代理、cglib 代理的方式进行了
 -   JDK 代理：基于接口的动态代理技术。
 -   cglib 代理 ：基于父类的动态代理技术。
 
-默认情况下，Spring 会根据目标类是否实现了接口来决定采用哪种动态代理的方式。如果一个对象没有实现任何接口，则会使用CGLIB代理，否则使用JDK代理。
+默认情况下，Spring 会根据目标类是否实现了接口来决定采用哪种动态代理的方式。如果一个对象没有实现任何接口，则会使用 CGLIB 代理，否则使用 JDK 代理。
 
-- 当使用JDK代理的时候，所有该目标对象实现的接口都会被代理；
+- 当使用 JDK 代理的时候，所有该目标对象实现的接口都会被代理；
 
-- 如果需要，也可以强制使用CGLIB代理，方法是设置`proxy-target-class`为`true`：
+- 如果需要，也可以强制使用 CGLIB 代理，方法是设置`proxy-target-class`为`true`：
 
     ```xml
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     ```
 
-Spring使用CGLIB代理时需注意如下事项：
+Spring 使用 CGLIB 代理时需注意如下事项：
 
 - `final`方法无法被增强，因为它们无法被在运行时生成的子类所覆盖；
 
-- 正常情况下，CGLIB代理是通过Objenesis创建的，但当JVM不允许绕过构造函数时，SpringAOP会对构造器进行双重调用来达成目的，此时Spring会记录相应的debug日志信息。
+- 正常情况下，CGLIB 代理是通过 Objenesis 创建的，但当 JVM 不允许绕过构造函数时，SpringAOP 会对构造器进行双重调用来达成目的，此时 Spring 会记录相应的 debug 日志信息。
 
-    > Objenesis是一个轻量的Java库，作用是绕过构造器创建实例。
+    > Objenesis 是一个轻量的 Java 库，作用是绕过构造器创建实例。
 
-#### 理解SpringAOP的代理
+#### 理解 SpringAOP 的代理
 
-Spring AOP是基于代理的，牢记这一点很重要，这是本质特征！
+Spring AOP 是基于代理的，牢记这一点很重要，这是本质特征！
 
 可通过如下示例来理解代理这件事情：
 
-假定有一个纯天然的POJO类：
+假定有一个纯天然的 POJO 类：
 
 ```java
 public class SimplePojo implements Pojo {
@@ -130,7 +130,7 @@ public class SimplePojo implements Pojo {
 }
 ```
 
-对于POJO类的实例pojo，调用pojo的方法时毫无疑问会直接调用该对象的相应方法：
+对于 POJO 类的实例 pojo，调用 pojo 的方法时毫无疑问会直接调用该对象的相应方法：
 
 ```java
 public class Main {
@@ -145,7 +145,7 @@ public class Main {
 
 ![aop proxy plain pojo call](https://docs.spring.io/spring-framework/docs/current/reference/html/images/aop-proxy-plain-pojo-call.png)
 
-然而，如果pojo引用的是代理类的代理对象时，调用方式会发生改变：
+然而，如果 pojo 引用的是代理类的代理对象时，调用方式会发生改变：
 
 ```java
 public class Main {
@@ -169,9 +169,9 @@ However, once the call has finally reached the target object (the `SimplePojo` r
 - Such as `this.bar()` or `this.foo()`, are going to be invoked against the `this` reference, and not the proxy. 
 - It means that self-invocation is not going to result in the advice associated with a method invocation getting a chance to run.
 
-综上，最好的方式永远是代码中不要出现有自调用的情况。其次，如果真的迫不得已，可以通过在代码中使用Spring提供的一些API来解决，如下：
+综上，最好的方式永远是代码中不要出现有自调用的情况。其次，如果真的迫不得已，可以通过在代码中使用 Spring 提供的一些 API 来解决，如下：
 
-> 这种方案首先使得代码与Spring发生了强耦合，其次使得这个类本身知道了自己即将被代理，后者与AOP的理念背道而驰了。
+> 这种方案首先使得代码与 Spring 发生了强耦合，其次使得这个类本身知道了自己即将被代理，后者与 AOP 的理念背道而驰了。
 
 ```java
 public class SimplePojo implements Pojo {
@@ -203,7 +203,7 @@ public class Main {
 }
 ```
 
-最后需要强调的是，上述自调用问题的根源是由于Spring AOP是基于代理这一机制实现的，故而在AspectJ中不存在这一问题。
+最后需要强调的是，上述自调用问题的根源是由于 Spring AOP 是基于代理这一机制实现的，故而在 AspectJ 中不存在这一问题。
 
 ### Enabling @AspectJ Support
 
@@ -227,7 +227,7 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
     }
     ```
 
-## 3. Spring AOP开发入门案例
+## 3. Spring AOP 开发入门案例
 
 > 以注解配置为例。
 
@@ -269,9 +269,9 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
     }
     ```
 
-2. 配置并启动Spring
+2. 配置并启动 Spring
 
-    - Spring配置类
+    - Spring 配置类
 
         ```java
         @ComponentScan
@@ -280,7 +280,7 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
         }
         ```
 
-    - main程序运行：
+    - main 程序运行：
 
         ```java
         public class AppRunner {
@@ -312,7 +312,7 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
                 <artifactId>spring-context</artifactId>
                 <version>5.3.13</version>
             </dependency>
-            <!-- spring-aspects包中引入了org.aspectj的aspectjweaver -->
+            <!-- spring-aspects 包中引入了 org.aspectj 的 aspectjweaver -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aspects</artifactId>
@@ -321,7 +321,7 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
         </dependencies>
         ```
 
-    - Spring配置
+    - Spring 配置
 
         ```java
         @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -357,15 +357,15 @@ The @AspectJ support can be enabled with XML- or Java-style configuration：
 
 ### 4.1 声明切面
 
-在`@Component`修饰Bean的基础上，使用`@Aspect`注解。
+在`@Component`修饰 Bean 的基础上，使用`@Aspect`注解。
 
-在SpringAOP中，切面自身不能作为目标对象被其他切面增强。因为`@Aspect`注解除了将一个类标记为切面类以外，还将这个类排除在了auto-proxying之外。
+在 SpringAOP 中，切面自身不能作为目标对象被其他切面增强。因为`@Aspect`注解除了将一个类标记为切面类以外，还将这个类排除在了 auto-proxying 之外。
 
 #### 切面实例化模型
 
-默认情况下，每一个切面在Spring容器中都是单例的，但是也可以定义不同生命周期的切面。Spring支持AspectJ的 `singleton`（默认情况）、`perthis` 和 `pertarget` 实例化模型，但目前不支持 `percflow`, `percflowbelow`, `pertypewithin`。
+默认情况下，每一个切面在 Spring 容器中都是单例的，但是也可以定义不同生命周期的切面。Spring 支持 AspectJ 的 `singleton`（默认情况）、`perthis` 和 `pertarget` 实例化模型，但目前不支持 `percflow`, `percflowbelow`, `pertypewithin`。
 
-在@Aspect注解中声明一个`perthis` 分句就可以声明`perthis`切面了，如下所示：
+在@Aspect 注解中声明一个`perthis` 分句就可以声明`perthis`切面了，如下所示：
 
 ```java
 @Aspect("perthis(com.xyz.myapp.CommonPointcuts.businessService())")
@@ -388,7 +388,7 @@ public class MyAspect {
 
 ### 4.2 声明切点
 
-#### @Pointcut注解抽取切点表达式
+#### @Pointcut 注解抽取切点表达式
 
 > In the @AspectJ annotation-style of AOP, a pointcut signature is provided by a regular method definition, and the pointcut expression is indicated by using the `@Pointcut` annotation (the method serving as the pointcut signature must have a `void` return type).
 
@@ -418,7 +418,7 @@ public class BuyAspect {
 }
 ```
 
-引用切点表达式时，java方法的作用域修饰符是起作用的，即你不能在某一个类中引用另一个类里定义的private的@Pointcut方法。
+引用切点表达式时，java 方法的作用域修饰符是起作用的，即你不能在某一个类中引用另一个类里定义的 private 的@Pointcut 方法。
 
 #### 定义公共的切点
 
@@ -487,7 +487,7 @@ public class CommonPointcuts {
 }
 ```
 
-如果想给项目中的service层加入事务机制，可以进行如下配置：
+如果想给项目中的 service 层加入事务机制，可以进行如下配置：
 
 ```java
 <aop:config>
@@ -507,11 +507,11 @@ public class CommonPointcuts {
 
 > The pointcut expression may be either a simple reference to a named pointcut or a pointcut expression declared in place.
 
-### 5.1 Spring支持的PCD
+### 5.1 Spring 支持的 PCD
 
-Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个子集，其支持的写法有：
+Spring AOP 中的切点表达式 (pointcut designators, PCD) 是 AspectJ 的一个子集，其支持的写法有：
 
-- `execution`: 用于匹配联结点（即方法的执行），SpringAOP最主要的用法。
+- `execution`: 用于匹配联结点（即方法的执行），SpringAOP 最主要的用法。
 
     - 语法
 
@@ -583,7 +583,7 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
             within(com.xyz.service..*)
         ```
 
-- `this`: 通过代理类的类型来匹配。如果某个Bean的代理类属于该类型，则拦截该Bean的方法。
+- `this`: 通过代理类的类型来匹配。如果某个 Bean 的代理类属于该类型，则拦截该 Bean 的方法。
 
     > Limits matching to join points (the execution of methods when using Spring AOP) where the bean reference (Spring AOP proxy) is an instance of the given type.
 
@@ -593,7 +593,7 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
             this(com.xyz.service.AccountService)
         ```
 
-- `target`: 通过目标类的类型来匹配。如果某个Bean（即被代理的类）属于该类型，则拦截该Bean的方法。
+- `target`: 通过目标类的类型来匹配。如果某个 Bean（即被代理的类）属于该类型，则拦截该 Bean 的方法。
 
     > Limits matching to join points (the execution of methods when using Spring AOP) where the target object (application object being proxied) is an instance of the given type.
 
@@ -653,9 +653,9 @@ Spring AOP 中的切点表达式(pointcut designators, PCD)是AspectJ的一个�
             @args(com.xyz.security.Classified)
         ```
 
-Spring还支持一个额外的PCD：
+Spring 还支持一个额外的 PCD：
 
-- `bean`: 通过 Bean 的ID或名称来进行匹配。可使用通配符来匹配多个Bean。
+- `bean`: 通过 Bean 的 ID 或名称来进行匹配。可使用通配符来匹配多个 Bean。
 
     > This PCD lets you limit the matching of join points to a particular named Spring bean or to a set of named Spring beans (when using wildcards). 
 
@@ -695,7 +695,7 @@ Due to the proxy-based nature of Spring’s AOP framework, calls within the targ
 - With CGLIB, public and protected method calls on the proxy are intercepted (and even package-visible methods, if necessary). 
 - However, common interactions through proxies should always be designed through public signatures.
 
-### 5.2 附：其他PCD
+### 5.2 附：其他 PCD
 
 The full AspectJ pointcut language supports additional pointcut designators that are not supported in Spring:
 
@@ -720,7 +720,7 @@ The set of pointcut designators supported by Spring AOP may be extended in futur
 
 ### 5.3 切点表达式的匹配性能
 
-切点表达式为了匹配相应的联结点，必须对代码进行核查并决定相应的联结点是否与切点表达式相匹配，这显然是具有运行成本的，因此AsepectJ会在编译时对切点进行处理以优化性能。
+切点表达式为了匹配相应的联结点，必须对代码进行核查并决定相应的联结点是否与切点表达式相匹配，这显然是具有运行成本的，因此 AsepectJ 会在编译时对切点进行处理以优化性能。
 
 - On first encountering a pointcut declaration, AspectJ rewrites it into an optimal form for the matching process. 
 
@@ -730,7 +730,7 @@ The set of pointcut designators supported by Spring AOP may be extended in futur
 
 为了优化匹配的性能，在定义切点表达式的时候应该尽可能地缩小匹配空间的范围。
 
-AspectJ的PCD可以划分为如下三种类型(kinded, scoping, contextual):
+AspectJ 的 PCD 可以划分为如下三种类型 (kinded, scoping, contextual):
 
 > 一个好的切点表达式应该至少包含前两种类型（kinded, scoping）。
 
@@ -742,7 +742,7 @@ AspectJ的PCD可以划分为如下三种类型(kinded, scoping, contextual):
 
 ### 6.1 增强的类型
 
-SpringAOP中有5种增强方式，其相应的注解如下，其使用语法均为`@增强注解("切点表达式")`：
+SpringAOP 中有 5 种增强方式，其相应的注解如下，其使用语法均为`@增强注解("切点表达式")`：
 
 |     名称     |       注解        |                             说明                             |
 | :----------: | :---------------: | :----------------------------------------------------------: |
@@ -779,7 +779,7 @@ SpringAOP中有5种增强方式，其相应的注解如下，其使用语法均�
 
 ### 6.3 增强方法的参数
 
-#### Jointpoint与ProceedingJoinPoint
+#### Jointpoint 与 ProceedingJoinPoint
 
 - JoinPoint
 
@@ -855,7 +855,7 @@ SpringAOP中有5种增强方式，其相应的注解如下，其使用语法均�
 
 If you use a parameter name in place of a type name in an `args` expression, the value of the corresponding argument is passed as the parameter value when the advice is invoked.
 
-对于PCD里的`args`表达式（`this`, `target`, `@within`, `@target`, `@annotation`, `@args`同理），如果传入的不再是一个类型的全限定名，而是一个普通形参名，同时将原类型名与新的形参名对应着写到增强方法的参数列表中，则可将目标方法执行时的实参传入增强方法中。例如：
+对于 PCD 里的`args`表达式（`this`, `target`, `@within`, `@target`, `@annotation`, `@args`同理），如果传入的不再是一个类型的全限定名，而是一个普通形参名，同时将原类型名与新的形参名对应着写到增强方法的参数列表中，则可将目标方法执行时的实参传入增强方法中。例如：
 
 ```java
 @Before("com.xyz.myapp.CommonPointcuts.dataAccessOperation() && args(account,..)")
@@ -883,7 +883,7 @@ public void validateAccount(Account account) {
 
 #### 传递实参：泛型
 
-SpringAOP也能处理在类声明或方法形参里的泛型。对于如下的接口：
+SpringAOP 也能处理在类声明或方法形参里的泛型。对于如下的接口：
 
 ```java
 public interface Sample<T> {
@@ -892,7 +892,7 @@ public interface Sample<T> {
 }
 ```
 
-通过在增强方法中显示指定类型，可以令AOP只拦截对应类型的方法：
+通过在增强方法中显示指定类型，可以令 AOP 只拦截对应类型的方法：
 
 ```java
 @Before("execution(* ..Sample+.sampleGenericMethod(*)) && args(param)")
@@ -920,7 +920,7 @@ The parameter binding in advice invocations relies on matching names used in poi
 
 Parameter names are not available through Java reflection, so Spring AOP uses the following strategy to determine parameter names:
 
-- 所有的增强注解及@Pointcut注解都有一个 `argNames` 属性可以用来显式指定注解方法（即增强方法？）中对应的形参名。如：
+- 所有的增强注解及@Pointcut 注解都有一个 `argNames` 属性可以用来显式指定注解方法（即增强方法？）中对应的形参名。如：
 
     ```java
     @Before(value="com.xyz.lib.Pointcuts.anyPublicMethod() && target(bean) && @annotation(auditable)",
@@ -937,9 +937,9 @@ Parameter names are not available through Java reflection, so Spring AOP uses th
 
     > If an @AspectJ aspect has been compiled by the AspectJ compiler (`ajc`) even without the debug information, you need not add the `argNames` attribute, as the compiler retain the needed information.
 
-- 如果代码编译后无法找到任何debug信息，SpringAOP将尝试自己去推断绑定变量与方法参数的配对（比如，如果注解中和方法中均只有一个参数，这种配对是很明显的）。如果在推断过程中发现这种绑定关系是模棱两可的，Spring会抛出一个`AmbiguousBindingException`异常。
+- 如果代码编译后无法找到任何 debug 信息，SpringAOP 将尝试自己去推断绑定变量与方法参数的配对（比如，如果注解中和方法中均只有一个参数，这种配对是很明显的）。如果在推断过程中发现这种绑定关系是模棱两可的，Spring 会抛出一个`AmbiguousBindingException`异常。
 
-- 如果上述所有策略都失败，Spring会抛出一个`IllegalArgumentException`异常。
+- 如果上述所有策略都失败，Spring 会抛出一个`IllegalArgumentException`异常。
 
 值得一提的是，如果增强方法中第一个形参是 `JoinPoint`, `ProceedingJoinPoint`,  `JoinPoint.StaticPart` 类型，这种匹配完全不需要依赖 `argNames` 属性，因此 `argNames` 中可以不申明这个参数。
 
@@ -949,13 +949,13 @@ Parameter names are not available through Java reflection, so Spring AOP uses th
 
 执行顺序如下：
 
-<img src="https://figure-bed.chua-n.com/JavaWeb/Spring/25.svg" alt="AOP增强方式" style="zoom:67%;" />
+<img src="https://figure-bed.chua-n.com/JavaWeb/Spring/25.svg" alt="AOP 增强方式" style="zoom:67%;" />
 
-需要注意的是，对于`@Around`环绕增强，如果增强方法内部没有调用 `pjp.proceed()`，那么将导致其他的增强方法失去了判断执行的入口，其他类型的增强advice将失效！
+需要注意的是，对于`@Around`环绕增强，如果增强方法内部没有调用 `pjp.proceed()`，那么将导致其他的增强方法失去了判断执行的入口，其他类型的增强 advice 将失效！
 
 ### 同一 advice、不同 aspect
 
-Spring可以支持多个切面同时运行，如果刚好多个切面的切点相同，切面的运行顺序便很重要了。默认情况下，切面的运行顺序是混乱的（undefined），如果需要指定切面的运行顺序，Spring AOP 通过指定`aspect`的优先级来控制。比如：
+Spring 可以支持多个切面同时运行，如果刚好多个切面的切点相同，切面的运行顺序便很重要了。默认情况下，切面的运行顺序是混乱的（undefined），如果需要指定切面的运行顺序，Spring AOP 通过指定`aspect`的优先级来控制。比如：
 
 - Aspect 类添加**注解**：`org.springframework.core.annotation.Order`，使用注解`value`属性指定优先级。
 - Aspect 类实现**接口**：`org.springframework.core.Ordered`，实现 `Ordered` 接口的 `getOrder()` 方法。
@@ -978,11 +978,11 @@ public class SecondAspect {
 
 `@Order`注解中的值就是切面的顺序，但对于切面而言，他们不是顺序执行的先后关系而是包含关系：先入后出、后入先出。
 
-![AOP不同切面执行顺序](https://figure-bed.chua-n.com/JavaWeb/Spring/26.png)
+![AOP 不同切面执行顺序](https://figure-bed.chua-n.com/JavaWeb/Spring/26.png)
 
 ### 同一 aspect、同一 advice
 
-同一aspect、相同advice的执行顺序是无法确定的， `@Order` 在advice方法上也无效，因此尽量不要使用这种方式。
+同一 aspect、相同 advice 的执行顺序是无法确定的， `@Order` 在 advice 方法上也无效，因此尽量不要使用这种方式。
 
 ## 8. 引入
 
@@ -993,10 +993,10 @@ public class SecondAspect {
 创建引入使用 `@DeclareParents` 注解，该注解的作用为某一个类（目标对象）声明一个新的父接口：
 
 - 此注解修饰的是字段类型，即是待实现的父接口的类型；
-- `value`属性是一个AspectJ的type pattern，用以匹配目标对象；
+- `value`属性是一个 AspectJ 的 type pattern，用以匹配目标对象；
 - `defaultImpl`是为指定的父接口提供一个默认的实现类；
 
-例如，给定一个`UsageTracked`接口及其实现类 `DefaultUsageTracked`，如下切面宣告了所有的service包下的接口的实现类同时实现了`UsageTracked`接口：
+例如，给定一个`UsageTracked`接口及其实现类 `DefaultUsageTracked`，如下切面宣告了所有的 service 包下的接口的实现类同时实现了`UsageTracked`接口：
 
 ```java
 @Aspect
@@ -1013,21 +1013,21 @@ public class UsageTracking {
 }
 ```
 
-## 9. AOP代理类的自调用
+## 9. AOP 代理类的自调用
 
 这里所谓的**自调用**，是指一个类的方法调用本类的其他方法。
 
 ### 代码的粒度
 
-当一个切面对一个业务类生效时，我们使用的业务类对象实际上是Spring帮我们生成的一个代理对象，而这个代理的粒度，是**类级别**的。
+当一个切面对一个业务类生效时，我们使用的业务类对象实际上是 Spring 帮我们生成的一个代理对象，而这个代理的粒度，是**类级别**的。
 
-正因为AOP代理的粒度是类级别的，所以在自调用时不会走其切面逻辑。例如，Spring的事务管理中有个 `@Transactional` 注解可以方便的管理事务，其是基于 AOP 实现的，该注解在这样的情况下会失效：“外部类调用本类的一个没有 `@Transactional` 注解的函数，而该函数调用本类的一个有 `@Transactional` 注解的函数”，失效原因就是因为代理是类级别的。
+正因为 AOP 代理的粒度是类级别的，所以在自调用时不会走其切面逻辑。例如，Spring 的事务管理中有个 `@Transactional` 注解可以方便的管理事务，其是基于 AOP 实现的，该注解在这样的情况下会失效：“外部类调用本类的一个没有 `@Transactional` 注解的函数，而该函数调用本类的一个有 `@Transactional` 注解的函数”，失效原因就是因为代理是类级别的。
 
 ```java
 @Aspect
 @Component
 public class Aspect {
-    // 前置增强Test
+    // 前置增强 Test
     @Before("execution(* TargetBean.hi(..))")
     public void before(JoinPoint joinPoint){
         System.out.println("--------我是前置通知--------");
@@ -1078,7 +1078,7 @@ public class TargetBean {
 2. 手动获取当前代理：`AopContext.currentProxy()`
 
     ```java
-    @EnableAspectJAutoProxy(exposeProxy = true) // 需开启exposeProxy = true
+    @EnableAspectJAutoProxy(exposeProxy = true) // 需开启 exposeProxy = true
     @Component
     public class TargetBean {
     
@@ -1093,4 +1093,3 @@ public class TargetBean {
         }
     }
     ```
-
