@@ -21,23 +21,23 @@ icon: swagger
     - 前端通过伪造后端数据（json），能够不需要后端即将整个前端工程运行起来
 - 前后端相对独立、松耦合，甚至可以部署在不同的服务器上
 
-那么在前后端分离时代前后端如何进行交互？答案是API。
+那么在前后端分离时代前后端如何进行交互？答案是 API。
 
-Swagger号称世界上最流行的API框架，其有如下特点：
+Swagger 号称世界上最流行的 API 框架，其有如下特点：
 
-- RestFul Api 文档在线自动生成，因而Api文档与Api定义是同步更新的
-- 直接运行，可以在线测试Api接口
+- RestFul Api 文档在线自动生成，因而 Api 文档与 Api 定义是同步更新的
+- 直接运行，可以在线测试 Api 接口
 - 支持多种语言（Java, Php, ...）
 
-## 2. Swagger简介及使用步骤
+## 2. Swagger 简介及使用步骤
 
 官网：https://swagger.io/ 。
 
-Maven坐标：有两个，分别是`springfox-swagger2`, `springfox-swagger-ui`。
+Maven 坐标：有两个，分别是`springfox-swagger2`, `springfox-swagger-ui`。
 
-快速入门——SpringBoot集成Swagger：
+快速入门——SpringBoot 集成 Swagger：
 
-1. 新建一个SpringBoot Web项目
+1. 新建一个 SpringBoot Web 项目
 
 2. 导入相关依赖
 
@@ -56,9 +56,9 @@ Maven坐标：有两个，分别是`springfox-swagger2`, `springfox-swagger-ui`�
     </dependency>
     ```
 
-3. 编写一个Hello工程
+3. 编写一个 Hello 工程
 
-4. 配置Swagger：通过Config配置类
+4. 配置 Swagger：通过 Config 配置类
 
     ```java
     /**
@@ -67,18 +67,18 @@ Maven坐标：有两个，分别是`springfox-swagger2`, `springfox-swagger-ui`�
     @Configuration
     @EnableSwagger2
     public class SwaggerConfig {
-        // 配置了Swagger的Docket的bean实例
+        // 配置了 Swagger 的 Docket 的 bean 实例
         @Bean
         public Docket docket() {
             return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo());
         }
         
-        // 配置Swagger信息
+        // 配置 Swagger 信息
         private ApiInfo apiInfo() {
             // 作者信息
             Contact contact = new Contact("徐川", "https://chua-n.com/", "chua_n@qq.com");
             return new ApiInfo(
-                "荒流的SwaggerAPI文档",
+                "荒流的 SwaggerAPI 文档",
                 "合抱之木，生于毫末",
                 "v1.0",
                 "https://chua-n.com/",
@@ -91,7 +91,7 @@ Maven坐标：有两个，分别是`springfox-swagger2`, `springfox-swagger-ui`�
     }
     ```
 
-只要Swagger扫描包下接口的返回值中存在实体类，它就会被生成到Swagger Api文档中：
+只要 Swagger 扫描包下接口的返回值中存在实体类，它就会被生成到 Swagger Api 文档中：
 
 ```java
 @PostMapping(value = "/user")
@@ -99,17 +99,17 @@ public User user() {
     return new User();
 }
 
-@ApiOperation("Post测试类") // Swagger注解
+@ApiOperation("Post 测试类") // Swagger 注解
 @PostMapping(value = "/post")
-public User post(@ApiParam("用户名") User user) { // Swagger注解
+public User post(@ApiParam("用户名") User user) { // Swagger 注解
     // ...
     reutnr user;
 }
 ```
 
-在实际使用时，通过Swagger给一些比较难理解的属性/接口增加注释信息，生产的接口文档可以实时更新，并且在线测试。
+在实际使用时，通过 Swagger 给一些比较难理解的属性/接口增加注释信息，生产的接口文档可以实时更新，并且在线测试。
 
-## 3. Swagger配置
+## 3. Swagger 配置
 
 ### 3.1 配置要扫描的接口
 
@@ -117,7 +117,7 @@ public User post(@ApiParam("用户名") User user) { // Swagger注解
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    // 配置了Swagger的Docket的bean实例
+    // 配置了 Swagger 的 Docket 的 bean 实例
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -140,22 +140,22 @@ public class SwaggerConfig {
 }
 ```
 
-### 3.2 配置Swagger只在开发环境生效
+### 3.2 配置 Swagger 只在开发环境生效
 
 ```java
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    // 配置了Swagger的Docket的bean实例
+    // 配置了 Swagger 的 Docket 的 bean 实例
     @Bean
     public Docket docket(Environment environment) {
-        // 设置要显示Swagger的环境
+        // 设置要显示 Swagger 的环境
         Profiles profiles = Profiles.of("dev", "test");
-        // 通过environment.acceptsProfiles判断是否处在期望的环境中
+        // 通过 environment.acceptsProfiles 判断是否处在期望的环境中
         boolean flag = environment.acceptsProfiles(profiles);
         return new Docket(DocumentationType.SWAGGER_2)
             .apiInfo(apiInfo())
-            .enable(flag) // 为false时不生成SwaggerApi文档
+            .enable(flag) // 为 false 时不生成 SwaggerApi 文档
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.chuan.swagger.controller"))
             .build();
@@ -166,4 +166,3 @@ public class SwaggerConfig {
     }
 }
 ```
-

@@ -14,7 +14,7 @@ date: 2020-11-04
 			   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 ```
 
-配置文件的正文都被包裹在**mapper 标签对**中，mapper 标签有一个**namespace 属性**，其作用是对 SQL 进行分类化管理，实现不同业务的 SQL 隔离。接下来编写 SQL 语句配置即可，对应的标签有 insert, delete, update, select 等。
+配置文件的正文都被包裹在 **mapper 标签对**中，mapper 标签有一个 **namespace 属性**，其作用是对 SQL 进行分类化管理，实现不同业务的 SQL 隔离。接下来编写 SQL 语句配置即可，对应的标签有 insert, delete, update, select 等。
 
 -   根标签：`<mapper namespace=""></mapper>`
 
@@ -73,7 +73,7 @@ date: 2020-11-04
 </mapper>
 ```
 
-> 1. 在 SQL 语句标签中还有一个值为 findUserById 的**id 属性**，这是因为 SQL 映射配置文件中的 SQL 都被解析并封装到 mappedStatement 对象中，为了调取对应的 SQL，需要一个唯一的标识，所以该 id 属性是映射文件中的 SQL 被解析并转换成为 Statement 的 id。
+> 1. 在 SQL 语句标签中还有一个值为 findUserById 的 **id 属性**，这是因为 SQL 映射配置文件中的 SQL 都被解析并封装到 mappedStatement 对象中，为了调取对应的 SQL，需要一个唯一的标识，所以该 id 属性是映射文件中的 SQL 被解析并转换成为 Statement 的 id。
 > 2. `#{}`表示一个占位符，其接收的参数类型可以是简单类型、普通 JavaBean 或 HashMap。对于简单类型，参数映射的时候{}内可以不写或者任意写任意内容；对于复杂类型，{}内应该填写该类的属性值。
 > 3. `${}`表示拼接 SQL 串，将接收到的参数内容不加任何修饰地拼接在 SQL 中，在`${}`中只能使用 value 代表其中的参数。在 Web 项目中，如果没有防范 SQL 注入的机制，要谨慎使用`${}`符号拼接 SQL 语句串，因为可能会引起 SQL 注入的风险。
 
@@ -97,7 +97,7 @@ public class MyBatisTest {
     @Test
     public void TestSelect() throws IOException {
         SqlSession sqlSession = dataConn.getSqlSession();
-        // sqlSession.selectOne最终结果与映射文件中所匹配的resultType类型
+        // sqlSession.selectOne 最终结果与映射文件中所匹配的 resultType 类型
         User user = sqlSession.selectOne("test.findUserById", 1);
         System.out.println("姓名：" + user.getUsername());
         System.out.println("性别：" + user.getGender());
@@ -110,7 +110,7 @@ public class MyBatisTest {
     @Test
     public void TestFuzzySearch() throws IOException {
         SqlSession sqlSession = dataConn.getSqlSession();
-        // 模糊匹配，结果可能不止一个，所以使用List<>
+        // 模糊匹配，结果可能不止一个，所以使用 List<>
         List<User> userList = sqlSession.selectList("test.findUserByUsername", "李");
         for (int i = 0; i < userList.size(); ++i) {
             User u = userList.get(i);
@@ -125,7 +125,7 @@ public class MyBatisTest {
 
     @Test
     /*
-	 * 这里要注意的是，没有给User设置id属性。 原因是在数据库建表的时候对id主键设置的是自增策略， 所以id会被赋值为自增的新数据
+	 * 这里要注意的是，没有给 User 设置 id 属性。 原因是在数据库建表的时候对 id 主键设置的是自增策略， 所以 id 会被赋值为自增的新数据
 	 */
     public void TestInsert() throws Exception {
         SqlSession sqlSession = dataConn.getSqlSession();
@@ -201,17 +201,17 @@ SQL 语句配置中的各属性的含义：
 | keyProperty      | 代表主键，MyBatis 会将生成的主键赋给这个列。联合主键使用逗号隔开                                                                      | insert \| update |
 | keyColumn        | 仅对特定数据库生效，当主键列不是表中的第一列时需要设置该属性。如果希望得到多个生成的列，也可以是以逗号分隔的属性名称列表              | insert \| update |
 
-### 2.1 resultType & resultMap标签
+### 2.1 resultType & resultMap 标签
 
-Mapper配置输出映射有两种方式：resultType和resultMap。
+Mapper 配置输出映射有两种方式：resultType 和 resultMap。
 
-> resultType就没啥好说的…
+> resultType 就没啥好说的…
 
-可以通过定义一个resultMap在列名和Java包装类属性名之间创建映射关系。
+可以通过定义一个 resultMap 在列名和 Java 包装类属性名之间创建映射关系。
 
-使用resultMap可以定义一个结果集配置，该配置声明了SQL查询结果集中的每一个字段与type中指定的Java实体类的哪个属性名对应，以及该配置最终生成的类型格式。
+使用 resultMap 可以定义一个结果集配置，该配置声明了 SQL 查询结果集中的每一个字段与 type 中指定的 Java 实体类的哪个属性名对应，以及该配置最终生成的类型格式。
 
-如下，这里对于select配置使用resultMap进行输出映射，其中userResultMap就是一个resultMap配置的id，表明该SQL配置的结果集要指向那个resultMap配置。
+如下，这里对于 select 配置使用 resultMap 进行输出映射，其中 userResultMap 就是一个 resultMap 配置的 id，表明该 SQL 配置的结果集要指向那个 resultMap 配置。
 
 ```xml
 <resultMap type="cn.com.mybatis.po.User" id="userResultMap">
@@ -224,17 +224,17 @@ Mapper配置输出映射有两种方式：resultType和resultMap。
 </select>
 ```
 
-resultMap还有两个稍微复杂一些的属性：association, collection。它们以后碰到再说吧。
+resultMap 还有两个稍微复杂一些的属性：association, collection。它们以后碰到再说吧。
 
-### 2.2 discriminator标签
+### 2.2 discriminator 标签
 
-在MyBatis的SQL查询结果集中，有时需要根据某个字段的值，来决定关联哪种结果集，此时就需要使用discriminator（鉴别器）来实现。
+在 MyBatis 的 SQL 查询结果集中，有时需要根据某个字段的值，来决定关联哪种结果集，此时就需要使用 discriminator（鉴别器）来实现。
 
-### 2.3 “动态SQL”相关标签
+### 2.3 “动态 SQL”相关标签
 
-MyBatis提供了一种可以根据条件动态配置SQL语句，以及单独配置SQL语句块的机制。
+MyBatis 提供了一种可以根据条件动态配置 SQL 语句，以及单独配置 SQL 语句块的机制。
 
-动态SQL主要涉及以下几个标签：
+动态 SQL 主要涉及以下几个标签：
 
 | 标签    | 子标签           |
 | ------- | ---------------- |
@@ -243,9 +243,9 @@ MyBatis提供了一种可以根据条件动态配置SQL语句，以及单独配�
 | trim    | where,  set      |
 | foreach |                  |
 
-当查询语句的查询条件由于输入参数的不同而无法确切定义时，可以使用`<where>`标签对来包裹需要动态指定的SQL查询条件，而在`<where>`标签对中，可以使用`<if test="…">`条件来分情况设置SQL查询条件。
+当查询语句的查询条件由于输入参数的不同而无法确切定义时，可以使用`<where>`标签对来包裹需要动态指定的 SQL 查询条件，而在`<where>`标签对中，可以使用`<if test="…">`条件来分情况设置 SQL 查询条件。
 
-> 下面的样例设置了当输入参数的Java包装类中含有的条件不同时，查询条件可动态变化。
+> 下面的样例设置了当输入参数的 Java 包装类中含有的条件不同时，查询条件可动态变化。
 
 ```xml
 <select id="findUserList" parameterType="cn.com.mybatis.po.UserQueryVo" 
@@ -266,31 +266,30 @@ MyBatis提供了一种可以根据条件动态配置SQL语句，以及单独配�
 
 ## 3. 自动映射
 
-当SQL语句查询出结果时，如果对应输出配置的Java包装类中有相同名称的属性，且拥有set方法，则该结果就会被自动映射。
+当 SQL 语句查询出结果时，如果对应输出配置的 Java 包装类中有相同名称的属性，且拥有 set 方法，则该结果就会被自动映射。
 
-> 实际上，MyBatis的自动映射功能是建立在resultMap基础之上的。resutlType属性自动映射的原理是：当SQL映射输出配置为resultType时，MyBatis会生成一个空的resultMap，然后指定这个resultMap的type为指定的resultType类型，接着MyBatis检测查询结果集中字段与指定type类型中属性的映射关系，对结果进行自动映射。
+> 实际上，MyBatis 的自动映射功能是建立在 resultMap 基础之上的。resutlType 属性自动映射的原理是：当 SQL 映射输出配置为 resultType 时，MyBatis 会生成一个空的 resultMap，然后指定这个 resultMap 的 type 为指定的 resultType 类型，接着 MyBatis 检测查询结果集中字段与指定 type 类型中属性的映射关系，对结果进行自动映射。
 
-可通过在MyBatis全局配置文件SqlMapConfig.xml中的setting标签内设置自动映射模式：
+可通过在 MyBatis 全局配置文件 SqlMapConfig.xml 中的 setting 标签内设置自动映射模式：
 
 ```xml
 <setting name="autoMappingBehavior" value="PARTIAL"/>
 ```
 
-在MyBatis中，自动映射有三种模式，分别是NONE, PARTIAL,     FULL，默认为PARTIAL。
+在 MyBatis 中，自动映射有三种模式，分别是 NONE, PARTIAL,     FULL，默认为 PARTIAL。
 
 |  模式   |               说明                |
 | :-----: | :-------------------------------: |
 |  NONE   |          不启用自动映射           |
-| PARTIAL | 只对非嵌套的resultMap进行自动映射 |
-|  FULL   |  对所有的resultMap都进行自动映射  |
+| PARTIAL | 只对非嵌套的 resultMap 进行自动映射 |
+|  FULL   |  对所有的 resultMap 都进行自动映射  |
 
-如果只有部分字段与输入配置类型中的属性名称不一样，则可以仅在resultMap中指定不一样的字段对应#的输出类型的属性，其他的则会直接进行自动映射。
+如果只有部分字段与输入配置类型中的属性名称不一样，则可以仅在 resultMap 中指定不一样的字段对应#的输出类型的属性，其他的则会直接进行自动映射。
 
-如果在某些resultMap中不想使用自动映射，则可以单独在该resultMap中设置autoMapping属性为false，此时该resultMap仅映射开发人员指定的映射字段。
+如果在某些 resultMap 中不想使用自动映射，则可以单独在该 resultMap 中设置 autoMapping 属性为 false，此时该 resultMap 仅映射开发人员指定的映射字段。
 
 ```xml
 <select id="findUserById" parameterType="java.lang.Long" resultMap="UserResult" autoMapping="false">
     select id, name, email from t_user where id=#{id}
 </select>
 ```
-

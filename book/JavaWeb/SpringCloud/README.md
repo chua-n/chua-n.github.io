@@ -56,7 +56,7 @@ Spring Cloud 本身并不是一个拿来即可用的框架，它是一套微服�
 
 - 第一代实现： Spring Cloud Netflix
 
-  > 2018 年 12 月12 日，Netflix 公司宣布 Spring Cloud Netflix 系列大部分组件都进入维护模式，不再添加新特性。
+  > 2018 年 12 月 12 日，Netflix 公司宣布 Spring Cloud Netflix 系列大部分组件都进入维护模式，不再添加新特性。
 
 - 第二代实现： Spring Cloud Alibaba
 
@@ -75,7 +75,7 @@ Spring Cloud 组件体系：
 
 ## 3. Spring Cloud Alibaba
 
-Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件，阿里云商业化组件，以及集成Spring Cloud 组件。
+Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件，阿里云商业化组件，以及集成 Spring Cloud 组件。
 
 ![img](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/v2-46c0b9e0d41c441d222390c79a4cd53b_720w.webp)
 
@@ -86,7 +86,7 @@ Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件�
   - RocketMQ：开源的分布式消息系统，基于高可用分布式集群技术，提供低延时的、高可靠的消息发布与订阅服务。
   - Dubbo：这个就不用多说了，在国内应用非常广泛的一款高性能 Java RPC 框架。
   - Seata：阿里巴巴开源产品，一个易于使用的高性能微服务分布式事务解决方案。
-  - Arthas：开源的Java动态追踪工具，基于字节码增强技术，功能非常强大。
+  - Arthas：开源的 Java 动态追踪工具，基于字节码增强技术，功能非常强大。
 
 - 阿里商业化组件
 
@@ -96,7 +96,7 @@ Spring Cloud Alibaba 系列组件如下图，其中包含了阿里开源组件�
   - Alibaba Cloud OSS：阿里云对象存储服务（Object Storage Service，简称 OSS），是阿里云提供的云存储服务。
   - Alibaba Cloud SchedulerX：阿里中间件团队开发的一款分布式任务调度产品，提供秒级、精准的定时（基于 Cron 表达式）任务调度服务。
 
-- 集成 Spring Cloud 组件：Spring Cloud Alibaba 作为整套的微服务解决组件，只依靠目前阿里的开源组件是不够的，更多的是集成当前的社区组件，所以 Spring Cloud Alibaba 可以集成 Zuul，OpenFeign等网关，也支持 Spring Cloud Stream 消息组件。
+- 集成 Spring Cloud 组件：Spring Cloud Alibaba 作为整套的微服务解决组件，只依靠目前阿里的开源组件是不够的，更多的是集成当前的社区组件，所以 Spring Cloud Alibaba 可以集成 Zuul，OpenFeign 等网关，也支持 Spring Cloud Stream 消息组件。
 
 ## 4. 企业常用技术选型组合
 

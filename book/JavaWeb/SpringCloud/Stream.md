@@ -81,7 +81,7 @@ Spring Cloud Stream 的模型：
 
 下图是经典的 SCS 的发布-订阅模型，生产者生产消息发布在 shared topic 上，然后消费者通过订阅这个 topic 来获取消息（两个订阅者都可以接收到消息）：
 
-> 其中 topic 对应于 SCS 中的 destinations（相当于Kafka的 topic、RabbitMQ 的 exchanges）。
+> 其中 topic 对应于 SCS 中的 destinations（相当于 Kafka 的 topic、RabbitMQ 的 exchanges）。
 
 ![img](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/1149398-20180731154827761-111530488.png)
 
@@ -89,7 +89,7 @@ Spring Cloud Stream 的模型：
 
 对于同一个应用的多个实例，当该应用收到一条消息时，如果每一个实例都去消费、处理该消息，很有可能造成“重复消费”的问题，很多情况下你可能只希望该应用只有一个实例去消费该消息，这时便可借助 SCS 提供的消费者组（借鉴自 Kafka 的消费者组）的概念来解决此问题。
 
-每个消费者 binding 可以使用 `spring.cloud.stream.bindings.<bindingName>.group` 属性来指定一个组名. 对于下图所示的消费者，两个消费者组的名称被指定为 `spring.cloud.stream.bindings.<bindingName>.group=Group-A` or `spring.cloud.stream.bindings.<bindingName>.group=Group-B`。
+每个消费者 binding 可以使用 `spring.cloud.stream.bindings.<bindingName>.group` 属性来指定一个组名。对于下图所示的消费者，两个消费者组的名称被指定为 `spring.cloud.stream.bindings.<bindingName>.group=Group-A` or `spring.cloud.stream.bindings.<bindingName>.group=Group-B`。
 
 ![img](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/1149398-20180731154859044-1037571011.png)
 
@@ -125,7 +125,7 @@ SCS 支持两种消费者类型：
 
 SCS 提供了在一个应用程序的多个实例之间进行数据分区的支持。In a partitioned scenario, the physical communication medium (such as the broker topic) is viewed as being structured into multiple partitions.
 
-为以统一方式实现分区处理用例，SCS 提供了一个通用抽象。因此，无论 broker 本身是天然分区（如Kafka）的还是不分区（如RabbitMQ）的，都可以使用 SCS 的分区。
+为以统一方式实现分区处理用例，SCS 提供了一个通用抽象。因此，无论 broker 本身是天然分区（如 Kafka）的还是不分区（如 RabbitMQ）的，都可以使用 SCS 的分区。
 
 ![SCSt partitioning](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/SCSt-partitioning.png)
 
@@ -192,14 +192,14 @@ public class SampleApplication {
 }
 ```
 
-在上面的例子中，我们有一个应用程序，它有一个单一的函数作为消息处理器。首先，作为 `Function`，它有一个输入和输出，SCS 对其的输入和输出绑定的命名规则如下:
+在上面的例子中，我们有一个应用程序，它有一个单一的函数作为消息处理器。首先，作为 `Function`，它有一个输入和输出，SCS 对其的输入和输出绑定的命名规则如下：
 
 - input - `<functionName> + -in- + <index>`
 - output - `<functionName> + -out- + <index>`
 
-其中，`in` 和 `out` 对应的是 binding 的类型（如输入或输出）；`index`是这个输入或输出绑定的索引，对于典型的单一输入/输出函数，它总是0，所以只有[具有多个输入和输出参数的函数](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_functions_with_multiple_input_and_output_arguments)会与`index`产生关联。
+其中，`in` 和 `out` 对应的是 binding 的类型（如输入或输出）；`index`是这个输入或输出绑定的索引，对于典型的单一输入/输出函数，它总是 0，所以只有 [具有多个输入和输出参数的函数](https://docs.spring.io/spring-cloud-stream/docs/3.2.7/reference/html/spring-cloud-stream.html#_functions_with_multiple_input_and_output_arguments) 会与`index`产生关联。
 
-因此，如果你想把这个函数的输入映射到一个叫做 `my-topic` 的 remote destination （远程目标，例如topic、queue等），你可以通过以下属性来实现:
+因此，如果你想把这个函数的输入映射到一个叫做 `my-topic` 的 remote destination （远程目标，例如 topic、queue 等），你可以通过以下属性来实现：
 
 ```properties
 --spring.cloud.stream.bindings.uppercase-in-0.destination=my-topic
@@ -229,7 +229,7 @@ public class SampleApplication {
 
 此外，如果你想禁用 SCS 的这个自动发现机制，可以设置属性 `spring.cloud.stream.function.autodetect=false`。
 
-#### 显式创建binding
+#### 显式创建 binding
 
 我们已经知道 SCS 可以通过 Function, Supplier 或 Consumer 驱动来隐式地创建 binding，然而，有时你可能需要显式地创建 binding，同时它们并不与任何函数挂钩。通常来说，这种情况多发生于需要支持与其他框架（如 Spring Integration 框架）进行集成的场景，此时你可能需要直接访问底层的 `MessageChannel`。
 
@@ -362,10 +362,10 @@ public class WebSourceApplication {
 }
 ```
 
-在这里，我们 @Autowire了一个 `StreamBridge` Bean，它允许我们将数据发送到 output binding，从而有效地将非 SCS 程序与 SCS 程序连接起来。
+在这里，我们 @Autowire 了一个 `StreamBridge` Bean，它允许我们将数据发送到 output binding，从而有效地将非 SCS 程序与 SCS 程序连接起来。
 
 - 注意，在上面的例子中，没有预定义任何 `Supplier` 的 Bean，`StreamBridge` 会在第一次调用`send(..)`操作时创建这个不存在的 output binding，并将其缓存起来供后续复用。
-- 如果你想在程序启动时就预先创建一个output binding，你可以利用 `spring.cloud.stream.source` 属性来声明你的数据源的名称，该名称将被用作一个触发器来创建一个数据源绑定（source binding）。对于上面的例子，输出绑定的名称将是`toStream-out-0`，同时你可以使用`;`来表示多个数据源（即多个输出绑定），例如，`-–spring.cloud.stream.source=foo;bar`。
+- 如果你想在程序启动时就预先创建一个 output binding，你可以利用 `spring.cloud.stream.source` 属性来声明你的数据源的名称，该名称将被用作一个触发器来创建一个数据源绑定（source binding）。对于上面的例子，输出绑定的名称将是`toStream-out-0`，同时你可以使用`;`来表示多个数据源（即多个输出绑定），例如，`-–spring.cloud.stream.source=foo;bar`。
 
 另外，注意 `streamBridge.send(..)` 方法需要一个对象作为入参。这意味着你可以向它发送`POJO`或`Message`，它在发送输出时会像 `Supplier` 或 `Function` 一样经过同样的流程。
 
@@ -394,11 +394,11 @@ public class WebSourceApplication {
 }
 ```
 
-缓存动态 destination 有可能会导致内存泄露，为了一定程度上避免这种情况，SCS 提供了一种自驱逐的缓存机制：默认只缓存10个 output binding，动态 destination 的数量超过这个数，某个已存在的 binding 可能会被驱逐出缓存，在使用的时候需要重新创建。可能通过 `spring.cloud.stream.dynamic-destination-cache-size` 属性来设置其他的值。
+缓存动态 destination 有可能会导致内存泄露，为了一定程度上避免这种情况，SCS 提供了一种自驱逐的缓存机制：默认只缓存 10 个 output binding，动态 destination 的数量超过这个数，某个已存在的 binding 可能会被驱逐出缓存，在使用的时候需要重新创建。可能通过 `spring.cloud.stream.dynamic-destination-cache-size` 属性来设置其他的值。
 
 ##### 拦截器
 
-`StreamBridge` 使用 `MessageChannel` 来建立 output binding，因此当使用 `StreamBridge` 发送数据时可以激活一些 channel 拦截器。SCS 不会将检测到的所有通道拦截器注入到 `StreamBridge` 中，除非它们用 `@GlobalChannelInterceptor(patterns = "*")` 进行了注解.
+`StreamBridge` 使用 `MessageChannel` 来建立 output binding，因此当使用 `StreamBridge` 发送数据时可以激活一些 channel 拦截器。SCS 不会将检测到的所有通道拦截器注入到 `StreamBridge` 中，除非它们用 `@GlobalChannelInterceptor(patterns = "*")` 进行了注解。
 
 假设你有下面两个 `StreamBridge` 的 bindings：
 

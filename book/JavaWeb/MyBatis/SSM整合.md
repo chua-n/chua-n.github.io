@@ -1,17 +1,17 @@
 ---
-title: SSM整合
+title: SSM 整合
 date: 2021-04-15
 ---
 
 ## 1. 生硬整合
 
-在没有新技术的加入之前，整合SSM（主要是Spring与MyBatis）只能靠生硬的进行，如这里的工程：
+在没有新技术的加入之前，整合 SSM（主要是 Spring 与 MyBatis）只能靠生硬的进行，如这里的工程：
 
 - 工程目录
 
     ![50](https://figure-bed.chua-n.com/JavaWeb/MyBatis/50.png)
 
-- 这里的主要特点是Service层的编写，Service业务方法中含有重复性代码，即使将其封装为一个MyBtatisUtils也非佳作：
+- 这里的主要特点是 Service 层的编写，Service 业务方法中含有重复性代码，即使将其封装为一个 MyBtatisUtils 也非佳作：
 
     ```java
     package com.chuan.ssm.service.impl;
@@ -79,9 +79,9 @@ date: 2021-04-15
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     ">
-        <!--组件扫描：service和mapper-->
+        <!--组件扫描：service 和 mapper-->
         <context:component-scan base-package="com.chuan.ssm">
-            <!--排除controller的扫描-->
+            <!--排除 controller 的扫描-->
             <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         </context:component-scan>
     </beans>
@@ -93,13 +93,13 @@ date: 2021-04-15
     <?xml version="1.0" encoding="UTF-8" ?>
     <!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
     <configuration>
-        <!--加载properties文件-->
+        <!--加载 properties 文件-->
         <properties resource="jdbc.properties"/>
         <!--定义别名-->
         <typeAliases>
-            <!--方法1：逐个编写别名-->
+            <!--方法 1：逐个编写别名-->
             <typeAlias type="com.chuan.ssm.domain.Account" alias="account"/>
-            <!--方法2：包扫描定义别名，该包中每个类的别名被定义为首字母小写后的类名-->
+            <!--方法 2：包扫描定义别名，该包中每个类的别名被定义为首字母小写后的类名-->
             <!--<package name="com.chuan.ssm.domain"/>-->
         </typeAliases>
         <!--环境-->
@@ -116,9 +116,9 @@ date: 2021-04-15
         </environments>
         <!--加载映射-->
         <mappers>
-            <!--方法1：逐个添加映射文件-->
+            <!--方法 1：逐个添加映射文件-->
             <!--<mapper resource="com/chuan/mapper/AccountMapper.xml"/>-->
-            <!--方法2：包扫描-->
+            <!--方法 2：包扫描-->
             <package name="com.chuan.ssm.mapper"/>
         </mappers>
     </configuration>
@@ -126,14 +126,14 @@ date: 2021-04-15
 
 ## 2. 实际整合
 
-Spring整合MyBatis的思路：
+Spring 整合 MyBatis 的思路：
 
 ![51](https://figure-bed.chua-n.com/JavaWeb/MyBatis/51.png)
 
-将SqlSessionFactory配置到Spring容器中：
+将 SqlSessionFactory 配置到 Spring 容器中：
 
 ```xml
-<!-- 加载jdbc.properties -->
+<!-- 加载 jdbc.properties -->
 <context:property-placeholder location="classpath:jdbc.properties" />
 <!-- 配置数据源 -->
 <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -142,14 +142,14 @@ Spring整合MyBatis的思路：
 	<property name="user" value="${jdbc.username}" />
 	<property name="password" value="${jdbc.password}" />
 </bean>
-<!-- 配置MyBatis的SqlSessionFactory -->
+<!-- 配置 MyBatis 的 SqlSessionFactory -->
 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	<property name="dataSource" ref="dataSource" />
 	<property name="configLocation" value="classpath:sqlMapConfig.xml" />
 </bean>
 ```
 
-具体地，相对上节生硬整合的代码改动如下（减少了mybatis核心配置文件的配置、增加了spring的配置、优化了业务层代码）：
+具体地，相对上节生硬整合的代码改动如下（减少了 mybatis 核心配置文件的配置、增加了 spring 的配置、优化了业务层代码）：
 
 - sqlMapConfig.xml
 
@@ -159,9 +159,9 @@ Spring整合MyBatis的思路：
     <configuration>
         <!--定义别名-->
         <typeAliases>
-            <!--方法1：逐个编写别名-->
+            <!--方法 1：逐个编写别名-->
             <typeAlias type="com.chuan.ssm.domain.Account" alias="account"/>
-            <!--方法2：包扫描定义别名，该包中每个类的别名被定义为首字母小写后的类名-->
+            <!--方法 2：包扫描定义别名，该包中每个类的别名被定义为首字母小写后的类名-->
             <!--<package name="com.chuan.ssm.domain"/>-->
         </typeAliases>
     </configuration>
@@ -182,12 +182,12 @@ Spring整合MyBatis的思路：
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     ">
-        <!--组件扫描：service和mapper-->
+        <!--组件扫描：service 和 mapper-->
         <context:component-scan base-package="com.chuan.ssm">
-            <!--排除controller的扫描-->
+            <!--排除 controller 的扫描-->
             <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         </context:component-scan>
-        <!--加载properties文件-->
+        <!--加载 properties 文件-->
         <context:property-placeholder location="classpath:jdbc.properties"/>
         <!--配置数据源-->
         <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -197,13 +197,13 @@ Spring整合MyBatis的思路：
             <property name="password" value="${jdbc.password}"/>
         </bean>
     
-        <!--配置SqlSessionFactory-->
+        <!--配置 SqlSessionFactory-->
         <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
             <property name="dataSource" ref="dataSource"/>
-            <!--加载mybatis核心文件-->
+            <!--加载 mybatis 核心文件-->
             <property name="configLocation" value="classpath:sqlMapConfig-spring.xml"/>
         </bean>
-        <!--扫描mapper.xml所在的包：为mapper创建实现类-->
+        <!--扫描 mapper.xml 所在的包：为 mapper 创建实现类-->
         <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
             <property name="basePackage" value="com.chuan.ssm.mapper"/>
         </bean>
@@ -218,7 +218,7 @@ Spring整合MyBatis的思路：
                 <tx:method name="*"/>
             </tx:attributes>
         </tx:advice>
-        <!--事务的aop织入-->
+        <!--事务的 aop 织入-->
         <aop:config>
             <aop:advisor advice-ref="txAdvice"  pointcut="execution(* com.chuan.ssm.service.impl.*.*(..))"/>
         </aop:config>
@@ -257,4 +257,3 @@ Spring整合MyBatis的思路：
         }
     }
     ```
-

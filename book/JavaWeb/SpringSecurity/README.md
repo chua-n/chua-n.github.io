@@ -2,13 +2,13 @@
 title: SpringSecurity
 ---
 
-> 就是Spring Security啊。
+> 就是 Spring Security 啊。
 
 ## Spring Security Oauth 项目已废弃
 
 ### 项目文档和代码仓库被移除
 
-Spring Security 团队已停止维护 Spring Security OAuth。旧的Spring Security OAuth项目终止到**2.5.2.RELEASE**版本，该项目将不会再进行任何的迭代。目前该项目的官方文档已经正式从spring.io移除，文档已经指向404，这是连文档也没有了。新增了OAuth2授权服务器Spring Authorization Server的文档。不仅仅文档被移除，连项目的仓库也被迁移到Spring的过期项目仓库`spring-attic`并被标记为read-only。Spring Security OAuth的Spring Boot自动配置代码仓库也一并被迁移，也就是说Spring Boot相关的自动配置也被移除。
+Spring Security 团队已停止维护 Spring Security OAuth。旧的 Spring Security OAuth 项目终止到 **2.5.2.RELEASE** 版本，该项目将不会再进行任何的迭代。目前该项目的官方文档已经正式从 spring.io 移除，文档已经指向 404，这是连文档也没有了。新增了 OAuth2 授权服务器 Spring Authorization Server 的文档。不仅仅文档被移除，连项目的仓库也被迁移到 Spring 的过期项目仓库`spring-attic`并被标记为 read-only。Spring Security OAuth 的 Spring Boot 自动配置代码仓库也一并被迁移，也就是说 Spring Boot 相关的自动配置也被移除。
 
 ### 废弃的依赖项
 
@@ -37,9 +37,9 @@ Spring Security 团队已停止维护 Spring Security OAuth。旧的Spring Secur
         </dependency>
 ```
 
-### 新的OAuth2替代方案
+### 新的 OAuth2 替代方案
 
-Spring Security 5中集成了OAuth2 Client和Resource Server两个模块。如果有迁移的需要，建议迁移至最新的Spring Security 5.7.x，方便向Spring 6过渡。以Spring Boot为例，首先要集成Spring Security：
+Spring Security 5 中集成了 OAuth2 Client 和 Resource Server 两个模块。如果有迁移的需要，建议迁移至最新的 Spring Security 5.7.x，方便向 Spring 6 过渡。以 Spring Boot 为例，首先要集成 Spring Security：
 
 ```xml
         <dependency>
@@ -48,7 +48,7 @@ Spring Security 5中集成了OAuth2 Client和Resource Server两个模块。如�
         </dependency>
 ```
 
-集成OAuth2 Client依赖（OAuth2 Client 依赖于Spring Security，不能单独使用）：
+集成 OAuth2 Client 依赖（OAuth2 Client 依赖于 Spring Security，不能单独使用）：
 
 ```xml
         <dependency>
@@ -57,7 +57,7 @@ Spring Security 5中集成了OAuth2 Client和Resource Server两个模块。如�
         </dependency>
 ```
 
-集成Resource Server依赖（Resource Server同样也依赖于Spring Security，不能单独使用）：
+集成 Resource Server 依赖（Resource Server 同样也依赖于 Spring Security，不能单独使用）：
 
 ```xml
         <dependency>

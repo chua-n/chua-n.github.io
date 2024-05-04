@@ -1,27 +1,27 @@
 ---
-title: MyBatis入门
+title: MyBatis 入门
 date: 2020-10-27
 ---
 
 ## 1. 概念
 
-MyBatis是Apache的一个Java开源项目，原名为iBatis（即Internet与abatis的结合），后因项目托管平台的迁移（由Google     Code转移至Github）更名为MyBatis。MyBatis采用配置文件动态管理SQL语句，是一款并含有输入映射、输出映射机制以及数据库连接池配置的持久层框架。
+MyBatis 是 Apache 的一个 Java 开源项目，原名为 iBatis（即 Internet 与 abatis 的结合），后因项目托管平台的迁移（由 Google     Code 转移至 Github）更名为 MyBatis。MyBatis 采用配置文件动态管理 SQL 语句，是一款并含有输入映射、输出映射机制以及数据库连接池配置的持久层框架。
 
-Mybatis整体的构造由**MyBatis核心配置文件**、**SQL映射配置文件**、**会话工厂**、**会话**、**执行器**以及**底层封装对象**组成。
+Mybatis 整体的构造由 **MyBatis 核心配置文件**、**SQL 映射配置文件**、**会话工厂**、**会话**、**执行器**以及**底层封装对象**组成。
 
-### 1.1 MyBatis核心配置文件
+### 1.1 MyBatis 核心配置文件
 
-通常命名为SqlMapConfig.xml（文件名可更改），主要涉及数据源（数据库连接池）等数据库的核心配置。
+通常命名为 SqlMapConfig.xml（文件名可更改），主要涉及数据源（数据库连接池）等数据库的核心配置。
 
 数据库连接池让数据库的配置信息从外部的某种配置文件中读取，然后由一个独立处理数据库连接的程序来和数据库进行交互，该配置文件中主要配置了数据库驱动、数据库连接地址、数据库用户名和密码、事务管理等参数。
 
-### 1.2 SQL映射配置文件
+### 1.2 SQL 映射配置文件
 
-MyBatis将SQL语句配置在独立的配置文件XxxMapper.xml（文件名可更改）中，简称Mapper配置文件。在这个配置文件中可以配置任何类型的SQL语句，如select, update, delete, insert等。
+MyBatis 将 SQL 语句配置在独立的配置文件 XxxMapper.xml（文件名可更改）中，简称 Mapper 配置文件。在这个配置文件中可以配置任何类型的 SQL 语句，如 select, update, delete, insert 等。
 
-为了让MyBatis能够找到Mapper.xml文件，需要在核心配置文件SqlMapConfig.xml中配置Mapper.xml的路径。
+为了让 MyBatis 能够找到 Mapper.xml 文件，需要在核心配置文件 SqlMapConfig.xml 中配置 Mapper.xml 的路径。
 
-- 一般会配置在核心源配置文件SqlMapConfig.xml中配置Mapper.xml的文件路径：
+- 一般会配置在核心源配置文件 SqlMapConfig.xml 中配置 Mapper.xml 的文件路径：
 
     ```xml
     <mappers>
@@ -30,7 +30,7 @@ MyBatis将SQL语句配置在独立的配置文件XxxMapper.xml（文件名可更
     </mappers>
     ```
 
-- Mapper.xml示例
+- Mapper.xml 示例
 
     ```xml
     <?xml version="1.0" encoding="UTF-8" ?>
@@ -45,31 +45,31 @@ MyBatis将SQL语句配置在独立的配置文件XxxMapper.xml（文件名可更
     ```
 
     - parameterType——指定输入参数的类型
-    - resultType——指定输出结果映射的Java对象类型
+    - resultType——指定输出结果映射的 Java 对象类型
 
 ### 1.3 会话工厂与会话
 
-MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFactory`类）与会话（`SqlSession`类）。
+MyBatis 中处理配置信息的核心对象就是会话工厂（`SqlSessionFactory`类）与会话（`SqlSession`类）。
 
-- `SqlSessionFactory`类：SqlSessionFactory类根据Resources资源信息加载对象，获取开发人员在项目中配置的SqlMapConfig.xml配置信息；当然，由于Mapper.xml的路径配置在SqlMapConfig.xml中，`SqlSessionFactory`也会同时获取Mapper.xml的配置信息。
+- `SqlSessionFactory`类：SqlSessionFactory 类根据 Resources 资源信息加载对象，获取开发人员在项目中配置的 SqlMapConfig.xml 配置信息；当然，由于 Mapper.xml 的路径配置在 SqlMapConfig.xml 中，`SqlSessionFactory`也会同时获取 Mapper.xml 的配置信息。
 - 由上，产生可以与数据库交互的会话实例类——`SqlSession`类。
 
-### 1.4 MyBatis运行流程
+### 1.4 MyBatis 运行流程
 
 ![41](https://figure-bed.chua-n.com/JavaWeb/MyBatis/41.png)
 
-## 2. MyBatis开发步骤
+## 2. MyBatis 开发步骤
 
-1. 添加MyBatis的坐标；
+1. 添加 MyBatis 的坐标；
 
     ```xml
-    <!--mysql连接驱动-->
+    <!--mysql 连接驱动-->
     <dependency>
     	<groupId>mysql</groupId>
     	<artifactId>mysql-connector-java</artifactId>
     	<version>8.0.11</version>
     </dependency>
-    <!--mybatis依赖-->
+    <!--mybatis 依赖-->
     <dependency>
     	<groupId>org.mybatis</groupId>
     	<artifactId>mybatis</artifactId>
@@ -77,11 +77,11 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
     </dependency>
     ```
 
-2. 创建user数据表；
+2. 创建 user 数据表；
 
     ![42](https://figure-bed.chua-n.com/JavaWeb/MyBatis/42.png)
 
-3. 创建User实体类；
+3. 创建 User 实体类；
 
     ```java
     package com.chuan.mybatis.domain;
@@ -130,7 +130,7 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
     }
     ```
 
-4. 编写映射文件UserMapper.xml
+4. 编写映射文件 UserMapper.xml
 
     ```xml
     <?xml version="1.0" encoding="UTF-8" ?>
@@ -145,7 +145,7 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
     </mapper>
     ```
 
-5. 编写核心文件SqlMapConfig.xml
+5. 编写核心文件 SqlMapConfig.xml
 
     ```xml
     <?xml version="1.0" encoding="UTF-8" ?>
@@ -154,15 +154,15 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
         <settings>
             <setting name="logImpl" value="LOG4J"/>
         </settings>
-        <!--和Spring整合后environments标签将被废除-->
+        <!--和 Spring 整合后 environments 标签将被废除-->
         <environments default="development">
             <environment id="development">
-                <!--使用JDBC事务管理-->
+                <!--使用 JDBC 事务管理-->
                 <transactionManager type="JDBC"/>
                 <!--数据库连接池-->
                 <dataSource type="POOLED">
                     <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                    <!--mybatis_test表示哪个数据库，?serverTimezone=GMT%2B8为设置时区（正常不应该需要这个语句）-->
+                    <!--mybatis_test 表示哪个数据库，?serverTimezone=GMT%2B8 为设置时区（正常不应该需要这个语句）-->
                     <property name="url" value="jdbc:mysql://localhost:3306/mybatis_test?serverTimezone=GMT%2B8"/>
                     <property name="username" value="root"/>
                     <property name="password" value="3.14"/>
@@ -178,7 +178,7 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
 
 6. 编写测试类。
 
-    - 为了后续方便，单独编写一个DataConnection工具类
+    - 为了后续方便，单独编写一个 DataConnection 工具类
 
         ```java
         package com.chuan.mybatis.utils;
@@ -193,16 +193,16 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
          * @date 2021/4/15 9:52
          */
         public class DataConnection {
-            // MyBatis配置文件，其位置是相对类加载路径的位置
+            // MyBatis 配置文件，其位置是相对类加载路径的位置
             private String resource = "SqlMapConfig.xml";
             private SqlSessionFactory sqlSessionFactory;
             private SqlSession sqlSession;
             public SqlSession getSqlSession() throws IOException {
-                // 加载MyBatis核心配置文件
+                // 加载 MyBatis 核心配置文件
                 InputStream inputStream = Resources.getResourceAsStream(resource);
-                // 创建SqlSessionFactory工厂对象，传入MyBatis配置文件信息
+                // 创建 SqlSessionFactory 工厂对象，传入 MyBatis 配置文件信息
                 sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-                // 获得SqlSession对象（之后就可以执行sql语句了）
+                // 获得 SqlSession 对象（之后就可以执行 sql 语句了）
                 sqlSession = sqlSessionFactory.openSession();
                 return sqlSession;
             }
@@ -228,7 +228,7 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
             @Test
             public void TestSelect() throws IOException {
                 SqlSession sqlSession = dataConnection.getSqlSession();
-                // sqlSession.selectOne最终结果对应映射文件中所匹配的resultType类型，其第一个参数为Mapper中的namespace.id
+                // sqlSession.selectOne 最终结果对应映射文件中所匹配的 resultType 类型，其第一个参数为 Mapper 中的 namespace.id
                 User user = sqlSession.selectOne("userMapper.findUserById", 1);
                 System.out.println(user);
         
@@ -242,4 +242,3 @@ MyBatis中处理配置信息的核心对象就是会话工厂（`SqlSessionFacto
     - 测试结果
 
         ![43](https://figure-bed.chua-n.com/JavaWeb/MyBatis/43.png)
-

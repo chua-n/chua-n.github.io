@@ -22,7 +22,7 @@ title: Gateway
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0960.JPG" alt="IMG_0960" style="zoom:50%;" />
 
-1. 创建新的module，引入`SpringCloudGateway`的依赖和`nacos`的服务发现依赖：
+1. 创建新的 module，引入`SpringCloudGateway`的依赖和`nacos`的服务发现依赖：
 
    ```xml
    <!--网关依赖-->
@@ -30,19 +30,19 @@ title: Gateway
        <groupId>org.springframework.cloud</groupId>
        <artifactId>spring-cloud-starter-gateway</artifactId>
    </dependency>
-   <!--nacos服务发现依赖-->
+   <!--nacos 服务发现依赖-->
    <dependency>
        <groupId>com.alibaba.cloud</groupId>
        <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
    </dependency>
    ```
 
-2. 配置application.yml，包括服务基本信息、`nacos`地址、路由：
+2. 配置 application.yml，包括服务基本信息、`nacos`地址、路由：
 
    > 其中路由配置包括：
    >
-   > - 路由id：路由的唯一标识
-   > - 路由目标（uri）：路由的目标地址，http代码固定地址，lb代表根据服务名负载均衡
+   > - 路由 id：路由的唯一标识
+   > - 路由目标（uri）：路由的目标地址，http 代码固定地址，lb 代表根据服务名负载均衡
    > - 路由断言（predicates）：判断路由的规则
    > - 路由过滤器（filters）；对请求或响应做处理
 
@@ -54,19 +54,19 @@ title: Gateway
        name: gateway # 服务名称
      cloud:
        nacos:
-         server-addr: localhost:8848 # nacos地址
+         server-addr: localhost:8848 # nacos 地址
        gateway:
          routes: # 网关路由配置
-           - id: user-service # 路由id，自定义，只要唯一即可
-             # uri: http://127.0.0.1:8081 # 路由的目标地址 http就是固定地址
-             uri: lb://userservice  # 路由的目标地址 lb就是负载均衡，后面跟服务名称
+           - id: user-service # 路由 id，自定义，只要唯一即可
+             # uri: http://127.0.0.1:8081 # 路由的目标地址 http 就是固定地址
+             uri: lb://userservice  # 路由的目标地址 lb 就是负载均衡，后面跟服务名称
              predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
                - Path=/user/** # 这个就是按照路径匹配，只要以/user/开头就符合要求
            - id: order-service
              uri: lb://orderservice
              predicates:
                - Path=/order/**
-           - id: after_route # 这个例子从Spring Cloud Gateway官方文档中挪过来的
+           - id: after_route # 这个例子从 Spring Cloud Gateway 官方文档中挪过来的
              uri: https://example.org
              predicates:
                - Cookie=mycookie,mycookievalue
@@ -74,7 +74,7 @@ title: Gateway
 
 对于一个包含了`spring-cloud-starter-gateway`依赖的项目，如果不想启用网关功能，可以设置`spring.cloud.gateway.enabled=false`。
 
-## 2. Gateway执行原理
+## 2. Gateway 执行原理
 
 The following diagram provides a high-level overview of how Spring Cloud Gateway works:
 
@@ -98,7 +98,7 @@ Spring Cloud Gateway 的术语：
 
 我们在配置文件中写的断言规则只是字符串，这些字符串会被 Route Predicate Factory （路由断言工厂）读取并处理，转变为路由判断的条件。
 
-例如，`Path=/user/**`是按照路径匹配，这个规则是由`org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory`类来处理的，像这样的路由断言工厂在 Spring Cloud Gateway 中内置了十几个，可以从[官方文档](https://docs.spring.io/spring-cloud-gateway/docs/3.1.6/reference/html/#gateway-request-predicates-factories)中一窥其貌：
+例如，`Path=/user/**`是按照路径匹配，这个规则是由`org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory`类来处理的，像这样的路由断言工厂在 Spring Cloud Gateway 中内置了十几个，可以从 [官方文档](https://docs.spring.io/spring-cloud-gateway/docs/3.1.6/reference/html/#gateway-request-predicates-factories) 中一窥其貌：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0963.JPG" alt="IMG_0963" style="zoom:33%;" />
 
@@ -112,7 +112,7 @@ Spring Cloud Gateway 的术语：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0964.JPG" alt="IMG_0964" style="zoom:45%;" />
 
-类似于路由断言工厂，Spring 提供了30多种不同的路由过滤器工厂**`GatewayFilter` Factory**，例如：
+类似于路由断言工厂，Spring 提供了 30 多种不同的路由过滤器工厂**`GatewayFilter` Factory**，例如：
 
 |          名称          |             说明             |
 | :--------------------: | :--------------------------: |
@@ -175,9 +175,9 @@ Spring Cloud Gateway 的术语：
 
 过滤器通过 Spring 的 `Ordered` 接口来决定自己的执行顺序：
 
-- `GatewayFilter`的order由Spring指定，默认是按照声明顺序从1递增；
-- `GlobalFilter`通过手动实现`Ordered`接口，或者添加`@Order`注解来指定order值；
-- 当过滤器的order值一样时，会按照`defaultFilter > GatewayFilter > GlobalFilter`的顺序执行。
+- `GatewayFilter`的 order 由 Spring 指定，默认是按照声明顺序从 1 递增；
+- `GlobalFilter`通过手动实现`Ordered`接口，或者添加`@Order`注解来指定 order 值；
+- 当过滤器的 order 值一样时，会按照`defaultFilter > GatewayFilter > GlobalFilter`的顺序执行。
 
 可参考下面几个类的源码来看：
 
@@ -185,14 +185,14 @@ Spring Cloud Gateway 的术语：
 
 ## 5. 跨域问题
 
-网关对CORS的解决方案，只需简单配置即可实现：
+网关对 CORS 的解决方案，只需简单配置即可实现：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211222175152188.png" alt="image-20211222175152188" style="zoom:35%;" />
 
-CORS跨域要配置的参数包括哪几个？
+CORS 跨域要配置的参数包括哪几个？
 
 - 允许哪些域名跨域
 - 允许哪些请求头
 - 允许哪些请求方式
-- 是否允许使用cookie
+- 是否允许使用 cookie
 - 有效期是多久

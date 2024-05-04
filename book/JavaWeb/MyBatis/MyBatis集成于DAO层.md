@@ -1,17 +1,17 @@
 ---
-title: MyBatis集成于DAO层
+title: MyBatis 集成于 DAO 层
 date: 2021-04-15
 ---
 
-在正经的JavaWeb工程中，MyBatis都用于在DAO层中集成。
+在正经的 JavaWeb 工程中，MyBatis 都用于在 DAO 层中集成。
 
-MyBatis在DAO层中的直接集成方法如下：
+MyBatis 在 DAO 层中的直接集成方法如下：
 
 - 项目结构概览：
 
     ![45](https://figure-bed.chua-n.com/JavaWeb/MyBatis/45.png)
 
-- DAO层代码
+- DAO 层代码
 
     - UserMapper.java
 
@@ -62,7 +62,7 @@ MyBatis在DAO层中的直接集成方法如下：
         }
         ```
 
-- service层代码：service调用dao层
+- service 层代码：service 调用 dao 层
 
     - UserService.java
 
@@ -99,9 +99,9 @@ MyBatis在DAO层中的直接集成方法如下：
         public class UserServiceImpl implements UserService {
             @Override
             public void printUser() throws IOException {
-        	// 创建dao层对象
+        	// 创建 dao 层对象
                 UserMapper userMapper = new UserMapperImpl();
-                // 调用dao层对象的方法
+                // 调用 dao 层对象的方法
                 List<User> all = userMapper.findAll();
                 System.out.println(all);
             }
@@ -116,5 +116,4 @@ MyBatis在DAO层中的直接集成方法如下：
         }
         ```
 
-> 如上所述，采用这种方式写代码的方式过于繁琐，即每次都要创建XxxMapper的接口及其实现类等等，故而MyBatis提供了**动态代理**开发方式，具体可见下节。
-
+> 如上所述，采用这种方式写代码的方式过于繁琐，即每次都要创建 XxxMapper 的接口及其实现类等等，故而 MyBatis 提供了**动态代理**开发方式，具体可见下节。

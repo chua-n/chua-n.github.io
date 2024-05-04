@@ -2,9 +2,9 @@
 title: OpenFeign
 ---
 
-> HTTP客户端`Feign`，本文说的`Feign`是指`OpenFeign`。
+> HTTP 客户端`Feign`，本文说的`Feign`是指`OpenFeign`。
 >
-> - Feign 来自 Netflix，OpenFeign 来自Spring Cloud 官方，其基于 Feign 做了改进。
+> - Feign 来自 Netflix，OpenFeign 来自 Spring Cloud 官方，其基于 Feign 做了改进。
 > - Feign 与 OpenFeign 最大的区别是：前者不支持对 SpringMVC 的注解，而后者支持。
 > - Feign 的坐标是`spring-cloud-starter-feign`，OpenFeign 的坐标是 `spring-cloud-starter-openfeign`。
 
@@ -22,19 +22,17 @@ User user = restTemplate.getForObject(url, User.class);
 其存在以下问题：
 
 - 代码可读性差，编程体验不统一
-- 参数复杂，URL难以维护
+- 参数复杂，URL 难以维护
 
-### Feign简介
+### Feign 简介
 
-Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/OpenFeign/feign ，其作用就是帮助我们优雅的实现HTTP请求的发送，解决上述问题。
+Feign 就是一个声明式的 HTTP 客户端，官方地址 https://github.com/OpenFeign/feign ，其作用就是帮助我们优雅的实现 HTTP 请求的发送，解决上述问题。
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0931.JPG" alt="IMG_0931" style="zoom:33%;" />
 
+## 2. 定义和使用 Feign 客户端
 
-
-## 2. 定义和使用Feign客户端
-
-使用Feign的步骤如下：
+使用 Feign 的步骤如下：
 
 - 引入依赖：
 
@@ -45,7 +43,7 @@ Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/Ope
     </dependency>
     ```
 
-- 在order-service的启动类添加注解开启Feign的功能：
+- 在 order-service 的启动类添加注解开启 Feign 的功能：
 
     ```java
     @EnableFeignClients
@@ -58,7 +56,7 @@ Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/Ope
     }
     ```
 
-- 编写Feign客户端：
+- 编写 Feign 客户端：
 
     ```java
     @FeignClient("useruservice")
@@ -68,7 +66,7 @@ Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/Ope
     }
     ```
 
-    > 这里主要是基于SpringMVC的注解来声明远程调用的信息，比如
+    > 这里主要是基于 SpringMVC 的注解来声明远程调用的信息，比如
     >
     > - 服务名称：userservice
     > - 请求方式：GET
@@ -76,7 +74,7 @@ Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/Ope
     > - 请求参数：Long id
     > - 返回值类型：User
 
-- 用Feign客户端代替`RestTemplate`
+- 用 Feign 客户端代替`RestTemplate`
 
     ```java
     @Autowired
@@ -85,28 +83,28 @@ Feign就是一个声明式的HTTP客户端，官方地址 https://github.com/Ope
     public Order queryOrderById(Long orderId) {
         // 1. 查询清单
         Order order = orderMapper.findById(orderId);
-        // 2. 利用Feign发起HTTP请求，查询用户
+        // 2. 利用 Feign 发起 HTTP 请求，查询用户
         User user = userClient.findById(order.getUserId());
-        // 3. 封装user到Order
+        // 3. 封装 user 到 Order
         order.setUser(user);
         // 4. 返回
         return order;
     }
     ```
 
-## 3. 自定义Feign的配置
+## 3. 自定义 Feign 的配置
 
-Feign支持自定义配置来覆盖默认配置，可以修改的配置如下（一般我们需要配置的就是日志级别）：
+Feign 支持自定义配置来覆盖默认配置，可以修改的配置如下（一般我们需要配置的就是日志级别）：
 
 |         类型          |       作用       |                          说明                          |
 | :-------------------: | :--------------: | :----------------------------------------------------: |
-| `feign.Logger.Level`  |   修改日志级别   |     包含4种不同的级别：NONE, BASIC, HEADERS, FULL      |
-| `feign.codec.Decoder` | 响应结果的解析器 | HTTP远程调用的结果做解析，例如解析JSON字符串为Java对象 |
-| `feign.codec.Encoder` |   请求参数编码   |          将请求参数编码，便于通过HTTP请求发送          |
-|   `feign.Contract`    |  支持的注解格式  |                 默认是SpringMVC的注解                  |
-|    `feign.Retryer`    |   失败重试机制   | 请求失败的重试机制，默认是没有，不过会使用Ribbon的重试 |
+| `feign.Logger.Level`  |   修改日志级别   |     包含 4 种不同的级别：NONE, BASIC, HEADERS, FULL      |
+| `feign.codec.Decoder` | 响应结果的解析器 | HTTP 远程调用的结果做解析，例如解析 JSON 字符串为 Java 对象 |
+| `feign.codec.Encoder` |   请求参数编码   |          将请求参数编码，便于通过 HTTP 请求发送          |
+|   `feign.Contract`    |  支持的注解格式  |                 默认是 SpringMVC 的注解                  |
+|    `feign.Retryer`    |   失败重试机制   | 请求失败的重试机制，默认是没有，不过会使用 Ribbon 的重试 |
 
-配置Feign日志的方式：
+配置 Feign 日志的方式：
 
 - 方式一：配置文件方式
 
@@ -116,7 +114,7 @@ Feign支持自定义配置来覆盖默认配置，可以修改的配置如下（
         feign:
           client:
             config:
-              default: # 这里用default就是全局配置，如果是写服务名称，则是针对某个微服务的配置
+              default: # 这里用 default 就是全局配置，如果是写服务名称，则是针对某个微服务的配置
                 loggerLevel: FULL # 日志级别
         ```
 
@@ -126,11 +124,11 @@ Feign支持自定义配置来覆盖默认配置，可以修改的配置如下（
         feign:
           client:
             config:
-              userservice: # 这里用default就是全局配置，如果是写服务名称，则是针对某个微服务的配置
+              userservice: # 这里用 default 就是全局配置，如果是写服务名称，则是针对某个微服务的配置
                 loggerLevel: FULL # 日志级别
         ```
 
-- 方式二：代码方式。需先声明一个Bean：
+- 方式二：代码方式。需先声明一个 Bean：
 
     ```java
     public class FeignClientConfiguration {
@@ -153,19 +151,19 @@ Feign支持自定义配置来覆盖默认配置，可以修改的配置如下（
         @FeignClient(value = "userservice", configuration = FeignClientConfiguration.class)
         ```
 
-## 4. Feign的性能优化
+## 4. Feign 的性能优化
 
-Feign底层的客户端实现：
+Feign 底层的客户端实现：
 
 - `URLConnection`: 默认实现，不支持连接池
 - `Apache HttpClient`: 支持连接池
 - `OKHttp`: 支持连接池
 
-因此优化Feign的性能主要包括：
+因此优化 Feign 的性能主要包括：
 
 - 使用连接池替代默认的`URLConnection`
 
-    - 如Feign添加`HttpClient`的支持：
+    - 如 Feign 添加`HttpClient`的支持：
 
         - 引入依赖：
 
@@ -182,17 +180,17 @@ Feign底层的客户端实现：
             feign:
               client:
                 config:
-                  default: # default全局的配置
-                    loggerLevel: FULL # 日志级别，BASIC就是基本的请求和响应消息
+                  default: # default 全局的配置
+                    loggerLevel: FULL # 日志级别，BASIC 就是基本的请求和响应消息
               httpclient:
-                enabled: true # 开启feign对HttpClient的支持
+                enabled: true # 开启 feign 对 HttpClient 的支持
                 max-connections: 200 # 最大的连接数
                 max-connections-per-route: 50 # 每个路径的最大连接数
             ```
 
 - 日志级别，最好用`basic`或`none`
 
-## 5. Feign的最佳实践
+## 5. Feign 的最佳实践
 
 ### 5.1 方式一：继承
 
@@ -205,16 +203,16 @@ Feign底层的客户端实现：
 
 ### 5.2 方式二：抽取
 
-将`FeignClient`抽取为独立模块，并且把接口有关的POJO、默认的Feign配置都放到这个模块中，提供给所有的消费者使用：
+将`FeignClient`抽取为独立模块，并且把接口有关的 POJO、默认的 Feign 配置都放到这个模块中，提供给所有的消费者使用：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0948.JPG" alt="IMG_0948" style="zoom:40%;" />
 
 抽取`FeignClient`的步骤：
 
-1. 首先创建一个module，命名为feign-api，然后引入feign的starter依赖；
-2. 将order-service中编写的UserClient, User, DefaultFeignConfiguration都复制到feign-api项目中；
-3. 在order-service中引入feign-api的依赖；
-4. 修改order-service中的所有与上述三个组件有关的import部分，改成导入feign-api中的包；
+1. 首先创建一个 module，命名为 feign-api，然后引入 feign 的 starter 依赖；
+2. 将 order-service 中编写的 UserClient, User, DefaultFeignConfiguration 都复制到 feign-api 项目中；
+3. 在 order-service 中引入 feign-api 的依赖；
+4. 修改 order-service 中的所有与上述三个组件有关的 import 部分，改成导入 feign-api 中的包；
 5. 重启测试。
 
 当定义的`FeignClient`不在`SpringBootApplication`的扫描包范围时，这些`FeignClient`无法使用，可通过如下两种方式解决：
@@ -230,4 +228,3 @@ Feign底层的客户端实现：
     ```java
     @EnableFeignClients(clients = {UserClient.class})
     ```
-

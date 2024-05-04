@@ -16,7 +16,7 @@ SqlMapConfig.xml，是 MyBatis 与数据库建立连接的核心文件，是整�
          "http://mybatis.org/dtd/mybatis-3-config.dtd">
 ```
 
-所有的配置信息都会被包裹在**configuration 标签对**中，其中有许多的配置标签，每个配置标签必须严格按照先后顺序配置。
+所有的配置信息都会被包裹在** configuration 标签对**中，其中有许多的配置标签，每个配置标签必须严格按照先后顺序配置。
 
 -   标签设置概览
 
@@ -79,9 +79,9 @@ MyBatis 全局配置文件的可配项主要如下：
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!--        1. properties属性引入外部配置文件-->
+    <!--        1. properties 属性引入外部配置文件-->
     <properties resource="org/mybatis/example/config.properties">
-        <!--        property里面的属性全局均可使用-->
+        <!--        property 里面的属性全局均可使用-->
         <property name="username" value="root"/>
         <property name="password" value="1234"/>
     </properties>
@@ -119,11 +119,11 @@ MyBatis 全局配置文件的可配项主要如下：
         </plugin>
     </plugins>
 
-    <!--    7. environments数据库环境配置-->
-    <!--    和Spring整合后environments配置将被废除-->
+    <!--    7. environments 数据库环境配置-->
+    <!--    和 Spring 整合后 environments 配置将被废除-->
     <environments default="development">
         <environment id="development">
-            <!--            使用JDBC事务管理-->
+            <!--            使用 JDBC 事务管理-->
             <transactionManager type="JDBC"/>
             <!--            数据库连接池-->
             <dataSource type="POOLED">
@@ -200,36 +200,36 @@ public class User {
 
 #### 2.2.4 常见类型的 MyBatis 别名
 
-MyBatis 已经为 Java 的常见类型默认指定了别名，可以直接使用。其中有一些基本数据类型和包装数据类型的名称一样，故在基本数据类型的前面加了下划线\_作为区分。
+MyBatis 已经为 Java 的常见类型默认指定了别名，可以直接使用。其中有一些基本数据类型和包装数据类型的名称一样，故在基本数据类型的前面加了下划线`_`作为区分。
 
-| 别名       | 映射的类型           |
-| ---------- | -------------------- |
-| \_byte     | byte                 |
-| \_long     | long                 |
-| \_short    | short                |
-| \_int      | int                  |
-| \_integer  | int                  |
-| \_double   | double               |
-| \_float    | float                |
-| \_boolean  | boolean              |
-| string     | java.lang.String     |
-| byte       | java.lang.Byte       |
-| long       | java.lang.Long       |
-| short      | java.lang.Short      |
-| int        | java.lang.Integer    |
-| integer    | java.lang.Integer    |
-| double     | java.lang.Double     |
-| boolean    | java.lang.Boolean    |
-| date       | java.util.Date       |
-| decimal    | java.math.BigDecimal |
-| bigdecimal | java.math.BigDecimal |
-| object     | java.lang.Object     |
-| map        | java.util.Map        |
-| hashmap    | java.util.HashMap    |
-| list       | java.util.List       |
-| arraylist  | java.util.ArrayList  |
-| collection | java.util.Collection |
-| iterator   | java.util.Iterator   |
+| 别名         | 映射的类型             |
+| ------------ | ---------------------- |
+| `_byte`      | `byte`                 |
+| `_long`      | `long`                 |
+| `_short`     | `short`                |
+| `_int`       | `int`                  |
+| `_integer`   | `int`                  |
+| `_double`    | `double`               |
+| `_float`     | `float`                |
+| `_boolean`   | `boolean`              |
+| `string`     | `java.lang.String`     |
+| `byte`       | `java.lang.Byte`       |
+| `long`       | `java.lang.Long`       |
+| `short`      | `java.lang.Short`      |
+| `int`        | `java.lang.Integer`    |
+| `integer`    | `java.lang.Integer`    |
+| `double`     | `java.lang.Double`     |
+| `boolean`    | `java.lang.Boolean`    |
+| `date`       | `java.util.Date`       |
+| `decimal`    | `java.math.BigDecimal` |
+| `bigdecimal` | `java.math.BigDecimal` |
+| `object`     | `java.lang.Object`     |
+| `map`        | `java.util.Map`        |
+| `hashmap`    | `java.util.HashMap`    |
+| `list`       | `java.util.List`       |
+| `arraylist`  | `java.util.ArrayList`  |
+| `collection` | `java.util.Collection` |
+| `iterator`   | `java.util.Iterator`   |
 
 ### 2.3 settings 标签
 
@@ -272,7 +272,7 @@ settings 配置参数：
 
 在 SQL 映射配置文件中，为 SQL 配置的输入参数最终要从 Java 类型转换成数据库识别的类型，而从 SQL 的查询结果集中获取的数据，也要从数据库的数据类型转换为对应的 Java 类型。
 
-MyBatis 即使用**类型处理器(TypeHandler)**将从数据库获取的值以适合的方式转换为 Java 类型，或者将 Java 类型的参数转换为数据库对应的类型。
+MyBatis 即使用**类型处理器（TypeHandler） **将从数据库获取的值以适合的方式转换为 Java 类型，或者将 Java 类型的参数转换为数据库对应的类型。
 
 MyBatis 中有许多类型处理器，但依然不能总是满足开发需要，有时还需要配置自己的类型处理器，typeHandlers 标签就是用来声明自己的类型处理器的。
 
@@ -293,34 +293,34 @@ MyBatis 中有许多类型处理器，但依然不能总是满足开发需要，
 
         ```java
         package cn.com.mybatis;
-    
+        
         import org.apache.ibatis.type.JdbcType;
         import org.apache.ibatis.type.TypeHandler;
         import java.sql.*;
         import java.text.SimpleDateFormat;
         public class DateTypeHandler implements TypeHandler<Date> {
-    
+        
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    
+        
             @Override
             public void setParameter(PreparedStatement ps, int i, Date date, JdbcType jdbcType) throws SQLException {
                 System.out.println("其他逻辑");
                 ps.setDate(i, date);
                 System.out.println("其他逻辑");
             }
-    
+        
             @Override
             public Date getResult(ResultSet resultSet, String columnName) throws SQLException {
                 System.out.println("其他逻辑");
                 return resultSet.getDate(columnName);
             }
-    
+        
             @Override
             public Date getResult(ResultSet resultSet, int columnIndex) throws SQLException {
                 System.out.println("其他逻辑");
                 return resultSet.getDate(columnIndex);
             }
-    
+        
             @Override
             public Date getResult(CallableStatement cs, int columnIndex) throws SQLException {
                 System.out.println("其他逻辑");
@@ -369,7 +369,7 @@ objectFactory 自定义对象类被定义在工程中，在 MyBatis 全局配置
 
 ### 2.6 plugins 标签
 
-在 MyBatis 中，对某种方法进行拦截调用的机制，被称为**plugin（插件）**。使用 plugin 可以很好地对方法的调用进行监控，而且还可以修改或重写方法的行为逻辑。
+在 MyBatis 中，对某种方法进行拦截调用的机制，被称为 **plugin（插件）**。使用 plugin 可以很好地对方法的调用进行监控，而且还可以修改或重写方法的行为逻辑。
 
 > plugin 可以操作 MyBatis 的框架核心方法，在修改 plugin 时可能会影响框架的稳定性，所以在编写 plugin 时要十分谨慎。
 
@@ -429,17 +429,17 @@ public class QueryPlugin implements Interceptor {
 | POOLED     | 设置一个管理数据库连接的资源池，用来合理控制数据库的连接与关闭次数，利用“池”的概念将 JDBC 连接对象组织起来 |
 | JNDI       | 配置连接外部数据源（如服务器提供的数据源）的信息                                                           |
 
-在DataSource中配置以JDBC标准连接数据库所需要的各项参数信息后，依据DataSource的不同，可以设置以下属性：
+在 DataSource 中配置以 JDBC 标准连接数据库所需要的各项参数信息后，依据 DataSource 的不同，可以设置以下属性：
 
 ![44](https://figure-bed.chua-n.com/JavaWeb/MyBatis/44.png)
 
 当然也可以设置自己的数据源，通过实现`DataSourceFactory`接口来实现（也可以引入其他第三方数据源）。
 
-### 2.8 mappers标签
+### 2.8 mappers 标签
 
-MyBatis是基于SQL映射配置的框架，SQL语句都写在XxxMapper配置文件中，当构建SqlSession类之后，就需要读取Mapper配置文件中的SQL配置。而SqlMapConfig.xml中的mappers标签就用来配置需要加载的SQL映射配置文件的路径。
+MyBatis 是基于 SQL 映射配置的框架，SQL 语句都写在 XxxMapper 配置文件中，当构建 SqlSession 类之后，就需要读取 Mapper 配置文件中的 SQL 配置。而 SqlMapConfig.xml 中的 mappers 标签就用来配置需要加载的 SQL 映射配置文件的路径。
 
-mappers标签下有许多mapper标签，每一个mapper标签中配置的都是一个独立的Mapper映射配置文件的路径。有以下几种配置方式：
+mappers 标签下有许多 mapper 标签，每一个 mapper 标签中配置的都是一个独立的 Mapper 映射配置文件的路径。有以下几种配置方式：
 
 1. 使用相对路径进行配置
 
@@ -478,4 +478,3 @@ mappers标签下有许多mapper标签，每一个mapper标签中配置的都是�
         <package name="org.mybatis.mappers"/>
     </mappers>
     ```
-

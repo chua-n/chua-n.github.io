@@ -14,13 +14,13 @@ title: RestTemplate
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211128175731514.png" alt="image-20211128175731514" style="zoom:25%;" />
 
-远程调用方式分析——根源需要在Java代码中直接发起HTTP请求：
+远程调用方式分析——根源需要在 Java 代码中直接发起 HTTP 请求：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211128175944257.png" alt="image-20211128175944257" style="zoom:25%;" />
 
-远程调用实现——基于`RestTemplate`发起的HTTP请求实现远程调用，由于HTTP请求做远程调用是与语言无关的调用，只要知道对方的IP、端口、接口路径、请求参数即可。
+远程调用实现——基于`RestTemplate`发起的 HTTP 请求实现远程调用，由于 HTTP 请求做远程调用是与语言无关的调用，只要知道对方的 IP、端口、接口路径、请求参数即可。
 
-1. 注册`RestTemplate`——在order-service的`OrderApplication`中注册`RestTemplate`：
+1. 注册`RestTemplate`——在 order-service 的`OrderApplication`中注册`RestTemplate`：
 
     ```java
     @MapperScan("cn.itcast.order.mapper")
@@ -37,7 +37,7 @@ title: RestTemplate
     }
     ```
 
-2. 服务远程调用`RestTemplate`——修改order-servic中的`OrderService`的`queryOrderById`方法：
+2. 服务远程调用`RestTemplate`——修改 order-servic 中的`OrderService`的`queryOrderById`方法：
 
     ```java
     @Service
@@ -51,7 +51,7 @@ title: RestTemplate
             // 2. 查询用户
             String url = "http://localhost:8081/user/" + order.getUserId();
             User user = restTemplate.getForObject(url, User.class);
-            // 3. 封装user信息
+            // 3. 封装 user 信息
             order.setUser(user);
             // 4. 返回
             return order;
@@ -67,4 +67,3 @@ title: RestTemplate
 - 服务消费者：一次业务中，调用其它微服务的服务（调用其他微服务提供的接口）。
 
 > 实际上，一个服务既可以是提供者，又可以是消费者，这是一种相对的概念。
-

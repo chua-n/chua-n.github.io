@@ -9,7 +9,7 @@ title: JWT
 
 ## 定义
 
-JSON Web Token（缩写 JWT），是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（[RFC 7519](https://link.jianshu.com?t=https://tools.ietf.org/html/rfc7519)）。该token被设计为紧凑且安全的，
+JSON Web Token（缩写 JWT），是为了在网络应用环境间传递声明而执行的一种基于 JSON 的开放标准（[RFC 7519](https://link.jianshu.com?t=https://tools.ietf.org/html/rfc7519)）。该 token 被设计为紧凑且安全的，
 
 JWT（JSON Web Token） 是目前最流行的跨域认证解决方案，是一种基于 JSON 形式的 Token 的认证授权机制。JWT 一般被用来在身份提供者和服务提供者之间传递被认证的用户身份信息，以便于从资源服务器获取资源，其特别适用于分布式站点的单点登录（SSO）场景，也可以增加一些额外的其它业务逻辑所必须的声明信息。
 
@@ -23,7 +23,7 @@ JWT 的原理是，服务器认证以后，生成一个 JSON 对象，发回给�
 {
   "姓名": "张三",
   "角色": "管理员",
-  "到期时间": "2018年7月1日0点0分"
+  "到期时间": "2018 年 7 月 1 日 0 点 0 分"
 }
 ```
 
@@ -39,7 +39,7 @@ JWT 通常是这样的：`xxx.yyy.zzz`，其本质上就是一组字串，通过
 
 - **Header（头部）**: 描述 JWT 的元数据，定义了生成签名的算法以及 `Token` 的类型。
 - **Payload（负载）**: 用来存放实际需要传递的数据
-- **Signature（签名）**：签名。服务器通过 Payload、Header 和一个密钥(Secret)使用 Header 里面指定的签名算法（默认是 HMAC SHA256）生成。
+- **Signature（签名）**：签名。服务器通过 Payload、Header 和一个密钥 (Secret) 使用 Header 里面指定的签名算法（默认是 HMAC SHA256）生成。
 
 示例：
 
@@ -75,7 +75,7 @@ JSON 形式的 Header 被转换成 Base64 编码，成为 JWT 的第一部分。
 
 ### Payload
 
-Payload 也是 JSON 格式数据，用来存放实际需要传递的数据。JWT 规定了7个官方字段供选用：
+Payload 也是 JSON 格式数据，用来存放实际需要传递的数据。JWT 规定了 7 个官方字段供选用：
 
 - `iss`（issuer）：JWT 签发方。
 - `iat`（issued at time）：JWT 签发时间。

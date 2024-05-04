@@ -2,5 +2,4 @@
 title: MyBatis
 ---
 
-> 本章为MyBatis相关内容。
-
+> 本章为 MyBatis 相关内容。

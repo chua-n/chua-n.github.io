@@ -15,7 +15,7 @@ title: Config
 
 由于常规配置管理的这种缺点，通常我们都会使用配置中心对配置进行统一管理，其中一种方案就是 Spring Cloud Config。
 
-以下是Spring Cloud Config官方的一段自我介绍：
+以下是 Spring Cloud Config 官方的一段自我介绍：
 
 > Spring Cloud Config provides server-side and client-side support for externalized configuration in a distributed system. ...The concepts on both client and server map identically to the Spring `Environment` and `PropertySource` abstractions, so they fit very well with Spring applications but can be used with any application running in any language. ...The default implementation of the server storage backend uses git... It is easy to add alternative implementations and plug them in with Spring configuration.
 
@@ -41,7 +41,7 @@ Spring Cloud Config 默认工作流程如下：
 
 ![image-20230216223629694](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20230216223629694.png)
 
-### 2.2 Config Server的 HTTP 接口
+### 2.2 Config Server 的 HTTP 接口
 
 作为 Config Server，Spring Cloud Config 通过一个 `org.springframework.cloud.config.server.environment.EnvironmentController` 给客户端提供了如下获取配置文件的 HTTP 接口（其获取的响应目标都是`org.springframework.cloud.config.environment.Environment`）：
 
@@ -55,14 +55,14 @@ Spring Cloud Config 默认工作流程如下：
 
 - `{application}`：客户端应用名称，如`myApp`
 - `{profile}`：环境名，比如一个项目通常都有开发（dev）环境、测试（test）环境、生产（prod）环境，在找配置文件时会与`{application}`拼接形成`{application}-{profile}`，例如 `myApp-dev.yml`、`myApp-test.yaml`、`myApp-prod.properties` 等；
-- `{label}`：当使用Git管理配置文件时，意为 Git 分支名；当使用本地文件系统管理配置文件时，意为子目录名；
-- `{suffix}`：对于一个配置文件，希望以什么格式返回其数据。例如配置中心存在一个 `myApp-dev.yml` 配置文件，如果`suffix`传入`properties`，则Config Server会将配置文件转换为`properties`格式的文本返回。其可选项为`yml, yaml, properties, json`
+- `{label}`：当使用 Git 管理配置文件时，意为 Git 分支名；当使用本地文件系统管理配置文件时，意为子目录名；
+- `{suffix}`：对于一个配置文件，希望以什么格式返回其数据。例如配置中心存在一个 `myApp-dev.yml` 配置文件，如果`suffix`传入`properties`，则 Config Server 会将配置文件转换为`properties`格式的文本返回。其可选项为`yml, yaml, properties, json`
 
-[官方文档](https://docs.spring.io/spring-cloud-config/docs/3.1.4-SNAPSHOT/reference/html/#_spring_cloud_config_server)有过这样一段大概的描述：
+[官方文档](https://docs.spring.io/spring-cloud-config/docs/3.1.4-SNAPSHOT/reference/html/#_spring_cloud_config_server) 有过这样一段大概的描述：
 
 > where `application` is injected as the `spring.config.name` in the `SpringApplication` (what is normally `application` in a regular Spring Boot app), `profile` is an active profile (or comma-separated list of properties), and `label` is an optional git label (defaults to `master`.)
 
-如果去看`EnvironmentController`中的url，会发现其中的路径参数在表达`application`的时候，是用的变量名`name`：
+如果去看`EnvironmentController`中的 url，会发现其中的路径参数在表达`application`的时候，是用的变量名`name`：
 
 ![image-20230221141020919](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20230221141020919.png)
 
@@ -143,7 +143,7 @@ $ tree .
 
 ### 3.3 客户端
 
-#### 客户端1号
+#### 客户端 1 号
 
 - pom
 
@@ -203,7 +203,7 @@ $ tree .
   }
   ```
 
-#### 客户端2号
+#### 客户端 2 号
 
 - pom
 
@@ -269,7 +269,7 @@ Where should you store the configuration data for the Config Server? The strateg
 
 - `{application}`, which maps to `spring.application.name` on the client side.
 - `{profile}`, which maps to `spring.profiles.active` on the client (comma-separated list).
-- `{label}`, which is a server side feature labelling a "versioned" set of config files.（注意这个versioned在表达一个抽象性的概念）
+- `{label}`, which is a server side feature labelling a "versioned" set of config files.（注意这个 versioned 在表达一个抽象性的概念）
 
 Repository implementations generally behave like a Spring Boot application, loading configuration files from a `spring.config.name` equal to the `{application}` parameter, and `spring.profiles.active` equal to the `{profiles}` parameter. Precedence rules for profiles are also the same as in a regular Spring Boot application: Active profiles take precedence over defaults, and, if there are multiple profiles, the last one wins (similar to adding entries to a `Map`).
 
@@ -338,7 +338,7 @@ Repository implementations generally behave like a Spring Boot application, load
   }
   ```
 
-`EnvironmentRepository`有很多实现类，我们所说的 Spring Cloud Config 支持多种形式的配置文件管理方式，其实就是通过`EnvironmentRepository`接口的实现类来做到的。比如 Git 的 `JGitEnvironmentRepository`，SVN的`SvnKitEnvironmentRepository`，本地文件系统的`NativeEnvironmentRepository`。
+`EnvironmentRepository`有很多实现类，我们所说的 Spring Cloud Config 支持多种形式的配置文件管理方式，其实就是通过`EnvironmentRepository`接口的实现类来做到的。比如 Git 的 `JGitEnvironmentRepository`，SVN 的`SvnKitEnvironmentRepository`，本地文件系统的`NativeEnvironmentRepository`。
 
 ### 4.2 Git Backend
 
@@ -359,20 +359,20 @@ This repository implementation maps the `{label}` parameter of the HTTP resource
 
 > 详见官方文档 [File System Backend](https://docs.spring.io/spring-cloud-config/docs/3.1.4-SNAPSHOT/reference/html/#_file_system_backend)。
 
-Spring Cloud Config也支持从本地的`classpath`或者文件系统来管理配置文件（对应实现类为`NativeEnvironmentRepository`）：
+Spring Cloud Config 也支持从本地的`classpath`或者文件系统来管理配置文件（对应实现类为`NativeEnvironmentRepository`）：
 
 - To use the native profile, launch the Config Server with `spring.profiles.active=native`；
 - 存储配置文件的具体目录位置通过`spring.cloud.config.server.native.searchLocations`属性来指定。
 
 关于 `searchLocations` 属性：
 
-- `searchLocations`的默认值与一个单体Spring Boot项目的配置文件搜索路径相同，即 `[classpath:/, classpath:/config, file:./, file:./config]`。需要强调的一点是，这并不会将 config server 本身的 `application.properties` 配置文件暴露给 config client，因为 server 端在向 client 端发送 property sources 前会移除掉 server 自身的配置文件。
+- `searchLocations`的默认值与一个单体 Spring Boot 项目的配置文件搜索路径相同，即 `[classpath:/, classpath:/config, file:./, file:./config]`。需要强调的一点是，这并不会将 config server 本身的 `application.properties` 配置文件暴露给 config client，因为 server 端在向 client 端发送 property sources 前会移除掉 server 自身的配置文件。
 
 - 对于某一个名称的配置文件，当其位于多个搜索路径中时，`searchLocations`中后出现的搜索路径的优先级更高。
 
-- 在指定搜索路径时记得加上`file:`前缀，因为如果不加的话默认会从`classpath`找；此外，在使用`file:`时，注意Windows系统下需要一个额外的`/`来指定根路径，例如`file:///${user.home}/config-repo`。
+- 在指定搜索路径时记得加上`file:`前缀，因为如果不加的话默认会从`classpath`找；此外，在使用`file:`时，注意 Windows 系统下需要一个额外的`/`来指定根路径，例如`file:///${user.home}/config-repo`。
 
-- 就像任何Spring Boot应用一样，搜索路径中可以使用`${}`形式的变量。
+- 就像任何 Spring Boot 应用一样，搜索路径中可以使用`${}`形式的变量。
 
 - 搜索路径中可以包含 `{application}`、`{profile}`、`{label}` 三个特殊的占位符。
 
@@ -419,7 +419,7 @@ If you want to read the configuration for an application directly from the backe
 
 ### 7.1 连接配置服务
 
-#### Spring Boot Config Data的方式
+#### Spring Boot Config Data 的方式
 
 Spring Boot 2.4 introduced a new way to import configuration data via the `spring.config.import` property. This is now the default way to bind to Config Server.
 
@@ -437,18 +437,18 @@ spring.config.import=optional:configserver:
 
   > The location in the import property has precedence over the uri property.
 
-在这种方式下，客户端不需要使用`bootstrap`文件，无论yml形式的还是properties形式的。快速入门中直接使用的就是这种方式。
+在这种方式下，客户端不需要使用`bootstrap`文件，无论 yml 形式的还是 properties 形式的。快速入门中直接使用的就是这种方式。
 
-#### Bootstrap的方式
+#### Bootstrap 的方式
 
-客户端如果要使用传统的`bootstrap`方式来连接config server，必须通过以下两种方式之一：
+客户端如果要使用传统的`bootstrap`方式来连接 config server，必须通过以下两种方式之一：
 
 - 引入 `spring-cloud-starter-bootstrap` starter 依赖；
 - 设置属性`spring.cloud.bootstrap.enabled=true`，必须通过系统属性或者环境变量来设置。
   - Once bootstrap has been enabled any application with Spring Cloud Config Client on the classpath will connect to Config Server as follows: When a config client starts, it binds to the Config Server (through the `spring.cloud.config.uri` bootstrap configuration property) and initializes Spring `Environment` with remote property sources.
   - The net result of this behavior is that all client applications that want to consume the Config Server need a `bootstrap.yml` (or an environment variable) with the server address set in `spring.cloud.config.uri` (it defaults to `http://localhost:8888`).
 
-我们以快速入门中的客户端2号为例，做如下更改即可：
+我们以快速入门中的客户端 2 号为例，做如下更改即可：
 
 - 启动类：
 
@@ -532,4 +532,3 @@ The Config Service serves property sources from `/{application}/{profile}/{label
 ### 7.3 安全问题
 
 略，详见官方文档 [Security](https://docs.spring.io/spring-cloud-config/docs/3.1.4-SNAPSHOT/reference/html/#_security_2)。
-

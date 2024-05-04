@@ -1,5 +1,5 @@
 ---
-title: YAML概述
+title: YAML 概述
 icon: yaml
 ---
 
@@ -7,7 +7,7 @@ icon: yaml
 
 YAML 是 "YAML Ain't Markup Language"（YAML 不是一种标记语言）的递归缩写。在开发的这种语言时，YAML 的意思其实是"Yet Another Markup Language"（仍是一种标记语言）。 
 
-YAML非常适合用来做以数据为中心的配置文件。
+YAML 非常适合用来做以数据为中心的配置文件。
 
 ## 2. 基本语法
 
@@ -16,7 +16,7 @@ YAML非常适合用来做以数据为中心的配置文件。
 - `key`与`value`之间有空格
 - 大小写敏感
 - 使用缩进表示层级关系
-- 缩进不允许使用tab，只允许空格
+- 缩进不允许使用 tab，只允许空格
 - 缩进的空格数不重要，只要相同层级的元素左对齐即可
 - `#`表示注释
 - 字符串无需加引号，如果要加的话，可加单引号或双引号，它们有如下区别：
@@ -35,7 +35,7 @@ k: v
 
 ### 3.2 对象
 
-对象为键值对的集合。如map、hash、set、object。
+对象为键值对的集合。如 map、hash、set、object。
 
 - 行内写法：  
 
@@ -73,7 +73,7 @@ k: {k1:v1,k2:v2,k3:v3}
 
 ### 3.4 示例
 
-对于Java类：
+对于 Java 类：
 
 ```java
 @Data
@@ -97,7 +97,7 @@ class Pet {
 }
 ```
 
-YAML表示上述对象：
+YAML 表示上述对象：
 
 ```yaml
 person:
@@ -182,4 +182,3 @@ test:
 ```js
 [ 'Steve', 'Clark', 'Brian', 'Oren', 'Steve' ]
 ```
-
