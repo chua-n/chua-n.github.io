@@ -4,21 +4,21 @@ title: IoC-上
 
 ## 1. IoC 释义
 
-> Spring 容器指 Spring 的 IoC 容器。
->
 > 以下将 [Spring 官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#spring-core) 中的 configuration metadata 理解为“配置”一词。
+
+Spring 容器指 Spring 的 IoC 容器。
 
 在 Spring 读取 Bean 配置创建 Bean 实例之前，必须首先对 Spring 的 IoC 容器进行实例化，从而才能从 IoC 容器里获取 Bean 实例并使用。
 
 - Spring IOC 容器的两个基础包是`org.springframework.beans`和`org.springframework.context`。
 - In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called **beans**.
-- Beans, and the dependencies among them, are reflected in the configuration metadata used by a container.
+- Beans, and the dependencies among them, are reflected in the **configuration metadata** used by a container.
 
 ### 1.1 两种类型的 IoC 容器
 
 Spring 提供了两种类型的 IoC 容器：
 
-- `BeanFactory`接口： IoC 容器的基础实现，是 Spring 框架的基础设施。
+- `BeanFactory`接口：IoC 容器的基础实现，是 Spring 框架的基础设施。
 - `ApplicationContext`接口：提供了更多的高级特性，实际是 `BeanFactory` 的子接口。`ApplicationContext`面向使用 Spring 框架的开发者，几乎所有的应用场合都可以直接使用 `ApplicationContext` 而非底层的 `BeanFactory`。
 
 从 IoC 容器中获取 Bean 对象的方法是调用底层`BeanFactory`接口提供的`getBean()`方法，`getBean()`方法有两种使用形式：
@@ -57,7 +57,7 @@ Spring 提供了两种类型的 IoC 容器：
 |  `FileSystemXmlApplicationContext`   | 从文件系统中加载配置文件，配置文件可以在磁盘任意位置         |
 | `AnnotationConfigApplicationContext` | 当使用注解配置容器对象时，需要使用此类来创建 Spring 容器，其用来读取注解 |
 
-通过拿到`ApplicationContext`的`BeanFactory`（通常是`DefaultListableBeanFactory`），`ApplicationContext`的实现类也支持注册在容器外创建的对象。比如`DefaultListableBeanFactory`可以通过`registerSingleton(..)` 和 `registerBeanDefinition(..)`方法来支持注册功能。
+通过`ApplicationContext`实现类的`getBeanFactory()`方法拿到`BeanFactory`（通常是`DefaultListableBeanFactory`），`ApplicationContext`也支持注册在容器外创建的对象。比如`DefaultListableBeanFactory`可以通过`registerSingleton(..)` 和 `registerBeanDefinition(..)`方法来支持注册功能。
 
 ## 2. Bean
 
@@ -87,8 +87,6 @@ This metadata translates to a set of properties that make up each bean definitio
 | Lazy initialization mode | [Lazy-initialized Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-lazy-init) |
 |  Initialization method   | [Initialization Callbacks](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-lifecycle-initializingbean) |
 |    Destruction method    | [Destruction Callbacks](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-lifecycle-disposablebean) |
-
-> In addition to bean definitions that contain information on how to create a specific bean, the `ApplicationContext` implementations also permit the registration of existing objects that are created outside the container (by users). This is done by accessing the ApplicationContext’s `BeanFactory` through the `getBeanFactory()` method, which returns the `DefaultListableBeanFactory` implementation. `DefaultListableBeanFactory` supports this registration through the `registerSingleton(..)` and `registerBeanDefinition(..)` methods. However, typical applications work solely with beans defined through regular bean definition metadata.
 
 A bean definition is essentially a recipe for creating one or more objects. The container looks at the recipe for a named bean when asked and uses the configuration metadata encapsulated by that bean definition to create (or acquire) an actual object.
 
@@ -202,7 +200,7 @@ The non-singleton prototype scope of bean deployment results in the creation of 
 <bean id="accountService" class="com.something.DefaultAccountService" scope="prototype"/>
 ```
 
-notes:
+Notes:
 
 - In contrast to the other scopes, Spring does not manage the complete lifecycle of a prototype bean.
 - Thus, although initialization lifecycle callback methods are called on all objects regardless of scope, in the case of prototypes, **configured destruction lifecycle callbacks are not called**. The client code must clean up prototype-scoped objects and release expensive resources that the prototype beans hold. 
@@ -251,7 +249,7 @@ After you write and test one or more custom Scope implementations, you need to m
 
 The `ConfigurableBeanFactory#registerScope` method is the central method to register a new Scope with the Spring container:
 
-> This method is declared on the ConfigurableBeanFactory interface, which is available through the BeanFactory property on most of the concrete ApplicationContext implementations that ship with Spring.
+> This method is declared on the `ConfigurableBeanFactory` interface, which is available through the BeanFactory property on most of the concrete ApplicationContext implementations that ship with Spring.
 
 ```java
 void registerScope(String scopeName, Scope scope);
@@ -404,7 +402,7 @@ setter 方法注入应该作为一种备选项：
 
 有时我们需要在一个 bean A 中调用另一个 bean B 的方法，通常我们会添加一个字段，然后使用依赖注入把 bean B 的实例注入到这个字段上。这种情况下在 bean A 和 bean B 都是 singleton 时没问题，但是在 bean A 是 singleton 和 bean B 是非 singleton 时就可能出现问题。因为 bean B 为非 singleton , 那么 bean B 是希望他的使用者在一些情况下创建一个新实例，而 bean A 使用字段把 bean B 的一个实例缓存了下来，每次都使用的是同一个实例。
 
-A solution is to forego（放弃） some inversion of control. You can make bean A aware of the container by implementing the ApplicationContextAware interface, and by making a getBean("B") call to the container ask for (a typically new) bean B instance every time bean A needs it. The following example shows this approach:
+A solution is to forego（放弃） some inversion of control. You can make bean A aware of the container by implementing the `ApplicationContextAware` interface, and by making a `getBean("B")` call to the container ask for (a typically new) bean B instance every time bean A needs it. The following example shows this approach:
 
 ```java
 // a class that uses a stateful Command-style class to perform some processing
@@ -453,7 +451,7 @@ Lookup method injection is the ability of the container to override methods on c
 
 这种方法通常用于涉及 prototype bean 的场景，Spring 实现这种方法注入的原理是使用 CGLIB 动态生成一个覆盖该方法的子类（如果该方法是抽象方法，则在子类中实现该方法；如果该方法不是抽象方法，则在子类中覆盖该方法）。基于此原理，Lookup Method Injection 有如下限制：
 
-- For this dynamic subclassing to work, the class that the Spring bean container subclasses cannot be final, and the method to be overridden cannot be final, either.
+- For this dynamic subclassing to work, the class that the Spring bean container subclasses cannot be `final`, and the method to be overridden cannot be `final`, either.
 - Unit-testing a class that has an abstract method requires you to subclass the class yourself and to supply a stub implementation of the abstract method.
 - Concrete methods are also necessary for component scanning, which requires **concrete classes** to pick up.
 - A further key limitation is that lookup methods do not work with factory
@@ -514,7 +512,7 @@ Lookup method injection is the ability of the container to override methods on c
     }
     ```
 
-In the client class that contains the method to be injected (the `CommandManager` in this case), the method to be injected requires a signature of the following form (???对的错的???):
+In the client class that contains the method to be injected (the `CommandManager` in this case), the method to be injected requires a signature of the following form (对的错的？??):
 
 ```xml
 <public|protected> [abstract] <return-type> theMethodName(no-arguments);

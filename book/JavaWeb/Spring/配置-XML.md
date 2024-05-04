@@ -150,7 +150,7 @@ scope 的取值：
 </bean>
 ```
 
-若想单独设置某个属性为 null，可使用`<null/>`标签：
+若想单独设置某个属性为 `null`，可使用`<null/>`标签：
 
 ```xml
 <bean class="ExampleBean">
@@ -192,8 +192,6 @@ scope 的取值：
 
 当 Bean 实例**仅仅**给一个特定的属性使用时，可以将其声明为内部 Bean. 内部 Bean 声明直接包含在 `<property>` 或 `<constructor-arg>` 元素里，不需要设置任何 id 或 name 属性。
 
-<font color="red">???????</font>
-
 ## 3. 组件扫描
 
 组件扫描的配置：`<context:component-scan>`。
@@ -219,8 +217,8 @@ Spring 的配置文件可**分模块开发**，此时在主配置文件中引用
 
 ## 5. p 命名空间、c 命名空间
 
-- The p-namespace lets you use the bean element’s attributes (instead of nested \<property/> elements) to describe your property values collaborating beans, or both.
-- Similar to the XML Shortcut with the p-namespace, the c-namespace, introduced in Spring 3.1, allows inlined attributes for configuring the constructor arguments rather then nested constructorarg elements.
+- The *p-namespace* lets you use the bean element’s attributes (instead of nested `<property/>` elements) to describe your property values collaborating beans, or both.
+- Similar to the XML Shortcut with the *p-namespace*, the *c-namespace*, introduced in Spring 3.1, allows inlined attributes for configuring the constructor arguments rather then nested constructorarg elements.
 
 ## 6. Bean Definition Inheritance
 

@@ -704,7 +704,7 @@ System.out.println("Does my environment contain the 'my-property' property? " + 
 
 `Environment` 在查找对应的 property 的时候，有如下规则：
 
-- By default, system properties have precedence over environment variables. 
+- By default, *system properties* have precedence over *environment variables*. 
 - So, if the `my-property` property happens to be set in both places during a call to `env.getProperty("my-property")`, the system property value “wins” and is returned. 
 - Note that property values are not merged but rather completely overridden by a preceding entry.
 
