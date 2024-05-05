@@ -112,7 +112,7 @@ Spring Cloud Gateway 的术语：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0964.JPG" alt="IMG_0964" style="zoom:45%;" />
 
-类似于路由断言工厂，Spring 提供了 30 多种不同的路由过滤器工厂**`GatewayFilter` Factory**，例如：
+类似于路由断言工厂，Spring 提供了 30 多种不同的路由过滤器工厂 **GatewayFilter Factory**，例如：
 
 |          名称          |             说明             |
 | :--------------------: | :--------------------------: |

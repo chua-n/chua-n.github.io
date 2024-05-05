@@ -31,24 +31,24 @@ ZK 是一个树形目录服务，其数据模型和 Unix 的文件系统目录�
 - `ZNode`可以分为四大类：
   - `PERSISTENT`：持久化节点。这类节点被创建后，就会一直存在于 Zk 服务器上。直到手动删除。
   - `PERSISTENT_SEQUENTIAL`：持久化顺序节点，`-s`。它的基本特性同持久节点，不同在于增加了顺序性。父节点会维护一个自增整性数字，用于子节点的创建的先后顺序。
-  - `EPHEMERAL`：临时节点，`-e`。临时节点的生命周期与客户端的会话绑定，一旦客户端会话失效（非 TCP 连接断开），那么这个节点就会被自动清理掉。zk 规定临时节点只能作为叶子节点。
+  - `EPHEMERAL`：临时节点，`-e`。临时节点的生命周期与客户端的会话绑定，一旦客户端会话失效（并非指 TCP 连接断开），那么这个节点就会被自动清理掉。zk 规定临时节点只能作为叶子节点。
   - `EPHEMERAL_SEQUENTIAL`：临时顺序节点，`-es`。基本特性同临时节点，添加了顺序的特性。
 
 Znode 数据节点的代码如下，其中包含了「存储数据、访问权限、子节点引用、节点状态信息」：
 
 ```java
 public class DataNode implements Record {
-    byte data[];                    
-    Long acl;                       
-    public StatPersisted stat;       
-    private Set<String> children = null; 
+    byte data[];
+    Long acl;
+    public StatPersisted stat;
+    private Set<String> children = null;
 }
 ```
 
-- **「data:」** znode 存储的业务数据信息
-- **「ACL:」** 记录客户端对 znode 节点的访问权限，如 IP 等。
-- **「child:」** 当前节点的子节点引用
-- **「stat:」** 包含 Znode 节点的状态信息，比如**「事务 id、版本号、时间戳」**等等。
+- **「data」**：znode 存储的业务数据信息
+- **「ACL」**：记录客户端对 znode 节点的访问权限，如 IP 等。
+- **「child」**：当前节点的子节点引用
+- **「stat」**：包含 Znode 节点的状态信息，比如 **「事务 id、版本号、时间戳」** 等等。
 
 ### 1.4 监听机制
 
@@ -66,10 +66,10 @@ Zookeeper 允许客户端向服务端的某个 Znode 注册一个 Watcher 监听
 
 #### Watcher 特性总结
 
-- **「一次性：」** 一个 Watch 事件是一个一次性的触发器。一次性触发，客户端只会收到一次这样的信息。
-- **「异步的：」** Zookeeper 服务器发送 watcher 的通知事件到客户端是异步的，不能期望能够监控到节点每次的变化，Zookeeper 只能保证最终的一致性，而无法保证强一致性。
-- **「轻量级：」** Watcher 通知非常简单，它只是通知发生了事件，而不会传递事件对象内容。
-- **「客户端串行：」** 执行客户端 Watcher 回调的过程是一个串行同步的过程。
+- **「一次性」**： 一个 Watch 事件是一个一次性的触发器。一次性触发，客户端只会收到一次这样的信息。
+- **「异步的」** ：Zookeeper 服务器发送 watcher 的通知事件到客户端是异步的，不能期望能够监控到节点每次的变化，Zookeeper 只能保证最终的一致性，而无法保证强一致性。
+- **「轻量级」**： Watcher 通知非常简单，它只是通知发生了事件，而不会传递事件对象内容。
+- **「客户端串行」**： 执行客户端 Watcher 回调的过程是一个串行同步的过程。
 - 注册 watcher 用 getData、exists、getChildren 方法
 - 触发 watcher 用 create、delete、setData 方法
 
@@ -123,14 +123,14 @@ Curaotr 的 Maven 依赖坐标主要为：
 
 ### 1.7 zk 分布式锁
 
-Zookeeper 是使用临时顺序节点特性实现分布式锁的：
+Zookeeper 是使用*临时顺序节点*特性实现分布式锁的：
 
-- 获取锁过程 （创建临时节点，检查序号最小）
-- 释放锁 （删除临时节点，监听通知）
+- 获取锁：创建临时节点，检查序号最小
+- 释放锁：删除临时节点，监听通知
 
 #### 获取锁
 
-1. 当第一个客户端请求过来时，Zookeeper 客户端会创建一个持久节点/locks。如果它（Client1）想获得锁，需要在 locks 节点下创建一个顺序节点 lock1。如图：
+1. 当第一个客户端请求过来时，Zookeeper 客户端会创建一个持久节点 /locks。如果它（Client1）想获得锁，需要在 locks 节点下创建一个顺序节点 lock1。如图：
 
    <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/6639f3dca0d700bbd66e542975afc2e2.png" alt="img" style="zoom:50%;" />
 
@@ -160,7 +160,7 @@ zookeeper 的「客户端业务完成或者故障」，都会删除临时节点�
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/cbde9f180968bb7dcfa967103a955c57.png" alt="img" style="zoom:50%;" />
 
-如果是客户端故障了，根据临时节点得特性，lock1 是会自动删除的，如下图：
+如果是客户端故障了，根据临时节点的特性，lock1 是会自动删除的，如下图：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/b0a6a2549adaff258f51a23ef623a1b5.png" alt="img" style="zoom:50%;" />
 
@@ -177,8 +177,8 @@ Zookeeper 保证了如下分布式一致性特性：
 - **「顺序一致性」**：从同一客户端发起的事务请求，最终将会严格地按照顺序被应用到 ZooKeeper 中去。
 - **「原子性」**：所有事务请求的处理结果在整个集群中所有机器上的应用情况是一致的，也就是说，要么整个集群中所有的机器都成功应用了某一个事务，要么都没有应用。
 - **「单一视图」**：无论客户端连到哪一个 ZooKeeper 服务器上，其看到的服务端数据模型都是一致的。
-- **「可靠性：」** 一旦服务端成功地应用了一个事务，并完成对客户端的响应，那么该事务所引起的服务端状态变更将会被一直保留下来。
-- **「实时性（最终一致性）：」** Zookeeper 仅仅能保证在一定的时间段内，客户端最终一定能够从服务端上读取到最新的数据状态。
+- **「可靠性」** ：一旦服务端成功地应用了一个事务，并完成对客户端的响应，那么该事务所引起的服务端状态变更将会被一直保留下来。
+- **「实时性（最终一致性）」**： Zookeeper 仅仅能保证在一定的时间段内，客户端最终一定能够从服务端上读取到最新的数据状态。
 
 ### 1.8 zk 集群搭建
 
@@ -187,7 +187,7 @@ ZooKeeper 集群是一主多从的结构：
 - 如果是写入数据，先写入主服务器（主节点），再通知从服务器。
 - 如果是读取数据，既可以读主服务器的，也可以读从服务器的。
 
-Zookeeper 是采用 ZAB 协议（Zookeeper Atomic Broadcast，Zookeeper 原子广播协议）来保证主从节点数据一致性的，ZAB 协议支持**「崩溃恢复和消息广播」**两种模式，很好解决了这两个问题：
+Zookeeper 是采用 ZAB 协议（Zookeeper Atomic Broadcast，Zookeeper 原子广播协议）来保证主从节点数据一致性的，ZAB 协议支持**崩溃恢复和消息广播**两种模式，很好解决了这两个问题：
 
 - 崩溃恢复：Leader 挂了，进入该模式，选一个新的 leader 出来
 - 消息广播： 把更新的数据，从 Leader 同步到所有 Follower

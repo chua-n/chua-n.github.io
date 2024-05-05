@@ -4,7 +4,7 @@ title: Stream
 
 > Spring Cloud Stream.
 
-## Spring Cloud Stream 介绍
+## 1. Spring Cloud Stream 介绍
 
 Spring Cloud Stream is a framework for building message-driven microservice applications. Spring Cloud Stream builds upon Spring Boot to create standalone, production-grade Spring applications and uses Spring Integration to provide connectivity to message brokers. It provides opinionated configuration of middleware from several vendors, introducing the concepts of persistent publish-subscribe semantics, consumer groups, and partitions.
 
@@ -20,7 +20,7 @@ public class SampleApplication {
 		SpringApplication.run(SampleApplication.class, args);
 	}
 
-    @Bean
+	@Bean
 	public Function<String, String> uppercase() {
 	    return value -> value.toUpperCase();
 	}
@@ -48,7 +48,7 @@ class BootTestStreamApplicationTests {
 }
 ```
 
-## 主要概念
+## 2. 主要概念
 
 Spring Cloud Stream provides a number of abstractions and primitives that simplify the writing of message-driven microservice applications. This section gives an overview of the following:
 
@@ -63,7 +63,7 @@ Spring Cloud Stream 的模型：
 
 ![SCSt with binder](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/SCSt-with-binder.png)
 
-### Binder, Binding, Message
+### 2.1 Binder, Binding, Message
 
 - **Destination Binders:** 简称 Binder，SCS 提供的一个抽象概念，负责集成外部消息系统。
 
@@ -75,9 +75,9 @@ Spring Cloud Stream 的模型：
 
 ![SCSt overview](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/SCSt-overview.png)
 
-### 持久化的发布-订阅机制
+### 2.2 持久化的发布-订阅机制
 
-应用程序之间的通信遵循 发布-订阅 （publish-subscribe model）模型，数据通过共享主题（shared topics）进行广播。发布-订阅通信模型降低了生产者和消费者的复杂性，使得新的应用程序被添加到拓扑结构中时不会破坏现有的流程。
+应用程序之间的通信遵循**发布-订阅模型**（publish-subscribe model），数据通过共享主题（shared topics）进行广播。发布-订阅通信模型降低了生产者和消费者的复杂性，使得新的应用程序被添加到拓扑结构中时不会破坏现有的流程。
 
 下图是经典的 SCS 的发布-订阅模型，生产者生产消息发布在 shared topic 上，然后消费者通过订阅这个 topic 来获取消息（两个订阅者都可以接收到消息）：
 
@@ -85,7 +85,7 @@ Spring Cloud Stream 的模型：
 
 ![img](https://figure-bed.chua-n.com/JavaWeb/SpringCloud/1149398-20180731154827761-111530488.png)
 
-### 消费者组
+### 2.3 消费者组
 
 对于同一个应用的多个实例，当该应用收到一条消息时，如果每一个实例都去消费、处理该消息，很有可能造成“重复消费”的问题，很多情况下你可能只希望该应用只有一个实例去消费该消息，这时便可借助 SCS 提供的消费者组（借鉴自 Kafka 的消费者组）的概念来解决此问题。
 
@@ -101,14 +101,14 @@ All groups that subscribe to a given destination receive a copy of published dat
 
 一般来说，当把应用程序绑定到一个特定的 destination 时，最好总是指定消费者组。当扩展 SCS 应用程序时，你必须为其每个输入 binding 指定消费者组，这样做可以防止应用程序的实例收到重复的消息，除非你真的需要这种行为（这不太正常）。
 
-### 订阅持久性
+### 2.4 订阅持久性
 
 Binder 的实现可以确保组的订阅是持久的。也就是说，一旦为一个组创建了至少一个订阅，该组就会收到消息，即使这些消息是在该组的所有 app 都处于宕机状态时发送的。
 
 - 匿名消费者组的订阅在本质上是不可持久的；
 - 对于一些 Binder 的实现（如 RabbitMQ），也可以有非持久性的组订阅。
 
-### 消费者类型
+### 2.5 消费者类型
 
 SCS 支持两种消费者类型：
 
@@ -119,7 +119,7 @@ SCS 支持两种消费者类型：
 
 当你想控制消息的处理速度时，可能需要用到同步消费者类型。
 
-### 分区
+### 2.6 分区
 
 在消费组中我们可以保证消息不会被重复消费，但是在同组下有多个实例的时候，我们无法确定每次处理消息的是不是被同一消费者消费，**分区**的作用就是为了确保具有共同特征标识的数据由同一个消费者实例进行处理。
 
@@ -133,9 +133,9 @@ SCS 提供了在一个应用程序的多个实例之间进行数据分区的支�
 
 > 注意：要使用分区处理，你必须同时对生产者和消费者进行配置。
 
-## 编程模型
+## 3. 编程模型
 
-### Destination Binders
+### 3.1 Destination Binders
 
 Binder 的集成负责：
 
@@ -145,11 +145,11 @@ Binder 的集成负责：
 
 Binders handle a lot of the boiler plate responsibilities that would otherwise fall on your shoulders. However, to accomplish that, the binder still needs some help in the form of minimalistic yet required set of instructions from the user, which typically come in the form of some type of *binding* configuration.
 
-### Bindings
+### 3.2 Bindings
 
-#### 函数式 binding
+#### 3.2.1 函数式 binding
 
-下面的例子显示了一个完全配置和正常运行的 Spring Cloud Stream 应用程序，该应用程序接收作为字符串类型的消息的有效载荷，将其记录到控制台，并在将其转换为大写字母后向下发送。
+下面的例子显示了一个完全配置和正常运行的 Spring Cloud Stream 应用程序，该应用程序接收字符串类型的消息的有效载荷，将其记录到控制台，并在将其转换为大写字母后向下发送。
 
 这个例子看起来和任何 spring-boot 应用程序没有什么不同。那么，它是如何成为 spring-cloud-stream 应用程序的呢？
 
@@ -229,7 +229,7 @@ public class SampleApplication {
 
 此外，如果你想禁用 SCS 的这个自动发现机制，可以设置属性 `spring.cloud.stream.function.autodetect=false`。
 
-#### 显式创建 binding
+#### 3.2.2 显式创建 binding
 
 我们已经知道 SCS 可以通过 Function, Supplier 或 Consumer 驱动来隐式地创建 binding，然而，有时你可能需要显式地创建 binding，同时它们并不与任何函数挂钩。通常来说，这种情况多发生于需要支持与其他框架（如 Spring Integration 框架）进行集成的场景，此时你可能需要直接访问底层的 `MessageChannel`。
 
@@ -260,9 +260,9 @@ public static class EmptyConfiguration {
 }
 ```
 
-### 消息的生产/消费
+### 3.3 消息的生产/消费
 
-#### Supplier
+#### 3.3.1 Supplier
 
 对于 `java.util.function.[Supplier/Function/Consumer]`作为消息处理器的调用时机，显然其中的 `Function` 和 `Consumer` 是非常直接的，它们会根据发送到它们所绑定的 `destination` 的数据来触发，也就是说，`Function` 和 `Consumer` 是事件驱动的。
 
@@ -270,7 +270,7 @@ public static class EmptyConfiguration {
 
 ##### Supplier 的实现方式
 
-关于 SCS 中 `Supplier` 的实现方式，SCS 提供了三种风格，**命令式（imperative）**、**反应式（reactive）**、**混合式**，这两种风格直接关系到 `Supplier` 的触发机制。
+关于 SCS 中 `Supplier` 的实现方式，SCS 提供了三种风格，*命令式（imperative）、反应式（reactive）、混合式*，这两种风格直接关系到 `Supplier` 的触发机制。
 
 - 命令式：考虑如下的示例：
 
@@ -333,7 +333,7 @@ public static class EmptyConfiguration {
 
 虽然大多数时候线程机制的细节与函数的下游执行无关，但在某些情况下可能会出现问题，特别是对于那些可能对线程亲和力（thread affinity）有一定期望的集成框架。例如，Spring Cloud Sleuth 就依赖于存储在 thread local 中的追踪数据。对于这些情况，应该通过另一种基于 `StreamBridge` 的机制，让用户可以对线程机制有更多的控制。
 
-#### StreamBridge
+#### 3.3.2 StreamBridge
 
 经试验，对于作为 Bean 的 `Supplier`，如果你在业务程序里手动去调用去 `get()` 方法，是无法触发其事件发送机制的，它的表现就像一个普通的业务 Bean 一样，只有被 SCS 框架本身调用时才会具有数据源属性。
 
@@ -446,7 +446,7 @@ public ChannelInterceptor barInterceptor() {
 }
 ```
 
-#### Consumer
+#### 3.3.3 Consumer
 
 ##### ???
 
@@ -468,7 +468,7 @@ Also, keep in mind that the same rule applies for function composition when mixi
 
 不想看了......
 
-### Event Routing
+### 3.4 Event Routing
 
 Event Routing, in the context of Spring Cloud Stream, is the ability to either 
 
@@ -477,16 +477,16 @@ Event Routing, in the context of Spring Cloud Stream, is the ability to either
 
 Here we’ll refer to it as route ‘TO’ and route ‘FROM’.
 
-## Binders
+## 4. Binders
 
 Spring Cloud Stream provides a Binder abstraction for use in connecting to physical destinations at the external middleware. This section provides information about the main concepts behind the Binder SPI, its main components, and implementation-specific details.
 
-## Configuration Options
+## 5. Configuration Options
 
-## Content Type Negotiation
+## 6. Content Type Negotiation
 
-## Inter-Application Communication
+## 7. Inter-Application Communication
 
-## Health Indicator
+## 8. Health Indicator
 
 Spring Cloud Stream provides a health indicator for binders. It is registered under the name `binders` and can be enabled or disabled by setting the `management.health.binders.enabled` property.
