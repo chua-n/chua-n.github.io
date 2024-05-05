@@ -39,7 +39,7 @@ JWT 通常是这样的：`xxx.yyy.zzz`，其本质上就是一组字串，通过
 
 - **Header（头部）**: 描述 JWT 的元数据，定义了生成签名的算法以及 `Token` 的类型。
 - **Payload（负载）**: 用来存放实际需要传递的数据
-- **Signature（签名）**：签名。服务器通过 Payload、Header 和一个密钥 (Secret) 使用 Header 里面指定的签名算法（默认是 HMAC SHA256）生成。
+- **Signature（签名）**：签名。服务器通过 Header、Payload、Secret（密钥）这三部分内容，然后使用 Header 里面指定的签名算法（默认是 HMAC SHA256）生成。
 
 示例：
 
@@ -51,9 +51,11 @@ SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
 Header 和 Payload 都是 JSON 格式的数据，Signature 由 Payload、Header 和 Secret（密钥）通过特定的计算公式和加密算法得到。
 
-> 附：Header 和 Payload 串型化的算法是 Base64URL。这个算法跟 Base64 算法基本类似，但有一些小的不同。
+> 附：Header 和 Payload 串型化的算法是 Base64URL，这个算法跟 Base64 算法基本类似，但有一些小的不同。即，JWT 作为一个令牌（token），有些场合可能会放到 URL（比如 `api.example.com/?token=xxx`）。Base64 有三个字符在 URL 里面有特殊含义，所以要被替换掉：
 >
-> JWT 作为一个令牌（token），有些场合可能会放到 URL（比如 api.example.com/?token=xxx）。Base64 有三个字符`+`、`/`和`=`，在 URL 里面有特殊含义，所以要被替换掉：`=`被省略、`+`替换成`-`，`/`替换成`_` 。这就是 Base64URL 算法。
+> - `=`被省略
+> - `+`替换成`-`
+> - `/`替换成`_` 
 
 ### Header
 
