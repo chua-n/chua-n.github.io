@@ -2,9 +2,9 @@
 title: Jedis
 ---
 
-Jedis是 Redis 官方提供的基于java语言的redis客户端，集成了redis的命令操作，提供了连接池管理等。
+Jedis 是 Redis 官方提供的基于 java 语言的 redis 客户端，集成了 redis 的命令操作，提供了连接池管理等。
 
-## 1. Maven坐标
+## 1. Maven 坐标
 
 ```xml
 <dependency>
@@ -115,4 +115,3 @@ public class JedisTest {
     }
 }
 ```
-

@@ -1,5 +1,5 @@
 ---
-title: Redis命令
+title: Redis 命令
 ---
 
 Redis 命令用于在 redis 服务上执行操作。要在 redis 服务上执行命令需要一个 redis 客户端，在安装 redis 自动带有一个 redis-cli 工具，即为官方提供的客户端工具。启动 redis-cli 的方法：
@@ -96,7 +96,7 @@ OK
 Redis 的日志级别有以下四种：
 
 1. debug：会打印出很多信息，适用于开发和测试阶段。
-2. verbose：包含很多不太有用的信息，但比debug简化一些。
+2. verbose：包含很多不太有用的信息，但比 debug 简化一些。
 3. notice：适用于生产模式。
 4. warning : 警告信息。
 
@@ -106,12 +106,12 @@ Redis 默认设置为 verbose，开发测试阶段可以用 debug，生产模式
 
 Redis 连接命令是主要用于验证 Redis 服务器的连接状态，比如验证客户端与 Redis 服务器是否连接成功，以及检查服务器运行状态，以及是否断开当前连接等。
 
-我们知道，只有当客户端与服务器正常连接后才能够实现彼此的交互、通信。Redis 通过“Redis序列化协议”（简称“RESP”），实现客户端与服务端之间的连接通信，该协议主要包括两个部分：网络模型和序列化协议：
+我们知道，只有当客户端与服务器正常连接后才能够实现彼此的交互、通信。Redis 通过“Redis 序列化协议”（简称“RESP”），实现客户端与服务端之间的连接通信，该协议主要包括两个部分：网络模型和序列化协议：
 
 - 网络模型主要负责数据交互的组织方式；
 - 序列化协议则实现了数据的序列化（客户端与服务端交互的数据是以序列后的协议数据进行传输的）。
 
-![Redis序列化协议](https://figure-bed.chua-n.com/数据库/Redis/14415131a-0.gif)
+![Redis 序列化协议](https://figure-bed.chua-n.com/数据库/Redis/14415131a-0.gif)
 
 相关的命令有：
 
@@ -126,7 +126,7 @@ Redis 连接命令是主要用于验证 Redis 服务器的连接状态，比如�
 一组实例：
 
 ```redis
-# 通过配置文件或者或者config命令配置客户端连接密码
+# 通过配置文件或者或者 config 命令配置客户端连接密码
 redis 127.0.0.1:6379> CONFIG SET requirepass 123456
 OK
 
@@ -138,7 +138,7 @@ OK
 redis 127.0.0.1:6379> PING
 PONG
 
-# 切换到2库
+# 切换到 2 库
 127.0.0.1:6379> SELECT 2
 OK
 
@@ -166,7 +166,7 @@ Redis 是一种键值（key-value）型的缓存型数据库，它将数据全�
 | PEXPIRE key         | 设置 key 的过期，以毫秒为单位。                              |
 | PEXPIREAT key       | 与 PEXPIRE 相似，用于为 key 设置过期时间，采用以毫秒为单位的时间戳格式。 |
 | KEYS pattern        | 此命令用于查找与指定 pattern 匹配的 key。                    |
-| MOVE key db         | 将当前数据库中的 key 移动至指定的数据库中（默认存储为 0 库，可选 1-15中的任意库）。 |
+| MOVE key db         | 将当前数据库中的 key 移动至指定的数据库中（默认存储为 0 库，可选 1-15 中的任意库）。 |
 | PERSIST key         | 该命令用于删除 key 的过期时间，然后 key 将一直存在，不会过期。 |
 | PTTL key            | 用于检查 key 还剩多长时间过期，以毫秒为单位。                |
 | TTL key             | 用于检查 key 还剩多长时间过期，以秒为单位。                  |
@@ -178,7 +178,7 @@ Redis 是一种键值（key-value）型的缓存型数据库，它将数据全�
 
 ## 4. string
 
-Redis 操作字符串命令的语法格式为`COMMAND KEY_NAME`（COMMAND表示字符串的命令，KEY_NAME表示键的名称）。
+Redis 操作字符串命令的语法格式为`COMMAND KEY_NAME`（COMMAND 表示字符串的命令，KEY_NAME 表示键的名称）。
 
 常用命令：
 
@@ -191,8 +191,8 @@ Redis 操作字符串命令的语法格式为`COMMAND KEY_NAME`（COMMAND表示�
 | GETBIT key offset                | 对 key 所存储的字符串值，获取其指定偏移量上的位（bit）。     |
 | APPEND key value                 | 该命令将 value 追加到 key 所存储值的末尾。                   |
 | MGET key1 [key2...]              | 批量获取一个或多个 key 所存储的值，减少网络耗时开销。        |
-| SETBIT key offset value          | 对 key 所储存的字符串值，设置或清除指定偏移量上的位(bit)。   |
-| SETEX key seconds value          | 将值 value 存储到 key中 ，并将 key 的过期时间设为 seconds (以秒为单位)。 |
+| SETBIT key offset value          | 对 key 所储存的字符串值，设置或清除指定偏移量上的位 (bit)。   |
+| SETEX key seconds value          | 将值 value 存储到 key 中 ，并将 key 的过期时间设为 seconds （以秒为单位）。 |
 | SETNX key value                  | 当 key 不存在时设置 key 的值。                               |
 | SETRANGE key offset value        | 从偏移量 offset 开始，使用指定的 value 覆盖的 key 所存储的部分字符串值。 |
 | STRLEN key                       | 返回 key 所储存的字符串值的长度。                            |
@@ -231,7 +231,7 @@ Redis 操作字符串命令的语法格式为`COMMAND KEY_NAME`（COMMAND表示�
 
 ## 6. hash
 
-hash常用命令汇总：
+hash 常用命令汇总：
 
 | 命令                                     | 说明                                                  |
 | ---------------------------------------- | ----------------------------------------------------- |
@@ -243,7 +243,7 @@ hash常用命令汇总：
 | HINCRBYFLOAT key field increment         | 给 key 关联的哈希字段做浮点数增量运算 。              |
 | HKEYS key                                | 获取 key 关联的所有字段和值。                         |
 | HLEN key                                 | 获取 key 中的哈希表的字段数量。                       |
-| HMSET key field1 value1 [field2 value2 ] | 在哈希表中同时设置多个 field-value(字段-值）          |
+| HMSET key field1 value1 [field2 value2 ] | 在哈希表中同时设置多个 field-value（字段-值）          |
 | HMGET key field1 [field2]                | 用于同时获取多个给定哈希字段（field）对应的值。       |
 | HSET key field value                     | 用于设置指定 key 的哈希表字段和值（field/value）。    |
 | HSETNX key field value                   | 仅当字段 field 不存在时，设置哈希表字段的值。         |
@@ -266,7 +266,7 @@ Redis set 向集合中添加一个成员的语法格式为 `SADD key member [mem
 | SMEMBERS key                                   | 查看集合中所有元素。                                     |
 | SMOVE source destination member                | 将集合中的元素移动到指定的集合中。                       |
 | SPOP key [count]                               | 弹出指定数量的元素。                                     |
-| SRANDMEMBER key [count]                        | 随机从集合中返回指定数量的元素，默认返回 1个。           |
+| SRANDMEMBER key [count]                        | 随机从集合中返回指定数量的元素，默认返回 1 个。           |
 | SREM key member1 [member2]                     | 删除一个或者多个元素，若元素不存在则自动忽略。           |
 | SUNION key1 [key2]                             | 求两个或者多个集合的并集。                               |
 | SUNIONSTORE destination key1 [key2]            | 求两个或者多个集合的并集，并将结果保存到指定的集合中。   |
@@ -294,7 +294,7 @@ Redis set 向集合中添加一个成员的语法格式为 `SADD key member [mem
 | ZREMRANGEBYSCORE key min max                    | 移除有序集合中指定分数区间内的所有成员。                     |
 | ZREVRANGE key start stop [WITHSCORES]           | 返回有序集中指定区间内的成员，通过索引，分数从高到低。       |
 | ZREVRANGEBYSCORE key max min [WITHSCORES]       | 返回有序集中指定分数区间内的成员，分数从高到低排序。         |
-| ZREVRANK key member                             | 返回有序集合中指定成员的排名，有序集成员按分数值递减(从大到小)排序。 |
+| ZREVRANK key member                             | 返回有序集合中指定成员的排名，有序集成员按分数值递减（从大到小）排序。 |
 | ZSCORE key member                               | 返回有序集中，指定成员的分数值。                             |
 | ZUNIONSTORE destination numkeys key [key ...]   | 求两个或多个有序集合的并集，并将返回结果存储在新的 key 中。  |
 | ZSCAN key cursor [MATCH pattern] [COUNT count]  | 迭代有序集合中的元素（包括元素成员和元素分值）。             |
@@ -361,7 +361,7 @@ Redis 服务器的常用命令：
 | ROLE                                         | 查看主从实例所属的角色，角色包括三种，分别是 master、slave、sentinel。 |
 | SAVE                                         | 执行数据同步操作，将 Redis 数据库中的所有数据以 RDB 文件的形式保存到磁盘中。 RDB 是 Redis 中的一种数据持久化方式。 |
 | SHUTDOWN [NOSAVE] [SAVE]                     | 将数据同步到磁盘后，然后关闭服务器。                         |
-| SLAVEOF host port                            | 此命令用于设置主从服务器，使当前服务器转变成为指定服务器的从属服务器， 或者将其提升为主服务器(执行 SLAVEOF NO ONE 命令)。 |
+| SLAVEOF host port                            | 此命令用于设置主从服务器，使当前服务器转变成为指定服务器的从属服务器， 或者将其提升为主服务器（执行 SLAVEOF NO ONE 命令）。 |
 | SLOWLOG subcommand [argument]                | 用来记录查询执行时间的日志系统。                             |
 | SYNC                                         | 用于同步主从服务器。                                         |
 | SWAPDB index index                           | 用于交换同一 Redis 服务器上的两个数据库，可以实现访问其中一个数据库的客户端连接，也可以立即访问另外一个数据库的数据。 |
@@ -377,9 +377,9 @@ Redis 服务器的常用命令：
 | PFCOUNT key [key ...]                     | 返回指定 HyperLogLog key 的基数估算值。 |
 | PFMERGE destkey sourcekey [sourcekey ...] | 将多个 HyperLogLog key 合并为一个 key。 |
 
-## 12. GEO地理位置
+## 12. GEO 地理位置
 
-在 Redis 3.2 版本中，新增了存储地理位置信息的功能，即 GEO（英文全称 geographic）。Redis GEO 有很多应用场景，举一个简单的例子，你一定点过外卖，或者用过打车软件，在这种 APP上会显示“店家距离你有多少米”或者“司机师傅距离你有多远”，类似这种功能就可以使用 Redis GEO 实现。数据库中存放着商家所处的经纬度，你的位置则由手机定位获取，这样 APP 就计算出了最终的距离。再比如微信中附近的人、摇一摇、实时定位等功能都依赖地理位置实现。
+在 Redis 3.2 版本中，新增了存储地理位置信息的功能，即 GEO（英文全称 geographic）。Redis GEO 有很多应用场景，举一个简单的例子，你一定点过外卖，或者用过打车软件，在这种 APP 上会显示“店家距离你有多少米”或者“司机师傅距离你有多远”，类似这种功能就可以使用 Redis GEO 实现。数据库中存放着商家所处的经纬度，你的位置则由手机定位获取，这样 APP 就计算出了最终的距离。再比如微信中附近的人、摇一摇、实时定位等功能都依赖地理位置实现。
 
 Redis GEO 的底层通过 Redis 有序集合（zset）实现，不过 Redis GEO 并没有与 zset 共用一套的命令，而是拥有自己的一套命令：
 
@@ -388,8 +388,8 @@ Redis GEO 的底层通过 Redis 有序集合（zset）实现，不过 Redis GEO 
 | GEOADD            | 将指定的地理空间位置（纬度、经度、名称）添加到指定的 key 中。 |
 | GEOPOS            | 从 key 里返回所有给定位置元素的位置（即经度和纬度）          |
 | GEODIST           | 返回两个地理位置间的距离，如果两个位置之间的其中一个不存在， 那么命令返回空值。 |
-| GEORADIUS         | 根据给定地理位置坐标(经纬度)获取指定范围内的地理位置集合。   |
-| GEORADIUSBYMEMBER | 根据给定地理位置(具体的位置元素)获取指定范围内的地理位置集合。 |
+| GEORADIUS         | 根据给定地理位置坐标（经纬度）获取指定范围内的地理位置集合。   |
+| GEORADIUSBYMEMBER | 根据给定地理位置（具体的位置元素）获取指定范围内的地理位置集合。 |
 | GEOHASH           | 获取一个或者多个的地理位置的 GEOHASH 值。                    |
 | ZREM              | 通过有序集合的 zrem 命令实现对地理位置信息的删除。           |
 
@@ -398,4 +398,3 @@ Redis GEO 的底层通过 Redis 有序集合（zset）实现，不过 Redis GEO 
 Redis ACL 是 Access Control List（访问控制列表）的缩写，该功能允许根据可以执行的命令和可以访问的键来限制某些连接。
 
 ......
-

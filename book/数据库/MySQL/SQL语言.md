@@ -1,5 +1,5 @@
 ---
-title: SQL语言
+title: SQL 语言
 date: 2019-08-14
 ---
 
@@ -21,14 +21,12 @@ WHERE cust_id IN (SELECT cust_id
                                     WHERE prod_id = 'TNT2'));
 ```
 
-
-
-- **查询**(query)——任何SQL语句都是查询，但此术语一般指`SELECT`语句。
-- **子查询**(subquery)——嵌套在其他查询中的查询。在`SELECT`语句中，查询总是从内向外处理。
+- **查询**（query）——任何 SQL 语句都是查询，但此术语一般指`SELECT`语句。
+- **子查询**（subquery）——嵌套在其他查询中的查询。在`SELECT`语句中，查询总是从内向外处理。
 
 如果没有明确排序查询结果，则返回的数据的顺序没有特殊意义。
 
-#### 1.1.2 SELECT基本用法
+#### 1.1.2 SELECT 基本用法
 
 | 语法                                          | 说明                   |
 | --------------------------------------------- | ---------------------- |
@@ -43,11 +41,11 @@ WHERE cust_id IN (SELECT cust_id
 
     > 注意：查询结果也是一个二维表，它包含列名和每一行的数据。
 
-- 使用笛卡尔查询时要非常小心，结果集的列数是被查询表的列数之和，行数是被查询表的行数之积！对两个各自有1万行记录的表进行笛卡尔查询将返回1亿条记录！
+- 使用笛卡尔查询时要非常小心，结果集的列数是被查询表的列数之和，行数是被查询表的行数之积！对两个各自有 1 万行记录的表进行笛卡尔查询将返回 1 亿条记录！
 
 - 使用`SELECT 列1, 列2, 列3 FROM ...`时，还可以给每一列起个别名，这样，结果集的列名就可以与原表的列名不同。它的语法是`SELECT 列1 别名1, 列2 别名2, 列3 别名3 FROM ...`
 
-#### 1.1.3 LIMIT子句
+#### 1.1.3 LIMIT 子句
 
 带`LIMIT`的查询也叫**分页查询**，至于为什么这么叫，可以看廖雪峰的网站或百度一下。
 
@@ -59,9 +57,9 @@ WHERE cust_id IN (SELECT cust_id
 其中：
 
 - `OFFSET`是可选的，如果只写`LIMIT row_count`，那么相当于`LIMIT M OFFSET 0`
-- 使用`LIMIT <M> OFFSET <N>`分页时，随着N越来越大，查询效率也会越来越低
+- 使用`LIMIT <M> OFFSET <N>`分页时，随着 N 越来越大，查询效率也会越来越低
 
-#### 1.1.4 JOIN子句
+#### 1.1.4 JOIN 子句
 
 `JOIN`子句代表连接查询，连接查询是另一种类型的多表查询，其对多个表进行`JOIN`运算。简单地说，就是先确定一个主表作为结果集，然后，把其他表的行有选择性地“连接”在主表结果集上。`JOIN`的语法如下：
 
@@ -69,7 +67,7 @@ WHERE cust_id IN (SELECT cust_id
 SELECT ... FROM tableA ??? JOIN tableB ON tableA.column1 = tableB.column2;
 ```
 
-| ???的含义                            | 说明                         |
+| ??? 的含义                            | 说明                         |
 | ------------------------------------ | ---------------------------- |
 | `INNER JOIN`                         | 返回同时存在于两张表的行数据 |
 | `LEFT OUTER JOIN`<br />`LEFT JOIN`   | 返回左表都存在的行           |
@@ -113,7 +111,7 @@ SELECT * FROM classes;
 
 ##### INNER JOIN
 
-`INNER JOIN`只返回同时存在于两张表的行数据，由于`students`表的`class_id`包含1，2，3，`classes`表的`id`包含1，2，3，4，所以，`INNER JOIN`根据条件`s.class_id = c.id`返回的结果集仅包含1，2，3。
+`INNER JOIN`只返回同时存在于两张表的行数据，由于`students`表的`class_id`包含 1，2，3，`classes`表的`id`包含 1，2，3，4，所以，`INNER JOIN`根据条件`s.class_id = c.id`返回的结果集仅包含 1，2，3。
 
 ```sql
 -- 选出所有学生，同时返回班级名称
@@ -149,7 +147,7 @@ ON s.class_id = c.id;
 `RIGHT OUTER JOIN`返回右表都存在的行。如果某一行仅在右表存在，那么结果集就会以`NULL`填充剩下的字段。
 
 ```sql
--- 使用OUTER JOIN
+-- 使用 OUTER JOIN
 SELECT s.id, s.name, s.class_id, c.name class_name, s.gender, s.score
 FROM students s
 RIGHT OUTER JOIN classes c
@@ -179,9 +177,9 @@ ON s.class_id = c.id;
 `LEFT OUTER JOIN`则返回左表都存在的行。如果我们给`students`表增加一行，并添加`class_id=5`，由于`classes`表并不存在`id=5`的行，所以，`LEFT OUTER JOIN`的结果会增加一行，对应的`class_name`是`NULL`。
 
 ```sql
--- 先增加一列class_id=5:
+-- 先增加一列 class_id=5:
 INSERT INTO students (class_id, name, gender, score) values (5, '新生', 'M', 88);
--- 使用LEFT OUTER JOIN
+-- 使用 LEFT OUTER JOIN
 SELECT s.id, s.name, s.class_id, c.name class_name, s.gender, s.score
 FROM students s
 LEFT OUTER JOIN classes c
@@ -207,7 +205,7 @@ ON s.class_id = c.id;
 ##### FULL JOIN
 
 ```sql
--- 使用FULL OUTER JOIN
+-- 使用 FULL OUTER JOIN
 SELECT s.id, s.name, s.class_id, c.name class_name, s.gender, s.score
 FROM students s
 FULL OUTER JOIN classes c
@@ -347,7 +345,7 @@ FROM students s, classes c;
 
     > 换言之可理解为：`WHERE`在数据分组前进行过滤，`HAVING`在数据分组后进行过滤，所以，`WHERE`排除的行不包括在分组中。
 
-    - 示例1：
+    - 示例 1：
 
         ```sql
         SELECT cust_id, COUNT(*) AS orders
@@ -360,7 +358,7 @@ FROM students s, classes c;
         | :-----: | :----: |
         |  10001  |   2    |
 
-    - 示例2：
+    - 示例 2：
 
         ```sql
         SELECT vend_id, COUNT(*) AS num_prods
@@ -404,7 +402,7 @@ FROM students s, classes c;
 - `GROUP BY`：提供分组聚合功能，即先分组数据，然后对各个组分别进行指定的聚合操作。
 
     ```sql
-    -- 执行该SELECT语句时，会把class_id相同的列先分组，再对各组分别计算其COUNT(*)
+    -- 执行该 SELECT 语句时，会把 class_id 相同的列先分组，再对各组分别计算其 COUNT(*)
     SELECT COUNT(*) as num FROM students GROUP BY class_id;
     
     -- 也可对多列进行操作
@@ -425,7 +423,7 @@ FROM students s, classes c;
 
 常用的条件表达式：
 
-|  符号  |   条件   |    表达式举例1    |    表达式举例2     |                          说明                           |
+|  符号  |   条件   |    表达式举例 1    |    表达式举例 2     |                          说明                           |
 | :----: | :------: | :---------------: | :----------------: | :-----------------------------------------------------: |
 |  `=`   |   相等   |   `score = 80`    |   `name = 'abc'`   |                字符串需要用单引号括起来                 |
 |  `>`   |   大于   |   `score > 80`    |   `name > 'abc'`   |   字符串比较根据`ASCII`码，中文字符比较根据数据库设置   |
@@ -445,9 +443,9 @@ FROM students s, classes c;
 - `where`条件：是在临时表生成好后，对这张临时表进行**过滤**的条件；
 - `on, where, having`这三个都可以加条件的子句中，`on`是最先执行，`where`次之，`having`最后。有时候如果这先后顺序不影响中间结果的话，那最终结果是相同的。
 
-### 1.3 UNION查询
+### 1.3 UNION 查询
 
-`UNION`查询，即**组合查询**，或称**复合查询**。即，MySQL允许一条查询语句中含多条`SELECT`语句，并将结果作为单个查询结果集返回。
+`UNION`查询，即**组合查询**，或称**复合查询**。即，MySQL 允许一条查询语句中含多条`SELECT`语句，并将结果作为单个查询结果集返回。
 
 其实，多数情况下，组合相同表的两个查询完成的工作与具有多个`WHERE`子句条件的单条查询完成的工作相同，`UNION`通常只意味着另一种书写方式，可能这种书写会显得简洁。
 
@@ -471,7 +469,7 @@ WHERE vend_id IN (1001, 1002);
 
 2. `UNION`中的每个查询必须包含相同的列、表达式或聚集函数，各个列不需要以相同的次序列出；
 
-3. 列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含转换的类型，如不同的数值类型或不同的日期类型。
+3. 列数据类型必须兼容：类型不必完全相同，但必须是 DBMS 可以隐含转换的类型，如不同的数值类型或不同的日期类型。
 
 #### 1.3.2 UNION ALL
 
@@ -519,7 +517,7 @@ ORDER BY vend_id, prod_price;
 - `Update`
 - `Delete`
 
-其中，对于查询，我们已经详细讲述了`SELECT`语句的详细用法，而对于增、删、改，对应的SQL语句分别是：
+其中，对于查询，我们已经详细讲述了`SELECT`语句的详细用法，而对于增、删、改，对应的 SQL 语句分别是：
 
 - `INSERT`：插入新记录；
 - `UPDATE`：更新已有记录；
@@ -539,7 +537,7 @@ INSERT INTO <表名> (字段1, 字段2, ...) VALUES (值1, 值2, ...);
 -- 添加一条新记录
 INSERT INTO students (class_id, name, gender, score) VALUES (2, '大牛', 'M', 80);
 
--- 查询并观察结果:
+-- 查询并观察结果：
 SELECT * FROM students;
 ```
 
@@ -565,20 +563,20 @@ UPDATE <表名> SET 字段1=值1, 字段2=值2, ... WHERE ...;
 示例：
 
 ```sql
--- 更新id=1的记录
+-- 更新 id=1 的记录
 UPDATE students SET name='大牛', score=66 WHERE id=1;
 
--- 查询并观察结果:
+-- 查询并观察结果：
 SELECT * FROM students WHERE id=1;
 ```
 
-在`UPDATE`语句中，更新字段时可以使用表达式。例如，把所有80分以下的同学的成绩加10分：
+在`UPDATE`语句中，更新字段时可以使用表达式。例如，把所有 80 分以下的同学的成绩加 10 分：
 
 ```sql
--- 更新id=999的记录
+-- 更新 id=999 的记录
 UPDATE students SET score=100 WHERE id=999;
 
--- 查询并观察结果:
+-- 查询并观察结果：
 SELECT * FROM students;
 ```
 
@@ -601,10 +599,10 @@ DELETE FROM <表名> WHERE ...;
 示例：
 
 ```sql
--- 删除id=1的记录 
+-- 删除 id=1 的记录 
 DELETE FROM students WHERE id=1;
 
--- 查询并观察结果:
+-- 查询并观察结果：
 SELECT * FROM students;
 ```
 
@@ -614,8 +612,7 @@ SELECT * FROM students;
 DELETE FROM students;
 ```
 
-这时，整个表的所有记录都会被删除。所以，在执行`DELETE`语句时也要非常小心!
-
+这时，整个表的所有记录都会被删除。所以，在执行`DELETE`语句时也要非常小心！
 ### 2.4 复合式
 
 ```sql
@@ -639,13 +636,13 @@ GROUP BY class_id;
 
 - `SHOW`
 
-  - `SHOW DATABASES`：列出本MySQL服务器上含有的所有数据库
+  - `SHOW DATABASES`：列出本 MySQL 服务器上含有的所有数据库
 
   - `SHOW TABLES`：查看当前数据库的所有表
 
   - `SHOW COLUMNS FROM customers`：显式内部表的信息
 
-  - `SHOW CREATE DATABASE/TABLE`：显示创建某数据库/表的MySQL语句
+  - `SHOW CREATE DATABASE/TABLE`：显示创建某数据库/表的 MySQL 语句
 
   - `SHOW GRANTS`：显示授予用户的安全权限
 
@@ -689,7 +686,7 @@ GROUP BY class_id;
   Database changed
   ```
 
-- `EXIT`：退出mysql
+- `EXIT`：退出 mysql
 
 - `HELP`：显示某命令的帮助
 
@@ -802,7 +799,7 @@ GROUP BY class_id;
 
 ### 4.4 系统函数
 
-返回DBMS正使用的特殊信息，如返回用户登录信息，检查版本细节
+返回 DBMS 正使用的特殊信息，如返回用户登录信息，检查版本细节
 
 ### 4.5 聚合函数
 
@@ -811,9 +808,9 @@ GROUP BY class_id;
 | 函数                | 说明                                                         |
 | ------------------- | ------------------------------------------------------------ |
 | `COUNT()`           | 返回某列的行数。<br />1) `COUNT(*)`对表中的行的数目进行计算，不管表列中包含的是否为`NULL`；<br/>2) `COUNT(column)`对特定列中具有值的行进行计算，忽略`NULL`值。 |
-| `AVG()`             | 返回某列的平均值，该列必须为数值类型。<br />1) 若要获得多个列的平均值，必须使用多个`AVG()`函数;<br />2) `AVG()`函数忽略值为`NULL`的行。 |
+| `AVG()`             | 返回某列的平均值，该列必须为数值类型。<br />1) 若要获得多个列的平均值，必须使用多个`AVG()`函数；<br />2) `AVG()`函数忽略值为`NULL`的行。 |
 | `SUM()`             | 返回某列值之和，该列必须为数值类型。其忽略值为`NULL`的行。   |
-| `MAX()`             | 返回某列的最大值。<br />1) 一般用来找出最大的数值或日期值，但MySQL允许其对任意列返回最大值，包括返回文本列中的最大值。<br/>2) 在用于文本数据时，如果数据按相应的列排序，则`MAX()`返回最后一行。<br/>3) `MAX()`忽略值为`NULL`的行。 |
+| `MAX()`             | 返回某列的最大值。<br />1) 一般用来找出最大的数值或日期值，但 MySQL 允许其对任意列返回最大值，包括返回文本列中的最大值。<br/>2) 在用于文本数据时，如果数据按相应的列排序，则`MAX()`返回最后一行。<br/>3) `MAX()`忽略值为`NULL`的行。 |
 | `MIN()`             | 返回某列的最小值。                                           |
 | `ALL/DISTINCT` 参数 | 聚集函数默认`ALL`参数，可以指定`DISTINCT`参数                |
 | 结合`WHERE`子句     | 可指定条件查询。<br />如果聚合查询的`WHERE`条件没有匹配到任何行，`COUNT()`会返回`0`，而`SUM(), AVG(), MAX(), MIN()`会返回`NULL`。 |

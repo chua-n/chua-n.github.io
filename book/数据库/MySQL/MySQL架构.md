@@ -1,5 +1,3 @@
 ---
-title: MySQL架构
+title: MySQL 架构
 ---
-
-

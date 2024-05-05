@@ -1,5 +1,5 @@
 ---
-title: Redis集群与分布式锁
+title: Redis 集群与分布式锁
 ---
 
 ## 1. 主从模式
@@ -8,11 +8,11 @@ title: Redis集群与分布式锁
 
 在软件的架构中，主从模式（Master-Slave）是使用较多的一种架构。主（Master）和从（Slave）分别部署在不同的服务器上，当主节点服务器写入数据时，同时也会将数据同步至从节点服务器，*通常情况下*，主节点负责写入数据，而从节点负责读取数据。
 
-Redis 主从模式的结构图如下。其中，Redis 主机会一直将自己的数据复制给 Redis 从机，从而实现主从同步。在这个过程中，只有 master 主机可执行写命令，其他 salve 从机只能只能执行读命令，这种读写分离的模式可以大大减轻 Redis 主机的数据读取压力，从而提高了Redis 的效率，并同时提供了多个数据备份。主从模式是搭建 Redis 集群最简单的一种方式。
+Redis 主从模式的结构图如下。其中，Redis 主机会一直将自己的数据复制给 Redis 从机，从而实现主从同步。在这个过程中，只有 master 主机可执行写命令，其他 salve 从机只能只能执行读命令，这种读写分离的模式可以大大减轻 Redis 主机的数据读取压力，从而提高了 Redis 的效率，并同时提供了多个数据备份。主从模式是搭建 Redis 集群最简单的一种方式。
 
 |                         “主从直连”式                         |                         “薪火相传”式                         |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![Redis主从模式](https://figure-bed.chua-n.com/数据库/Redis/16133214H-0.gif) | ![image-20221014111727994](https://figure-bed.chua-n.com/数据库/Redis/image-20221014111727994.png) |
+| ![Redis 主从模式](https://figure-bed.chua-n.com/数据库/Redis/16133214H-0.gif) | ![image-20221014111727994](https://figure-bed.chua-n.com/数据库/Redis/image-20221014111727994.png) |
 
 当一个主机挂掉之后，如果没有手动进行任何更改，不会有任何一个从机跃升为主机，它们的相对关系不会发生变化，当主机恢复之后仍将成为主机。
 
@@ -28,7 +28,7 @@ Redis 主从模式的结构图如下。其中，Redis 主机会一直将自己�
 
 ### 1.3 搭建：命令行方式
 
-可以在启动 redis 服务时，使用以下命令，如 `redis-server --port 6300 --slaveof 127.0.0.1 6379`（开启一个端口为6300的从机，它依赖的主机的ip=127.0.0.1, port=6379）:
+可以在启动 redis 服务时，使用以下命令，如 `redis-server --port 6300 --slaveof 127.0.0.1 6379`（开启一个端口为 6300 的从机，它依赖的主机的 ip=127.0.0.1, port=6379）:
 
 ```bash
 redis-server --port <slave-port> --slaveof <master-ip> <master-port>
@@ -44,7 +44,7 @@ redis-server --port <slave-port> --slaveof <master-ip> <master-port>
 例如，新建 redis_6302.conf 文件，并添加以下配置信息：
 
 ```
-slaveof 127.0.0.1 6379 # 指定主机的ip与port
+slaveof 127.0.0.1 6379 # 指定主机的 ip 与 port
 port 6302 # 指定从机的端口
 ```
 
@@ -84,11 +84,11 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 
 在实际生产情况中，Redis Sentinel 是集群的高可用的保障，为避免 Sentinel 发生意外，它一般是由 3～5 个节点组成，这样就算挂了个别节点，该集群仍然可以正常运转。其结构图如下所示：
 
-![Redis哨兵模式](https://figure-bed.chua-n.com/数据库/Redis/1K00HQ5-1.gif)
+![Redis 哨兵模式](https://figure-bed.chua-n.com/数据库/Redis/1K00HQ5-1.gif)
 
 上图所示，多个哨兵之间也存在互相监控，这就形成了多哨兵模式，对该模式的工作过程如下：
 
-- 主观下线：适用于主服务器和从服务器。如果在规定的时间内(配置参数：down-after-milliseconds)，Sentinel 节点没有收到目标服务器的有效回复，则判定该服务器为“主观下线”。比如 Sentinel1 向主服务发送了`PING`命令，在规定时间内没收到主服务器`PONG`回复，则 Sentinel1 判定主服务器为“主观下线”。
+- 主观下线：适用于主服务器和从服务器。如果在规定的时间内（配置参数：down-after-milliseconds），Sentinel 节点没有收到目标服务器的有效回复，则判定该服务器为“主观下线”。比如 Sentinel1 向主服务发送了`PING`命令，在规定时间内没收到主服务器`PONG`回复，则 Sentinel1 判定主服务器为“主观下线”。
 - 客观下线：只适用于主服务器。 Sentinel1 发现主服务器出现了故障，它会通过相应的命令，询问其它 Sentinel 节点对主服务器的状态判断。如果超过半数以上的 Sentinel 节点认为主服务器 down 掉，则 Sentinel1 节点判定主服务为“客观下线”。
 - 投票选举：所有 Sentinel 节点会通过投票机制，按照谁发现谁去处理的原则，选举 Sentinel1 为领头节点去做 故障转移操作。Sentinel1 节点则按照一定的规则在所有从节点中选择一个最优的作为主服务器，然后通过发布订功能通知其余的从节点（slave）更改配置文件，跟随新上任的主服务器（master）。至此就完成了主从切换的操作。
 
@@ -101,16 +101,16 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 - 搭建主从模式：按搭建一般的主从模式的方式搭建即可。例如，在本地环境使用主从模式搭建一个拥有三台服务器的 Redis 集群：
 
   ```bash
-  # 启动6379的redis服务器作为master主机:
+  # 启动 6379 的 redis 服务器作为 master 主机：
   $ sudo /etc/init.d/redis-server start
   
-  # 启动6380的redis服务器，设置为6379的slave:
+  # 启动 6380 的 redis 服务器，设置为 6379 的 slave:
   $ redis-server --port 6380
   $ redis-cli -p 6380
   127.0.0.1:6380> slaveof 127.0.0.1 6379
   OK
   
-  # 启动6381的redis服务器，设置为6379的salve
+  # 启动 6381 的 redis 服务器，设置为 6379 的 salve
   $ redis-server --port 6381
   $ redis-cli -p 6381
   127.0.0.1:6381> slaveof 127.0.0.1 6379
@@ -119,7 +119,7 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 - 配置哨兵：新建 sentinel.conf 文件，并对其进行配置：
 
   ```shell
-  port 26379 # sentinel监听端口，默认是26379，可以更改
+  port 26379 # sentinel 监听端口，默认是 26379，可以更改
   sentinel monitor biancheng 127.0.0.1 6379 1 # 格式：sentinel monitor <master-name> <ip> <redis-port> <quorum>
   ```
 
@@ -143,7 +143,7 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 
 以下模拟主服务器宕机的情况，然后查看从服务器是否被提升为了主服务器：
 
-- 终止master的redis服务：`sudo /etc/init.d/redis-server stop`
+- 终止 master 的 redis 服务：`sudo /etc/init.d/redis-server stop`
 
 - 执行完上述命令，会发现 6381 成为了新的 master，而其余节点变成了它的从机，通过以下命令可验证：
 
@@ -192,7 +192,7 @@ TODO...
 > - 性能：redis 最高
 > - 可靠性：zookeeper 最高
 
-### 4.1 Redis分布式锁介绍
+### 4.1 Redis 分布式锁介绍
 
 分布式锁并非是 Redis 独有，比如 MySQL 关系型数据库，以及 Zookeeper 分布式服务应用，它们都实现分布式锁，只不过 Redis 是基于缓存实现的。
 
@@ -205,15 +205,15 @@ Redis 分布式锁主要有以下特点：
 - 加锁和解锁必须是由同一个线程来设置；
 - Redis 是缓存型数据库，拥有很高的性能，因此加锁和释放锁开销较小，并且能够很轻易地实现分布式锁。
 
-> 注意：对Redis而言一个线程代表一个客户端。
+> 注意：对 Redis 而言一个线程代表一个客户端。
 
-### 4.2 Redis分布式锁命令
+### 4.2 Redis 分布式锁命令
 
 分布式锁的本质其实就是要在 Redis 里面占一个“坑”，当别的进程也要来占时，发现已经有人蹲了，就只好放弃或者稍做等待。这个“坑”同一时刻只允许被一个客户端占据，并且本着“先来先占”的原则。
 
 Redis 分布式锁常用命令如下所示：
 
-- `SETNX key val`：仅当key不存在时，设置一个 key 为 value 的字符串，返回1；若 key 存在，设置失败，返回 0；
+- `SETNX key val`：仅当 key 不存在时，设置一个 key 为 value 的字符串，返回 1；若 key 存在，设置失败，返回 0；
 - `Expire key timeout`：为 key 设置一个超时时间，以 second 秒为单位，超过这个时间锁会自动释放，避免死锁；
 - `DEL key`：删除 key。
 

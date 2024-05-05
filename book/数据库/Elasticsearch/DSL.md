@@ -6,12 +6,12 @@ title: DSL
 
 ## 1. 索引库操作
 
-### 前言：mapping属性
+### 前言：mapping 属性
 
-mapping是对索引库中文档的约束，常见的mapping属性包括：
+mapping 是对索引库中文档的约束，常见的 mapping 属性包括：
 
 - `type`：字段数据类型
-- `index`：是否创建索引，默认为true
+- `index`：是否创建索引，默认为 true
 - `analyzer`：使用哪种分词器
 - `properties`：该字段的子字段
 
@@ -19,7 +19,7 @@ mapping是对索引库中文档的约束，常见的mapping属性包括：
 
 - 字符串：
     - `text`（可分词的文本）
-    - `keyword`（精确值，如：品牌、国家、ip地址）
+    - `keyword`（精确值，如：品牌、国家、ip 地址）
 - 数值：
     - `long`
     - `integer`
@@ -36,7 +36,7 @@ mapping是对索引库中文档的约束，常见的mapping属性包括：
     "age": 21,
     "weight": 52.1,
     "isMarried": false,
-    "info": "黑马程序员Java讲师",
+    "info": "黑马程序员 Java 讲师",
     "email": "zy@itcast.cn",
     "score": [99.1, 99.5, 98.9],
     "name": {
@@ -46,18 +46,18 @@ mapping是对索引库中文档的约束，常见的mapping属性包括：
 }
 ```
 
-ES中支持两种地理坐标数据类型：
+ES 中支持两种地理坐标数据类型：
 
 - `geo_point`：由纬度和经度确定的一个点，如"32.8752345, 120.2982576"
 - `geo_shape`：由多个`geo_point`组成的复杂几何图形，例如一条直线："LINESTRING(-77.03653 38.897676, -77.009051, 38.889939)"
 
 ### 创建索引库：`PUT /索引库名`
 
-ES中通过Restful请求操作索引库、文档，请求内容用DSL语句来表示。创建索引库和mapping的DSL语法如下：
+ES 中通过 Restful 请求操作索引库、文档，请求内容用 DSL 语句来表示。创建索引库和 mapping 的 DSL 语法如下：
 
 <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20211231221313220.png" alt="image-20211231221313220" style="zoom:50%;" />
 
-小提示：字段拷贝可以使用copu_to属性将当前字段拷贝到指定字段，如：
+小提示：字段拷贝可以使用 copu_to 属性将当前字段拷贝到指定字段，如：
 
 ```json
 "all": {
@@ -88,7 +88,7 @@ DELETE /索引库名
 
 ### 修改索引库：`PUT /索引库名/_mapping`
 
-索引库和mapping一旦创建无法修改，但是可以添加新的字段，语法如下：
+索引库和 mapping 一旦创建无法修改，但是可以添加新的字段，语法如下：
 
 ```json
 PUT /索引库名/_mapping
@@ -118,7 +118,7 @@ PUT /heima/_mapping
 
 ### 添加文档
 
-新增文档的DSL语法如下：
+新增文档的 DSL 语法如下：
 
 <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20211231222158358.png" alt="image-20211231222158358" style="zoom:50%;" />
 
@@ -154,16 +154,16 @@ DELETE /索引库名/_doc/文档id
 
 ## 3. 搜索文档
 
-### DSL查询分类
+### DSL 查询分类
 
-Elasticsearch提供了基于JSON的DSL(Domain Specific Language)来定义查询/搜索，常见的查询类型包括：
+Elasticsearch 提供了基于 JSON 的 DSL(Domain Specific Language) 来定义查询/搜索，常见的查询类型包括：
 
 - 查询所有：查询出所有数据，一般测试用。如：
     - match_all
 - 全文检索：利用分词器对用户输入内容分词，然后去倒排索引库中匹配。如：
     - match_query
     - multi_match_query
-- 精确查询：根据精确词条值查找数据，一般是查找keyword、数值、日期、boolean等类型字段。如：
+- 精确查询：根据精确词条值查找数据，一般是查找 keyword、数值、日期、boolean 等类型字段。如：
     - ids
     - range
     - term
@@ -206,7 +206,7 @@ GET /indexName/_search
 
 <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101105622383.png" alt="image-20220101105622383" style="zoom:36%;" />
 
-全文检索查询使用match与multi_match，两者的区别是，后者允许同时查询多个字段，参与查询的字段越多，查询性能越差。
+全文检索查询使用 match 与 multi_match，两者的区别是，后者允许同时查询多个字段，参与查询的字段越多，查询性能越差。
 
 - match
 
@@ -237,7 +237,7 @@ GET /indexName/_search
 
 ### 精准查询
 
-精确查询是一般是查询keyword、数值、日期、boolean等类型字段，所以不会对搜索条件分词。常见的有：
+精确查询是一般是查询 keyword、数值、日期、boolean 等类型字段，所以不会对搜索条件分词。常见的有：
 
 - term：根据词条精确值查询
 
@@ -276,7 +276,7 @@ GET /indexName/_search
 
 根据经纬度查询：
 
-- geo_bounding_box：查询geo_point值落在某个矩形范围内的所有文档
+- geo_bounding_box：查询 geo_point 值落在某个矩形范围内的所有文档
 
     ```json
     GET /indexName/_search
@@ -339,13 +339,13 @@ GET /indexName/_search
 
     <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101112830872.png" alt="image-20220101112830872" style="zoom:50%;" />
 
-    > function_score的例子比如百度竞价：
+    > function_score 的例子比如百度竞价：
     >
     > <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101112011862.png" alt="image-20220101112011862" style="zoom:45%;" />
 
 案例：
 
-- 搜索名字包含如家、价格不高于400、在坐标31.21, 121.5周围10km内的酒店：
+- 搜索名字包含如家、价格不高于 400、在坐标 31.21, 121.5 周围 10km 内的酒店：
 
     <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101113428776.png" alt="image-20220101113428776" style="zoom:50%;" />
 
@@ -355,20 +355,20 @@ GET /indexName/_search
 
 #### 相关性算法
 
-对于相关性算分，当我们使用match查询时，文档结果会根据与搜索词条的关联度打分（_score），返回结果时按照分值降序排列。如，搜索“虹桥如家”的结果如下：
+对于相关性算分，当我们使用 match 查询时，文档结果会根据与搜索词条的关联度打分（_score），返回结果时按照分值降序排列。如，搜索“虹桥如家”的结果如下：
 
 <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101112210234.png" alt="image-20220101112210234" style="zoom:45%;" />
 
-Elasticsearch中的相关性打分算法：
+Elasticsearch 中的相关性打分算法：
 
-- TF-IDF（在es5.0之前）：会随着词频增加而越来越大
-- BM25（在es5.0之后）：会随着词频增加而增大，但增长曲线会趋于水平
+- TF-IDF（在 es5.0 之前）：会随着词频增加而越来越大
+- BM25（在 es5.0 之后）：会随着词频增加而增大，但增长曲线会趋于水平
 
 ## 4. 搜索结果处理
 
 ### 排序
 
-elasticsearch支持对搜索结果排序，默认是根据相关度算分（_score）来排序。可以排序的字段类型有：keyword类型、数值类型、地理坐标类型、日期类型等。
+elasticsearch 支持对搜索结果排序，默认是根据相关度算分（_score）来排序。可以排序的字段类型有：keyword 类型、数值类型、地理坐标类型、日期类型等。
 
 ```json
 GET /indexName/_search
@@ -378,7 +378,7 @@ GET /indexName/_search
     },
     "sort": [
         {
-            "FIELD": "desc" // 排序字段和排序方式ASC、DESC
+            "FIELD": "desc" // 排序字段和排序方式 ASC、DESC
         }
     ]
 }
@@ -404,7 +404,7 @@ GET /indexName/_search
 
 ### 分页
 
-Elasticsearch默认情况下只返回top10的数据，如果要查询更多数据需要修改分页参数，Elasticsearch中通过修改`from`、`size`参数来控制要返回的分页结果：
+Elasticsearch 默认情况下只返回 top10 的数据，如果要查询更多数据需要修改分页参数，Elasticsearch 中通过修改`from`、`size`参数来控制要返回的分页结果：
 
 ```json
 GET /hotel/_search
@@ -412,7 +412,7 @@ GET /hotel/_search
     "query": {
         "match_all": {}
     },
-    "from": 990, // 分页开始的位置，默认为0
+    "from": 990, // 分页开始的位置，默认为 0
     "size": 10, // 期望获取的文档总数
     "sort": [
         {"price": "asc"}
@@ -424,30 +424,30 @@ GET /hotel/_search
 
 #### 深度分页问题
 
-ES是分布式的，所以会面临深度分页问题。例如按price排序后，获取from=990, size=10的数据：
+ES 是分布式的，所以会面临深度分页问题。例如按 price 排序后，获取 from=990, size=10 的数据：
 
-1. 首先在每个数据分片上都排序并查询前1000条文档；
-2. 然后将所有节点的结果聚合，在内存中重新排序选出前1000条文档；
-3. 最后从这1000条中，选取从990开始的10条文档。
+1. 首先在每个数据分片上都排序并查询前 1000 条文档；
+2. 然后将所有节点的结果聚合，在内存中重新排序选出前 1000 条文档；
+3. 最后从这 1000 条中，选取从 990 开始的 10 条文档。
 
 <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101125200756.png" alt="image-20220101125200756" style="zoom:50%;" />
 
-如果搜索页数过多，或者结果集（from + size）越大，对内存和CPU的消耗也越高，因此ES设定结果集查询的上限是10000。
+如果搜索页数过多，或者结果集（from + size）越大，对内存和 CPU 的消耗也越高，因此 ES 设定结果集查询的上限是 10000。
 
-针对深度分页，ES提供了两种解决方案：
+针对深度分页，ES 提供了两种解决方案：
 
 - search after：分页时需要排序，原理是从上一次的排序值开始，查询下一页数据（官方推荐使用的方式）
-    - 优点：没有查询上限（单次查询的size不超过10000）
+    - 优点：没有查询上限（单次查询的 size 不超过 10000）
     - 缺点：只能向后逐页查询，不支持随机翻页
     - 场景：没有随机翻页需求的搜索，例如手机向下滚动翻页
 - scroll：原理将数据形成快照，保存在内存（官方已不推荐使用）
-    - 优点：没有查询上限（单次查询的size不超过10000）
+    - 优点：没有查询上限（单次查询的 size 不超过 10000）
     - 缺点：会有额外内存消耗，并且搜索结果是非实时的
-    - 场景：海量数据的获取和迁移（从ES7.1开始不推荐，建议用after search方案）
+    - 场景：海量数据的获取和迁移（从 ES7.1 开始不推荐，建议用 after search 方案）
 
 ### 高亮
 
-高亮就是在搜索结果中把搜索关键字突出显示。其原理是将搜索结果中的关键字用标签标记出来，在页面中给标签添加CSS样式。
+高亮就是在搜索结果中把搜索关键字突出显示。其原理是将搜索结果中的关键字用标签标记出来，在页面中给标签添加 CSS 样式。
 
 <img src="https://figure-bed.chua-n.com/数据库/Elasticsearch/image-20220101130126159.png" alt="image-20220101130126159" style="zoom:50%;" />
 
@@ -490,7 +490,7 @@ GET /hotel/_search
 
 参与聚合的字段类型必须是：`keyword`, `数值`, `日期`, `布尔`。
 
-### DSL实现聚合
+### DSL 实现聚合
 
 聚合必须的三要素：
 
@@ -504,17 +504,17 @@ GET /hotel/_search
 - order：指定聚合结果排序方式
 - filed：指定聚合字段
 
-#### Bucket聚合示例
+#### Bucket 聚合示例
 
 要统计所有数据中的酒店品牌有几种，此时可以根据酒店品牌的名称做聚合：
 
 ```json
 GET /hotel/_search
 {
-    "size": 0, // 设置size为0，结果中不包含文档，只包含聚合结果
+    "size": 0, // 设置 size 为 0，结果中不包含文档，只包含聚合结果
     "aggs": { // 定义聚合
         "brandAgg": { // 给聚合起个名字
-            "terms": { // 聚合的类型，按照品牌值聚合，因此选term
+            "terms": { // 聚合的类型，按照品牌值聚合，因此选 term
                 "field": "brand", // 参与聚合的字段
                 "size": 20 // 希望获取的聚合结果数量
             }
@@ -523,9 +523,9 @@ GET /hotel/_search
 }
 ```
 
-默认情况下，Bucket聚合是对索引库的所有文档做聚合，我们可以限定要聚合的文档范围，只要添加query条件即可：
+默认情况下，Bucket 聚合是对索引库的所有文档做聚合，我们可以限定要聚合的文档范围，只要添加 query 条件即可：
 
-> aggs代表聚合，与query同级，此时query的作用是限定聚合的文档范围。
+> aggs 代表聚合，与 query 同级，此时 query 的作用是限定聚合的文档范围。
 
 ```json
 GET /hotel/_search
@@ -533,7 +533,7 @@ GET /hotel/_search
     "query": {
         "range": {
             "price": {
-                "lte": 200 // 只对200元以下的文档聚合
+                "lte": 200 // 只对 200 元以下的文档聚合
             }
         }
     },
@@ -549,9 +549,9 @@ GET /hotel/_search
 }
 ```
 
-#### Metrics聚合示例
+#### Metrics 聚合示例
 
-如，我们要求获取每个品牌的用户评分的min, max, avg等值，可以使用stats：
+如，我们要求获取每个品牌的用户评分的 min, max, avg 等值，可以使用 stats：
 
 ```json
 GET /hotel/_search
@@ -563,10 +563,10 @@ GET /hotel/_search
                 "field": "brand",
                 "size": 20
             },
-            "aggs": { // 是brands聚合的子聚合，也就是分组后对每组分别计算
+            "aggs": { // 是 brands 聚合的子聚合，也就是分组后对每组分别计算
                 "score_stats": { // 聚合名称
-                    "stats": { // 聚合类型，这里stats可以计算min, max, avg等
-                        "field": "score" // 聚合字段，这里是score
+                    "stats": { // 聚合类型，这里 stats 可以计算 min, max, avg 等
+                        "field": "score" // 聚合字段，这里是 score
                     }
                 }
             }
