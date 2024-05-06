@@ -47,17 +47,53 @@ WHERE cust_id IN (SELECT cust_id
 
 #### 1.1.3 LIMIT 子句
 
-带`LIMIT`的查询也叫**分页查询**，至于为什么这么叫，可以看廖雪峰的网站或百度一下。
+对于查询语句，如果只想要其结果集中的部分数据，可使用 `LIMIT` 子句来限制结果集的数量。
 
 | 语法                                | 说明                                |
 | ----------------------------------- | ----------------------------------- |
-| `  LIMIT offset row_count  `        | 从`offset`开始返回`row_count`行数据 |
-| `  LIMIT row_count OFFSET offset  ` | 同上，另一种写法                    |
+| `  LIMIT row_count OFFSET offset  ` | 从`offset`开始返回`row_count`行数据 |
+| `  LIMIT offset, row_count  `       | 同上，是 MySQL 独有的另一种简写     |
 
 其中：
 
-- `OFFSET`是可选的，如果只写`LIMIT row_count`，那么相当于`LIMIT M OFFSET 0`
-- 使用`LIMIT <M> OFFSET <N>`分页时，随着 N 越来越大，查询效率也会越来越低
+- `OFFSET`部分是可选的，如果只写`LIMIT row_count`，那么相当于`LIMIT M OFFSET 0`；
+
+- 使用`LIMIT <M> OFFSET <N>`分页时，随着 `N` 越来越大，查询效率也会越来越低。
+
+  > `LIMIT` 和 `OFFSET` 的效率问题，其实是 `OFFSET` 的问题，因为它会导致 MySQL 扫描大量不需要的行然后再抛弃掉。
+
+带`LIMIT`的查询也叫**分页查询**。比如，对于一张学生表，希望取出其中考试分数位于特定名次的学生：
+
+- 全量查询：
+
+  ```sql
+  SELECT id, name, gender, score FROM students ORDER BY score DESC;
+  ```
+
+- 假设把结果集分页，每页 3 条记录。要获取第 1 页的记录，则查询语句为：
+
+  ```sql
+  -- 对结果集从 0 号记录开始，最多取 3 条
+  SELECT id, name, gender, score
+  FROM students
+  ORDER BY score DESC
+  LIMIT 3 OFFSET 0;
+  ```
+
+- 如果要查询第 3 页的记录，相当于需要“跳过”头 2 页的那 $2 \times 3$ 条记录，即`OFFSET`应该设定为 6（注意 SQL 记录集的索引从 0 开始）：
+
+  ```sql
+  -- 查询第 3 页
+  SELECT id, name, gender, score
+  FROM students
+  ORDER BY score DESC
+  LIMIT 3 OFFSET 6;
+  ```
+
+- 可见，`LIMIT` 查询与分页查询的映射关系为：
+
+  - `LIMIT`表示分页大小`pageSize`；
+  - `OFFSET`表示`pageSize * (pageIndex - 1)`（这里`pageIndex`从 1 开始）。
 
 #### 1.1.4 JOIN 子句
 
@@ -463,12 +499,10 @@ FROM products
 WHERE vend_id IN (1001, 1002);
 ```
 
-`UNION`使用有几条**规则**：
+`UNION`使用有几条规则：
 
 1. `UNION`必须由两条或以上的`SELECT`语句组成，语句之间用`UNION`分隔；
-
 2. `UNION`中的每个查询必须包含相同的列、表达式或聚集函数，各个列不需要以相同的次序列出；
-
 3. 列数据类型必须兼容：类型不必完全相同，但必须是 DBMS 可以隐含转换的类型，如不同的数值类型或不同的日期类型。
 
 #### 1.3.2 UNION ALL
@@ -510,12 +544,12 @@ ORDER BY vend_id, prod_price;
 
 > DML(Data Manipulation Language)：数据的增删改
 
-关系数据库的基本操作就是增删改查，即`CRUD`：
+关系数据库的基本操作就是增删改查，即 CRUD：
 
-- `Create`
-- `Retrieve`
-- `Update`
-- `Delete`
+- C：Create
+- R：Retrieve
+- U：Update
+- D：Delete
 
 其中，对于查询，我们已经详细讲述了`SELECT`语句的详细用法，而对于增、删、改，对应的 SQL 语句分别是：
 

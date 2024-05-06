@@ -145,7 +145,7 @@ title: SQL 语法
         WHERE prod_name LIKE '_ ton anvil';
         ```
 
-- `REGEXP`：指示使用正则表达式匹配（MySQL 支持正则表达式实现的一个很小的子集）
+- `REGEXP`：表示使用正则表达式匹配（MySQL 支持正则表达式实现的一个很小的子集）
 
     ```sql
     SELECT prod_name
