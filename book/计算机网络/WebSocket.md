@@ -6,11 +6,11 @@ title: WebSocket
 
 ### 为什么需要 WebSocket ？
 
-WebSocket是一种网络通信协议，[RFC6455](https://tools.ietf.org/html/rfc6455) 定义了它的通信标准。WebSocket 是 HTML5 开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。
+WebSocket 是一种网络通信协议，[RFC6455](https://tools.ietf.org/html/rfc6455) 定义了它的通信标准。WebSocket 是 HTML5 开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。
 
 由于 HTTP 协议是一种无状态的、无连接的、单向的应用层协议，它采用了请求/响应模型，通信请求只能由客户端发起，服务端对请求做出应答处理。举例来说，我们想了解今天的天气，只能是客户端向服务器发出请求，服务器返回查询结果，HTTP 协议做不到服务器主动向客户端推送信息。
 
-这便是HTTP的一个弊端：HTTP 协议无法实现服务器主动向客户端发起消息。这种单向请求的特点，注定了如果服务器有连续的状态变化，客户端要获知就非常麻烦——我们只能使用**轮询**：每隔一段时候，就发出一个询问，了解服务器有没有新的信息（最典型的场景就是聊天室）。
+这便是 HTTP 的一个弊端：HTTP 协议无法实现服务器主动向客户端发起消息。这种单向请求的特点，注定了如果服务器有连续的状态变化，客户端要获知就非常麻烦——我们只能使用**轮询**：每隔一段时候，就发出一个询问，了解服务器有没有新的信息（最典型的场景就是聊天室）。
 
 而轮询的效率低，非常浪费资源（因为必须不停连接，或者 HTTP 连接始终打开）。因此，WebSocket 应运而生。WebSocket 连接允许客户端和服务器之间进行全双工通信，以便任一方都可以通过建立的连接将数据推送到另一端，并且 WebSocket 只需要建立一次连接，就可以一直保持连接状态，这相比于轮询方式的不停建立连接显然效率要大大提高。
 
@@ -18,14 +18,14 @@ WebSocket是一种网络通信协议，[RFC6455](https://tools.ietf.org/html/rfc
 
 ### WebSocket 如何工作？
 
-WebSocket 协议在2008年诞生，2011年成为国际标准，现在所有浏览器都已经支持了。
+WebSocket 协议在 2008 年诞生，2011 年成为国际标准，现在所有浏览器都已经支持了。
 
-它的最大特点就是，服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于[服务器推送技术](https://en.wikipedia.org/wiki/Push_technology)的一种。
+它的最大特点就是，服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于 [服务器推送技术](https://en.wikipedia.org/wiki/Push_technology) 的一种。
 
 其他特点包括：
 
 - 建立在 TCP 协议之上，服务器端的实现比较容易。
-- 与 HTTP 协议有着良好的兼容性——默认端口也是80和443，并且握手阶段采用 HTTP 协议，因此握手时不容易屏蔽，能通过各种 HTTP 代理服务器。
+- 与 HTTP 协议有着良好的兼容性——默认端口也是 80 和 443，并且握手阶段采用 HTTP 协议，因此握手时不容易屏蔽，能通过各种 HTTP 代理服务器。
 - 数据格式比较轻量，性能开销小，通信高效。
 - 可以发送文本，也可以发送二进制数据。
 - 没有同源限制，客户端可以与任意服务器通信。
@@ -48,7 +48,7 @@ var socket = new WebSocket(url, [protocol] );
 
 | 属性             | 描述                                                         |
 | ---------------- | ------------------------------------------------------------ |
-| `readyState`     | 只读属性 `readyState` 表示连接状态，可以是以下值：<br />CONNECTING：值为0，表示正在连接。<br />OPEN：值为1，表示连接成功，可以通信了。<br />CLOSING：值为2，表示连接正在关闭。<br />CLOSED：值为3，表示连接已经关闭，或者打开连接失败。 |
+| `readyState`     | 只读属性 `readyState` 表示连接状态，可以是以下值：<br />CONNECTING：值为 0，表示正在连接。<br />OPEN：值为 1，表示连接成功，可以通信了。<br />CLOSING：值为 2，表示连接正在关闭。<br />CLOSED：值为 3，表示连接已经关闭，或者打开连接失败。 |
 | `bufferedAmount` | 只读属性 `bufferedAmount` 表示已被 `send()` 放入正在队列中等待传输，但是还没有发出的 UTF-8 文本字节数。 |
 
 ### 2.3 WebSocket 事件
@@ -100,15 +100,15 @@ WebSocket 在服务端的实现非常丰富，Node.js、Java、C++、Python 等�
 
 Java 的 web 一般都依托于 servlet 容器，其中 Tomcat7、Jetty7 及以上版本均开始支持 WebSocket（推荐较新的版本，因为随着版本的更迭，对 WebSocket 的支持可能有变更）。此外，Spring 框架对 WebSocket 也提供了支持。
 
-尽管以上应用对于 WebSocket 都有各自的实现，但是它们都遵循 [RFC6455](https://tools.ietf.org/html/rfc6455) 的通信标准，并且 Java API 统一遵循 [JSR 356 - JavaTM API for WebSocket ](http://www.jcp.org/en/jsr/detail?id=356)规范，所以在实际编码中API 差异不大。
+尽管以上应用对于 WebSocket 都有各自的实现，但是它们都遵循 [RFC6455](https://tools.ietf.org/html/rfc6455) 的通信标准，并且 Java API 统一遵循 [JSR 356 - JavaTM API for WebSocket ](http://www.jcp.org/en/jsr/detail?id=356) 规范，所以在实际编码中 API 差异不大。
 
-以下介绍Java相关的内容。
+以下介绍 Java 相关的内容。
 
 ### 3.1 javax.websocket
 
-javax.websocket提供了基本的 WebSocket API，其使用方式见下。
+javax.websocket 提供了基本的 WebSocket API，其使用方式见下。
 
-#### jar包
+#### jar 包
 
 首先，需要引入 API jar 包。
 
@@ -305,7 +305,7 @@ public interface WebSocketHandler {
 
 如果把 WebSocket 的通信看成是电话连接，Nginx 的角色则像是电话接线员，负责将发起电话连接的电话转接到指定的客服。
 
-Nginx 从 [1.3 版](http://nginx.com/blog/websocket-nginx/)开始正式支持 WebSocket 代理。如果你的 web 应用使用了代理服务器 Nginx，那么你还需要为 Nginx 做一些配置，使得它开启 WebSocket 代理功能。
+Nginx 从 [1.3 版](http://nginx.com/blog/websocket-nginx/) 开始正式支持 WebSocket 代理。如果你的 web 应用使用了代理服务器 Nginx，那么你还需要为 Nginx 做一些配置，使得它开启 WebSocket 代理功能。
 
 以下为参考配置：
 
@@ -352,4 +352,3 @@ Http 是一种网络通信协议。其本身和 Html 没有直接关系。
 - [Spring WebSocket 文档](https://docs.spring.io/spring/docs/4.3.12.RELEASE/spring-framework-reference/htmlsingle/#websocket)
 - [Tomcat7 WebSocket 文档](http://tomcat.apache.org/tomcat-7.0-doc/web-socket-howto.html)
 - [Jetty WebSocket 文档](https://www.eclipse.org/jetty/documentation/9.4.7.v20170914/websocket-intro.html)
-
