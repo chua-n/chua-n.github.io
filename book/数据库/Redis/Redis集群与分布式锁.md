@@ -67,7 +67,7 @@ $ redis-server redis_6302.conf
 
 ## 2. 哨兵模式
 
-Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式，它弥补了主从模式的不足。Sentinel 通过监控的方式获取主机的工作状态是否正常，当主机发生故障时， Sentinel 会自动进行故障转移，并将其监控的从机提升为主服务器（master），从而保证了系统的高可用性。
+Redis 官方推荐一种高可用方案，也就是 Redis Sentinel **哨兵模式**，它弥补了主从模式的不足。Sentinel 通过监控的方式获取主机的工作状态是否正常，当主机发生故障时， Sentinel 会自动进行故障转移，并将其监控的从机提升为主服务器（master），从而保证了系统的高可用性。
 
 ### 2.1 基本模式
 
@@ -90,7 +90,7 @@ Redis 官方推荐一种高可用方案，也就是 Redis Sentinel 哨兵模式�
 
 - 主观下线：适用于主服务器和从服务器。如果在规定的时间内（配置参数：down-after-milliseconds），Sentinel 节点没有收到目标服务器的有效回复，则判定该服务器为“主观下线”。比如 Sentinel1 向主服务发送了`PING`命令，在规定时间内没收到主服务器`PONG`回复，则 Sentinel1 判定主服务器为“主观下线”。
 - 客观下线：只适用于主服务器。 Sentinel1 发现主服务器出现了故障，它会通过相应的命令，询问其它 Sentinel 节点对主服务器的状态判断。如果超过半数以上的 Sentinel 节点认为主服务器 down 掉，则 Sentinel1 节点判定主服务为“客观下线”。
-- 投票选举：所有 Sentinel 节点会通过投票机制，按照谁发现谁去处理的原则，选举 Sentinel1 为领头节点去做 故障转移操作。Sentinel1 节点则按照一定的规则在所有从节点中选择一个最优的作为主服务器，然后通过发布订功能通知其余的从节点（slave）更改配置文件，跟随新上任的主服务器（master）。至此就完成了主从切换的操作。
+- 投票选举：所有 Sentinel 节点会通过投票机制，按照谁发现谁去处理的原则，选举 Sentinel1 为领头节点去做故障转移操作。Sentinel1 节点则按照一定的规则在所有从节点中选择一个最优的作为主服务器，然后通过发布订功能通知其余的从节点（slave）更改配置文件，跟随新上任的主服务器（master）。至此就完成了主从切换的操作。
 
 总结而言，Sentinel 负责监控主从节点的“健康”状态。当主节点挂掉时，自动选择一个最优的从节点切换为主节点。客户端来连接 Redis 集群时，会首先连接 Sentinel，通过 Sentinel 来查询主节点的地址，然后再去连接主节点进行数据交互。当主节点发生故障时，客户端会重新向 Sentinel 要地址，Sentinel 会将最新的主节点地址告诉客户端。因此应用程序无需重启即可自动完成主从节点切换。
 
@@ -182,15 +182,13 @@ TODO...
 分布式锁主流的实现方案：
 
 1. 基于数据库实现分布式锁
-
 2. 基于缓存，如 Redis
-
 3. 基于 Zookeeper
 
-> 每一种分布式锁解决方案都有各自的优缺点：
->
-> - 性能：redis 最高
-> - 可靠性：zookeeper 最高
+每一种分布式锁解决方案都有各自的优缺点：
+
+- 性能：redis 最高
+- 可靠性：zookeeper 最高
 
 ### 4.1 Redis 分布式锁介绍
 
@@ -219,14 +217,14 @@ Redis 分布式锁常用命令如下所示：
 
 还有一种特殊情况，如果在 `SETNX` 和 `EXPIRE` 之间服务器进程突然挂掉，也就是还未设置过期时间，这样就会导致 `EXPIRE` 执行不了，因此还是会造成“死锁”的问题。为了避免这个问题，可以使用 `SET` 命令同时执行 `SETNX` 和 `EXPIRE` 命令，从而解决死锁问题：
 
-- `SET key value [expiration EX seconds|PX milliseconds] [NX|XX]`  
-- EX second：设置键的过期时间为 second 秒。 SET key value EX second 效果等同于 SETEX key second value 。
-  
-- PX millisecond：设置键的过期时间为毫秒。SET key value PX millisecond 效果等同于 PSETEX key millisecondvalue 。
-  
-- NX：只在键不存在时，才对键进行设置操作。 SET key value NX 效果等同于 SETNX key value 。
-  
-- XX：只在键已经存在时，才对键进行设置操作。
+```redis
+SET key value [expiration EX seconds|PX milliseconds] [NX|XX]
+```
+
+- `EX second`：设置键的过期时间为 `second` 秒。`SET key value EX second` 效果等同于 `SETEX key second value`。
+- `PX millisecond`：设置键的过期时间为毫秒。`SET key value PX millisecond` 效果等同于 `PSETEX key millisecondvalue`。
+- `NX`：只在键不存在时，才对键进行设置操作。`SET key value NX` 效果等同于 `SETNX key value`。
+- `XX`：只在键已经存在时，才对键进行设置操作。
 
 ### 4.3 优化
 
