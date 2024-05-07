@@ -19,7 +19,7 @@ title: Docker
 
 所以，简单来说容器技术的实质就是：**通过各种手段，修改、约束一个“容器”进程的运行状态，按照用户的意图“误导”它能看到的资源，控制它的边界，从而达到环境隔离，或者说虚拟化的目的**。
 
-### Namespace与CGroupf
+### Namespace 与 CGroupf
 
 > 容器技术的核心有两个：Namespace 和 Cgroup，详见 [Namespace_Docker 入门教程](https://www.imooc.com/wiki/dockerlesson/namespace.html) 与 [CGroup_Docker 入门教程](https://www.imooc.com/wiki/dockerlesson/cgroup.html)。
 
@@ -27,7 +27,7 @@ title: Docker
 
 > 参见 [rootfs 与容器技术_Docker 入门教程-慕课网 (imooc.com)](https://www.imooc.com/wiki/dockerlesson/rootfs.html) 。
 
-## 1. Docker出现的背景
+## 1. Docker 出现的背景
 
 ### 1.1 项目部署的问题
 
@@ -35,48 +35,48 @@ title: Docker
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0980.JPG" alt="IMG_0980" style="zoom:67%;" />
 
-### 1.2 Docker的原理
+### 1.2 Docker 的原理
 
 通常而言，计算机软硬件的架构是这样的：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0983.JPG" alt="IMG_0983" style="zoom:40%;" />
 
-那么Docker如何解决不同系统环境的问题呢？
+那么 Docker 如何解决不同系统环境的问题呢？
 
 > <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0984.JPG" alt="IMG_0984" style="zoom:50%;" />
 
-- Docker将用户程序与所需要调用的系统（如Ubuntu）函数库一起打包
-- Docker运行到不同操作系统时，直接基于打包的库函数，借助于操作系统的Linux内核来运行
+- Docker 将用户程序与所需要调用的系统（如 Ubuntu）函数库一起打包
+- Docker 运行到不同操作系统时，直接基于打包的库函数，借助于操作系统的 Linux 内核来运行
 
-通过Docker可以解决依赖的兼容问题：
+通过 Docker 可以解决依赖的兼容问题：
 
 > <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0981.JPG" alt="IMG_0981" style="zoom:50%;" />
 
-- 将应用的Libs（函数库）、Deps（依赖）、配置与应用一起打包
+- 将应用的 Libs（函数库）、Deps（依赖）、配置与应用一起打包
 - 将每个应用放到一个隔离容器去运行，避免互相干扰
 
 ### 1.3 Docker v.s. 虚拟机
 
-虚拟机是在操作系统中模拟硬件设备，然后运行另一个操作系统，比如在windows系统里运行Ubuntu系统，这样就可以运行任意的Ubuntu应用了。
+虚拟机是在操作系统中模拟硬件设备，然后运行另一个操作系统，比如在 windows 系统里运行 Ubuntu 系统，这样就可以运行任意的 Ubuntu 应用了。
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0987.JPG" alt="IMG_0988" style="zoom:40%;" />
 
-### 1.4 Docker的解决方案总结
+### 1.4 Docker 的解决方案总结
 
-Docker如何解决大型项目依赖关系复杂，不同组件依赖的兼容性问题？
+Docker 如何解决大型项目依赖关系复杂，不同组件依赖的兼容性问题？
 
-- Docker允许开发中将应用、依赖、函数库、配置一起打包，形成可移植镜像
-- Docker应用运行在容器中，使用沙箱机制，相互隔离
+- Docker 允许开发中将应用、依赖、函数库、配置一起打包，形成可移植镜像
+- Docker 应用运行在容器中，使用沙箱机制，相互隔离
 
-Docker如何解决开发、测试、生产环境有差异的问题？
+Docker 如何解决开发、测试、生产环境有差异的问题？
 
-- Docker镜像中包含完整运行环境，包括系统函数库，仅依赖系统的Linux内核，因此可以在任意Linux操作系统上运行
+- Docker 镜像中包含完整运行环境，包括系统函数库，仅依赖系统的 Linux 内核，因此可以在任意 Linux 操作系统上运行
 
-## 2. Docker相关概念
+## 2. Docker 相关概念
 
 ### 2.1 镜像
 
-镜像（Image）：Docker将应用程序及其所需的依赖、函数库、环境、配置等文件打包在一起，称为镜像，镜像是容器的只读模板，其不包含任何动态数据，其内容在构建之后也不会被改变。
+镜像（Image）：Docker 将应用程序及其所需的依赖、函数库、环境、配置等文件打包在一起，称为镜像，镜像是容器的只读模板，其不包含任何动态数据，其内容在构建之后也不会被改变。
 
 - 镜像是一个分层存储的架构，由多层（Layer）文件系统联合组成；
 
@@ -118,36 +118,34 @@ IMAGE          CREATED         CREATED BY                                      S
 
 ### 2.2 容器
 
-容器（Container）：镜像中的应用程序运行后形成的进程就是容器，只是Docker会给容器做隔离，对外不可见。
+容器（Container）：镜像中的应用程序运行后形成的进程就是容器，只是 Docker 会给容器做隔离，对外不可见。
 
 > 镜像运行起来就是容器，一个镜像可以运行多个容器。
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0989.JPG" alt="IMG_0989" style="zoom:50%;" />
 
+### 2.3 Docker 和 DockerHub
 
-
-### 2.3 Docker和DockerHub
-
-`DockerHub`是一个Docker镜像的托管平台，这样的平台称为Docker Registry。国内也有类似于`DockerHub`的公开服务，如网易云镜像服务、阿里云镜像库等。
+`DockerHub`是一个 Docker 镜像的托管平台，这样的平台称为 Docker Registry。国内也有类似于`DockerHub`的公开服务，如网易云镜像服务、阿里云镜像库等。
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0990.JPG" alt="IMG_0990" style="zoom:40%;" />
 
-### 2.4 Docker架构
+### 2.4 Docker 架构
 
-Docker是一个CS架构的程序，由两部分组成：
+Docker 是一个 CS 架构的程序，由两部分组成：
 
-- 服务端：Docker守护进程，负责处理Docker指令，管理镜像、容器等
-- 客户端：通过命令或RestAPI向Docker服务端发送指令。可以在本地或远程向服务端发送指令。
+- 服务端：Docker 守护进程，负责处理 Docker 指令，管理镜像、容器等
+- 客户端：通过命令或 RestAPI 向 Docker 服务端发送指令。可以在本地或远程向服务端发送指令。
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_0991.JPG" alt="IMG_0991" style="zoom:45%;" />
 
-### 2.5 Docker安装与启动
+### 2.5 Docker 安装与启动
 
-Docker分为CE（社区版）和EE（企业版）两大版本，CE版免费，支持周期7个月，EE强调安全，付费使用，支持周期24个月。
+Docker 分为 CE（社区版）和 EE（企业版）两大版本，CE 版免费，支持周期 7 个月，EE 强调安全，付费使用，支持周期 24 个月。
 
 Docker CE 又分为`stable, test, nightly`三个更新频道。
 
-docker应用需要用到各种端口，如果逐一去修改防火墙设置非常麻烦，因此可以直接关闭防火墙：
+docker 应用需要用到各种端口，如果逐一去修改防火墙设置非常麻烦，因此可以直接关闭防火墙：
 
 ```sh
 # 关闭防火墙
@@ -156,17 +154,17 @@ systemctl stop firewalld
 systemctl disable firewalld
 ```
 
-通过命令启动docker：
+通过命令启动 docker：
 
 ```sh
-systemctl start docker # 启动docer服务
+systemctl start docker # 启动 docer 服务
 
-systemctl stop docker # 停止docker服务
+systemctl stop docker # 停止 docker 服务
 
-systemctl restart docker # 重启docker服务
+systemctl restart docker # 重启 docker 服务
 ```
 
-## 3. Docker命令
+## 3. Docker 命令
 
 > 以下各命令的具体参数可通过`docker COMMAND --help`来查阅官方说明，不一一列举。
 
@@ -174,7 +172,7 @@ systemctl restart docker # 重启docker服务
 
 惯例：`docker`命令中在表达宿主机与容器之间的映射的时候，习惯用`host:container`的方式，即用冒号`:`分隔，左边是宿主机，右边是容器。如：
 
-- `docker run -p 8080:80 -d nginx`：将宿主机的8080端口映射到容器的80端口上；
+- `docker run -p 8080:80 -d nginx`：将宿主机的 8080 端口映射到容器的 80 端口上；
 - `docker run -v ~/web/ngconf/:/etc/nginx/`：数据卷将宿主机`~/web/ngconfig/`下的内容映射到容器内的`/etc/nginx/`路径中。
 
 ### 3.1 基本信息
@@ -186,7 +184,7 @@ systemctl restart docker # 重启docker服务
 
 ### 3.2 镜像
 
-镜像名称一般分两部分组成：`[repository]:[tag]`，在没有指定tag时，默认是`latest`，即最新版本的镜像。
+镜像名称一般分两部分组成：`[repository]:[tag]`，在没有指定 tag 时，默认是`latest`，即最新版本的镜像。
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211222234533061.png" alt="image-20211222234533061" style="zoom:50%;" />
 
@@ -196,8 +194,8 @@ systemctl restart docker # 重启docker服务
 
 #### 镜像仓库
 
-- `docker login [OPTIONS] [SERVER]`：登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
-- `docker logout [OPTIONS] [SERVER]`：登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+- `docker login [OPTIONS] [SERVER]`：登陆到一个 Docker 镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+- `docker logout [OPTIONS] [SERVER]`：登出一个 Docker 镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
 - `docker pull [OPTIONS] NAME[:TAG|@DIGEST]`：从镜像仓库中拉取或者更新指定镜像
 - `docker push [OPTIONS] NAME[:TAG]`：将本地的镜像上传到镜像仓库，需要先登陆到镜像仓库
 - `docker search [OPTIONS] TERM`：从 Docker Hub 查找镜像
@@ -242,7 +240,7 @@ systemctl restart docker # 重启docker服务
 - `docker attach [OPTIONS] CONTAINER`：连接到正在运行中的容器
 - `docker logs [OPTIONS] CONTAINER`：获取容器的日志
 - `docker wait [OPTIONS] CONTAINER [CONTAINER...]`：阻塞运行直到容器停止，然后打印出它的退出代码
-- `docker export [OPTIONS] CONTAINER`：将一个容器的文件系统导出为一个tar包，默认输出到STDOUT，舍弃所有元信息及历史记录
+- `docker export [OPTIONS] CONTAINER`：将一个容器的文件系统导出为一个 tar 包，默认输出到 STDOUT，舍弃所有元信息及历史记录
 - `docker port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]]`：列出某个容器的端口映射
 - `docker stats [OPTIONS] [CONTAINER...]`：统计容器的资源使用情况，包括：CPU、内存、网络 I/O 等
 
@@ -252,7 +250,7 @@ systemctl restart docker # 重启docker服务
 docker stop $(docker ps -q) & docker rm $(docker ps -aq)
 ```
 
-#### rootfs命令
+#### rootfs 命令
 
 - `docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]`：从容器创建一个新的镜像
 - `docker cp`：用于容器与主机之间的数据拷贝
@@ -262,15 +260,15 @@ docker stop $(docker ps -q) & docker rm $(docker ps -aq)
 
 #### 示例
 
-- 示例1：创建并运行一个Nginx容器：`docker run --name containerName -p 80:80 -d nginx`
+- 示例 1：创建并运行一个 Nginx 容器：`docker run --name containerName -p 80:80 -d nginx`
 
     - `docker run` 创建并运行一个容器
-    - `--name` 给容器起一个名字，比如叫做mn
+    - `--name` 给容器起一个名字，比如叫做 mn
     - `-p` 将宿主端口与容器端口映射，冒号左侧是宿主机端口，右侧是容器端口
     - `-d` 后台运行容器
-    - `nginx` 镜像名称，如nginx
+    - `nginx` 镜像名称，如 nginx
 
-- 示例2：进入Nginx容器，修改HTML文件的内容：
+- 示例 2：进入 Nginx 容器，修改 HTML 文件的内容：
 
     <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_1006.JPG" alt="IMG_1006" style="zoom:40%;" />
 
@@ -390,13 +388,13 @@ To get more help with docker, check out our guides at https://docs.docker.com/go
 docker volume [COMMAND]
 ```
 
-docker volume命令是数据卷操作，根据命令后跟随的command来确定下一步的操作：
+docker volume 命令是数据卷操作，根据命令后跟随的 command 来确定下一步的操作：
 
-- `create`：创建一个volume
-- `inspect`：显示一个或多个volume的信息
-- `ls`：列出所有的volume
-- `prune`：删除未使用的volume
-- `rm`：删除一个或多个指定的volume
+- `create`：创建一个 volume
+- `inspect`：显示一个或多个 volume 的信息
+- `ls`：列出所有的 volume
+- `prune`：删除未使用的 volume
+- `rm`：删除一个或多个指定的 volume
 
 ### 4.3 挂载数据卷
 
@@ -404,7 +402,7 @@ docker volume命令是数据卷操作，根据命令后跟随的command来确定
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211223003923310.png" alt="image-20211223003923310" style="zoom:40%;" />
 
-例如，创建并运行一个MySQL容器，将宿主机目录直接挂载到容器：
+例如，创建并运行一个 MySQL 容器，将宿主机目录直接挂载到容器：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_1012.JPG" alt="IMG_1012" style="zoom:50%;" />
 
@@ -475,7 +473,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
     chuan@RedmiBook-2021:~$
     ```
 
-  - 容器内查看网络配置，可以看到会默认分配一个 `docker0` 的内网IP：
+  - 容器内查看网络配置，可以看到会默认分配一个 `docker0` 的内网 IP：
 
     <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/856154-20191006221712371-558945729.png" alt="img" style="zoom:67%;" />
 
@@ -495,11 +493,11 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
     <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/856154-20191006223802000-1773597709.png" alt="img" style="zoom:67%;" />
 
-  - 创建 `nginx` 容器，并使用 `net_container` 容器的网络。可以看到 `net_container` 容器内已经在监听 `nginx` 的80端口了，而且通过映射的 9090 端口可以访问到 `nginx` 服务：
+  - 创建 `nginx` 容器，并使用 `net_container` 容器的网络。可以看到 `net_container` 容器内已经在监听 `nginx` 的 80 端口了，而且通过映射的 9090 端口可以访问到 `nginx` 服务：
 
     <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/856154-20191006224235577-1982026757.png" alt="img" style="zoom:67%;" />
 
-- 自定义网络：与默认的bridge原理一样，但自定义网络具备内部DNS发现，可以通过容器名或者主机名进行容器之间网络通信。
+- 自定义网络：与默认的 bridge 原理一样，但自定义网络具备内部 DNS 发现，可以通过容器名或者主机名进行容器之间网络通信。
 
   - 首先创建一个自定义网络
 
@@ -509,7 +507,7 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
 ### 5.2 容器网络访问原理
 
-当 Docker 启动时，会自动在主机上创建一个 docker0 虚拟网桥（其上有一个 docker0 内部接口），实际上是Linux 的一个 bridge，可以理解为一个软件交换机。它在内核层连通了其他的物理或虚拟网卡，这就将所有容器和本地主机都放到同一个物理网络。
+当 Docker 启动时，会自动在主机上创建一个 docker0 虚拟网桥（其上有一个 docker0 内部接口），实际上是 Linux 的一个 bridge，可以理解为一个软件交换机。它在内核层连通了其他的物理或虚拟网卡，这就将所有容器和本地主机都放到同一个物理网络。
 
 - 每次创建一个新容器的时候，Docker 从可用的地址段中选择一个空闲的 IP 地址分配给容器的 eth0 端口，使用本地主机上 docker0 接口的 IP 作为所有容器的默认网关。
 - 当创建一个 Docker 容器的时候，同时会创建一对 veth pair 接口（当数据包发送到一个接口时，另外一个接口也可以收到相同的数据包）。这对接口一端在容器内，即 eth0 ；另一端在本地并被挂载到 docker0 网桥，名称以 veth 开头。通过这种方式，主机可以跟容器通信，容器之间也可以相互通信。Docker 就创建了在主机和所有容器之间的一个虚拟共享网络。
@@ -519,28 +517,28 @@ docker 容器在启动时可以通过`--net`参数指定五种网络模式：
 
 ## 6. Dockerfile
 
-> 通过Dockerfile可以构建自定义镜像。
+> 通过 Dockerfile 可以构建自定义镜像。
 
-### 6.1 镜像结构与Dockerfile
+### 6.1 镜像结构与 Dockerfile
 
 镜像结构：
 
 <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/IMG_1015.JPG" alt="IMG_1015" style="zoom:40%;" />
 
-镜像是分层结构，每一层称为一个layer：
+镜像是分层结构，每一层称为一个 layer：
 
-- BaseImage层：包含基本的系统函数库、环境变量、文件系统
+- BaseImage 层：包含基本的系统函数库、环境变量、文件系统
 - Entrypoint：入口，是镜像中应用启动的命令
-- 其他：在BaseImage基础上添加依赖、安装程序、完成整个应用的安装和配置
+- 其他：在 BaseImage 基础上添加依赖、安装程序、完成整个应用的安装和配置
 
-`Dockerfile`就是一个文本文件，其他包含一个个的指令（Instruction），用指令来说明要执行什么操作来构建镜像，*每一个指令都会形成一层Layer*，因此每一条指令的内容，就是描述该层应当如何构建。
+`Dockerfile`就是一个文本文件，其他包含一个个的指令（Instruction），用指令来说明要执行什么操作来构建镜像，*每一个指令都会形成一层 Layer*，因此每一条指令的内容，就是描述该层应当如何构建。
 
 |     指令      |                           说明                           |             示例              |
 | :-----------: | :------------------------------------------------------: | :---------------------------: |
 |    `FROM`     |      指定基础镜像，必须是 `Dockerfile` 的第一条指令      |        `FROM centos:6`        |
 |     `ENV`     |              设置环境变量，可在后面指令使用              |        `ENV key value`        |
 |    `COPY`     |               拷贝本地文件到镜像的指定目录               |  `COPY ./mysql-5.7.rpm /tmp`  |
-|     `RUN`     |        执行Linux的shell命令，一般是安装过程的命令        |     `RUN yum install gcc`     |
+|     `RUN`     |        执行 Linux 的 shell 命令，一般是安装过程的命令        |     `RUN yum install gcc`     |
 |   `EXPOSE`    |       指定容器运行时监听的端口，是给镜像使用者看的       |         `EXPOSE 8080`         |
 | `EXTRYPOINT`  |           镜像中应用的启动命令，容器运行时调用           | `EXTRYPOINT java -jar xx.jar` |
 |    `USER`     | 切换到指定用户，这个用户必须是事先建立好的，否则无法切换 |                               |
@@ -581,7 +579,7 @@ FROM scratch
   RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
   ```
 
-- *exec* 格式：`RUN ["可执行文件", "参数1", "参数2"]`，这更像是函数调用中的格式。
+- *exec* 格式：`RUN ["可执行文件", "参数 1", "参数 2"]`，这更像是函数调用中的格式。
 
 既然 `RUN` 就像 Shell 脚本一样可以执行命令，那么我们是否就可以像 Shell 脚本一样把每个命令对应一个 `RUN` 呢？比如这样：
 
@@ -678,11 +676,11 @@ Sending build context to Docker daemon 2.048 kB
 
 ### 6.6 示例
 
-- 示例1：基于Ubuntu镜像构建一个新镜像，运行一个java项目
+- 示例 1：基于 Ubuntu 镜像构建一个新镜像，运行一个 java 项目
 
     <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211223005014040.png" alt="image-20211223005014040" style="zoom:35%;" />
 
-- 示例2：基于java:8-alpine镜像，将一个java项目构建为镜像
+- 示例 2：基于 java:8-alpine 镜像，将一个 java 项目构建为镜像
 
     <img src="https://figure-bed.chua-n.com/JavaWeb/SpringCloud/image-20211223005050347.png" alt="image-20211223005050347" style="zoom:33%;" />
 
@@ -806,10 +804,9 @@ Docker Compose 的 YAML 文件包含 4 个一级 key：`version, services, netwo
   $ docker compose up
   ```
 
-## 8. Docker镜像服务
+## 8. Docker 镜像服务
 
 镜像仓库（Docker Registry）有公共的和私有的两种形式：
 
-- 公共仓库：如Docker官方的Docker Hub，国内的网易云镜像服务、DaoCloud镜像服务、阿里云镜像服务等
-- 私有仓库：在本地搭建的私有镜像仓库，企业自己的镜像最好是采用私有Docker Registry来实现。
-
+- 公共仓库：如 Docker 官方的 Docker Hub，国内的网易云镜像服务、DaoCloud 镜像服务、阿里云镜像服务等
+- 私有仓库：在本地搭建的私有镜像仓库，企业自己的镜像最好是采用私有 Docker Registry 来实现。

@@ -1,8 +1,8 @@
 ---
-title: 一、Git起步
+title: 一、Git 起步
 ---
 
-## 1. Git管理的三种状态
+## 1. Git 管理的三种状态
 
  Git 有三种状态，你的文件可能处于其中之一： **已修改（modified）** 、**已暂存（staged）**、**已提交（committed）**。
 
@@ -26,15 +26,15 @@ title: 一、Git起步
 
 如果 Git 目录中保存着特定版本的文件，就属于 **已提交** 状态。 如果文件已修改并放入暂存区，就属于 **已暂存** 状态。 如果自上次检出后，作了修改但还没有放到暂存区域，就是 **已修改** 状态。
 
-## 2. 初次运行Git前的配置
+## 2. 初次运行 Git 前的配置
 
 ### 2.1 配置文件介绍
 
 Git 自带一个 `git config` 的工具来帮助设置控制 Git 外观和行为的配置变量。 这些变量存储在三个不同的位置：
 
-1. `/etc/gitconfig` 文件: 包含系统上每一个用户及他们仓库的通用配置。 如果在执行 `git config` 时带上 `--system` 选项，那么它就会读写该文件中的配置变量。 （由于它是系统配置文件，因此你需要管理员或超级用户权限来修改它。）
+1. `/etc/gitconfig` 文件：包含系统上每一个用户及他们仓库的通用配置。 如果在执行 `git config` 时带上 `--system` 选项，那么它就会读写该文件中的配置变量。 （由于它是系统配置文件，因此你需要管理员或超级用户权限来修改它。）
 2. `~/.gitconfig` 或 `~/.config/git/config` 文件：只针对当前用户。 你可以传递 `--global` 选项让 Git 读写此文件，这会对你系统上 **所有** 的仓库生效。
-3. 当前使用仓库的 Git 目录中的 `config` 文件（即 `.git/config`）：针对该仓库。 你可以传递 `--local` 选项让 Git 强制读写此文件，虽然默认情况下用的就是它。。 （当然，你需要进入某个 Git 仓库中才能让该选项生效。）
+3. 当前使用仓库的 Git 目录中的 `config` 文件（即 `.git/config`）：针对该仓库。 你可以传递 `--local` 选项让 Git 强制读写此文件，虽然默认情况下用的就是它（当然，你需要进入某个 Git 仓库中才能让该选项生效）。
 
 每一个级别会覆盖上一级别的配置，所以 `.git/config` 的配置变量会覆盖 `/etc/gitconfig` 中的配置变量。
 
@@ -57,7 +57,7 @@ file:.git/config        branch.main.remote=origin
 file:.git/config        branch.main.merge=refs/heads/main
 ```
 
-同时，可以使用`git config --list`命令列出所有git当时能找到的配置：
+同时，可以使用`git config --list`命令列出所有 git 当时能找到的配置：
 
 ```bash
 $ git config --list
@@ -125,4 +125,3 @@ $ man git-<verb>
 ```bash
 $ git help config
 ```
-
