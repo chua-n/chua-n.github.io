@@ -28,15 +28,15 @@ nginx 同 redis 类似都采用了 io 多路复用机制......
 
 通常在 nginx 的安装目录`cd /usr/local/nginx`中执行，命令的格式如：`nginx [param] [command]`
 
-| 参数  | 格式                                                         |
-| :---: | :----------------------------------------------------------- |
-| -? -h | 帮助                                                         |
-|  -c   | 使用指定的配置文件                                           |
-|  -g   | 指定配置指令                                                 |
-|  -p   | 指定运行目录                                                 |
-|  -s   | 发送信号<ul><li>`stop`: 立刻停止服务</li><li>`quit`: 优雅地停止服务</li><li>`reload`: 重载配置文件</li><li>`reopen`: 重新开始记录日志文件</li></ul> |
-| -t -T | 测试配置文件是否有语法错误                                   |
-| -v -V | 打印 nginx 的版本信息、编译信息等                              |
+|  参数   | 格式                                                         |
+| :-----: | :----------------------------------------------------------- |
+| `-? -h` | 帮助                                                         |
+|  `-c`   | 使用指定的配置文件                                           |
+|  `-g`   | 指定配置指令                                                 |
+|  `-p`   | 指定运行目录                                                 |
+|  `-s`   | 发送信号<ul><li>`stop`: 立刻停止服务</li><li>`quit`: 优雅地停止服务</li><li>`reload`: 重载配置文件</li><li>`reopen`: 重新开始记录日志文件</li></ul> |
+| `-t -T` | 测试配置文件是否有语法错误                                   |
+| `-v -V` | 打印 nginx 的版本信息、编译信息等                            |
 
 举例而言，命令如下：
 
@@ -139,29 +139,30 @@ server {
 ### 3.2 结构划分
 
 ```nginx
-...                       # 全局块
-events {}                 # events 块
-http {                    # http 块
-    ...                   # http 全局块
-        server {          # server 块
-        ...               # server 全局块
-            location [/]{ # location 块
-            ...
+...                    # 全局块
+events {}              # events 块
+http {                 # http 块
+    ...                # http 全局块
+    server {           # server 块
+        ...            # server 全局块
+        location [/] { # location 块（一个 server 块中可以有多个 location 块）
+        ...
         }
     }
+    server {...}       # 另一个 server 块（一个 http 块中可以有多个 server 块）
 }
 ...
 ```
 
 nginx 配置文件由三大块组成：
 
-- 全局块：配置影响 nginx 服务器全局的指令。例如运行 nginx 服务器的用户组、nginx 进程 pid 存放路径、日志存放路径、配置文件引入、允许生成的 worker process 数等
-- events 块：主要影响 nginx 服务器与用户的网络连接。例如每个进程的最大连接数、选取哪种事件驱动模型处理连接请求、是否允许同时接受多个网路连接、开启多个网络连接序列化等
-- http 块：可以嵌套多个 server，配置代理、缓存、日志等绝大多数功能，以及第三方模块的配置。例如文件引入、mime-type 定义、日志自定义、是否使用 sendfile 传输文件、连接超时时间、单连接请求数等
-    - http 全局块：顾名思义
-    - server 块：一个 server 相当于一台虚拟主机，nginx 可以有多台虚拟主机联合对外提供服务，这里配置虚拟主机的相关参数，一个 http 中可以有多个 server
-      - server 全局块：顾名思义
-      - location 块：匹配请求的路由 uri，以及各种页面的处理情况
+- 全局块：配置影响 nginx 服务器全局的指令。例如运行 nginx 服务器的用户组、nginx 进程 pid 存放路径、日志存放路径、配置文件引入、允许生成的 worker process 数等。
+- events 块：主要影响 nginx 服务器与用户的网络连接。例如每个进程的最大连接数、选取哪种事件驱动模型处理连接请求、是否允许同时接受多个网路连接、开启多个网络连接序列化等。
+- http 块：可以嵌套多个 server，配置代理、缓存、日志等绝大多数功能，以及第三方模块的配置。例如文件引入、mime-type 定义、日志自定义、是否使用 sendfile 传输文件、连接超时时间、单连接请求数等。
+    - http 全局块：顾名思义。
+    - server 块：一个 server 相当于一台虚拟主机，nginx 可以有多台虚拟主机联合对外提供服务，这里配置虚拟主机的相关参数。一个 http 块中可以有多个 server。
+      - server 全局块：顾名思义。
+      - location 块：匹配请求的路由 uri，以及各种页面的处理情况。
     - upstream 块：
 
 <img src="https://figure-bed.chua-n.com/杂技/nginx/image-20221017173158576.png" alt="image-20221017173158576" style="zoom:50%;" />
@@ -182,7 +183,7 @@ nginx 配置语法：
 
 Nginx 是由少量框架代码、大量模块构成的，其中，Nginx 框架会按照特定的语法，将配置指令读取出来，再交由模块处理。因此，Nginx 框架定义了通用的语法规则，而 Nginx 模块则定义了每条指令的语法规则，作为初学者，如果将学习目标定为掌握所有的配置指令，方向就完全错了，而且这是不可能完成的任务。
 
-比如，`ngx_http_lua_module`模块定义了`content_by_lua_block`指令，只要它符合框架定义的{}块语法规则，哪怕大括号内是一大串 Lua 语言代码，框架也会把它交由`ngx_http_lua_module`模块处理。因此，下面这行指令就是合法的：
+比如，`ngx_http_lua_module`模块定义了`content_by_lua_block`指令，只要它符合框架定义的`{}`块语法规则，哪怕大括号内是一大串 Lua 语言代码，框架也会把它交由`ngx_http_lua_module`模块处理。因此，下面这行指令就是合法的：
 
 ```nginx
 content_by_lua_block {ngx.say("Hello World ")}
@@ -196,42 +197,42 @@ content_by_lua_block {ngx.say("Hello World ")}
 
 nginx 有一些常用的全局变量，你可以在配置的任何位置使用它们，如下表：
 
-| 全局变量名         | 功能                                                         |
-| ------------------ | ------------------------------------------------------------ |
-| $args              | 请求中的参数                                                 |
-| $arg_参数名        | URL 中某个具体参数的值                                        |
-| $content_length    | HTTP 请求信息里的 Content-Length                               |
-| $content_type      | HTTP 请求信息里的 Content-Type                                 |
-| $document_root     | nginx 虚拟主机配置文件中的 root 参数对应的值                    |
-| $document_uri      | 与`$uri`完全相同                                             |
-| $host              | 主机头，也就是域名（先从请求行中获取；如果含有 Host 头部，则用其值替换掉请求行中的主机名；如果前两者都取不到，则使用匹配上的 server_name） |
-| $http_头部名字     | 返回一个具体请求头部的值。大部是通用写法，几个写法特殊的为 http_host, http_user_agent, http_referer, http_via, http_x_forwarded_for, http_cookie |
-| $http_user_agent   | 客户端的详细信息，也就是浏览器的标识，用 curl -A 可以指定      |
-| $http_cookie       | 客户端的 cookie 信息                                           |
-| $limit_rate        | 如果 nginx 服务器使用 limit_rate 配置了显示网络速率，则会显示，如果没有设置， 则显示 0 |
-| $query_string      | 与`$args`完全相同                                            |
-| $remote_addr       | 客户端的公网 ip                                               |
-| $remote_port       | 客户端的 port                                                 |
-| $remote_user       | 由 HTTP Basic Authentication 协议传入的用户名                |
-| $request           | 原始的 url 请求，含有方法与协议版本，例如 GET /?a=1&b=22 HTTP/1.1 |
-| $request_body_file | 临时存放请求包体的文件（如果包体非常小则不会存文件；client_body_in_file_only 强制所有包体存入文件，且可决定是否删除） |
-| $request_body      | 请求中的包体，这个变量当且仅当使用反向代理，且设定用内存暂存包体时才有效 |
-| $request_method    | 请求资源的方式，GET/POST/PUT/DELETE 等                        |
-| $request_filename  | 当前请求的资源文件的路径名称，相当于是`$document_root/$document_uri`的组合 |
-| $request_uri       | 请求的链接，包括`$document_uri`和`$args`                     |
-| $scheme            | 请求的协议名，如 ftp, http, https                            |
-| $server_protocol   | 客户端请求资源使用的协议的版本，如 HTTP/1.0，HTTP/1.1，HTTP/2.0 等 |
-| $server_addr       | 服务器 IP 地址                                                 |
-| $server_name       | 服务器的主机名                                               |
-| $server_port       | 服务器的端口号                                               |
-| $uri               | 请求的 URI（不同于 URL，不包括？后面的请求参数）                |
-| $http_referer      | 客户端请求时的 referer，通俗讲就是该请求是通过哪个链接跳过来的，用 curl -e 可以指定 |
+| 全局变量名           | 功能                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| `$args`              | 请求中的参数                                                 |
+| `$arg_参数名`        | URL 中某个具体参数的值                                       |
+| `$content_length`    | HTTP 请求信息里的 `Content-Length`                           |
+| `$content_type`      | HTTP 请求信息里的 `Content-Type`                             |
+| `$document_root`     | nginx 虚拟主机配置文件中的 `root` 参数对应的值               |
+| `$document_uri`      | 与`$uri`完全相同                                             |
+| `$host`              | 主机头，也就是域名（先从请求行中获取；如果含有 `Host` 头部，则用其值替换掉请求行中的主机名；如果前两者都取不到，则使用匹配上的 `server_name`） |
+| `$http_头部名字`     | 返回一个具体请求头部的值。大部是通用写法，几个写法特殊的为 `http_host, http_user_agent, http_referer, http_via, http_x_forwarded_for, http_cookie` |
+| `$http_user_agent`   | 客户端的详细信息，也就是浏览器的标识，用 `curl -A` 可以指定  |
+| `$http_cookie`       | 客户端的 cookie 信息                                         |
+| `$limit_rate`        | 如果 nginx 服务器使用 `limit_rate` 配置了显示网络速率，则会显示，如果没有设置， 则显示 0 |
+| `$query_string`      | 与`$args`完全相同                                            |
+| `$remote_addr`       | 客户端的公网 ip                                              |
+| `$remote_port`       | 客户端的 port                                                |
+| `$remote_user`       | 由 HTTP Basic Authentication 协议传入的用户名                |
+| `$request`           | 原始的 url 请求，含有方法与协议版本，例如 `GET /?a=1&b=22 HTTP/1.1` |
+| `$request_body_file` | 临时存放请求包体的文件（如果包体非常小则不会存文件；`client_body_in_file_only` 强制所有包体存入文件，且可决定是否删除） |
+| `$request_body`      | 请求中的包体，这个变量当且仅当使用反向代理，且设定用内存暂存包体时才有效 |
+| `$request_method`    | 请求资源的方式，`GET/POST/PUT/DELETE` 等                     |
+| `$request_filename`  | 当前请求的资源文件的路径名称，相当于是`$document_root/$document_uri`的组合 |
+| `$request_uri`       | 请求的链接，包括`$document_uri`和`$args`                     |
+| `$scheme`            | 请求的协议名，如 ftp, http, https                            |
+| `$server_protocol`   | 客户端请求资源使用的协议的版本，如 HTTP/1.0，HTTP/1.1，HTTP/2.0 等 |
+| `$server_addr`       | 服务器 IP 地址                                               |
+| `$server_name`       | 服务器的主机名                                               |
+| `$server_port`       | 服务器的端口号                                               |
+| `$uri`               | 请求的 URI（不同于 URL，不包括 `?` 后面的请求参数）          |
+| `$http_referer`      | 客户端请求时的 `referer`，通俗讲就是该请求是通过哪个链接跳过来的，用 `curl -e` 可以指定 |
 
 ## 4. 反向代理
 
 ### 4.1 相关语法
 
-#### server_name 的作用
+#### 4.1.1 server_name 的作用
 
 `server_name`代表虚拟主机的域名。因为一个 http 块可以配置多个 server 块，即多个虚拟主机，这些虚拟主机选择兼听的端口可能相同可能不同。当端口不同时，显然通过端口即可匹配到对应的虚拟主机；当存在多个虚拟主机监听同一端口时，则需通过`server_name`来匹配对应的虚拟主机了。
 
@@ -244,11 +245,11 @@ nginx 有一些常用的全局变量，你可以在配置的任何位置使用�
 - 以`*`通配符结尾的字符串，如果存在多个匹配最长的那一个
 - 第一个匹配到的正则表达式（即按配置文件中配置的先后顺序）
 
-#### localtion 的 URI 匹配规则
+#### 4.1.2 localtion 的 URI 匹配规则
 
 location 的语法形式有两种：
 
-- `location [=|~|~*|^~] uri { ... }`：其中`[=|~|~*|^~]`部分为 location 修饰符（Modifier），修饰符定义了与 URI 的匹配方式；uri 为 URI 的模式，可以是字符串或正则表达式。
+- `location [=|~|~*|^~] uri { ... }`：其中`[=|~|~*|^~]`部分为 location 修饰符（Modifier），修饰符定义了与 URI 的匹配方式；`uri` 为 URI 的模式，可以是字符串或正则表达式。
 - `location @name { ... }`
 
 各修饰符的作用如下：
@@ -313,7 +314,7 @@ location 的匹配顺序：
 
 <img src="https://figure-bed.chua-n.com/杂技/nginx/nginx_location.png" alt="image-20221018102708228" style="zoom:67%;" />
 
-#### proxy_pass
+#### 4.1.3 proxy_pass
 
 在 nginx 中配置`proxy_pass`时，其后面的目标 url 后是否加有`/`，意义是有不同的。
 
@@ -349,9 +350,9 @@ location 的匹配顺序：
 
 当 nginx 代理请求时，它将请求发送到指定的代理服务器，获取响应，并将其发送回客户端。可以使用指定的协议将请求代理到 http 服务器或非 http 服务器。
 
-#### 转发到 http 服务器
+#### 4.2.1 转发到 http 服务器
 
-要将请求传递给 http 代理服务器，则在一个 location 块内指定 proxy_pass 指令。 例如：
+要将请求传递给 http 代理服务器，则在一个 location 块内指定 `proxy_pass` 指令。 例如：
 
 ```nginx
 location /some/path/ {
@@ -380,7 +381,7 @@ server {
 }
 ```
 
-#### 转发到非 http 服务器
+#### 4.2.2 转发到非 http 服务器
 
 要将请求传递给非 HTTP 代理服务器，应使用相应的`xxx_pass`指令：
 
@@ -527,7 +528,7 @@ server {
 配置静态服务资源时，location 块常用`root`指令和`alias`指令，两者的区别顾名思义即可，叙述如下：
 
 - `root` 指令指定的是资源的根路径，因此最终会用`[root路径 + location路径]`的规则映射静态资源请求；
-- `alias` 指定指定资源路径的别名，因此会使用 alias 的路径替换 location 路径，即`[location路径 -> alias路径]`
+- `alias` 指定指定资源路径的别名，因此会使用 `alias` 的路径替换 `location` 路径，即`[location路径 -> alias路径]`
 
 下面举例说明`root`与`alias`的区别：
 
@@ -546,7 +547,7 @@ location ^~ /test2 {
 
 ### 6.3 js 语言描述 root 与 alias 的解析过程
 
-细扣起来，个人疏理 root 和 alias 的生效过程，其实分别是直接的字符串拼接与直接的字符串替换，下面我们尝试用编程语言来描述这一具体过程。
+细扣起来，个人疏理 `root` 和 `alias` 的生效过程，其实分别是直接的字符串拼接与直接的字符串替换，下面我们尝试用编程语言来描述这一具体过程。
 
 首先假设有如下配置块：
 
@@ -594,7 +595,7 @@ aliasFinalPath = uri.replace(aliasLocationPath, aliasTargetPath);
 
 ### 6.4 结合 index 指令
 
-使用 root 与 alias 指令 时，可搭配使用 index 指令，用来表明当 URL 中未指定具体的资源名称（xxx.html, xxx.php, xxx.xx 等）时，即 URL 只定位到了文件夹的层级，该 URL 默认指向的资源名称。index 指令的默认值为 index.html index.htm。
+使用 `root` 与 `alias` 指令 时，可搭配使用 `index` 指令，用来表明当 URL 中未指定具体的资源名称（xxx.html, xxx.php, xxx.xx 等）时，即 URL 只定位到了文件夹的层级，该 URL 默认指向的资源名称。index 指令的默认值为 index.html index.htm。
 
 比如，如下配置时，访问 `http://ip:port` 会实际到 `http://ip:port/html/haha.html`
 
