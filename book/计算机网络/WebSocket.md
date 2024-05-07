@@ -4,7 +4,7 @@ title: WebSocket
 
 ## 1. 概述
 
-### 为什么需要 WebSocket ？
+### 1.1 为什么需要 WebSocket ？
 
 WebSocket 是一种网络通信协议，[RFC6455](https://tools.ietf.org/html/rfc6455) 定义了它的通信标准。WebSocket 是 HTML5 开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。
 
@@ -16,7 +16,7 @@ WebSocket 是一种网络通信协议，[RFC6455](https://tools.ietf.org/html/rf
 
 ![](https://figure-bed.chua-n.com/JavaWeb/其他/1.png)
 
-### WebSocket 如何工作？
+### 1.2 WebSocket 如何工作？
 
 WebSocket 协议在 2008 年诞生，2011 年成为国际标准，现在所有浏览器都已经支持了。
 
