@@ -35,3 +35,6 @@ icon: java
 3. `PriorityQueue` 与堆的关系？
 4. `TreeSet` 与 `LinkedHashSet` ?
 5. `Thread` 和 `Executor` 的关系？
+6. `ThreadLocal`的 API，gatling、coral 中那两个应用吃透。
+7. [Java 线程池详解 | JavaGuide](https://javaguide.cn/java/concurrent/java-thread-pool-summary.html)
+8. coral 平台采用的分布式 ID 方案。
