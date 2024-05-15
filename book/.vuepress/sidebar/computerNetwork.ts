@@ -2,9 +2,21 @@ import { arraySidebar } from "vuepress-theme-hope";
 import { FOLDER_ICON, buildSimpleNavObj } from "./util";
 
 export default arraySidebar([
-  buildSimpleNavObj("概要"),
-  buildSimpleNavObj("计网体系结构"),
-  buildSimpleNavObj("应用层常见协议"),
+  buildSimpleNavObj("概念引入"),
+  buildSimpleNavObj("通信原理"),
+  {
+    text: "计网体系结构",
+    prefix: "计网体系结构/",
+    collapsible: true,
+    icon: FOLDER_ICON,
+    children: [
+      buildSimpleNavObj("网络接口层"),
+      buildSimpleNavObj("网络层"),
+      buildSimpleNavObj("传输层"),
+      buildSimpleNavObj("应用层"),
+      buildSimpleNavObj("总结"),
+    ],
+  },
   buildSimpleNavObj("网络加密"),
   buildSimpleNavObj("杂记"),
   {
