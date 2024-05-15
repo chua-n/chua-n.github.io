@@ -4,6 +4,7 @@ import { FOLDER_ICON, buildSimpleNavObj } from "./util";
 export default arraySidebar([
   buildSimpleNavObj("概要"),
   buildSimpleNavObj("计网体系结构"),
+  buildSimpleNavObj("应用层常见协议"),
   buildSimpleNavObj("网络加密"),
   buildSimpleNavObj("杂记"),
   {
