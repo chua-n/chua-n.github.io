@@ -758,7 +758,9 @@ GROUP BY class_id;
 
 - `ALTER TABLE`：变更（改变）数据库表
 
-- `DROP TABLE`：删除表
+- `DROP TABLE table_name`：删除表
+
+- `TRUNCATE TABLE table_name`：清空表。只删除表中的数据，再插入数据的时候自增长 ID 又从 1 开始。
 
 - `CREATE INDEX`：创建索引（搜索键）
 
