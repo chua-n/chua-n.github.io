@@ -2,8 +2,8 @@
 title: mayavi离屏渲染
 date: 2020-12-07 15:33:00
 category:
-   - python
-   - mayavi
+   - Python
+   - Mayavi
 ---
 
 有时我们使用 mayavi 绘制一个 3D 图形，不需要在前台进行图形展示，而只是想随着程序的执行批量保存一些图片，这时候就需要配置好 mayavi 的后台离屏渲染功能了，以便关停烦人的图像弹窗。

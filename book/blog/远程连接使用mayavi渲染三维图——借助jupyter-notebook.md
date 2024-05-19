@@ -2,8 +2,8 @@
 title: 在远程服务器中使用mayavi渲染三维图——借助jupyter notebook
 date: 2021-02-01 19:26:56
 category:
-    - python
-    - mayavi
+    - Python
+    - Mayavi
 ---
 
 mayavi 库基于 opengl 绘制三维图，似乎凡是通过 opengl 调用 GPU 进行图像渲染的相关功能在远程连接中都无法使用，SSH 与 linux 的连接如是，win10 的远程桌面连接亦如是，曾经在 2020 年寒假使用服务器工作时深受其害，至 2021 年寒假竟然碰巧发现一些窍门可以正常使用 mayavi 了。

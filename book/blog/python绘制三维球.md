@@ -2,8 +2,8 @@
 title: 使用 Python 绘制不同尺寸的球——利用Mayavi库
 date: 2020-12-22 08:11:00
 category:
-    - python
-    - mayavi
+    - Python
+    - Mayavi
 star: true
 excerpt: <img src="https://figure-bed.chua-n.com/blog/python绘制三维球/6.png" style="zoom:50%;" />
 ---
