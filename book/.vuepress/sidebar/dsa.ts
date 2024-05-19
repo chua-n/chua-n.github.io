@@ -201,10 +201,11 @@ export default arraySidebar([
     collapsible: true,
     icon: "bulb",
     children: [
-      buildSimpleNavObj("排序"),
+      buildSimpleNavObj("领悟DSA"),
       buildSimpleNavObj("二叉树"),
       buildSimpleNavObj("二叉搜索树"),
       buildSimpleNavObj("图"),
+      buildSimpleNavObj("排序算法"),
     ]
   },
 ]);
