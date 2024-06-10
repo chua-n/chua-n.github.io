@@ -86,10 +86,19 @@ date: 2024-05-19
   }
   
   void traverse(TreeNode root) {
+      // 这里属于前序位置
       traverse(root.left);
+      // 这里属于中序位置
       traverse(root.right);
+      // 这里属于后序位置
   }
   ```
+
+  - 所谓前序位置，就是刚进入一个节点（元素）的时候；
+
+  - 所谓后序位置，就是即将离开一个节点（元素）的时候；
+
+  - 所谓中序位置，就是一个二叉树节点左子树都遍历完，即将开始遍历右子树的时候。
 
 - 二叉树框架可以扩展为 N 叉树的遍历框架：
 
@@ -103,8 +112,11 @@ date: 2024-05-19
   }
   
   void traverse(TreeNode root) {
-      for (TreeNode child : root.children)
+      // 这里属于前序位置
+      for (TreeNode child : root.children) {
           traverse(child);
+      }
+      // 这里属于后序位置
   }
   ```
 

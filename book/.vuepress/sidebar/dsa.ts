@@ -205,6 +205,7 @@ export default arraySidebar([
       buildSimpleNavObj("二叉树"),
       buildSimpleNavObj("二叉搜索树"),
       buildSimpleNavObj("二叉树解题思路"),
+      buildSimpleNavObj("回溯算法解题思路"),
       buildSimpleNavObj("图"),
       buildSimpleNavObj("排序算法"),
     ]
