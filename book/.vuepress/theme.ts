@@ -16,7 +16,7 @@ export default hopeTheme(
     darkmode: "switch",
     fullscreen: false,
     // pure: true,
-    iconAssets: "//at.alicdn.com/t/c/font_4437669_pwevx64y1cf.css",
+    iconAssets: "//at.alicdn.com/t/c/font_4437669_ss389g6d0t.css",
     // iconPrefix: ???
     logo: "https://figure-bed.chua-n.com/logo/荒流.png",
     favicon: "https://figure-bed.chua-n.com/logo/川.ico",

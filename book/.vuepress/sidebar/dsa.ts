@@ -3,6 +3,30 @@ import { buildSimpleNavObj } from "./util";
 
 export default arraySidebar([
   {
+    text: "DS",
+    prefix: "DS/",
+    collapsible: true,
+    icon: "data-structure",
+    children: [
+      buildSimpleNavObj("二叉树"),
+      buildSimpleNavObj("二叉搜索树"),
+      buildSimpleNavObj("图"),
+    ]
+  },
+  {
+    text: "trick",
+    prefix: "trick/",
+    collapsible: true,
+    icon: "bulb",
+    children: [
+      buildSimpleNavObj("领悟DSA"),
+      buildSimpleNavObj("二叉树思维模型"),
+      buildSimpleNavObj("回溯算法"),
+      buildSimpleNavObj("动态规划算法"),
+      buildSimpleNavObj("排序算法"),
+    ]
+  },
+  {
     text: "剑指offer",
     prefix: "剑指offer/",
     collapsible: true,
@@ -86,21 +110,6 @@ export default arraySidebar([
     children: [
       buildSimpleNavObj("0-1背包问题"),
       buildSimpleNavObj("最大正方形"),
-    ]
-  },
-  {
-    text: "trick",
-    prefix: "trick/",
-    collapsible: true,
-    icon: "bulb",
-    children: [
-      buildSimpleNavObj("领悟DSA"),
-      buildSimpleNavObj("二叉树"),
-      buildSimpleNavObj("二叉搜索树"),
-      buildSimpleNavObj("二叉树解题思路"),
-      buildSimpleNavObj("回溯算法解题思路"),
-      buildSimpleNavObj("图"),
-      buildSimpleNavObj("排序算法"),
     ]
   },
 ]);
