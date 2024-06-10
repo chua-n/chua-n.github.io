@@ -55,6 +55,7 @@ timeline: false
 5. Spring 事务中，有哪几种事务传播行为，有哪几种隔离级别？
 6. 读写分离这块，了解 sharding-jdbc 吗？
 7. [什么是分库分表？](https://javaguide.cn/high-performance/read-and-write-separation-and-library-subtable.html)
+8. [MySQL索引？](https://javaguide.cn/database/mysql/mysql-index.html)
 
 ### Redis
 
