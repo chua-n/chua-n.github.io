@@ -470,7 +470,7 @@ public class LoginFailServlet extends HttpServlet {
 
 -   这里是`jdbc.properties`：
 
-```conf
+```properties
 jdbc.driver=com.mysql.cj.jdbc.Driver
 jdbc.url=jdbc:mysql://localhost:3306/practice_java?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
 jdbc.username=root
