@@ -36,6 +36,18 @@ export default arraySidebar([
       buildSimpleNavObj("五、Git分支"),
     ]
   },
-  buildSimpleNavObj("Docker", "docker"),
   buildSimpleNavObj("Nginx", "nginx"),
+  buildSimpleNavObj("Docker", "docker"),
+  {
+    text: "Kubernetes",
+    prefix: "Kubernetes/",
+    collapsible: true,
+    icon: "k8s",
+    children: [
+      buildSimpleNavObj("概述"),
+      buildSimpleNavObj("kubernetes对象"),
+      buildSimpleNavObj("kubernetes资源"),
+      buildSimpleNavObj("kubectl命令"),
+    ]
+  },
 ]);
