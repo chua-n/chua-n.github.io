@@ -50,4 +50,5 @@ export default arraySidebar([
       buildSimpleNavObj("kubectl命令"),
     ]
   },
+  buildSimpleNavObj("DolphinScheduler", "dolphin-scheduler"),
 ]);
