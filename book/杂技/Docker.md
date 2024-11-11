@@ -154,9 +154,78 @@ systemctl stop firewalld
 systemctl disable firewalld
 ```
 
+#### docker 离线安装
+
+1. 本地下载 https://download.docker.com/linux/static/stable/x86_64/docker-24.0.2.tgz ，将安装包上传到服务器
+
+2. 解压安装包：`tar -zxvf docker-24.0.2.tgz`
+
+3. 拷贝解压出来的文件到 `/user/bin` 目录：`cp docker/* /usr/bin/`
+
+4. 创建 docker.service 文件：
+
+   - 命令：
+
+     ```shell
+     cd /etc/systemd/system/
+     touch docker.service
+     vi docker.service # 文件内容拷贝下面的
+     ```
+
+   - 其中 docker.service 的内容：
+
+     ```shell
+     [Unit]
+     Description=Docker Application Container Engine
+     Documentation=https://docs.docker.com
+     After=network-online.target firewalld.service
+     Wants=network-online.target
+     
+     [Service]
+     Type=notify
+     # the default is not to use systemd for cgroups because the delegate issues still
+     # exists and systemd currently does not support the cgroup feature set required
+     # for containers run by docker
+     ExecStart=/usr/bin/dockerd
+     ExecReload=/bin/kill -s HUP $MAINPID
+     # Having non-zero Limit*s causes performance problems due to accounting overhead
+     # in the kernel. We recommend using cgroups to do container-local accounting.
+     LimitNOFILE=infinity
+     LimitNPROC=infinity
+     LimitCORE=infinity
+     # Uncomment TasksMax if your systemd version supports it.
+     # Only systemd 226 and above support this version.
+     #TasksMax=infinity
+     TimeoutStartSec=0
+     # set delegate yes so that systemd does not reset the cgroups of docker containers
+     Delegate=yes
+     # kill only the docker process, not all processes in the cgroup
+     KillMode=process
+     # restart the docker process if it exits prematurely
+     Restart=on-failure
+     StartLimitBurst=3
+     StartLimitInterval=60s
+     
+     [Install]
+     WantedBy=multi-user.target
+     ```
+
+5. 给 docker.service 添加权限：
+
+   ```shell
+   chmod 777 /etc/systemd/system/docker.service # 给 docker.service 文件添加执行权限
+   systemctl daemon-reload # 重新加载配置文件（每次有修改docker.service文件时都要重新加载下）
+   ```
+
+6. 启动 docker：`systemctl start docker`
+
+7. 设置 docker 开机自启：`systemctl enable docker.service`
+
+#### docker 启动/关闭
+
 通过命令启动 docker：
 
-```sh
+```shell
 systemctl start docker # 启动 docer 服务
 
 systemctl stop docker # 停止 docker 服务
