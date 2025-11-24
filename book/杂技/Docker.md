@@ -778,16 +778,27 @@ Sending build context to Docker daemon 2.048 kB
 
 至于 Linux，也十分简单，从 [官方 GitHub Release](https://github.com/docker/compose/releases) 处直接下载编译好的二进制文件即可。如下为在 Linux 64 位系统上的操作：
 
-```bash
-$ DOCKER_CONFIG=/usr/local/lib/docker/cli-plugins
-$ sudo mkdir -p $DOCKER_CONFIG/cli-plugins
-$ sudo curl -SL https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
-$ sudo chmod +x $DOCKER_CONFIG/cli-plugins
-$ docker compose version
+- 方案一，`docker compose`版：
 
-# 国内用户可以使用以下方式加快下载
-$ sudo curl -SL https://download.fastgit.org/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
-```
+  ```bash
+  $ DOCKER_CONFIG=/usr/local/lib/docker
+  $ sudo mkdir -p $DOCKER_CONFIG/cli-plugins
+  $ sudo curl -SL https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+  $ sudo chmod +x $DOCKER_CONFIG/cli-plugins
+  $ docker compose version
+  
+  # 国内用户可以使用以下方式加快下载
+  $ sudo curl -SL https://download.fastgit.org/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+  ```
+
+- 方案二，`docker-compose`版：
+
+  ```bash
+  sudo curl -SL https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64
+  mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+  docker-compose -v
+  ```
 
 ### 7.3 docker-compose.yml
 
