@@ -2,7 +2,6 @@ import { hopeTheme } from "vuepress-theme-hope";
 import navbar from "./navbar.js";
 import sidebar from "./sidebar";
 import { Page } from "vuepress";
-import { cut } from "nodejs-jieba";
 
 export default hopeTheme(
   {
@@ -14,9 +13,9 @@ export default hopeTheme(
     },
 
     darkmode: "switch",
-    fullscreen: false,
+    fullscreen: true,
+    // focus: true,
     // pure: true,
-    iconAssets: "//at.alicdn.com/t/c/font_4437669_qqcrya8ybtj.css",
     // iconPrefix: ???
     logo: "https://figure-bed.chua-n.com/logo/荒流.png",
     favicon: "https://figure-bed.chua-n.com/logo/川.ico",
@@ -26,7 +25,6 @@ export default hopeTheme(
 
     // 导航栏
     navbar,
-    navbarIcon: true,
     navbarLayout: {
       start: ["Brand"],
       center: ["Links"],
@@ -38,7 +36,6 @@ export default hopeTheme(
 
     // 侧边栏
     sidebar,
-    headerDepth: 5,
     toc: true,
     print: true,
 
@@ -54,6 +51,7 @@ export default hopeTheme(
     lastUpdated: true,
     contributors: true,
     editLink: true,
+    changelog: true,
     // editLinkPattern: "???"
     docsBranch: "main",
     docsDir: "book",
@@ -66,13 +64,11 @@ export default hopeTheme(
       name: "荒流",
       description: "应无所住，而生其心",
       avatar: "https://figure-bed.chua-n.com/logo/wukong.jpg",
-      roundAvatar: true,
       intro: "/about",
       medias: {
         Email: "mailto:chua_n@qq.com",
         Github: "https://github.com/chua-n",
       },
-      sidebarDisplay: "mobile",
       articlePerPage: 5,
       articleInfo: ["Author", "Original", "Date", "Category", "Tag", "ReadingTime", "Word", "PageView"],
       timeline: "昨个儿不在",
@@ -80,8 +76,7 @@ export default hopeTheme(
 
     // 加密配置
     encrypt: {
-      config: {
-      },
+      config: {},
     },
 
     // 多语言配置
@@ -92,8 +87,50 @@ export default hopeTheme(
     // 如果想要实时查看任何改变，启用它。注: 这对更新性能有很大负面影响
     // hotReload: true,
 
+    markdown: {
+      align: true,
+      attrs: true,
+      codeTabs: true,
+      component: true,
+      demo: true,
+      figure: true,
+      imgLazyload: true,
+      imgMark: true,
+      imgSize: true,
+      include: true,
+      linkify: true,
+      mark: true,
+      stylize: [
+        {
+          matcher: "Recommended",
+          replacer: ({ tag }) => {
+            if (tag === "em") {
+              return {
+                tag: "Badge",
+                attrs: { type: "tip" },
+                content: "Recommended",
+              };
+            }
+          },
+        },
+      ],
+      sub: true,
+      sup: true,
+      tabs: true,
+      vPre: true,
+
+      math: {
+        type: "katex",
+        copy: true
+      },
+    },
+
     // 在这里配置主题提供的插件
     plugins: {
+
+      icon: {
+        assets: "//at.alicdn.com/t/c/font_4437669_qqcrya8ybtj.css",
+      },
 
       // 图片预览
       photoSwipe: true,
@@ -113,91 +150,14 @@ export default hopeTheme(
           "Badge",
           "BiliBili",
           "CodePen",
-          "FontIcon",
           "PDF",
-          "Replit",
           "Share",
           "StackBlitz",
           "SiteInfo",
           "VPBanner",
           "VPCard",
-          "VidStack",
-          "XiGua",
+          "VidStack"
         ],
-      },
-
-      // 此处开启了很多功能用于演示，你应仅保留用到的功能。
-      mdEnhance: {
-        align: true,
-        attrs: true,
-        codetabs: true,
-        component: true,
-        demo: true,
-        figure: true,
-        imgLazyload: true,
-        imgSize: true,
-        include: true,
-        linkify: true,
-        mark: true,
-        stylize: [
-          {
-            matcher: "Recommended",
-            replacer: ({ tag }) => {
-              if (tag === "em") {
-                return {
-                  tag: "Badge",
-                  attrs: { type: "tip" },
-                  content: "Recommended",
-                };
-              }
-            },
-          },
-        ],
-        sub: true,
-        sup: true,
-        tabs: true,
-        vPre: true,
-
-        // 在启用之前安装 chart.js
-        // chart: true,
-
-        // insert component easily
-
-        // 在启用之前安装 echarts
-        // echarts: true,
-
-        // 在启用之前安装 flowchart.ts
-        // flowchart: true,
-
-        // gfm requires mathjax-full to provide tex support
-        // gfm: true,
-
-        // 在启用之前安装 katex
-        katex: {
-          copy: true,
-          mhchem: true,
-        },
-
-        // 在启用之前安装 mathjax-full
-        // mathjax: true,
-
-        // 在启用之前安装 mermaid
-        // mermaid: true,
-
-        // playground: {
-        //   presets: ["ts", "vue"],
-        // },
-
-        // 在启用之前安装 reveal.js
-        // revealJs: {
-        //   plugins: ["highlight", "math", "search", "notes", "zoom"],
-        // },
-
-        // 在启用之前安装 @vue/repl
-        // vuePlayground: true,
-
-        // install sandpack-vue3 before enabling it
-        // sandpack: true,
       },
 
       blog: {
@@ -214,17 +174,9 @@ export default hopeTheme(
         }
       },
 
-      searchPro: {
+      // 搜索功能
+      slimsearch: {
         indexContent: true,
-        autoSuggestions: false,
-        queryHistoryCount: 5,
-        resultHistoryCount: 0,
-        indexOptions: {
-          // 使用结巴进行分词
-          tokenize: (text, fieldName) => {
-            return fieldName === "id" ? [text] : cut(text, true);
-          },
-        },
         hotKeys: [
           {
             key: "/",
@@ -255,10 +207,10 @@ export default hopeTheme(
           icon: "/assets/icon/logo-apple-152.png",
           statusBarColor: "black",
         },
-        msTile: {
-          image: "/assets/icon/logo-ms-144.png",
-          color: "#ffffff",
-        },
+        // msTile: {
+        //   image: "/assets/icon/logo-ms-144.png",
+        //   color: "#ffffff",
+        // },
         manifest: {
           short_name: "荒流",
           icons: [
