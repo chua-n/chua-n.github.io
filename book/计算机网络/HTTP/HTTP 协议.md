@@ -1,6 +1,6 @@
 ---
 title: HTTP 协议
-date: 2022-10-11 20:31
+date: 2022-10-11 20:31:00
 ---
 
 > 很好的阅读资料：[HTTP | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/HTTP)

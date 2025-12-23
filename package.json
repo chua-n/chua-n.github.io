@@ -13,22 +13,19 @@
     "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
-    "@vuepress/bundler-webpack": "2.0.0-rc.18",
-    "@vuepress/plugin-pwa": "2.0.0-rc.57",
-    "@waline/client": "^3.3.2",
+    "@vuepress/bundler-webpack": "2.0.0-rc.26",
+    "@vuepress/plugin-blog": "2.0.0-rc.121",
+    "@vuepress/plugin-feed": "2.0.0-rc.121",
+    "@vuepress/plugin-icon": "2.0.0-rc.121",
+    "@vuepress/plugin-pwa": "2.0.0-rc.121",
+    "@vuepress/plugin-slimsearch": "2.0.0-rc.121",
+    "@waline/client": "^3.8.0",
     "copy-webpack-plugin": "^12.0.2",
-    "katex": "^0.16.11",
-    "sass-embedded": "^1.80.6",
-    "sass-loader": "^16.0.3",
-    "vue": "^3.5.12",
-    "vuepress": "2.0.0-rc.18",
-    "vuepress-plugin-search-pro": "2.0.0-rc.59",
-    "vuepress-theme-hope": "2.0.0-rc.59"
-  },
-  "dependencies": {
-    "@vuepress/plugin-blog": "2.0.0-rc.57",
-    "@vuepress/plugin-feed": "2.0.0-rc.57",
-    "@vuepress/plugin-search": "2.0.0-rc.55",
-    "nodejs-jieba": "^0.2.1"
+    "katex": "^0.16.27",
+    "sass-embedded": "^1.97.1",
+    "sass-loader": "^16.0.6",
+    "vue": "^3.5.26",
+    "vuepress": "2.0.0-rc.26",
+    "vuepress-theme-hope": "2.0.0-rc.99"
   }
 }

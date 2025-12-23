@@ -3,13 +3,17 @@
 
 // 行内代码块，加粗，斜体都采用主题色
 code, strong, em {
-  color: $theme-color; // 代码块颜色
+  color: $default-theme-color; // 代码块颜色
 }
 
 /* 设置选中文本时的颜色 */
 ::selection {
-  background: $theme-color;
+  background: $default-theme-color;
   color: #eee;
+}
+
+.vp-blogger-avatar {
+  border-radius: 50%;
 }
 
 /* 文章每级标题下方加入横线（模仿h2自带的样式） */
