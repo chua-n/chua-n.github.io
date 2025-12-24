@@ -26,21 +26,23 @@ ol, ul {
   padding-inline-start: 2em;
 }
 
-/* 表格居中对齐 */
-table {
-  display: table;
-  margin: auto;
-}
-
 /* 图片居中显示 */
-.theme-hope-content img, .vp-article-excerpt img {
+[vp-content] img {
   display: block;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* 表格里的图片不能在页面中盲目扩张 */
-.theme-hope-content table img {
-  max-width: 100%;
+/* 表格居中对齐 */
+[vp-content] table {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* 表格里的图片不能在页面中盲目扩张 */
+  img {
+    max-width: 100%;
+  }
 }
 
 /* markdown中有序列表中序号表示符，第 1~4 级依次设定为阿拉伯数字、小写英文字母、小写罗马字母、小写希腊字母 */
