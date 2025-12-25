@@ -1,0 +1,4 @@
+User-agent:*
+Disallow:
+
+Sitemap: https://chua-n.com/sitemap.xml
