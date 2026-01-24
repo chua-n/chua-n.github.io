@@ -66,3 +66,9 @@ ol {
 ul:last-child, ol:last-child {
   margin-bottom: 0;
 }
+
+// 强制 SVG 内部元素继承字体
+.mermaid-wrapper svg,
+.mermaid-preview svg {
+  font-family: inherit !important;
+}

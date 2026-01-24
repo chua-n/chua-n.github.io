@@ -1,2 +1,12 @@
 $vp-font: 'Cambria, -apple-system, 华文中宋, "PingFang SC", "思源宋体 CN Medium", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif';
 $vp-font-heading: $vp-font;
+
+// 覆盖 Mermaid 预览背景变量
+:root {
+  --mermaid-preview-bg: rgb(255 255 255 / 98%) !important;
+}
+
+// 覆盖 Mermaid 预览背景变量
+[data-theme='dark'] {
+  --mermaid-preview-bg: rgb(0 0 0 / 98%) !important;
+}

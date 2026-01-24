@@ -123,13 +123,15 @@ export default hopeTheme(
         type: "katex",
         copy: true
       },
+
+      mermaid: true,
     },
 
     // 在这里配置主题提供的插件
     plugins: {
 
       icon: {
-        assets: "//at.alicdn.com/t/c/font_4437669_qqcrya8ybtj.css",
+        assets: "//at.alicdn.com/t/c/font_4437669_052dhfp30k07.css",
       },
 
       // 图片预览
