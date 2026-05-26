@@ -1,11 +1,12 @@
-import { WebpackConfiguration, webpackBundler } from "@vuepress/bundler-webpack";
+import { viteBundler } from "@vuepress/bundler-vite";
 import { defineUserConfig } from "vuepress";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import theme from "./theme.js";
-// @ts-ignore
-import CopyPlugin from "copy-webpack-plugin";
-import * as path from "path";
 
 const sourceDir = "book";
+const cnameFile = "CNAME";
+const bundler = viteBundler();
 
 export default defineUserConfig({
   base: "/",
@@ -44,20 +45,14 @@ export default defineUserConfig({
   // 和 PWA 一起启用
   shouldPrefetch: false,
 
-  // 修改 webpack 配置
-  bundler: webpackBundler({
-    configureWebpack: (config: WebpackConfiguration, isServer: boolean, isBuild: boolean) => {
-      config.devtool = "eval-source-map"; // 开发环境调试时浏览器展示源码（好像不生效）
-      config.plugins?.push(
-        new CopyPlugin({
-          patterns: [
-            {
-              from: path.resolve(process.cwd(), "./CNAME"),
-              to: ".",
-            },
-          ],
-        })
+  bundler: {
+    ...bundler,
+    async build(app) {
+      await bundler.build(app);
+      fs.copyFileSync(
+        path.resolve(process.cwd(), cnameFile),
+        path.join(app.dir.dest(), cnameFile),
       );
-    }
-  }),
+    },
+  },
 });
