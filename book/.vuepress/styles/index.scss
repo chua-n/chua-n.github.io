@@ -71,4 +71,6 @@ ul:last-child, ol:last-child {
 .mermaid-wrapper svg,
 .mermaid-preview svg {
   font-family: inherit !important;
+  width: 100%;
+  height: 100%;
 }
