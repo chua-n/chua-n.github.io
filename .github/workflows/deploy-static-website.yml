@@ -20,17 +20,18 @@ jobs:
         with:
           fetch-depth: 0 # 想要“最近更新时间”等 git 日志相关信息，需要拉取全部提交记录
 
-      - name: Install pnpm, then install dependencies immediately
-        uses: pnpm/action-setup@v2
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          run_install: true
-          version: 8
+          version: 10
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 22.x # latest
-          # cache: pnpm
+          node-version: 22
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Build the project
         env:
